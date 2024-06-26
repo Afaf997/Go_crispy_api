@@ -1,0 +1,23 @@
+{
+    "name": "flutter_restaurant",
+    "short_name": "flutter_restaurant",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#ED5D37",
+    "theme_color": "#ED5D37",
+    "description": "A new Flutter project.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "logo.jpg",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "logo.jpg",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
