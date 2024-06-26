@@ -11,9 +11,7 @@ import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/images.dart';
-import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:provider/provider.dart';
-
 
 class ChooseLanguageScreen extends StatelessWidget {
   final bool fromMenu;
@@ -55,41 +53,6 @@ class ChooseLanguageScreen extends StatelessWidget {
                 Divider(),
                 buildLanguageRow(context, 'العربية', 'ar', languageProvider),
                 SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        if (languageProvider.languages.isNotEmpty &&
-                            languageProvider.selectIndex != -1) {
-                          Provider.of<LocalizationProvider>(context, listen: false)
-                              .setLanguage(Locale(
-                            AppConstants
-                                .languages[languageProvider.selectIndex!].languageCode!,
-                            AppConstants
-                                .languages[languageProvider.selectIndex!].countryCode,
-                          ));
-                          if (fromMenu) {
-                            Provider.of<ProductProvider>(context, listen: false)
-                                .getLatestProductList(true, '1');
-                            Provider.of<CategoryProvider>(context, listen: false)
-                                .getCategoryList(true);
-                          } else {
-                            ResponsiveHelper.isMobile()
-                                ? RouterHelper.getOnBoardingRoute(
-                                    action: RouteAction.pushNamedAndRemoveUntil)
-                                : RouterHelper.getMainRoute(
-                                    action: RouteAction.pushNamedAndRemoveUntil);
-                          }
-                        } else {
-                          showCustomSnackBar(
-                              getTranslated('select_a_language', context));
-                        }
-                      },
-                      child: Text('Confirm'),
-                    ),
-                  ],
-                ),
               ],
             ),
           ),
@@ -98,11 +61,17 @@ class ChooseLanguageScreen extends StatelessWidget {
     );
   }
 
-  Widget buildLanguageRow(BuildContext context, String title, String value,
-      LanguageProvider languageProvider) {
+  Widget buildLanguageRow(BuildContext context, String title, String value, LanguageProvider languageProvider) {
     return InkWell(
       onTap: () {
         languageProvider.setSelectIndex(value == 'en' ? 0 : 1);
+        Provider.of<LocalizationProvider>(context, listen: false).setLanguage(
+          Locale(
+            AppConstants.languages[languageProvider.selectIndex].languageCode!,
+            AppConstants.languages[languageProvider.selectIndex].countryCode,
+          ),
+        );
+        handleLanguageSelection(context);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -111,18 +80,29 @@ class ChooseLanguageScreen extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 16),
+              style:const TextStyle(fontSize: 16),
             ),
             Consumer<LanguageProvider>(
-              builder: (context, languageProvider, _) => Radio<String>(
-                activeColor: ColorResources.kOrangeColor,
-                value: value,
-                groupValue:
-                    languageProvider.selectIndex == 0 ? 'en' : 'ar',
-                onChanged: (String? newValue) {
-                  languageProvider.setSelectIndex(
-                      newValue == 'en' ? 0 : 1);
-                },
+              builder: (context, languageProvider, _) => Container(
+                width: 16,
+                height: 16,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.grey),
+                ),
+                child: Center(
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                       border: Border.all(color: Colors.grey),
+                      color: languageProvider.selectIndex == (value == 'en' ? 0 : 1)
+                      ? ColorResources.kOrangeColor
+                      : Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
@@ -130,4 +110,21 @@ class ChooseLanguageScreen extends StatelessWidget {
       ),
     );
   }
+
+  void handleLanguageSelection(BuildContext context) {
+    final languageProvider = Provider.of<LanguageProvider>(context, listen: false);
+    final localizationProvider = Provider.of<LocalizationProvider>(context, listen: false);
+
+    if (languageProvider.languages.isNotEmpty && languageProvider.selectIndex != -1) {
+      if (fromMenu) {
+        Provider.of<ProductProvider>(context, listen: false).getLatestProductList(true, '1');
+        Provider.of<CategoryProvider>(context, listen: false).getCategoryList(true);
+      } else {
+        ResponsiveHelper.isMobile()
+            ? RouterHelper.getOnBoardingRoute(action: RouteAction.pushNamedAndRemoveUntil)
+            : RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
+      }
+        } 
+  }
 }
+
