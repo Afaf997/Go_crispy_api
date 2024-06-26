@@ -14,6 +14,7 @@ import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/onboarding_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:go_router/go_router.dart';
@@ -114,7 +115,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _globalKey,
-      backgroundColor: Colors.white,
+      backgroundColor:ColorResources.kOrangeColor,
       body: Center(
         child: Consumer<SplashProvider>(builder: (context, splash, child) {
           return Column(
@@ -125,11 +126,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 image: splash.baseUrls != null ? '${splash.baseUrls!.restaurantImageUrl}/${splash.configModel!.restaurantLogo}' : '',
                 imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholderRectangle, height: 165),
               ) : Image.asset(Images.logo, height: 150),
-              const SizedBox(height: 30),
-              Text(
-                ResponsiveHelper.isWeb() ? splash.configModel!.restaurantName! : AppConstants.appName,
-                style: rubikBold.copyWith(color: Theme.of(context).primaryColor, fontSize: 30),
-              ),
             ],
           );
         }),

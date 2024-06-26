@@ -36,6 +36,7 @@ import 'package:flutter_restaurant/view/screens/language/choose_language_screen.
 import 'package:flutter_restaurant/view/screens/loyalty_screen/loyalty_screen.dart';
 import 'package:flutter_restaurant/view/screens/notification/notification_screen.dart';
 import 'package:flutter_restaurant/view/screens/onboarding/onboarding_screen.dart';
+import 'package:flutter_restaurant/view/screens/onboarding/onboardings_screen.dart';
 import 'package:flutter_restaurant/view/screens/order/order_details_screen.dart';
 import 'package:flutter_restaurant/view/screens/order/order_search_screen.dart';
 import 'package:flutter_restaurant/view/screens/popular_item_screen/popular_item_screen.dart';
