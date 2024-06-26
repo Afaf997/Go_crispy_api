@@ -1,5 +1,6 @@
 
 class Images {
+  static const String crispyLogo = 'assets/image/crispy-logo.png';
   static const String home = 'assets/image/home_icon.png';
   static const String maintenance = 'assets/image/maintenance.png';
   static const String more = 'assets/image/more_icon.png';
@@ -80,7 +81,7 @@ class Images {
   static const  categoryBanner = 'assets/image/category_banner.png';
 
   // for Icon
-  static const String logo = 'assets/image/logo.jpg';
+  static const String logo = 'assets/image/logo1.png';
   static const String webAppBarLogo = 'web/assets/logo.jpg';
   static const String marker = 'assets/icon/marker.png';
   static const String myLocation = 'assets/icon/my_location.png';
@@ -111,7 +112,7 @@ class Images {
   static const String share = 'assets/icon/share.png';
 
 
-  // for Image
+  // for Image=
   static const String bd = 'assets/image/bd.png';
   static const String india = 'assets/image/india.png';
   static const String spain = 'assets/image/spain.png';

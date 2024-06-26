@@ -36,6 +36,7 @@ class ColorResources {
   static const Color borderColor = Color(0xFFDCDCDC);
   static const Color footerCol0r = Color(0xFFFFDDD9);
   static const Color cardShadowColor = Color(0xFFA7A7A7);
+  static const Color kOrangeColor =  Color(0xFFED5D37);
 
 
 

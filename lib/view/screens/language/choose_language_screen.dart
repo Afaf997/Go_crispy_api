@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/language_model.dart';
+import 'package:flutter_restaurant/data/repository/language_repo.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
 import 'package:flutter_restaurant/provider/language_provider.dart';
 import 'package:flutter_restaurant/provider/localization_provider.dart';
-import 'package:flutter_restaurant/provider/onboarding_provider.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
-import 'package:flutter_restaurant/utill/dimensions.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/images.dart';
-import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
-import 'package:flutter_restaurant/view/base/web_app_bar.dart';
-import 'package:flutter_restaurant/view/screens/language/widget/search_widget.dart';
 import 'package:provider/provider.dart';
+
 
 class ChooseLanguageScreen extends StatelessWidget {
   final bool fromMenu;
+
   const ChooseLanguageScreen({Key? key, this.fromMenu = false}) : super(key: key);
 
   @override
@@ -27,92 +26,71 @@ class ChooseLanguageScreen extends StatelessWidget {
     Provider.of<LanguageProvider>(context, listen: false).initializeAllLanguages(context);
 
     return Scaffold(
-      appBar: ResponsiveHelper.isDesktop(context) ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar()) : null,
-      body: SafeArea(
-        child: Center(
-          child: Container(
-            padding:width > 700 ? const EdgeInsets.all(Dimensions.paddingSizeLarge) : EdgeInsets.zero,
-            child: Container(
-              width: width > 700 ? 700 : width,
-              padding: width > 700 ? const EdgeInsets.all(Dimensions.paddingSizeDefault) : null,
-              decoration: width > 700 ? BoxDecoration(
-                color: Theme.of(context).canvasColor, borderRadius: BorderRadius.circular(10),
-                boxShadow: [BoxShadow(color: Theme.of(context).shadowColor, blurRadius: 5, spreadRadius: 1)],
-              ) : null,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 30),
-                  Center(
-                    child: Container(
-                      width: 1170,
-                      padding: const EdgeInsets.only(left: Dimensions.paddingSizeLarge, top: Dimensions.paddingSizeLarge, right: Dimensions.paddingSizeLarge),
-                      child: Text(
-                        getTranslated('choose_the_language', context)!,
-                        style: Theme.of(context).textTheme.displaySmall!.copyWith(fontSize: 22, color: Theme.of(context).textTheme.bodyLarge!.color),
-                      ),
+      backgroundColor: ColorResources.kOrangeColor,
+      appBar: null, // No app bar
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 150),
+          child: Image.asset(
+            Images.crispyLogo,
+            width: 117,
+            height: 160,
+          ),
+        ),
+      ),
+      bottomSheet: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+        child: Container(
+          height: 250,
+          width: double.infinity,
+          color: Colors.white, // Use your desired color for the bottom sheet
+          padding: const EdgeInsets.all(16.0),
+          child: Consumer<LanguageProvider>(
+            builder: (context, languageProvider, _) => Column(
+              children: [
+                buildLanguageRow(context, 'English', 'en', languageProvider),
+                Divider(),
+                buildLanguageRow(context, 'العربية', 'ar', languageProvider),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        if (languageProvider.languages.isNotEmpty &&
+                            languageProvider.selectIndex != -1) {
+                          Provider.of<LocalizationProvider>(context, listen: false)
+                              .setLanguage(Locale(
+                            AppConstants
+                                .languages[languageProvider.selectIndex!].languageCode!,
+                            AppConstants
+                                .languages[languageProvider.selectIndex!].countryCode,
+                          ));
+                          if (fromMenu) {
+                            Provider.of<ProductProvider>(context, listen: false)
+                                .getLatestProductList(true, '1');
+                            Provider.of<CategoryProvider>(context, listen: false)
+                                .getCategoryList(true);
+                          } else {
+                            ResponsiveHelper.isMobile()
+                                ? RouterHelper.getOnBoardingRoute(
+                                    action: RouteAction.pushNamedAndRemoveUntil)
+                                : RouterHelper.getMainRoute(
+                                    action: RouteAction.pushNamedAndRemoveUntil);
+                          }
+                        } else {
+                          showCustomSnackBar(
+                              getTranslated('select_a_language', context));
+                        }
+                      },
+                      child: Text('Confirm'),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  Center(
-                    child: Container(
-                      width: 1170,
-                      padding: const EdgeInsets.only(left: Dimensions.paddingSizeLarge, right: Dimensions.paddingSizeLarge),
-                      child: const SearchWidget(),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-
-                  Consumer<LanguageProvider>(
-                      builder: (context, languageProvider, child) => Expanded(
-                          child: Scrollbar(
-                            child: SingleChildScrollView(
-                              physics: const BouncingScrollPhysics(),
-                              child: Center(
-                                child: SizedBox(
-                                  width: 1170,
-                                  child: ListView.builder(
-                                      itemCount: languageProvider.languages.length,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, index) => _languageWidget(
-                                          context: context, languageModel: languageProvider.languages[index], languageProvider: languageProvider, index: index)),
-                                ),
-                              ),
-                            ),
-                          ))),
-                  Consumer<LanguageProvider>(
-                      builder: (context, languageProvider, child) => Center(
-                        child: Container(
-                          width: 1170,
-                              padding: const EdgeInsets.only(
-                                  left: Dimensions.paddingSizeLarge, right: Dimensions.paddingSizeLarge, bottom: Dimensions.paddingSizeLarge),
-                              child: CustomButton(
-                                btnTxt: getTranslated('save', context),
-                                onTap: () {
-                                  Provider.of<OnBoardingProvider>(context, listen: false).toggleShowOnBoardingStatus();
-
-                                  if(languageProvider.languages.isNotEmpty && languageProvider.selectIndex != -1) {
-                                    Provider.of<LocalizationProvider>(context, listen: false).setLanguage(Locale(
-                                      AppConstants.languages[languageProvider.selectIndex!].languageCode!,
-                                      AppConstants.languages[languageProvider.selectIndex!].countryCode,
-                                    ));
-                                    if (fromMenu) {
-                                      Provider.of<ProductProvider>(context, listen: false).getLatestProductList(true, '1');
-                                      Provider.of<CategoryProvider>(context, listen: false).getCategoryList(true);
-                                    } else {
-                                      ResponsiveHelper.isMobile() ? RouterHelper.getOnBoardingRoute(action: RouteAction.pushNamedAndRemoveUntil) : RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
-                                    }
-                                  }else {
-
-                                    showCustomSnackBar(getTranslated('select_a_language', context));
-                                  }
-                                },
-                              ),
-                            ),
-                      )),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -120,44 +98,34 @@ class ChooseLanguageScreen extends StatelessWidget {
     );
   }
 
-  Widget _languageWidget({required BuildContext context, required LanguageModel languageModel, required LanguageProvider languageProvider, int? index}) {
+  Widget buildLanguageRow(BuildContext context, String title, String value,
+      LanguageProvider languageProvider) {
     return InkWell(
       onTap: () {
-        languageProvider.setSelectIndex(index);
+        languageProvider.setSelectIndex(value == 'en' ? 0 : 1);
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        decoration: BoxDecoration(
-          color: languageProvider.selectIndex == index ? Theme.of(context).primaryColor.withOpacity(.15) : null,
-          border: Border(
-              top: BorderSide(width: 1.0, color: languageProvider.selectIndex == index ? Theme.of(context).primaryColor : Colors.transparent),
-              bottom: BorderSide(width: 1.0, color: languageProvider.selectIndex == index ? Theme.of(context).primaryColor : Colors.transparent)),
-        ),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(
-                    width: 1.0,
-                    color: languageProvider.selectIndex == index ? Colors.transparent : Colors.white54.withOpacity(.3))),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Image.asset(languageModel.imageUrl!, width: 34, height: 34),
-                  const SizedBox(width: 30),
-                  Text(
-                    languageModel.languageName!,
-                    style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color),
-                  ),
-                ],
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontSize: 16),
+            ),
+            Consumer<LanguageProvider>(
+              builder: (context, languageProvider, _) => Radio<String>(
+                activeColor: ColorResources.kOrangeColor,
+                value: value,
+                groupValue:
+                    languageProvider.selectIndex == 0 ? 'en' : 'ar',
+                onChanged: (String? newValue) {
+                  languageProvider.setSelectIndex(
+                      newValue == 'en' ? 0 : 1);
+                },
               ),
-              languageProvider.selectIndex == index ? Image.asset(Images.done, width: 17, height: 17, color: Theme.of(context).primaryColor)
-                  : const SizedBox.shrink()
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

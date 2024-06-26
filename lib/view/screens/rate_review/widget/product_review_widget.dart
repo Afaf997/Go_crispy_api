@@ -51,7 +51,6 @@ class ProductReviewWidget extends StatelessWidget {
                           child: Column(
                             children: [
 
-                              // Product details
                               Row(
                                 children: [
                                   ClipRRect(
@@ -90,8 +89,6 @@ class ProductReviewWidget extends StatelessWidget {
                                 ],
                               ),
                               const Divider(height: 20),
-
-                              // Rate
                               Text(
                                 getTranslated('rate_the_food', context)!,
                                 style: rubikMedium.copyWith(color: ColorResources.getGreyBunkerColor(context)), overflow: TextOverflow.ellipsis,
