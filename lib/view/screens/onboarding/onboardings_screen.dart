@@ -6,13 +6,15 @@ import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
 
 class OnBoardingScreen extends StatelessWidget {
-  @override
+
+
+@override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: ColorResources.kOrangeColor,
+      backgroundColor:ColorResources.kOrangeColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -20,34 +22,36 @@ class OnBoardingScreen extends StatelessWidget {
           Stack(
             alignment: Alignment.topLeft,
             children: [
-              Image.asset(Images.handBurger),
+              Image.asset(
+                Images.handBurger,
+              ),
               Padding(
-                padding: EdgeInsets.only(
-                    top: screenHeight * 0.44, left: screenWidth * 0.04),
+                padding: EdgeInsets.only(top: screenHeight * 0.44, left: screenWidth * 0.04),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment
-                      .start, // Align children to the start of the column
+                  crossAxisAlignment: CrossAxisAlignment.start, 
                   children: [
-                    Image.asset(Images.welcomeImage),
-                    const SizedBox(height: 30),
+                    Text(
+                        getTranslated("Welcome to Qatar's Own Fried Chicken App!.", context)!,
+                        style:const TextStyle(fontSize: 40,fontWeight: FontWeight.bold,
+                   color: Colors.white,height: 1.1),
+                    ),
+                   const SizedBox(height: 30),
                     SizedBox(
                       width: screenWidth * 0.7,
                       child: Text(
-                        "Experience Crispy Satisfaction with Every Bite!",
+                        getTranslated("Experience Crispy Satisfaction with Every Bite!", context)!,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: screenWidth * 0.04,
                         ),
-                      ),
+                    ),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          SizedBox(
-            height: screenHeight * 0.06,
-          ),
+          SizedBox(height:  screenHeight * 0.06,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
             child: Column(
@@ -55,7 +59,7 @@ class OnBoardingScreen extends StatelessWidget {
               children: [
                 SizedBox(height: screenHeight * 0.05),
                 CustomButton(
-                  btnTxt: getTranslated('Get Started',context),
+                  btnTxt: getTranslated('Get Started',context)!,
                   backgroundColor:Colors.black,
                   textColor: Colors.white,
                   onTap: () {
@@ -69,4 +73,5 @@ class OnBoardingScreen extends StatelessWidget {
       ),
     );
   }
+
 }

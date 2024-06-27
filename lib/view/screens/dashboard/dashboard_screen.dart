@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/data/model/response/cart_model.dart';
+import 'package:flutter_restaurant/data/model/response/product_model.dart';
+import 'package:flutter_restaurant/data/repository/cart_repo.dart';
 import 'package:flutter_restaurant/helper/network_info.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
+import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/third_party_chat_widget.dart';
 import 'package:flutter_restaurant/view/screens/cart/cart_screen.dart';
 import 'package:flutter_restaurant/view/screens/home/home_screen.dart';
@@ -34,7 +39,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     final splashProvider = Provider.of<SplashProvider>(context, listen: false);
 
-    if(splashProvider.policyModel == null) {
+    if (splashProvider.policyModel == null) {
       Provider.of<SplashProvider>(context, listen: false).getPolicyPage();
     }
     HomeScreen.loadData(false);
@@ -54,7 +59,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       }),
     ];
 
-    if(ResponsiveHelper.isMobilePhone()) {
+    if (ResponsiveHelper.isMobilePhone()) {
       NetworkInfo.checkConnectivity(_scaffoldKey);
     }
   }
@@ -73,26 +78,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Scaffold(
         key: _scaffoldKey,
         floatingActionButton: !ResponsiveHelper.isDesktop(context) && _pageIndex == 0
-            ? const ThirdPartyChatWidget() : null,
-        bottomNavigationBar: !ResponsiveHelper.isDesktop(context) ? BottomNavigationBar(
-          selectedItemColor: Theme.of(context).primaryColor,
-          unselectedItemColor: Theme.of(context).hintColor.withOpacity(0.7),
-          showUnselectedLabels: true,
-          currentIndex: _pageIndex,
-          type: BottomNavigationBarType.fixed,
-
-          items: [
-            _barItem(Icons.home, getTranslated('home', context), 0),
-            _barItem(Icons.shopping_cart, getTranslated('cart', context), 1),
-            _barItem(Icons.shopping_bag, getTranslated('order', context), 2),
-            _barItem(Icons.favorite, getTranslated('favourite', context), 3),
-            _barItem(Icons.menu, getTranslated('menu', context), 4)
-          ],
-          onTap: (int index) {
-            _setPage(index);
-          },
-        ) : const SizedBox(),
-
+            ? const ThirdPartyChatWidget()
+            : null,
+        bottomNavigationBar: !ResponsiveHelper.isDesktop(context)
+            ? CustomBottomNavBar(
+                selectedIndex: _pageIndex,
+                onItemTapped: _setPage,
+              )
+            : const SizedBox(),
         body: PageView.builder(
           controller: _pageController,
           itemCount: _screens.length,
@@ -105,30 +98,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  BottomNavigationBarItem _barItem(IconData icon, String? label, int index) {
-    return BottomNavigationBarItem(
-
-      icon: Stack(
-        clipBehavior: Clip.none, children: [
-          Icon(icon, color: index == _pageIndex ? Theme.of(context).primaryColor : Theme.of(context).hintColor.withOpacity(0.7), size: 25),
-          index == 1 ? Positioned(
-            top: -7, right: -7,
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
-              child: Text(
-                Provider.of<CartProvider>(context).cartList.length.toString(),
-                style: rubikMedium.copyWith(color: Colors.white, fontSize: 8),
-              ),
-            ),
-          ) : const SizedBox(),
-        ],
-      ),
-      label: label,
-    );
-  }
-
   void _setPage(int pageIndex) {
     setState(() {
       _pageController!.jumpToPage(pageIndex);
@@ -137,4 +106,143 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
+class CustomBottomNavBar extends StatelessWidget {
+  final int selectedIndex;
+  final ValueChanged<int> onItemTapped;
 
+  const CustomBottomNavBar({
+    Key? key,
+    required this.selectedIndex,
+    required this.onItemTapped,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Color.fromARGB(31, 58, 57, 57),
+            blurRadius: 10,
+            spreadRadius: 5,
+          )
+        ],
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildNavItem(
+            icon: Icons.sentiment_satisfied_outlined,
+            index: 0,
+            isSelected: selectedIndex == 0,
+            onTap: onItemTapped,
+            label: getTranslated('home', context),
+          ),
+          _buildNavItem(
+            icon: Icons.shopping_cart,
+            index: 1,
+            isSelected: selectedIndex == 1,
+            onTap: onItemTapped,
+            label: getTranslated('cart', context),
+            cartCount: Provider.of<CartProvider>(context).cartList.length,
+          ),
+          _buildNavItem(
+            icon: Icons.shopping_bag_outlined,
+            index: 2,
+            isSelected: selectedIndex == 2,
+            onTap: onItemTapped,
+            label: getTranslated('order', context),
+          ),
+          _buildNavItem(
+            icon: Icons.favorite_outline_rounded,
+            index: 3,
+            isSelected: selectedIndex == 3,
+            onTap: onItemTapped,
+            label: getTranslated('favourite', context),
+          ),
+          _buildNavItem(
+            icon: Icons.filter_list_outlined,
+            index: 4,
+            isSelected: selectedIndex == 4,
+            onTap: onItemTapped,
+            label: getTranslated('menu', context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem({
+    required IconData icon,
+    required int index,
+    required bool isSelected,
+    required ValueChanged<int> onTap,
+    required String? label,
+    int cartCount = 0,
+  }) {
+    return GestureDetector(
+      onTap: () => onTap(index),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          isSelected
+              ? Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: ColorResources.kOrangeColor,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        icon,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        label!,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : Icon(
+                  icon,
+                  color: Colors.grey,
+                ),
+          if (index == 1 && cartCount > 0)
+            Positioned(
+              top: -7,
+              right: -7,
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
+                ),
+                child: Text(
+                  cartCount.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 8,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}

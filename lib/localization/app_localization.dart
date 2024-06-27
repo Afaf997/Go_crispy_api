@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
@@ -26,7 +25,6 @@ class AppLocalization {
     throwIf(_localizedValues[key] == null, 'key [$key] is missing');
     return _localizedValues[key];
   }
-
 
   static const LocalizationsDelegate<AppLocalization> delegate = _DemoLocalizationsDelegate();
 }

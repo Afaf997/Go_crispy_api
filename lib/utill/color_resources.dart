@@ -16,6 +16,7 @@ class ColorResources {
   static Color getGreyBunkerColor(BuildContext context) {
     return Provider.of<ThemeProvider>(context).darkTheme ? const Color(0xFFE4E8EC) : const Color(0xFF25282B);
   }
+  
 
 
   static Color getCartTitleColor(BuildContext context) {

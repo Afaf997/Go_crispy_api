@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
           backgroundColor: isNotConnected ? Colors.red : Colors.green,
           duration: Duration(seconds: isNotConnected ? 6000 : 3),
           content: Text(
-            isNotConnected ? getTranslated('no_internet_connection', _globalKey.currentContext!)! : getTranslated('connected', _globalKey.currentContext!)!,
+            isNotConnected ? getTranslated('no_internet_connection', _globalKey.currentContext!): getTranslated('connected', _globalKey.currentContext!),
             textAlign: TextAlign.center,
           ),
         ));
