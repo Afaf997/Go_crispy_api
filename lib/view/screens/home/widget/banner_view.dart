@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 import 'package:flutter_restaurant/data/model/response/category_model.dart';
@@ -18,9 +19,14 @@ import 'package:flutter_restaurant/view/screens/home/widget/cart_bottom_sheet.da
 import 'package:provider/provider.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
-class BannerView extends StatelessWidget {
+class BannerView extends StatefulWidget {
   const BannerView({Key? key}) : super(key: key);
+  
+  @override
+  State<BannerView> createState() => _BannerViewState();
+}
 
+class _BannerViewState extends State<BannerView> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -127,7 +133,7 @@ class BannerShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 5,
+      itemCount: 3,
       shrinkWrap: true,
       padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
       physics: const BouncingScrollPhysics(),

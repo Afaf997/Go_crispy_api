@@ -588,7 +588,6 @@ class Branches {
     _image = json['image'];
     _status = '${json['status']}'.contains('1');
     _coverImage = json['cover_image'];
-
   }
 
   Map<String, dynamic> toJson() {
