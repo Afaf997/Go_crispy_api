@@ -202,14 +202,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     children: [
                       SizedBox(
-                        width: 1170,
+                        width: 1150,
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           ResponsiveHelper.isDesktop(context) ? const Padding(
                             padding: EdgeInsets.only(top: Dimensions.paddingSizeDefault),
                             child: slider.MainSlider(),
                           ):  const SizedBox(),
                           ResponsiveHelper.isDesktop(context) ?  const SizedBox(): const BannerView(),
-                          ResponsiveHelper.isDesktop(context)? const CategoryViewWeb() : const CategoryView(),
+                          // ResponsiveHelper.isDesktop(context)? const CategoryViewWeb() : const CategoryView(),
                           ResponsiveHelper.isDesktop(context)? const SetMenuViewWeb() :  const SetMenuView(),
                          
                           ResponsiveHelper.isDesktop(context) ? Row(

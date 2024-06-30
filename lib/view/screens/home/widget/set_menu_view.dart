@@ -22,7 +22,7 @@ class SetMenuView extends StatelessWidget {
             Padding(
               padding:const EdgeInsets.fromLTRB(10, 20, 10, 10),
               child: Text(getTranslated(
-                'Menu',context)!,
+                'menu',context)!,
                 style:const TextStyle(fontSize: 20.0,
           fontWeight: FontWeight.w900,
           color: ColorResources.kblack,),),

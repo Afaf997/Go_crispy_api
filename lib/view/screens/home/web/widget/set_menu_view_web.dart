@@ -39,7 +39,7 @@ class _SetMenuViewWebState extends State<SetMenuViewWeb> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                      child: Text(getTranslated('set_menu', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
+                      child: Text(getTranslated('menu', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
                     ),
                   ],
                 ),
