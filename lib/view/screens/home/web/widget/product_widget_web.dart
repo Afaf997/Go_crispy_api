@@ -79,13 +79,12 @@ class ProductWidgetWeb extends StatelessWidget {
                             child: Text(
                               product.name ?? 'No name available', 
                               style:const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Text(
                             PriceConverter.convertPrice(startingPrice, discount: product.discount, discountType: product.discountType),
-                            style: TextStyle(fontSize: 12, color: ColorResources.kredcolor, fontWeight: FontWeight.bold),
+                            style:const TextStyle(fontSize: 12, color: ColorResources.kredcolor, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
