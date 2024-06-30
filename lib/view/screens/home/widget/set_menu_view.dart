@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:provider/provider.dart';
@@ -16,15 +17,15 @@ class SetMenuView extends StatelessWidget {
     return Consumer<SetMenuProvider>(
       builder: (context, setMenu, child) {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           const Padding(
-              padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-              child: Text(
-                'Menu',
-                style: TextStyle(fontSize: 20.0,
+            Padding(
+              padding:const EdgeInsets.fromLTRB(10, 20, 10, 10),
+              child: Text(getTranslated(
+                'Menu',context)!,
+                style:const TextStyle(fontSize: 20.0,
           fontWeight: FontWeight.w900,
-          color: ColorResources.kblack,),
-              ),
+          color: ColorResources.kblack,),),
             ),
             SizedBox(
               height: 140,

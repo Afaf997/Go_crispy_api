@@ -215,15 +215,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           ResponsiveHelper.isDesktop(context) ? Row(
                             mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                child: Text(getTranslated('popular_item', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                              //   child: Text(getTranslated('best_selling', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
+                              // ),
                             ],
                           ) :
                           Padding(
                             padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                            child: TitleWidget(title: getTranslated('popular_item', context), onTap: (){
+                            child: TitleWidget(title: getTranslated('best_selling', context), onTap: (){
                               RouterHelper.getPopularItemScreen();
                             },),
                           ),
