@@ -94,105 +94,111 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: ColorResources.kWhite,
       key: drawerGlobalKey,
       endDrawerEnableOpenDragGesture: false,
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: () async {
-            Provider.of<OrderProvider>(context, listen: false).changeStatus(true, notify: true);
-            Provider.of<ProductProvider>(context, listen: false).latestOffset = 1;
-            Provider.of<SplashProvider>(context, listen: false).initConfig(context).then((value) {
-              if (value) {
-                HomeScreen.loadData(true);
-              }
-            });
-          },
-          backgroundColor: ColorResources.kWhite,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  height: 177,
-                  decoration: const BoxDecoration(
-                    color: ColorResources.kOrangeColor,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(24.0),
-                      bottomRight: Radius.circular(24.0),
-                    ),
-                  ),
-                  padding: const EdgeInsets.only(right: 18, left: 18, top: 40),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
+        children: [
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 177,
+              decoration: const BoxDecoration(
+                color: ColorResources.kOrangeColor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(24.0),
+                  bottomRight: Radius.circular(24.0),
+                ),
+              ),
+              padding: const EdgeInsets.only(right: 18, left: 18, top: 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Text(
+                            getTranslated('current_location', context)!,
+                            style: kLocationTextStyle.copyWith(color: ColorResources.kWhite),
+                          ),
+                          Row(
                             children: [
-                              Text(
-                                getTranslated('current_location', context)!,
-                                style: kLocationTextStyle.copyWith(color: ColorResources.kWhite),
+                              const Icon(
+                                Icons.location_on,
+                                color: ColorResources.kWhite,
                               ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.location_on,
-                                    color: ColorResources.kWhite,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () => RouterHelper.getAddressRoute(),
-                                    child: Flexible(
-                                      child: Text(
-                                        Provider.of<LocationProvider>(context).address!.isNotEmpty
-                                            ? Provider.of<LocationProvider>(context).address!.length > 35
-                                                ? '${Provider.of<LocationProvider>(context).address!.substring(0, 26)}...'
-                                                : Provider.of<LocationProvider>(context).address!
-                                            : getTranslated('top_to_get_best_food_for_you', context)!,
-                                        style: const TextStyle(
-                                          color: ColorResources.kWhite,
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                      ),
+                              GestureDetector(
+                                onTap: () => RouterHelper.getAddressRoute(),
+                                child: Flexible(
+                                  child: Text(
+                                    Provider.of<LocationProvider>(context).address!.isNotEmpty
+                                        ? Provider.of<LocationProvider>(context).address!.length > 35
+                                            ? '${Provider.of<LocationProvider>(context).address!.substring(0, 26)}...'
+                                            : Provider.of<LocationProvider>(context).address!
+                                        : getTranslated('top_to_get_best_food_for_you', context)!,
+                                    style: const TextStyle(
+                                      color: ColorResources.kWhite,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w800,
                                     ),
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
                                   ),
-                                ],
+                                ),
                               ),
                             ],
-                          ),
-                          const Spacer(),
-                          Image.asset(
-                            Images.logo,
-                            width: 50.0,
-                            height: 50.0,
                           ),
                         ],
                       ),
-                      const SizedBox(height: 25),
-                      GestureDetector(
-                        onTap: () => RouterHelper.getSearchRoute(),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                          decoration: BoxDecoration(
-                            color: ColorResources.kWhite,
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          child: Row(
-                            children: [
-                              const Icon(Icons.search, color: ColorResources.kTextHintColor, size: kIconSize),
-                              const SizedBox(width: 10),
-                              Text(
-                                getTranslated('search_items_here', context)!,
-                                style: kSearchHintTextStyle.copyWith(color: ColorResources.kTextHintColor),
-                              ),
-                            ],
-                          ),
-                        ),
+                      const Spacer(),
+                      Image.asset(
+                        Images.logo,
+                        width: 50.0,
+                        height: 50.0,
                       ),
                     ],
                   ),
-                ),
-                Center(
+                  const SizedBox(height: 25),
+                  GestureDetector(
+                    onTap: () => RouterHelper.getSearchRoute(),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                      decoration: BoxDecoration(
+                        color: ColorResources.kWhite,
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.search, color: ColorResources.kTextHintColor, size: kIconSize),
+                          const SizedBox(width: 10),
+                          Text(
+                            getTranslated('search_items_here', context)!,
+                            style: kSearchHintTextStyle.copyWith(color: ColorResources.kTextHintColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 177.0),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                Provider.of<OrderProvider>(context, listen: false).changeStatus(true, notify: true);
+                Provider.of<ProductProvider>(context, listen: false).latestOffset = 1;
+                Provider.of<SplashProvider>(context, listen: false).initConfig(context).then((value) {
+                  if (value) {
+                    HomeScreen.loadData(true);
+                  }
+                });
+              },
+              backgroundColor: ColorResources.kWhite,
+              child: SingleChildScrollView(
+                child: Center(
                   child: Column(
                     children: [
                       SizedBox(
@@ -241,10 +247,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

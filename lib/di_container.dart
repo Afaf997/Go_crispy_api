@@ -87,7 +87,7 @@ Future<void> init() async {
   sl.registerFactory(() => ProductProvider(productRepo: sl()));
   sl.registerFactory(() => CartProvider(cartRepo: sl()));
   sl.registerFactory(() => OrderProvider(orderRepo: sl(), sharedPreferences: sl()));
-  sl.registerFactory(() => ChatProvider(chatRepo: sl(), notificationRepo: sl()));
+  // sl.registerFactory(() => ChatProvider(chatRepo: sl(), notificationRepo: sl()));
   sl.registerFactory(() => AuthProvider(authRepo: sl()));
   sl.registerFactory(() => LocationProvider(sharedPreferences: sl(), locationRepo: sl()));
   sl.registerFactory(() => ProfileProvider(profileRepo: sl()));

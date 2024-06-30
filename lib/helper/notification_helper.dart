@@ -44,21 +44,21 @@ class NotificationHelper {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
 
 
-      if(message.data['type'] == 'message') {
-        int? id;
-        id = int.tryParse('${message.data['order_id']}');
-        Provider.of<ChatProvider>(Get.context!, listen: false).getMessages(Get.context, 1, id , false);
-      }
+      // if(message.data['type'] == 'message') {
+      //   int? id;
+      //   id = int.tryParse('${message.data['order_id']}');
+      //   Provider.of<ChatProvider>(Get.context!, listen: false).getMessages(Get.context, 1, id , false);
+      // }
 
       showNotification(message, flutterLocalNotificationsPlugin, kIsWeb);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      if(message.data['type'] == 'message') {
-        int? id;
-        id = int.tryParse('${message.data['order_id']}');
-        Provider.of<ChatProvider>(Get.context!, listen: false).getMessages(Get.context, 1, id , false);
-      }
+      // if(message.data['type'] == 'message') {
+      //   int? id;
+      //   id = int.tryParse('${message.data['order_id']}');
+      //   Provider.of<ChatProvider>(Get.context!, listen: false).getMessages(Get.context, 1, id , false);
+      // }
 
       try{
         if(message.notification!.titleLocKey != null && message.notification!.titleLocKey!.isNotEmpty) {
