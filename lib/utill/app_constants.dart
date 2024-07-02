@@ -6,7 +6,8 @@ class AppConstants {
   static const String appName = 'Go_Crispy';
   static const String appVersion = '10.2';
   static const AppMode appMode = AppMode.release;
-  static const String baseUrl =  'https://efood-admin.6amtech.com';
+  // static const String baseUrl =  'https://efood-admin.6amtech.com';
+  static const String baseUrl =  'https://interfuel.qa/go-crispy';
   static const String categoryUri = '/api/v1/categories';
   static const String bannerUri = '/api/v1/banners';
   static const String latestProductUri = '/api/v1/products/latest';

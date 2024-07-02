@@ -107,12 +107,13 @@ class ProductView extends StatelessWidget {
         Column(children: [
 
           GridView.builder(
+            
             gridDelegate: ResponsiveHelper.isDesktop(context)
                 ? const SliverGridDelegateWithMaxCrossAxisExtent( maxCrossAxisExtent: 195, mainAxisExtent: 250) :
             SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 5,
-              mainAxisSpacing: 5,
-              childAspectRatio: 3.5,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 1.9,
               crossAxisCount: ResponsiveHelper.isTab(context) ? 2 : 1,
             ),
             itemCount: productList.length,

@@ -44,13 +44,13 @@ class CategoryView extends StatelessWidget {
                           child: InkWell(
                             onTap: () => RouterHelper.getCategoryRoute(category.categoryList![index]),
                             child: Column(children: [
-                              ClipOval(
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
                                 child: FadeInImage.assetNetwork(
                                   placeholder: Images.placeholderImage, width: 65, height: 65, fit: BoxFit.cover,
                                   image: Provider.of<SplashProvider>(context, listen: false).baseUrls != null
                                       ? '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.categoryImageUrl}/${category.categoryList![index].image}':'',
                                   imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholderImage, width: 65, height: 65, fit: BoxFit.cover),
-                                  // width: 100, height: 100, fit: BoxFit.cover,
                                 ),
                               ),
 
@@ -70,7 +70,7 @@ class CategoryView extends StatelessWidget {
                     ) : Center(child: Text(getTranslated('no_category_available', context)!)) : const CategoryShimmer(),
                   ),
                 ),
-               ResponsiveHelper.isMobile()? const SizedBox(): category.categoryList != null ? Column(
+                ResponsiveHelper.isMobile()? const SizedBox(): category.categoryList != null ? Column(
                   children: [
                     InkWell(
                       onTap: (){
@@ -80,10 +80,16 @@ class CategoryView extends StatelessWidget {
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-                        child: CircleAvatar(
-                          radius: 35,
-                          backgroundColor: Theme.of(context).primaryColor,
-                          child: Text(getTranslated('view_all', context)!, style: const TextStyle(fontSize: 14,color: Colors.white)),
+                        child: Container(
+                          width: 65,
+                          height: 65,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: Text(getTranslated('view_all', context)!, style: const TextStyle(fontSize: 14, color: Colors.white)),
+                          ),
                         ),
                       ),
                     ),
@@ -121,10 +127,10 @@ class CategoryShimmer extends StatelessWidget {
               enabled: Provider.of<CategoryProvider>(context).categoryList == null,
               child: Column(children: [
                 Container(
-                  height: 65, width: 65, 
+                  height: 65, width: 65,
                   decoration: BoxDecoration(
                     color: Theme.of(context).shadowColor,
-                    shape: BoxShape.circle,
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 const SizedBox(height: 5),
@@ -155,7 +161,7 @@ class CategoryAllShimmer extends StatelessWidget {
               height: 65, width: 65,
               decoration: BoxDecoration(
                 color: Theme.of(context).shadowColor,
-                shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
             const SizedBox(height: 5),
@@ -166,4 +172,3 @@ class CategoryAllShimmer extends StatelessWidget {
     );
   }
 }
-

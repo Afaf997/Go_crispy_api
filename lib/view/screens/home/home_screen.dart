@@ -209,8 +209,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: slider.MainSlider(),
                           ):  const SizedBox(),
                           ResponsiveHelper.isDesktop(context) ?  const SizedBox(): const BannerView(),
-                          // ResponsiveHelper.isDesktop(context)? const CategoryViewWeb() : const CategoryView(),
-                          ResponsiveHelper.isDesktop(context)? const SetMenuViewWeb() :  const SetMenuView(),
+                          ResponsiveHelper.isDesktop(context)? const CategoryViewWeb() : const CategoryView(),
+                          // ResponsiveHelper.isDesktop(context)? const SetMenuViewWeb() :  const SetMenuView(),
                          
                           ResponsiveHelper.isDesktop(context) ? Row(
                             mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,
@@ -241,6 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
                             child: TitleWidget(title: getTranslated('latest_item', context)),
                           ),
+                         const ProductView(productType: ProductType.latestProduct,),
                         ]),
                       ),
                       if(ResponsiveHelper.isDesktop(context)) const FooterView(),
