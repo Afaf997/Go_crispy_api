@@ -9,6 +9,7 @@ import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/banner_provider.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/cart_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,7 @@ class _BannerViewState extends State<BannerView> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-       const SizedBox(height: 15,),
+        const SizedBox(height: 15),
         Consumer<BannerProvider>(
           builder: (context, banner, child) {
             return banner.bannerList != null && banner.bannerList!.isNotEmpty
@@ -99,7 +100,11 @@ class _BannerViewState extends State<BannerView> {
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
                                       image: NetworkImage(
-                                          '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.bannerImageUrl}/${bannerItem.image}'),
+                                          bannerItem.image != null
+                                              ? (bannerItem.image!.startsWith('http')
+                                                  ? bannerItem.image!
+                                                  : '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.bannerImageUrl}/${bannerItem.image}')
+                                              : Images.placeholderBanner),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -115,8 +120,8 @@ class _BannerViewState extends State<BannerView> {
                           enableInfiniteScroll: true,
                           reverse: false,
                           autoPlay: true,
-                          autoPlayInterval:const Duration(seconds: 3),
-                          autoPlayAnimationDuration:const Duration(milliseconds: 800),
+                          autoPlayInterval: const Duration(seconds: 3),
+                          autoPlayAnimationDuration: const Duration(milliseconds: 800),
                           autoPlayCurve: Curves.fastOutSlowIn,
                           enlargeCenterPage: false,
                           onPageChanged: (index, reason) {
@@ -139,8 +144,8 @@ class _BannerViewState extends State<BannerView> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: _currentIndex == index
-                                  ? Color.fromRGBO(0, 0, 0, 0.9)
-                                  : Color.fromRGBO(0, 0, 0, 0.4),
+                                  ? const Color.fromRGBO(0, 0, 0, 0.9)
+                                  : const Color.fromRGBO(0, 0, 0, 0.4),
                             ),
                           );
                         }).toList(),

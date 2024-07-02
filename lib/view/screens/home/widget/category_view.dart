@@ -23,8 +23,8 @@ class CategoryView extends StatelessWidget {
         return Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(10, 20, 0, 10),
-              child: TitleWidget(title: getTranslated('all_categories', context)),
+              padding: const EdgeInsets.fromLTRB(20, 20, 0, 10),
+              child: TitleWidget(title: getTranslated('menu', context)),
             ),
             Row(
               children: [
@@ -33,7 +33,7 @@ class CategoryView extends StatelessWidget {
                     height: 80,
                     child: category.categoryList != null ? category.categoryList!.isNotEmpty ? ListView.builder(
                       itemCount: category.categoryList!.length,
-                      padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
+                      padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault),
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {

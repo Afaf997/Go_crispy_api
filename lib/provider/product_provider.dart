@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/base/api_response.dart';
@@ -62,6 +64,7 @@ class ProductProvider extends ChangeNotifier {
       _offsetList = [];
       _offsetList.add(offset);
       ApiResponse apiResponse = await productRepo!.getLatestProductList(offset);
+      log(apiResponse.toString());
       if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
         if (reload || offset == '1' || _latestProductList == null) {
           _latestProductList = [];

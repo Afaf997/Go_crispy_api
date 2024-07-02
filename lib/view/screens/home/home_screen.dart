@@ -251,47 +251,47 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          Consumer<SplashProvider>(
-            builder: (context, splashProvider, _) {
-              return !splashProvider.isRestaurantOpenNow(context) 
-                ? Positioned(
-                    bottom: Dimensions.paddingSizeExtraSmall,
-                    left: 0,
-                    right: 0,
-                    child: Consumer<OrderProvider>(
-                      builder: (context, orderProvider, _) {
-                        return orderProvider.isRestaurantCloseShow 
-                          ? Container(
-                              padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
-                              alignment: Alignment.center,
-                              color: Theme.of(context).primaryColor.withOpacity(0.9),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                                    child: Text(
-                                      '${getTranslated('restaurant_is_close_now', context)}',
-                                      style: rubikRegular.copyWith(fontSize: 12, color: Colors.white),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () => orderProvider.changeStatus(false, notify: true),
-                                    child: const Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-                                      child: Icon(Icons.cancel_outlined, color: Colors.white, size: Dimensions.paddingSizeLarge),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ) 
-                          : const SizedBox();
-                      },
-                    ),
-                  ) 
-                : const SizedBox();
-            }
-          ),
+          // Consumer<SplashProvider>(
+          //   builder: (context, splashProvider, _) {
+          //     return !splashProvider.isRestaurantOpenNow(context) 
+          //       ? Positioned(
+          //           bottom: Dimensions.paddingSizeExtraSmall,
+          //           left: 0,
+          //           right: 0,
+          //           child: Consumer<OrderProvider>(
+          //             builder: (context, orderProvider, _) {
+          //               return orderProvider.isRestaurantCloseShow 
+          //                 ? Container(
+          //                     padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
+          //                     alignment: Alignment.center,
+          //                     color: Theme.of(context).primaryColor.withOpacity(0.9),
+          //                     child: Row(
+          //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                       children: [
+          //                         Padding(
+          //                           padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+          //                           child: Text(
+          //                             '${getTranslated('restaurant_is_close_now', context)}',
+          //                             style: rubikRegular.copyWith(fontSize: 12, color: Colors.white),
+          //                           ),
+          //                         ),
+          //                         InkWell(
+          //                           onTap: () => orderProvider.changeStatus(false, notify: true),
+          //                           child: const Padding(
+          //                             padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+          //                             child: Icon(Icons.cancel_outlined, color: Colors.white, size: Dimensions.paddingSizeLarge),
+          //                           ),
+          //                         ),
+          //                       ],
+          //                     ),
+          //                   ) 
+          //                 : const SizedBox();
+          //             },
+          //           ),
+          //         ) 
+          //       : const SizedBox();
+          //   }
+          // ),
         ],
       ),
     );
