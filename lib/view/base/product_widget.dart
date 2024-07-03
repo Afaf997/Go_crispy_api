@@ -7,7 +7,6 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
-import 'package:flutter_restaurant/provider/theme_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
@@ -123,25 +122,28 @@ class ProductWidget extends StatelessWidget {
                         child: WishButton(
                             product: product, edgeInset: const EdgeInsets.all(5)),
                       ),
-                      Positioned(
-                        top: 110,
-                        left: 3,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 55, 132, 57),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Text(
-                            PriceConverter.convertPrice(discountedPrice),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
+                      if (product.discount != null && product.discountType == 'percent')
+                        Positioned(
+                          top: 100,
+                          left: 4,
+                          child: Container(
+                            width: 35,
+                            height: 35,
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color:ColorResources.koffGreen,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              '${product.discount}%',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
-                      ),
                       Positioned(
                         bottom: 10,
                         right: 10,
@@ -171,12 +173,11 @@ class ProductWidget extends StatelessWidget {
                               Spacer(),
                               CustomDirectionality(
                                 child: Text(
-                                  PriceConverter.convertPrice(startingPrice,
-                                      discount: product.discount,
-                                      discountType: product.discountType),
+                                  PriceConverter.convertPrice(discountedPrice),
                                   style: rubikMedium.copyWith(
-                                      fontSize: Dimensions.fontSizeSmall,
-                                      color: Colors.red),
+                                    fontSize: Dimensions.fontSizeSmall,
+                                    color: Colors.red,
+                                  ),
                                 ),
                               ),
                             ],

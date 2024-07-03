@@ -27,6 +27,7 @@ import 'package:flutter_restaurant/view/screens/home/web/widget/category_web_vie
 import 'package:flutter_restaurant/view/screens/home/web/widget/set_menu_view_web.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/banner_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/category_view.dart';
+import 'package:flutter_restaurant/view/screens/home/widget/locate_container.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/main_slider.dart' as slider;
 import 'package:flutter_restaurant/view/screens/home/widget/product_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/set_menu_view.dart';
@@ -242,9 +243,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: TitleWidget(title: getTranslated('latest_item', context)),
                           ),
                          const ProductView(productType: ProductType.latestProduct,),
+                          buildLocateContainer(context),
                         ]),
                       ),
-                      if(ResponsiveHelper.isDesktop(context)) const FooterView(),
+                      
+                      // if(ResponsiveHelper.isDesktop(context)) const FooterView(),
                     ],
                   ),
                 ),
