@@ -33,7 +33,6 @@ import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/not_logged_in_screen.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/address/widget/permission_dialog.dart';
-import 'package:flutter_restaurant/view/screens/cart/cart_screen.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/confirm_button_view.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/delivery_fee_dialog.dart';

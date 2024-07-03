@@ -44,6 +44,155 @@ class _CartScreenState extends State<CartScreen> {
       Provider.of<SplashProvider>(context, listen: false).configModel!.homeDelivery! ? 'delivery' : 'take_away', notify: false,
     );
   }
+  Widget _buildAdditionalUI(BuildContext context) {
+  final OrderProvider orderProvider = Provider.of<OrderProvider>(context);
+  final bool isTakeAway = orderProvider.orderType == 'take_away';
+  final bool isCarHop = orderProvider.orderType == 'car_hop';
+
+   double verticalPadding = Dimensions.paddingSizeSmall;
+  double horizontalPadding = Dimensions.paddingSizeSmall;
+  double containerHeight = 40;
+
+  if (isTakeAway || isCarHop) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (isCarHop) ...[
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: verticalPadding / 2),
+            child: Row(
+              children:  [
+               const Expanded(
+                  flex: 2,
+                  child: Text(
+                    "Vehicle Number",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                SizedBox(width: horizontalPadding),
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    height: containerHeight,
+                    padding: EdgeInsets.all(horizontalPadding / 2),
+                    decoration: BoxDecoration(
+                       border: Border.all(color:ColorResources.klgreyColor ),
+                      borderRadius: BorderRadius.circular(15.0),
+                       color: ColorResources.kColorgrey,
+                    ),
+                    child:const Center(
+                      child: Text(
+                        "324389", 
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: verticalPadding / 3),
+            child: Row(
+              children:  [
+               const Expanded(
+                  flex: 2,
+                  child: Text(
+                    "Select Store",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+                SizedBox(width: horizontalPadding),
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    height: containerHeight,
+                    padding: EdgeInsets.all(horizontalPadding / 2),
+                    decoration: BoxDecoration(
+                       color: ColorResources.kColorgrey,
+                      border: Border.all(color:ColorResources.klgreyColor ),
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child:const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "any location",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            color: ColorResources.korgGrey, // Replace with your preferred color
+                          ),
+                        ),
+                        Icon(Icons.location_on, color: ColorResources.kOrangeColor),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+        if(isTakeAway) ...[
+           Padding(
+              padding: EdgeInsets.symmetric(vertical: verticalPadding / 2),
+              child: Row(
+                children: [
+                  const Text(
+                    "Select Store",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12
+                    ),
+                  ),
+                 const SizedBox(width: 20),
+                  Expanded(
+                    child: Container(
+                      height: containerHeight,
+                      padding: EdgeInsets.all(horizontalPadding / 2),
+                      decoration: BoxDecoration(
+                         color: ColorResources.kColorgrey,
+                        border: Border.all(color:ColorResources.klgreyColor ),
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "any location",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: ColorResources.kblack,
+                              fontSize: 14
+                            ),
+                          ),
+                          Icon(Icons.location_on, color: ColorResources.kOrangeColor),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ]
+        
+      ],
+    );
+  } else {
+    return SizedBox.shrink(); // Empty space if neither take away nor car hop is selected
+  }
+}
+
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -190,6 +339,7 @@ class _CartScreenState extends State<CartScreen> {
                                       );
                                     },
                                   ),
+                                
                                   const SizedBox(height: Dimensions.paddingSizeLarge),
                                  Text(getTranslated('delivery_option', context)!, style:const TextStyle(fontSize:16,fontWeight: FontWeight.w700 )),
                                   const SizedBox(height: Dimensions.paddingSizeLarge),
@@ -233,7 +383,9 @@ class _CartScreenState extends State<CartScreen> {
                                                  const SizedBox(height: 15,),
                                                  const Divider(color: ColorResources.kDeliveryBox,),
                                                  const SizedBox(height: 15,),
-
+                                                 
+                                 _buildAdditionalUI(context),
+                                 const SizedBox(height: 15,),
                                   // Totals
                                   ItemView(
                                     title: getTranslated('items_price', context)!,
