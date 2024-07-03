@@ -107,27 +107,29 @@ class ProductView extends StatelessWidget {
         Column(children: [
 
           GridView.builder(
-            
-            gridDelegate: ResponsiveHelper.isDesktop(context)
-                ? const SliverGridDelegateWithMaxCrossAxisExtent( maxCrossAxisExtent: 195, mainAxisExtent: 250) :
-            SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 1.9,
-              crossAxisCount: ResponsiveHelper.isTab(context) ? 2 : 1,
-            ),
-            itemCount: productList.length,
-            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) {
-              return ResponsiveHelper.isDesktop(context) ? Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: ProductWidgetWeb(product: productList![index]),
-              ) : ProductWidget(product: productList![index]);
-            },
-          ),
-          const SizedBox(height: 30),
+  gridDelegate: ResponsiveHelper.isDesktop(context)
+      ? const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 195, mainAxisExtent: 250)
+      : SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 3,
+          childAspectRatio: 1.9,
+          crossAxisCount: ResponsiveHelper.isTab(context) ? 2 : 1,
+        ),
+  itemCount: productList.length,
+  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
+  physics: const NeverScrollableScrollPhysics(),
+  shrinkWrap: true,
+  itemBuilder: (BuildContext context, int index) {
+    return ResponsiveHelper.isDesktop(context)
+        ? Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: ProductWidgetWeb(product: productList![index]),
+          )
+        : ProductWidget(product: productList![index]);
+  },
+),
+const SizedBox(height: 30),
+
 
           productList.isNotEmpty ? Padding(
             padding: ResponsiveHelper.isDesktop(context)? const EdgeInsets.only(top: 40,bottom: 70) :  const EdgeInsets.all(0),

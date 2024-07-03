@@ -1,6 +1,7 @@
 
 class Images {
   static const String crispyLogo = 'assets/image/crispy-logo.png';
+  static const String group = 'assets/image/Group.png';
   static const String home = 'assets/image/home_icon.png';
   static const String handBurger = 'assets/image/hand-burger.png';
   static const String welcomeImage = 'assets/image/welcome.png';

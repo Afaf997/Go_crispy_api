@@ -23,54 +23,64 @@ class CategoryView extends StatelessWidget {
         return Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 0, 10),
+              padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
               child: TitleWidget(title: getTranslated('menu', context)),
             ),
             Row(
               children: [
                 Expanded(
                   child: SizedBox(
-                    height: 80,
+                    height: 100, // Adjusted to provide extra space for the text
                     child: category.categoryList != null ? category.categoryList!.isNotEmpty ? ListView.builder(
                       itemCount: category.categoryList!.length,
                       padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault),
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        String? name = '';
-                        category.categoryList![index].name!.length > 15  ? name = '${category.categoryList![index].name!.substring(0, 15)} ...' : name = category.categoryList![index].name;
+                        String name = category.categoryList![index].name!.length > 15 
+                            ? '${category.categoryList![index].name!.substring(0, 15)} ...' 
+                            : category.categoryList![index].name!;
+                        
                         return Padding(
                           padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
                           child: InkWell(
                             onTap: () => RouterHelper.getCategoryRoute(category.categoryList![index]),
-                            child: Column(children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: FadeInImage.assetNetwork(
-                                  placeholder: Images.placeholderImage, width: 65, height: 65, fit: BoxFit.cover,
-                                  image: Provider.of<SplashProvider>(context, listen: false).baseUrls != null
-                                      ? '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.categoryImageUrl}/${category.categoryList![index].image}':'',
-                                  imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholderImage, width: 65, height: 65, fit: BoxFit.cover),
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder: Images.placeholderImage, 
+                                    width: 78, 
+                                    height: 78, 
+                                    fit: BoxFit.cover,
+                                    image: Provider.of<SplashProvider>(context, listen: false).baseUrls != null
+                                        ? '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.categoryImageUrl}/${category.categoryList![index].image}' 
+                                        : '',
+                                    imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholderImage, width: 78, height: 78, fit: BoxFit.cover),
+                                  ),
                                 ),
-                              ),
-
-                              Flexible(
-                                child: Text(
-                                  name!,
-                                  style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+                                const SizedBox(height: 5),
+                                Text(
+                                  name,
+                                  textAlign: TextAlign.center,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.w900,
+                                  ),
                                 ),
-                              ),
-
-                            ]),
+                              ],
+                            ),
                           ),
                         );
                       },
                     ) : Center(child: Text(getTranslated('no_category_available', context)!)) : const CategoryShimmer(),
                   ),
                 ),
-                ResponsiveHelper.isMobile()? const SizedBox(): category.categoryList != null ? Column(
+                ResponsiveHelper.isMobile() ? const SizedBox() : category.categoryList != null ? Column(
                   children: [
                     InkWell(
                       onTap: (){
@@ -81,8 +91,8 @@ class CategoryView extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
                         child: Container(
-                          width: 65,
-                          height: 65,
+                          width: 78,
+                          height: 78,
                           decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(10),
@@ -95,10 +105,9 @@ class CategoryView extends StatelessWidget {
                     ),
                     const SizedBox(height: 10,)
                   ],
-                ): const CategoryAllShimmer()
+                ) : const CategoryAllShimmer()
               ],
             ),
-
           ],
         );
       },
@@ -127,7 +136,7 @@ class CategoryShimmer extends StatelessWidget {
               enabled: Provider.of<CategoryProvider>(context).categoryList == null,
               child: Column(children: [
                 Container(
-                  height: 65, width: 65,
+                  height: 78, width: 78,
                   decoration: BoxDecoration(
                     color: Theme.of(context).shadowColor,
                     borderRadius: BorderRadius.circular(10),
