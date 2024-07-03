@@ -10,6 +10,7 @@ import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:flutter_restaurant/view/base/custom_directionality.dart';
 import 'package:flutter_restaurant/view/base/custom_divider.dart';
 import 'package:flutter_restaurant/view/screens/cart/cart_screen.dart';
+import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -81,7 +82,7 @@ class DeliveryFeeDialog extends StatelessWidget {
                 ItemView(
                   title: getTranslated('total_amount', context)!,
                   subTitle:   PriceConverter.convertPrice(amount! + deliveryCharge),
-                  style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
+                  // style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
                 ),
 
               ]),

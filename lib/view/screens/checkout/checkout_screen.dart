@@ -34,6 +34,7 @@ import 'package:flutter_restaurant/view/base/not_logged_in_screen.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/address/widget/permission_dialog.dart';
 import 'package:flutter_restaurant/view/screens/cart/cart_screen.dart';
+import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/confirm_button_view.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/delivery_fee_dialog.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/slot_widget.dart';
@@ -570,7 +571,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       child: ItemView(
                         title: getTranslated('total_amount', context)!,
                         subTitle: PriceConverter.convertPrice(widget.amount! + deliveryCharge!),
-                        style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
+                        // style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
                       ),
                     ),
 

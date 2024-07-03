@@ -24,6 +24,7 @@ import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/cart_product_widget.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/delivery_option_button.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
+import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
@@ -190,38 +191,50 @@ class _CartScreenState extends State<CartScreen> {
                                     },
                                   ),
                                   const SizedBox(height: Dimensions.paddingSizeLarge),
-
+                                 Text(getTranslated('delivery_option', context)!, style:const TextStyle(fontSize:16,fontWeight: FontWeight.w700 )),
+                                  const SizedBox(height: Dimensions.paddingSizeLarge),
                                   // Order type
-                                  Text(getTranslated('delivery_option', context)!, style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700)),
+                                  Row(
+                                                    children: [
+                                                      // Delivery
+                                                      Provider.of<SplashProvider>(context, listen: false)
+                                                              .configModel!
+                                                              .homeDelivery!
+                                                          ? DeliveryOptionButton(
+                                                              value: 'delivery',
+                                                              title: getTranslated('delivery', context),
+                                                              icon: Icons.shopping_bag,
+                                                            )
+                                                          : Container(),
 
-                                  Provider.of<SplashProvider>(context, listen: false).configModel!.homeDelivery!?
-                                  DeliveryOptionButton(value: 'delivery', title: getTranslated('delivery', context), kmWiseFee: kmWiseCharge):
+                                                      // Take Away
+                                                      Provider.of<SplashProvider>(context, listen: false)
+                                                              .configModel!
+                                                              .selfPickup!
+                                                          ? DeliveryOptionButton(
+                                                              value: 'take_away',
+                                                              title: getTranslated('take_away', context),
+                                                              icon: Icons.car_rental,
+                                                            )
+                                                          : Container(),
 
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall,top: Dimensions.paddingSizeLarge),
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.remove_circle_outline_sharp,color: Theme.of(context).hintColor,),
-                                        const SizedBox(width: Dimensions.paddingSizeExtraLarge),
-                                        Text(getTranslated('home_delivery_not_available', context)!,style: TextStyle(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).primaryColor)),
-                                      ],
-                                    ),
-                                  ),
+                                                      // Car Hop
+                                                      Provider.of<SplashProvider>(context, listen: false)
+                                                              .configModel!
+                                                              .selfPickup!
+                                                          ? DeliveryOptionButton(
+                                                              value: 'car_hop',
+                                                              title: getTranslated('car_hop', context),
+                                                              icon: Icons.delivery_dining,
+                                                            )
+                                                          : Container(),
+                                                    ],
+                                                  ),
+                                                 const SizedBox(height: 15,),
+                                                 const Divider(color: ColorResources.kDeliveryBox,),
+                                                 const SizedBox(height: 15,),
 
-                                  Provider.of<SplashProvider>(context, listen: false).configModel!.selfPickup!?
-                                  DeliveryOptionButton(value: 'take_away', title: getTranslated('take_away', context), kmWiseFee: kmWiseCharge):
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall,bottom: Dimensions.paddingSizeLarge),
-                                    child: Row(
-                                      children: [
-                                        const SizedBox(width: Dimensions.paddingSizeExtraLarge),
-                                        Text(getTranslated('self_pickup_not_available ', context)!,style: TextStyle(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).primaryColor)),
-                                      ],
-                                    ),
-                                  ),
-
-
-                                  // Total
+                                  // Totals
                                   ItemView(
                                     title: getTranslated('items_price', context)!,
                                     subTitle: PriceConverter.convertPrice(itemPrice),
@@ -229,45 +242,29 @@ class _CartScreenState extends State<CartScreen> {
                                   const SizedBox(height: 10),
 
                                   ItemView(
-                                    title: getTranslated('tax', context)!,
-                                    subTitle: '(+) ${PriceConverter.convertPrice(tax)}',
-                                  ),
-                                  const SizedBox(height: 10),
-
-                                  ItemView(
                                     title: getTranslated('addons', context)!,
-                                    subTitle: '(+) ${PriceConverter.convertPrice(addOns)}',
+                                    subTitle: '${PriceConverter.convertPrice(addOns)}',
                                   ),
                                   const SizedBox(height: 10),
 
                                   ItemView(
                                     title: getTranslated('discount', context)!,
-                                    subTitle: '(-) ${PriceConverter.convertPrice(discount)}',
+                                    subTitle: '- ${PriceConverter.convertPrice(discount)}',
+                                    subTitleStyle:const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color:ColorResources.kredcolor),
                                   ),
                                   const SizedBox(height: 10),
-
-                                  ItemView(
-                                    title: getTranslated('coupon_discount', context)!,
-                                    subTitle: '(-) ${PriceConverter.convertPrice(Provider.of<CouponProvider>(context).discount)}',
-                                  ),
-                                  const SizedBox(height: 10),
-
-                                  kmWiseCharge ? const SizedBox() : ItemView(
-                                    title: getTranslated('delivery_fee', context)!,
-                                    subTitle: '(+) ${PriceConverter.convertPrice(deliveryCharge)}',
-                                  ),
 
                                   const Padding(
                                     padding: EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
-                                    child: CustomDivider(),
-                                  ),
+                                    
+                                  ), 
+                                  const Divider(color:ColorResources.borderColor,),
 
                                   ItemView(
                                     title: getTranslated(kmWiseCharge ? 'subtotal' : 'total_amount', context)!,
                                     subTitle: PriceConverter.convertPrice(total),
-                                    style: rubikMedium.copyWith(
-                                      fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor,
-                                    ),
+                                    titleStyle:const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color:ColorResources.kredcolor),
+                                    subTitleStyle:const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color:ColorResources.kredcolor),
                                   ),
 
                                   if(ResponsiveHelper.isDesktop(context)) const SizedBox(height: Dimensions.paddingSizeDefault),
@@ -333,31 +330,6 @@ class CheckOutButtonView extends StatelessWidget {
         }
       }),
     ) : const SizedBox();
-  }
-}
-
-class ItemView extends StatelessWidget {
-  const ItemView({
-    Key? key,
-    required this.title,
-    required this.subTitle,
-    this.style,
-  }) : super(key: key);
-
-  final String title;
-  final String subTitle;
-  final TextStyle? style;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Text(title, style: style ?? rubikRegular.copyWith(fontSize: Dimensions.fontSizeLarge)),
-
-      CustomDirectionality(child: Text(
-        subTitle,
-        style: style ?? rubikRegular.copyWith(fontSize: Dimensions.fontSizeLarge),
-      )),
-    ]);
   }
 }
 class CartListWidget extends StatelessWidget {

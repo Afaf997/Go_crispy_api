@@ -66,6 +66,7 @@ static const Color kradiuscolor =  Color(0xFFEDEDED);
 static const Color kOriginalColor = Color(0xFFDDDDDD);
 static const Color kIncreasedColor = Color(0xFFB3B3B3);
 static const Color kstarYellow =  Color(0xFFFFBF34);
+static const Color kDeliveryBox =  Color(0xFFF0F0F0);
 
   
 

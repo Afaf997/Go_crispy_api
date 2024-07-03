@@ -18,6 +18,7 @@ import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/cart/cart_screen.dart';
+import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
 import 'package:provider/provider.dart';
 import 'widget/button_view.dart';
 import 'widget/details_view.dart';
@@ -277,7 +278,7 @@ class _OrderAmountViewState extends State<OrderAmountView> {
       ItemView(
         title: getTranslated('subtotal', context)!,
         subTitle: PriceConverter.convertPrice(widget.subTotal),
-        style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
+       
       ),
       const SizedBox(height: 10),
 
@@ -294,7 +295,7 @@ class _OrderAmountViewState extends State<OrderAmountView> {
         child: ItemView(
           title: getTranslated('extra_discount', context)!,
           subTitle: '(-) ${PriceConverter.convertPrice(widget.extraDiscount)}',
-          style: poppinsRegular.copyWith(fontSize: Dimensions.fontSizeLarge),
+          // style: poppinsRegular.copyWith(fontSize: Dimensions.fontSizeLarge),
         ),
       ),
 
@@ -318,7 +319,7 @@ class _OrderAmountViewState extends State<OrderAmountView> {
       ItemView(
         title: getTranslated('total_amount', context)!,
         subTitle: PriceConverter.convertPrice(widget.total),
-        style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
+        // style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
       ),
 
      orderProvider.trackModel != null && orderProvider.trackModel!.orderPartialPayments != null && orderProvider.trackModel!.orderPartialPayments!.isNotEmpty ?  Padding(

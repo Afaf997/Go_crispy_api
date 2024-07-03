@@ -7,6 +7,7 @@ import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_divider.dart';
 import 'package:flutter_restaurant/view/screens/cart/cart_screen.dart';
+import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
 import 'package:provider/provider.dart';
 
 class CostSummeryView extends StatelessWidget {
@@ -38,7 +39,7 @@ class CostSummeryView extends StatelessWidget {
           ItemView(
             title: getTranslated('subtotal', context)!,
             subTitle: PriceConverter.convertPrice(subtotal),
-            style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
+            // style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
           ),
           const SizedBox(height: 10),
 
@@ -57,7 +58,7 @@ class CostSummeryView extends StatelessWidget {
          if(ResponsiveHelper.isDesktop(context)) ItemView(
             title: getTranslated('total_amount', context)!,
             subTitle: PriceConverter.convertPrice(subtotal! + deliveryCharge!),
-            style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
+            // style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
           ),
         ]),
       ),
