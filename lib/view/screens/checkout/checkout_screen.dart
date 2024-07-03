@@ -36,6 +36,7 @@ import 'package:flutter_restaurant/view/screens/address/widget/permission_dialog
 import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/confirm_button_view.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/delivery_fee_dialog.dart';
+import 'package:flutter_restaurant/view/screens/checkout/widget/select_branch.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/slot_widget.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -130,6 +131,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     bool takeAway = widget.orderType == 'take_away';
 
     return Scaffold(
+      backgroundColor:ColorResources.kWhite,
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: (ResponsiveHelper.isDesktop(context) ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar()) : CustomAppBar(context: context, title: getTranslated('checkout', context))) as PreferredSizeWidget?,
@@ -155,14 +157,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     alignment: Alignment.topCenter,
                     width: Dimensions.webScreenWidth,
                     decoration: ResponsiveHelper.isDesktop(context) ? BoxDecoration(
-                        color: Theme.of(context).cardColor,
+                        // color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Theme.of(context).shadowColor.withOpacity(0.5),
-                            blurRadius: 10,
-                          )
-                        ]
+                       
                     ) : const BoxDecoration(),
                     child: Column(children: [
                       if(ResponsiveHelper.isDesktop(context)) Padding(
@@ -173,28 +170,25 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
 
 
-                      if(splashProvider.isBranchSelectDisable()) Row(
+                      if(splashProvider.isBranchSelectDisable()) Column(
                         children: [
-                          Expanded(
-                            flex: 6,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(getTranslated('branch', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).primaryColor)),
-
-                                  Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: const BranchButtonView(isRow: true),
-                                  ),
-                                ],
-                              ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(getTranslated('delivery_address_and_time', context)!, style:const TextStyle(fontSize: 16,fontWeight:FontWeight.w700 )),
+                          
+                              ],
                             ),
                           ),
+
+                                  Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const BranchButton(isRow: true),
+        ),
 
                          if(ResponsiveHelper.isDesktop(context)) const Expanded(flex: 4,child: SizedBox())
                         ],

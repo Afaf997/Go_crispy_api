@@ -7,7 +7,6 @@ import 'package:flutter_restaurant/view/screens/home/home_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-
 class BranchProvider extends ChangeNotifier {
   final SplashRepo? splashRepo;
   BranchProvider({required this.splashRepo});
@@ -25,7 +24,6 @@ class BranchProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 
   void updateBranchId(int? value, {bool isUpdate = true}) {
     _selectedBranchId = value;
@@ -45,16 +43,19 @@ class BranchProvider extends ChangeNotifier {
   Branches? getBranch({int? id}) {
     int branchId = id ?? getBranchId();
     Branches? branch;
-   ConfigModel config = Provider.of<SplashProvider>(Get.context!, listen: false).configModel!;
-   if(config.branches != null && config.branches!.isNotEmpty) {
-     branch = config.branches!.firstWhere((branch) => branch!.id == branchId, orElse: () => null);
-     if(branch == null){
-       splashRepo!.setBranchId(-1);
-     }
-   }
+    ConfigModel config = Provider.of<SplashProvider>(Get.context!, listen: false).configModel!;
+    if(config.branches != null && config.branches!.isNotEmpty) {
+      branch = config.branches!.firstWhere((branch) => branch!.id == branchId, orElse: () => null);
+      if(branch == null){
+        splashRepo!.setBranchId(-1);
+      }
+    }
     return branch;
   }
 
+  List<Branches?> get branches {
+    return Provider.of<SplashProvider>(Get.context!, listen: false).configModel!.branches!;
+  }
 
   List<BranchValue> branchSort(LatLng? currentLatLng){
     _isLoading = true;
@@ -66,12 +67,10 @@ class BranchProvider extends ChangeNotifier {
         distance = Geolocator.distanceBetween(
           double.parse(branch!.latitude!), double.parse(branch.longitude!),
           currentLatLng.latitude, currentLatLng.longitude,
-        )/ 1000;
+        ) / 1000;
       }
 
       branchValueList.add(BranchValue(branch, distance));
-
-
     }
     branchValueList.sort((a, b) => a.distance.compareTo(b.distance));
 
