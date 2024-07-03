@@ -72,7 +72,7 @@ class ProductWidget extends StatelessWidget {
               width: 354,
               height: 191,
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: ColorResources.kmaincontainergrey,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -122,7 +122,8 @@ class ProductWidget extends StatelessWidget {
                         child: WishButton(
                             product: product, edgeInset: const EdgeInsets.all(5)),
                       ),
-                      if (product.discount != null && product.discountType == 'percent')
+                      if (product.discount != null &&
+                          product.discountType == 'percent')
                         Positioned(
                           top: 100,
                           left: 4,
@@ -131,7 +132,7 @@ class ProductWidget extends StatelessWidget {
                             height: 35,
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
-                              color:ColorResources.koffGreen,
+                              color: ColorResources.koffGreen,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
@@ -157,7 +158,7 @@ class ProductWidget extends StatelessWidget {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(left: 8, right: 8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -170,16 +171,6 @@ class ProductWidget extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              Spacer(),
-                              CustomDirectionality(
-                                child: Text(
-                                  PriceConverter.convertPrice(discountedPrice),
-                                  style: rubikMedium.copyWith(
-                                    fontSize: Dimensions.fontSizeSmall,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
                           if (product.price! > discountedPrice!)
@@ -187,37 +178,55 @@ class ProductWidget extends StatelessWidget {
                               child: Text(
                                 PriceConverter.convertPrice(startingPrice),
                                 style: rubikMedium.copyWith(
-                                  color: Theme.of(context).hintColor.withOpacity(0.7),
+                                  color: Theme.of(context)
+                                      .hintColor
+                                      .withOpacity(0.7),
                                   decoration: TextDecoration.lineThrough,
                                   fontSize: Dimensions.fontSizeExtraSmall,
                                 ),
                               ),
                             ),
-                          if (product.rating != null && product.rating!.isNotEmpty)
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.star,
-                                  color: ColorResources.kstarYellow,
-                                  size: 9,
+                          Row(
+                            children: [
+                              if (product.rating != null && product.rating!.isNotEmpty)
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.star,
+                                      color: ColorResources.kstarYellow,
+                                      size: 9,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      ' ${product.rating![0].average}',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 9,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  ' ${product.rating![0].average}',
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  product.description!,
+                                  style: const TextStyle(fontSize: 8),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Spacer(),
+                              CustomDirectionality(
+                                child: Text(
+                                  PriceConverter.convertPrice(discountedPrice),
                                   style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 9,
+                                    fontSize: 14,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
-                              ],
-                            ),
-                          Expanded(
-                            child: Text(
-                              product.description!,
-                              style: const TextStyle(fontSize: 8),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

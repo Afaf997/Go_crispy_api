@@ -48,6 +48,7 @@ class _CartScreenState extends State<CartScreen> {
     final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: ColorResources.kWhite,
       appBar: (ResponsiveHelper.isDesktop(context) ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar()) :CustomAppBar(context: context, title: getTranslated('my_cart', context), isBackButtonExist: !ResponsiveHelper.isMobile())) as PreferredSizeWidget?,
       body: Consumer<OrderProvider>(
           builder: (context, order, child) {
@@ -146,14 +147,11 @@ class _CartScreenState extends State<CartScreen> {
                                               isDense: true,
                                               filled: true,
                                               enabled: coupon.discount == 0,
-                                              fillColor: Theme.of(context).cardColor,
+                                              fillColor: ColorResources.kColorgrey,
                                               border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.horizontal(
-                                                  left: Radius.circular(Provider.of<LocalizationProvider>(context, listen: false).isLtr ? 10 : 0),
-                                                  right: Radius.circular(Provider.of<LocalizationProvider>(context, listen: false).isLtr ? 0 : 10),
-                                                ),
-                                                borderSide: BorderSide.none,
-                                              ),
+                                               borderRadius: BorderRadius.circular(15.0),
+                                                borderSide: BorderSide.none, 
+                                             ),
                                             ),
                                           )),
 
@@ -172,17 +170,14 @@ class _CartScreenState extends State<CartScreen> {
                                                   coupon.removeCouponData(true);
                                                 }
                                               } else if(_couponController.text.isEmpty) {
-                                                showCustomSnackBar(getTranslated('enter_a_Coupon_code', context));
+                                                showCustomSnackBar(getTranslated('enter_a_Couponcode', context));
                                               }
                                             },
                                             child: Container(width: 100,
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
-                                                color: Theme.of(context).primaryColor,
-                                                borderRadius: BorderRadius.horizontal(
-                                                  left: Radius.circular(Provider.of<LocalizationProvider>(context, listen: false).isLtr ? 0 : 10),
-                                                  right: Radius.circular(Provider.of<LocalizationProvider>(context, listen: false).isLtr ? 10 : 0),
-                                                ),
+                                                color: Colors.black,
+                                                borderRadius: BorderRadius.circular(15.0),
                                               ),
                                               child: coupon.discount! <= 0 ? !coupon.isLoading ? Text(
                                                 getTranslated('apply', context)!,
@@ -197,7 +192,7 @@ class _CartScreenState extends State<CartScreen> {
                                   const SizedBox(height: Dimensions.paddingSizeLarge),
 
                                   // Order type
-                                  Text(getTranslated('delivery_option', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
+                                  Text(getTranslated('delivery_option', context)!, style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700)),
 
                                   Provider.of<SplashProvider>(context, listen: false).configModel!.homeDelivery!?
                                   DeliveryOptionButton(value: 'delivery', title: getTranslated('delivery', context), kmWiseFee: kmWiseCharge):
@@ -219,9 +214,8 @@ class _CartScreenState extends State<CartScreen> {
                                     padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall,bottom: Dimensions.paddingSizeLarge),
                                     child: Row(
                                       children: [
-                                        Icon(Icons.remove_circle_outline_sharp,color: Theme.of(context).hintColor,),
                                         const SizedBox(width: Dimensions.paddingSizeExtraLarge),
-                                        Text(getTranslated('self_pickup_not_available', context)!,style: TextStyle(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).primaryColor)),
+                                        Text(getTranslated('self_pickup_not_available ', context)!,style: TextStyle(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).primaryColor)),
                                       ],
                                     ),
                                   ),

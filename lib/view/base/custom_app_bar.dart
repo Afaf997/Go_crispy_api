@@ -45,7 +45,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           )
       ),
     ) : AppBar(
-      title: Text(title!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyLarge!.color)),
+      title: Text(title!, style: rubikMedium.copyWith(fontSize: Dimensions.fontAppbar,fontWeight: FontWeight.w700)),
       centerTitle: centerTitle,
       leading: isBackButtonExist ? IconButton(
         icon: const Icon(Icons.arrow_back_ios),

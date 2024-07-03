@@ -211,7 +211,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ):  const SizedBox(),
                           ResponsiveHelper.isDesktop(context) ?  const SizedBox(): const BannerView(),
                           ResponsiveHelper.isDesktop(context)? const CategoryViewWeb() : const CategoryView(),
-                          // ResponsiveHelper.isDesktop(context)? const SetMenuViewWeb() :  const SetMenuView(),
                          
                           ResponsiveHelper.isDesktop(context) ? Row(
                             mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,
