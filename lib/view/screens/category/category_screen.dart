@@ -6,16 +6,12 @@ import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
-import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/filter_button_widget.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/base/product_shimmer.dart';
 import 'package:flutter_restaurant/view/base/wish_button.dart';
-import 'package:flutter_restaurant/view/screens/home/web/widget/product_web_card_shimmer.dart';
-import 'package:flutter_restaurant/view/screens/home/web/widget/product_widget_web.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 
 class CategoryScreen extends StatefulWidget {
   final String categoryId;
@@ -38,6 +34,7 @@ class _CategoryScreenState extends State<CategoryScreen>
   late TabController _tabController;
   int _tabIndex = 0;
   String _type = 'all';
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -50,16 +47,41 @@ class _CategoryScreenState extends State<CategoryScreen>
   }
 
   void _loadData() async {
-    Provider.of<CategoryProvider>(context, listen: false)
-        .getCategoryList(false);
-    Provider.of<CategoryProvider>(context, listen: false)
-        .getSubCategoryList(widget.categoryId);
+    final categoryProvider =
+        Provider.of<CategoryProvider>(context, listen: false);
+    await categoryProvider.getCategoryList(false);
+    categoryProvider.getSubCategoryList(widget.categoryId);
+
+    // Move the passed category to the first position and select it
+    final categoryIndex = categoryProvider.categoryList!.indexWhere(
+        (category) => category.id == widget.categoryId);
+    if (categoryIndex != -1) {
+      final selectedCategory =
+          categoryProvider.categoryList!.removeAt(categoryIndex);
+      categoryProvider.categoryList!.insert(0, selectedCategory);
+      setState(() {
+        _selectedIndex = 0;
+      });
+    }
+
+    // Fetch the items for the selected category
+    categoryProvider.getCategoryProductList(widget.categoryId, type: _type);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _onCategorySelected(int index, CategoryProvider category) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    // Fetch the items for the selected category
+    Provider.of<CategoryProvider>(context, listen: false)
+        .getCategoryProductList(category.categoryList![index].id!.toString(), type: _type);
   }
 
   @override
@@ -70,48 +92,76 @@ class _CategoryScreenState extends State<CategoryScreen>
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title:const Text('All Categories',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),), // Setting the title of AppBar
-        centerTitle: true, 
+        title: const Text('All Categories',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+        ),
+        centerTitle: true,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(50),
-          child: Container(
-            width: ResponsiveHelper.isDesktop(context) ? 1170 : MediaQuery.of(context).size.width,
-            child: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              unselectedLabelColor: Theme.of(context).hintColor.withOpacity(0.7),
-              indicatorWeight: 3,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorColor: Theme.of(context).primaryColor,
-              tabs: _tabs(context), // Using the _tabs method to generate tabs
-              onTap: (int index) {
-                setState(() {
-                  _type = 'all';
-                  _tabIndex = index;
-                });
-                if (index == 0) {
-                  Provider.of<CategoryProvider>(context, listen: false)
-                      .getCategoryProductList(widget.categoryId);
-                } else {
-                  Provider.of<CategoryProvider>(context, listen: false)
-                      .getCategoryProductList(
-                          Provider.of<CategoryProvider>(context, listen: false)
-                              .subCategoryList![index - 1]
-                              .id
-                              .toString());
-                }
-              },
-            ),
+          child: Consumer<CategoryProvider>(
+            builder: (context, category, child) {
+              if (category.isLoading || category.categoryList == null) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: ColorResources.kOrangeColor,
+                  ),
+                );
+              } else {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 33,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        itemCount: category.categoryList!.length,
+                        itemBuilder: (context, index) {
+                          var subCategory = category.categoryList![index];
+                          bool isSelected = index == _selectedIndex;
+                          return GestureDetector(
+                            onTap: () {
+                              _onCategorySelected(index, category);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              margin: const EdgeInsets.only(right: 10),
+                              decoration: BoxDecoration(
+                                color: isSelected ? ColorResources.kOrangeColor : ColorResources.kTextgreyColor,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: Colors.grey),
+                              ),
+                              child: Text(
+                                subCategory.name ?? '',
+                                style: const TextStyle(
+                                  color: ColorResources.kblack,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              }
+            },
           ),
         ),
       ),
       body: Consumer<CategoryProvider>(
         builder: (context, category, child) {
-          if (category.isLoading || category.categoryList == null) {
-            return const Center(child:  CircularProgressIndicator(color: ColorResources.kOrangeColor,));
+          if (category.isLoading || category.categoryProductList == null) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: ColorResources.kOrangeColor,
+              ),
+            );
           } else {
             return CustomScrollView(
-              physics: const BouncingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               slivers: [
                 SliverToBoxAdapter(
                   child: Column(
@@ -126,9 +176,10 @@ class _CategoryScreenState extends State<CategoryScreen>
                           });
                           Provider.of<CategoryProvider>(context, listen: false)
                               .getCategoryProductList(
-                                  Provider.of<CategoryProvider>(context, listen: false)
-                                      .selectedSubCategoryId,
-                                  type: _type);
+                                Provider.of<CategoryProvider>(context, listen: false)
+                                    .selectedSubCategoryId,
+                                type: _type,
+                              );
                         },
                       ),
                       ConstrainedBox(
@@ -140,11 +191,11 @@ class _CategoryScreenState extends State<CategoryScreen>
                           child: category.categoryProductList != null
                               ? category.categoryProductList!.isNotEmpty
                                   ? _productGrid(category, context)
-                                  : const NoDataScreen(isFooter: false)
+                                  : NoDataScreen(isFooter: false)
                               : _productGridShimmer(context),
                         ),
                       ),
-                      if (ResponsiveHelper.isDesktop(context)) const FooterView(),
+                      if (ResponsiveHelper.isDesktop(context)) FooterView(),
                     ],
                   ),
                 ),
@@ -157,15 +208,10 @@ class _CategoryScreenState extends State<CategoryScreen>
   }
 
   Widget _productGrid(CategoryProvider category, BuildContext context) {
-    if (category.categoryProductList == null ||
-        category.categoryProductList!.isEmpty) {
-      return const NoDataScreen(isFooter: false);
-    }
-
     return ListView.builder(
       shrinkWrap: true,
       itemCount: category.categoryProductList!.length,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
       itemBuilder: (context, index) {
         final product = category.categoryProductList![index];
@@ -182,84 +228,74 @@ class _CategoryScreenState extends State<CategoryScreen>
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
           child: Container(
-            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: ColorResources.kallcontainer,
+              color: ColorResources.kcontainergrey,
               borderRadius: BorderRadius.circular(10),
+            
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 136,
-                      height: 108,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        image: productImage != null
-                            ? DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(productImage),
-                              )
-                            : const DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage(Images.placeholderImage),
-                              ),
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: productImage != null
+                        ? DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(productImage),
+                          )
+                        : const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(Images.placeholderImage),
+                          ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                title,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              WishButton(
-                                product: product,
-                                edgeInset: const EdgeInsets.all(5),
-                                iconSize: 15,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Icon(Icons.star, color: ColorResources.kstarYellow, size: 12),
-                              Text(
-                                ' $rating',
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 8),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: double.infinity,
-                            child: Text(
-                              description,
-                              style: const TextStyle(fontSize: 9),
-                            ),
-                          ),
+                          Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
                           Text(
-                            price,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: ColorResources.kredcolor,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            ' $rating',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                      Text(
+                        description,
+                        style: TextStyle(fontSize: 12),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        price,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: ColorResources.kOrangeColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          WishButton(product: product),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -273,29 +309,17 @@ class _CategoryScreenState extends State<CategoryScreen>
     return GridView.builder(
       shrinkWrap: true,
       itemCount: 10,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisSpacing: 5,
-        mainAxisSpacing: 5,
-        childAspectRatio: ResponsiveHelper.isDesktop(context) ? 0.7 : 4,
-        crossAxisCount: ResponsiveHelper.isDesktop(context) ? 6 : ResponsiveHelper.isTab(context) ? 2 : 1,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        crossAxisCount: ResponsiveHelper.isDesktop(context) ? 4 : 2,
+        childAspectRatio: 2,
       ),
       itemBuilder: (context, index) {
-        return ResponsiveHelper.isDesktop(context)
-            ? const ProductWidgetWebShimmer()
-            : ProductShimmer(isEnabled: true);
+        // return ProductShimmer();
       },
     );
-  }
-
-  
-  List<Tab> _tabs(BuildContext context) {
-    final category = Provider.of<CategoryProvider>(context, listen: false);
-    List<Tab> tabList = [const Tab(text: 'All')];
-    for (var subCategory in category.categoryList!) {
-      tabList.add(Tab(text: subCategory.name));
-    }
-    return tabList;
   }
 }
