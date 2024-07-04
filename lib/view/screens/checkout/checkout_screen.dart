@@ -415,17 +415,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
 
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: Dimensions.paddingSizeSmall,
-                            ).copyWith(left: Dimensions.paddingSizeDefault),
+                            padding: const EdgeInsets.all(16.0),
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                               Text(getTranslated('add_delivery_note', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                              const SizedBox(height: Dimensions.fontSizeSmall),
-
+                              // const SizedBox(height: Dimensions.fontSizeSmall),
+                            
                               Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                                  border: Border.all(color: Theme.of(context).disabledColor.withOpacity(0.2), width: 1),
+                             decoration: BoxDecoration(
+                                    color:ColorResources.kColorgrey ,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color:ColorResources.klgreyColor,)
                                 ),
                                 child: CustomTextField(
                                     controller: _noteController,
@@ -436,10 +435,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     capitalization: TextCapitalization.sentences,
                                   ),
                               ),
-
+                            
                             ]),
                           ),
-                          const SizedBox(height: Dimensions.paddingSizeDefault),
+                          // const SizedBox(height: Dimensions.paddingSizeDefault),
 
                           if (!ResponsiveHelper.isDesktop(context))
                             CostSummeryView(
@@ -525,34 +524,27 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   deliveryCharge = configModel.deliveryCharge;
                 }
 
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    boxShadow: [BoxShadow(color: Theme.of(context).primaryColor.withOpacity(0.1), blurRadius: 10)],
-                  ),
-                  child: Column(children: [
-                    const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge, vertical: Dimensions.paddingSizeSmall),
-                      child: ItemView(
-                        title: getTranslated('total_amount', context)!,
-                        subTitle: PriceConverter.convertPrice(widget.amount! + deliveryCharge!),
-                        // style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
-                      ),
+                return Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge, vertical: Dimensions.paddingSizeSmall),
+                    child: ItemView(
+                      title: getTranslated('total_amount', context)!,
+                      subTitle: PriceConverter.convertPrice(widget.amount! + deliveryCharge!),
+                       titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
                     ),
-
-                    ConfirmButtonView(
-                        noteController: _noteController,
-                        callBack: _callback,
-                        cartList: _cartList,
-                        kmWiseCharge: kmWiseCharge,
-                        orderType: widget.orderType!,
-                        orderAmount: widget.amount!,
-                        couponCode: widget.couponCode,
-                        deliveryCharge: deliveryCharge,
-                      ),
-                  ]),
-                );
+                  ),
+                
+                  ConfirmButtonView(
+                      noteController: _noteController,
+                      callBack: _callback,
+                      cartList: _cartList,
+                      kmWiseCharge: kmWiseCharge,
+                      orderType: widget.orderType!,
+                      orderAmount: widget.amount!,
+                      couponCode: widget.couponCode,
+                      deliveryCharge: deliveryCharge,
+                    ),
+                ]);
               }
           ),
         ],

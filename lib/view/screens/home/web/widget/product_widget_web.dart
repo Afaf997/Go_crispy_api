@@ -7,7 +7,6 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
-import 'package:flutter_restaurant/provider/theme_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
@@ -41,10 +40,10 @@ class ProductWidgetWeb extends StatelessWidget {
             : null;
 
         return InkWell(
-          onTap: () => _addToCart(context, cartIndex),
+          onTap: isAvailable ? () => _addToCart(context, cartIndex) : null,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.35,
-            height: 125, 
+            height: 125,
             margin: const EdgeInsets.all(5.0),
             decoration: BoxDecoration(
               color: ColorResources.kcontainergrey,
@@ -78,13 +77,13 @@ class ProductWidgetWeb extends StatelessWidget {
                           Expanded(
                             child: Text(
                               product.name ?? 'No name available', 
-                              style:const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Text(
                             PriceConverter.convertPrice(startingPrice, discount: product.discount, discountType: product.discountType),
-                            style:const TextStyle(fontSize: 12, color: ColorResources.kredcolor, fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontSize: 12, color: ColorResources.kredcolor, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -93,13 +92,13 @@ class ProductWidgetWeb extends StatelessWidget {
                           const Icon(Icons.star, color: ColorResources.kstarYellow, size: 10),
                           Text(
                             ' ${product.rating != null && product.rating!.isNotEmpty ? double.parse(product.rating![0].average!) : 0}',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8),
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 8),
                           ),
                           const SizedBox(width: 5),
                           Expanded(
                             child: Text(
                               product.description ?? 'No description available', 
-                              style: TextStyle(fontSize: 8),
+                              style: const TextStyle(fontSize: 8),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),

@@ -49,7 +49,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -58,8 +58,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             child: Container(
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: ColorResources.kColorgrey ?? Colors.grey,
-                border: Border.all(color: ColorResources.klgreyColor ?? Colors.black),
+                color: ColorResources.kColorgrey ,
+                border: Border.all(color: ColorResources.klgreyColor),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(

@@ -82,6 +82,9 @@ class DeliveryFeeDialog extends StatelessWidget {
                 ItemView(
                   title: getTranslated('total_amount', context)!,
                   subTitle:   PriceConverter.convertPrice(amount! + deliveryCharge),
+                   titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
+           
+                    subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
                   // style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
                 ),
 

@@ -38,26 +38,14 @@ class ProductWidget extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
         child: InkWell(
-          onTap: () {
-            ResponsiveHelper.isMobile()
-                ? showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    builder: (con) => CartBottomSheet(
-                      product: product,
-                      callback: (CartModel cartModel) {
-                        showCustomSnackBar(
-                            getTranslated('added_to_cart', context),
-                            isError: false);
-                      },
-                    ),
-                  )
-                : showDialog(
-                    context: context,
-                    builder: (con) => Dialog(
+          onTap: isAvailable
+              ? () {
+                  ResponsiveHelper.isMobile()
+                      ? showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
                           backgroundColor: Colors.transparent,
-                          child: CartBottomSheet(
+                          builder: (con) => CartBottomSheet(
                             product: product,
                             callback: (CartModel cartModel) {
                               showCustomSnackBar(
@@ -65,8 +53,22 @@ class ProductWidget extends StatelessWidget {
                                   isError: false);
                             },
                           ),
-                        ));
-          },
+                        )
+                      : showDialog(
+                          context: context,
+                          builder: (con) => Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: CartBottomSheet(
+                                  product: product,
+                                  callback: (CartModel cartModel) {
+                                    showCustomSnackBar(
+                                        getTranslated('added_to_cart', context),
+                                        isError: false);
+                                  },
+                                ),
+                              ));
+                }
+              : null,
           child: Center(
             child: Container(
               width: 354,
@@ -149,7 +151,7 @@ class ProductWidget extends StatelessWidget {
                         bottom: 10,
                         right: 10,
                         child: Image.asset(
-                          Images.group, 
+                          Images.group,
                           height: 18,
                           width: 25,
                         ),

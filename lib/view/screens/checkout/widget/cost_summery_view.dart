@@ -3,12 +3,14 @@ import 'package:flutter_restaurant/helper/price_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_divider.dart';
 import 'package:flutter_restaurant/view/screens/cart/cart_screen.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_html/js_util.dart';
 
 class CostSummeryView extends StatelessWidget {
   final bool kmWiseCharge;
@@ -37,9 +39,8 @@ class CostSummeryView extends StatelessWidget {
           const SizedBox(height: Dimensions.paddingSizeLarge),
 
           ItemView(
-            title: getTranslated('subtotal', context)!,
+            title: getTranslated('subtotal', context,)!,
             subTitle: PriceConverter.convertPrice(subtotal),
-            // style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
           ),
           const SizedBox(height: 10),
 
@@ -52,13 +53,14 @@ class CostSummeryView extends StatelessWidget {
 
           const Padding(
             padding: EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
-            child: CustomDivider(),
+            child: Divider(color: ColorResources.borderColor,),
           ),
 
          if(ResponsiveHelper.isDesktop(context)) ItemView(
             title: getTranslated('total_amount', context)!,
+            titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
             subTitle: PriceConverter.convertPrice(subtotal! + deliveryCharge!),
-            // style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
+            subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
           ),
         ]),
       ),
