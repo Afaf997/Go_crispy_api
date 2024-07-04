@@ -25,7 +25,6 @@ import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
-import 'package:flutter_restaurant/view/base/branch_button_view.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/custom_text_field.dart';
@@ -164,10 +163,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     child: Column(children: [
                       if(ResponsiveHelper.isDesktop(context)) Padding(
                         padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeLarge),
-                        child: Text(getTranslated('checkout', context)!, style: rubikBold.copyWith(
-                          fontSize: Dimensions.fontSizeOverLarge,
-                        )),
+                        child: Text(getTranslated('checkout', context)!, style:const TextStyle(fontSize: 20,fontWeight: FontWeight.w700)
+                          
+                        ),
                       ),
+                      SizedBox(height: 15,),
 
 
                       if(splashProvider.isBranchSelectDisable()) Column(
@@ -189,6 +189,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ),
           child: const BranchButton(isRow: true),
         ),
+        SizedBox(height: 10,),
 
                          if(ResponsiveHelper.isDesktop(context)) const Expanded(flex: 4,child: SizedBox())
                         ],
@@ -196,246 +197,218 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Expanded(flex: 6, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
-                            Container(
-                              height: ResponsiveHelper.isMobile() ? 200 : 300,
-                              padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
-                              margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Theme.of(context).cardColor,
-                              ),
-                              child: Stack(children: [
-                                ClipRRect(borderRadius : BorderRadius.circular(10), child: GoogleMap(
-                                    mapType: MapType.normal,
-                                    initialCameraPosition: CameraPosition(
-                                      target: LatLng(
-                                        double.parse(currentBranch!.latitude!),
-                                        double.parse(currentBranch!.longitude!),
-                                      ), zoom: 5,
-                                    ),
-                                    minMaxZoomPreference: const MinMaxZoomPreference(0, 16),
-                                    zoomControlsEnabled: true,
-                                    markers: _markers,
-                                    onMapCreated: (GoogleMapController controller) async {
-                                      await Geolocator.requestPermission();
-                                      _mapController = controller;
-                                      _loading = false;
-                                      _setMarkers(configModel.branches!.indexOf(currentBranch));
-                                    },
-                                  )),
-
-                                _loading ? Center(child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
-                                )) : const SizedBox(),
-                              ]),
-                            ),
-                          ]),
-
-                          // Address
+                         // Address
                           !takeAway ? Column(children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-                              child: Row(children: [
-                                Text(getTranslated('delivery', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                                const Expanded(child: SizedBox()),
+  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+  child: Column(
+    children: [
+      SizedBox(
+        height: 30,
+        child: InkWell(
+          onTap: () => _checkPermission(() => RouterHelper.getAddAddressRoute('checkout', 'add', AddressModel())),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.add_circle_rounded,
+                size: Dimensions.paddingSizeDefault,
+                color: Theme.of(context).primaryColor,
+              ),
+              SizedBox(width: 8), // Adding some space between the icon and text
+              Text(
+                getTranslated('add_new_address', context)!,
+                style: rubikMedium.copyWith(
+                  fontSize: Dimensions.fontSizeDefault,
+                  color: Theme.of(context).primaryColor,
+                  fontWeight:FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ],
+  ),
+),
 
-                                SizedBox(height: 30, child: FloatingActionButton.extended(
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(10.0))
-                                  ),
-                                  // extendedPadding: EdgeInsets.s,
-                                  elevation: 0,
 
-                                  backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
-                                  onPressed: () => _checkPermission(()=> RouterHelper.getAddAddressRoute('checkout', 'add', AddressModel())),
-                                  icon: Icon(Icons.add_circle_outline, size: Dimensions.paddingSizeDefault, color: Theme.of(context).primaryColor),
-                                  label: Text(getTranslated('add_delivery_info', context)!, style: rubikMedium.copyWith(
-                                    fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).primaryColor,
-                                  )),
-                                )),
-                              ]),
-                            ),
+                            // SizedBox(
+                            //   height: 60,
+                            //   child: locationProvider.addressList != null ? locationProvider.addressList!.isNotEmpty ? ListView.builder(
+                            //     physics: const BouncingScrollPhysics(),
+                            //     scrollDirection: Axis.horizontal,
+                            //     padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
+                            //     itemCount: locationProvider.addressList!.length,
+                            //     itemBuilder: (context, index) {
+                            //       bool isAvailable = currentBranch == null || (currentBranch!.latitude == null || currentBranch!.latitude!.isEmpty);
+                            //       if(!isAvailable) {
+                            //         double distance = Geolocator.distanceBetween(
+                            //           double.parse(currentBranch!.latitude!), double.parse(currentBranch!.longitude!),
+                            //           double.parse(locationProvider.addressList![index].latitude!), double.parse(locationProvider.addressList![index].longitude!),
+                            //         ) / 1000;
 
-                            SizedBox(
-                              height: 60,
-                              child: locationProvider.addressList != null ? locationProvider.addressList!.isNotEmpty ? ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
-                                itemCount: locationProvider.addressList!.length,
-                                itemBuilder: (context, index) {
-                                  bool isAvailable = currentBranch == null || (currentBranch!.latitude == null || currentBranch!.latitude!.isEmpty);
-                                  if(!isAvailable) {
-                                    double distance = Geolocator.distanceBetween(
-                                      double.parse(currentBranch!.latitude!), double.parse(currentBranch!.longitude!),
-                                      double.parse(locationProvider.addressList![index].latitude!), double.parse(locationProvider.addressList![index].longitude!),
-                                    ) / 1000;
+                            //         isAvailable = distance < currentBranch!.coverage!;
+                            //       }
+                            //       return Padding(
+                            //         padding: const EdgeInsets.only(right: Dimensions.paddingSizeLarge, top: Dimensions.paddingSizeSmall),
+                            //         child: InkWell(
+                            //           onTap: () async {
+                            //             if(isAvailable) {
+                            //               orderProvider.setAddressIndex(index);
 
-                                    isAvailable = distance < currentBranch!.coverage!;
-                                  }
-                                  return Padding(
-                                    padding: const EdgeInsets.only(right: Dimensions.paddingSizeLarge, top: Dimensions.paddingSizeSmall),
-                                    child: InkWell(
-                                      onTap: () async {
-                                        if(isAvailable) {
-                                          orderProvider.setAddressIndex(index);
+                            //               if(kmWiseCharge) {
+                            //                 if(orderProvider.selectedPaymentMethod != null){
+                            //                   showCustomSnackBar(getTranslated('your_payment_method_has_been', context), isError: false);
+                            //                 }
+                            //                 orderProvider.savePaymentMethod(index: null, method: null);
+                            //                 orderProvider.changePartialPayment();
 
-                                          if(kmWiseCharge) {
-                                            if(orderProvider.selectedPaymentMethod != null){
-                                              showCustomSnackBar(getTranslated('your_payment_method_has_been', context), isError: false);
-                                            }
-                                            orderProvider.savePaymentMethod(index: null, method: null);
-                                            orderProvider.changePartialPayment();
+                            //                 showDialog(context: context, builder: (context) => Center(child: Container(
+                            //                   height: 100, width: 100, decoration: BoxDecoration(
+                            //                   color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(10),
+                            //                 ),
+                            //                   alignment: Alignment.center,
+                            //                   child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
+                            //                 )), barrierDismissible: false);
+                            //                 orderProvider.getDistanceInMeter(
+                            //                   LatLng(
+                            //                     double.parse(currentBranch!.latitude!),
+                            //                     double.parse(currentBranch!.longitude!),
+                            //                   ),
+                            //                   LatLng(
+                            //                     double.parse(locationProvider.addressList![index].latitude!),
+                            //                     double.parse(locationProvider.addressList![index].longitude!),
+                            //                   ),
+                            //                 ).then((isSuccess) {
+                            //                   context.pop();
+                            //                   if(isSuccess) {
+                            //                     showDialog(context: context, builder: (context) => DeliveryFeeDialog(
+                            //                       amount: widget.amount, distance: orderProvider.distance,
+                            //                     ));
+                            //                   }else {
+                            //                     showCustomSnackBar(getTranslated('failed_to_fetch_distance', context));
+                            //                   }
+                            //                   return isSuccess;
+                            //                 });
 
-                                            showDialog(context: context, builder: (context) => Center(child: Container(
-                                              height: 100, width: 100, decoration: BoxDecoration(
-                                              color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(10),
-                                            ),
-                                              alignment: Alignment.center,
-                                              child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
-                                            )), barrierDismissible: false);
-                                            orderProvider.getDistanceInMeter(
-                                              LatLng(
-                                                double.parse(currentBranch!.latitude!),
-                                                double.parse(currentBranch!.longitude!),
-                                              ),
-                                              LatLng(
-                                                double.parse(locationProvider.addressList![index].latitude!),
-                                                double.parse(locationProvider.addressList![index].longitude!),
-                                              ),
-                                            ).then((isSuccess) {
-                                              context.pop();
-                                              if(isSuccess) {
-                                                showDialog(context: context, builder: (context) => DeliveryFeeDialog(
-                                                  amount: widget.amount, distance: orderProvider.distance,
-                                                ));
-                                              }else {
-                                                showCustomSnackBar(getTranslated('failed_to_fetch_distance', context));
-                                              }
-                                              return isSuccess;
-                                            });
-
-                                          }
-                                        }
-                                      },
-                                      child: Stack(children: [
-                                        Container(
-                                          height: 60,
-                                          width: 200,
-                                          decoration: BoxDecoration(
-                                            color: index == orderProvider.addressIndex ? Theme.of(context).cardColor : Theme.of(context).colorScheme.background.withOpacity(0.2),
-                                            borderRadius: BorderRadius.circular(10),
-                                            border: index == orderProvider.addressIndex ? Border.all(color: Theme.of(context).primaryColor, width: 2) : null,
-                                          ),
-                                          child: Row(children: [
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                                              child: Icon(
-                                                locationProvider.addressList![index].addressType == 'Home' ? Icons.home_outlined
-                                                    : locationProvider.addressList![index].addressType == 'Workplace' ? Icons.work_outline : Icons.list_alt_outlined,
-                                                color: index == orderProvider.addressIndex ? Theme.of(context).primaryColor
-                                                    : Theme.of(context).textTheme.bodyLarge!.color,
-                                                size: 30,
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                                                Text(locationProvider.addressList![index].addressType!, style: rubikRegular.copyWith(
-                                                  fontSize: Dimensions.fontSizeSmall, color: ColorResources.getGreyBunkerColor(context),
-                                                )),
-                                                Text(locationProvider.addressList![index].address!, style: rubikRegular, maxLines: 1, overflow: TextOverflow.ellipsis),
-                                              ]),
-                                            ),
-                                            index == orderProvider.addressIndex ? Align(
-                                              alignment: Alignment.topRight,
-                                              child: Icon(Icons.check_circle, color: Theme.of(context).primaryColor),
-                                            ) : const SizedBox(),
-                                          ]),
-                                        ),
-                                        !isAvailable ? Positioned(
-                                          top: 0, left: 0, bottom: 0, right: 0,
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black.withOpacity(0.6)),
-                                            child: Text(
-                                              getTranslated('out_of_coverage_for_this_branch', context)!,
-                                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                              style: rubikRegular.copyWith(color: Colors.white, fontSize: 10),
-                                            ),
-                                          ),
-                                        ) : const SizedBox(),
-                                      ]),
-                                    ),
-                                  );
-                                },
-                              ) : Center(child: Text(getTranslated('no_address_available', context)!))
-                                  : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor))),
-                            ),
-                            const SizedBox(height: 20),
+                            //               }
+                            //             }
+                            //           },
+                            //           // child: Stack(children: [
+                            //           //   Container(
+                            //           //     height: 60,
+                            //           //     width: 200,
+                            //           //     decoration: BoxDecoration(
+                            //           //       color: index == orderProvider.addressIndex ? Theme.of(context).cardColor : Theme.of(context).colorScheme.background.withOpacity(0.2),
+                            //           //       borderRadius: BorderRadius.circular(10),
+                            //           //       border: index == orderProvider.addressIndex ? Border.all(color: Theme.of(context).primaryColor, width: 2) : null,
+                            //           //     ),
+                            //           //     child: Row(children: [
+                            //           //       Padding(
+                            //           //         padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
+                            //           //         child: Icon(
+                            //           //           locationProvider.addressList![index].addressType == 'Home' ? Icons.home_outlined
+                            //           //               : locationProvider.addressList![index].addressType == 'Workplace' ? Icons.work_outline : Icons.list_alt_outlined,
+                            //           //           color: index == orderProvider.addressIndex ? Theme.of(context).primaryColor
+                            //           //               : Theme.of(context).textTheme.bodyLarge!.color,
+                            //           //           size: 30,
+                            //           //         ),
+                            //           //       ),
+                            //           //       Expanded(
+                            //           //         child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
+                            //           //           Text(locationProvider.addressList![index].addressType!, style: rubikRegular.copyWith(
+                            //           //             fontSize: Dimensions.fontSizeSmall, color: ColorResources.getGreyBunkerColor(context),
+                            //           //           )),
+                            //           //           Text(locationProvider.addressList![index].address!, style: rubikRegular, maxLines: 1, overflow: TextOverflow.ellipsis),
+                            //           //         ]),
+                            //           //       ),
+                            //           //       index == orderProvider.addressIndex ? Align(
+                            //           //         alignment: Alignment.topRight,
+                            //           //         child: Icon(Icons.check_circle, color: Theme.of(context).primaryColor),
+                            //           //       ) : const SizedBox(),
+                            //           //     ]),
+                            //           //   ),
+                            //           //   !isAvailable ? Positioned(
+                            //           //     top: 0, left: 0, bottom: 0, right: 0,
+                            //           //     child: Container(
+                            //           //       alignment: Alignment.center,
+                            //           //       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black.withOpacity(0.6)),
+                            //           //       child: Text(
+                            //           //         getTranslated('out_of_coverage_for_this_branch', context)!,
+                            //           //         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            //           //         style: rubikRegular.copyWith(color: Colors.white, fontSize: 10),
+                            //           //       ),
+                            //           //     ),
+                            //           //   ) : const SizedBox(),
+                            //           // ]),
+                            //         ),
+                            //       );
+                            //     },
+                            //   ) : Center(child: Text(getTranslated('no_address_available', context)!))
+                            //       : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor))),
+                            // ),
                           ]) : const SizedBox(),
 
                           // Time Slot
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-                            child: Text(getTranslated('preference_time', context)!, style: rubikMedium),
-                          ),
-                          const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+                          // Padding(
+                          //   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+                          //   child: Text(getTranslated('preference_time', context)!, style: rubikMedium),
+                          // ),
+                          // const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
-                          SizedBox(
-                            height: 50,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
-                              padding: const EdgeInsets.only(left: Dimensions.paddingSizeExtraSmall),
-                              itemCount: 2,
-                              itemBuilder: (context, index) {
-                                return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                                  Radio(
-                                    activeColor: Theme.of(context).primaryColor,
-                                    value: index,
-                                    groupValue: orderProvider.selectDateSlot,
-                                    onChanged: (value)=> orderProvider.updateDateSlot(index),
-                                  ),
-                                  const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                          // SizedBox(
+                          //   height: 50,
+                          //   child: ListView.builder(
+                          //     scrollDirection: Axis.horizontal,
+                          //     shrinkWrap: true,
+                          //     physics: const BouncingScrollPhysics(),
+                          //     padding: const EdgeInsets.only(left: Dimensions.paddingSizeExtraSmall),
+                          //     itemCount: 2,
+                          //     itemBuilder: (context, index) {
+                          //       return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                          //         Radio(
+                          //           activeColor: Theme.of(context).primaryColor,
+                          //           value: index,
+                          //           groupValue: orderProvider.selectDateSlot,
+                          //           onChanged: (value)=> orderProvider.updateDateSlot(index),
+                          //         ),
+                          //         const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 
-                                  Text(index == 0 ? getTranslated('today', context)! : getTranslated('tomorrow', context)!, style: rubikRegular.copyWith(
-                                    color: index == orderProvider.selectDateSlot ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyLarge?.color,
-                                  )),
-                                  const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                                ]);
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: Dimensions.paddingSizeSmall),
+                          //         Text(index == 0 ? getTranslated('today', context)! : getTranslated('tomorrow', context)!, style: rubikRegular.copyWith(
+                          //           color: index == orderProvider.selectDateSlot ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyLarge?.color,
+                          //         )),
+                          //         const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                          //       ]);
+                          //     },
+                          //   ),
+                          // ),
+                          // const SizedBox(height: Dimensions.paddingSizeSmall),
 
-                          SizedBox(
-                            height: 40,
-                            child: orderProvider.timeSlots != null ? orderProvider.timeSlots!.isNotEmpty ? ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
-                              padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
-                              itemCount: orderProvider.timeSlots!.length,
-                              itemBuilder: (context, index) {
-                                return SlotWidget(
-                                  title: (
-                                      index == 0 && orderProvider.selectDateSlot == 0  && Provider.of<SplashProvider>(context, listen: false).isRestaurantOpenNow(context))
-                                      ? getTranslated('now', context)
-                                      : '${DateConverter.dateToTimeOnly(orderProvider.timeSlots![index].startTime!, context)} '
-                                      '- ${DateConverter.dateToTimeOnly(orderProvider.timeSlots![index].endTime!, context)}',
-                                  isSelected: orderProvider.selectTimeSlot == index,
-                                  onTap: () => orderProvider.updateTimeSlot(index),
-                                );
-                              },
-                            ) : Center(child: Text(getTranslated('no_slot_available', context)!)) : const Center(child: CircularProgressIndicator()),
-                          ),
-                          const SizedBox(height: Dimensions.paddingSizeLarge),
+                          // SizedBox(
+                          //   height: 40,
+                          //   child: orderProvider.timeSlots != null ? orderProvider.timeSlots!.isNotEmpty ? ListView.builder(
+                          //     scrollDirection: Axis.horizontal,
+                          //     shrinkWrap: true,
+                          //     physics: const BouncingScrollPhysics(),
+                          //     padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
+                          //     itemCount: orderProvider.timeSlots!.length,
+                          //     itemBuilder: (context, index) {
+                          //       return SlotWidget(
+                          //         title: (
+                          //             index == 0 && orderProvider.selectDateSlot == 0  && Provider.of<SplashProvider>(context, listen: false).isRestaurantOpenNow(context))
+                          //             ? getTranslated('now', context)
+                          //             : '${DateConverter.dateToTimeOnly(orderProvider.timeSlots![index].startTime!, context)} '
+                          //             '- ${DateConverter.dateToTimeOnly(orderProvider.timeSlots![index].endTime!, context)}',
+                          //         isSelected: orderProvider.selectTimeSlot == index,
+                          //         onTap: () => orderProvider.updateTimeSlot(index),
+                          //       );
+                          //     },
+                          //   ) : Center(child: Text(getTranslated('no_slot_available', context)!)) : const Center(child: CircularProgressIndicator()),
+                          // ),
+                          // const SizedBox(height: Dimensions.paddingSizeLarge),
 
-                          PaymentSection(total: (widget.amount ?? 0) + (deliveryCharge ?? 0)),
+                          PaymentWidget(total: (widget.amount ?? 0) + (deliveryCharge ?? 0)),
                           if(ResponsiveHelper.isDesktop(context)) const SizedBox(height: Dimensions.paddingSizeDefault),
 
                           PartialPayView(totalPrice: (widget.amount ?? 0) + (deliveryCharge ?? 0)),

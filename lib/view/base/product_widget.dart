@@ -132,7 +132,7 @@ class ProductWidget extends StatelessWidget {
                             height: 35,
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
-                              color: ColorResources.koffGreen,
+                              color: ColorResources.kColorgreen,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(

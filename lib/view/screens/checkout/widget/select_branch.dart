@@ -3,10 +3,7 @@ import 'package:flutter_restaurant/data/model/response/config_model.dart';
 import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
-import 'package:flutter_restaurant/utill/dimensions.dart';
-import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
-import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:provider/provider.dart';
 
 class BranchButton extends StatelessWidget {
