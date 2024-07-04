@@ -12,7 +12,7 @@ class ProductShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 85,
+      height: 115,
       padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall, horizontal: Dimensions.paddingSizeSmall),
       margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault),
       decoration: BoxDecoration(
@@ -29,7 +29,7 @@ class ProductShimmer extends StatelessWidget {
         enabled: isEnabled,
         child: Row(children: [
           Container(
-            height: 70, width: 85,
+            height: 116, width: 139,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Theme.of(context).shadowColor,
@@ -40,16 +40,20 @@ class ProductShimmer extends StatelessWidget {
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
             Container(height: 15, width: double.maxFinite, color: Theme.of(context).shadowColor),
             const SizedBox(height: 5),
-            const RatingBar(rating: 0.0, size: 12),
-            const SizedBox(height: 10),
+           const Row(
+              children: [
+                   Icon(Icons.star, color: Colors.grey,size: 12,),
+                   Text("0.0",style: TextStyle(color: Colors.grey),)
+              ],
+            ),
+            const SizedBox(height: 5),
             Container(height: 10, width: 50, color: Theme.of(context).shadowColor),
           ])),
           const SizedBox(width: 10),
-
+            
           const Column(children: [
             Icon(Icons.favorite_border, color: Colors.grey),
             Expanded(child: SizedBox()),
-            Icon(Icons.add, color: Colors.black),
           ]),
 
         ]),

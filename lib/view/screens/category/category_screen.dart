@@ -34,35 +34,26 @@ class _CategoryScreenState extends State<CategoryScreen>
   late TabController _tabController;
   int _tabIndex = 0;
   String _type = 'all';
-  int _selectedIndex = 0;
+  late int _selectedIndex;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(
-      length: 1,
+      length: 0,
       vsync: this,
     );
+
+    // Set _selectedIndex directly based on categoryId
+    _selectedIndex = int.parse(widget.categoryId); // Assuming categoryId is integer type
+
     _loadData();
   }
 
   void _loadData() async {
     final categoryProvider =
         Provider.of<CategoryProvider>(context, listen: false);
-    await categoryProvider.getCategoryList(false);
-    categoryProvider.getSubCategoryList(widget.categoryId);
-
-    // Move the passed category to the first position and select it
-    final categoryIndex = categoryProvider.categoryList!.indexWhere(
-        (category) => category.id == widget.categoryId);
-    if (categoryIndex != -1) {
-      final selectedCategory =
-          categoryProvider.categoryList!.removeAt(categoryIndex);
-      categoryProvider.categoryList!.insert(0, selectedCategory);
-      setState(() {
-        _selectedIndex = 0;
-      });
-    }
+     categoryProvider.getSubCategoryList(widget.categoryId);
 
     // Fetch the items for the selected category
     categoryProvider.getCategoryProductList(widget.categoryId, type: _type);
@@ -76,7 +67,7 @@ class _CategoryScreenState extends State<CategoryScreen>
 
   void _onCategorySelected(int index, CategoryProvider category) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = index+1;
     });
 
     // Fetch the items for the selected category
@@ -118,7 +109,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                         itemCount: category.categoryList!.length,
                         itemBuilder: (context, index) {
                           var subCategory = category.categoryList![index];
-                          bool isSelected = index == _selectedIndex;
+                          bool isSelected = index == _selectedIndex-1;
                           return GestureDetector(
                             onTap: () {
                               _onCategorySelected(index, category);
@@ -127,18 +118,19 @@ class _CategoryScreenState extends State<CategoryScreen>
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                               margin: const EdgeInsets.only(right: 10),
                               decoration: BoxDecoration(
-                                color: isSelected ? ColorResources.kOrangeColor : ColorResources.kTextgreyColor,
+                                color: isSelected ? ColorResources.kOrangeColor : ColorResources.kColorgrey,
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Colors.grey),
+                                border: Border.all(color: ColorResources.klgreyColor),
                               ),
                               child: Text(
-                                subCategory.name ?? '',
-                                style: const TextStyle(
-                                  color: ColorResources.kblack,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                ),
-                              ),
+  subCategory.name ?? '',
+  style: TextStyle(
+    color: isSelected ? Colors.white : ColorResources.korgGrey,
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+  ),
+),
+
                             ),
                           );
                         },
@@ -154,14 +146,12 @@ class _CategoryScreenState extends State<CategoryScreen>
       body: Consumer<CategoryProvider>(
         builder: (context, category, child) {
           if (category.isLoading || category.categoryProductList == null) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: ColorResources.kOrangeColor,
-              ),
-            );
+            return ProductShimmer(
+        isEnabled: category.isLoading, // Set isEnabled based on loading state
+      );
           } else {
             return CustomScrollView(
-              physics: BouncingScrollPhysics(),
+              physics:const BouncingScrollPhysics(),
               slivers: [
                 SliverToBoxAdapter(
                   child: Column(
@@ -226,77 +216,83 @@ class _CategoryScreenState extends State<CategoryScreen>
             : 0.0;
 
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
           child: Container(
-            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: ColorResources.kcontainergrey,
               borderRadius: BorderRadius.circular(10),
-            
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: productImage != null
-                        ? DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(productImage),
-                          )
-                        : const DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(Images.placeholderImage),
-                          ),
-                  ),
-                ),
-                SizedBox(width: 10),
+  width: 139,
+  height: 116,
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+    image: productImage != null
+        ? DecorationImage(
+            fit: BoxFit.cover,
+            image: NetworkImage(productImage),
+          )
+        :const  DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage(Images.placeholderImage),
+          ),
+  ),
+),
+
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              title,
+                              style:const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                           const Spacer(),
+                 WishButton(
+                  product: product,
+                  edgeInset: EdgeInsets.zero,
+                  iconSize: 20,
+                ),
+                          ],
                         ),
-                      ),
-                      Row(
-                        children: [
-                          Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
-                          Text(
-                            ' $rating',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                        Row(
+                          children: [
+                           const Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
+                            Text(
+                              ' $rating',
+                              style:const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          description,
+                          style:const TextStyle(fontSize: 8,color: ColorResources.kIncreasedColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          price,
+                          style:const TextStyle(
+                            fontSize: 14,
+                            color: ColorResources.kredcolor,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      ),
-                      Text(
-                        description,
-                        style: TextStyle(fontSize: 12),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        price,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: ColorResources.kOrangeColor,
-                          fontWeight: FontWeight.bold,
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          WishButton(product: product),
-                        ],
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
+               
               ],
             ),
           ),
@@ -306,20 +302,26 @@ class _CategoryScreenState extends State<CategoryScreen>
   }
 
   Widget _productGridShimmer(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      itemCount: 10,
-      physics: NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        crossAxisCount: ResponsiveHelper.isDesktop(context) ? 4 : 2,
-        childAspectRatio: 2,
-      ),
-      itemBuilder: (context, index) {
-        // return ProductShimmer();
-      },
-    );
-  }
+  final category = Provider.of<CategoryProvider>(context);
+
+  return GridView.builder(
+    shrinkWrap: true,
+    itemCount: 10, // Increase itemCount to show more shimmer placeholders
+    physics: NeverScrollableScrollPhysics(),
+    padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+      crossAxisCount: ResponsiveHelper.isDesktop(context) ? 4 : 2,
+      childAspectRatio: 2,
+    ),
+    itemBuilder: (context, index) {
+      return ProductShimmer(
+        isEnabled: category.isLoading, // Set isEnabled based on loading state
+      );
+    },
+  );
+}
+
+
 }
