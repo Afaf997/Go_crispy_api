@@ -92,7 +92,7 @@ class ProductWidgetWeb extends StatelessWidget {
                         children: [
                           const Icon(Icons.star, color: ColorResources.kstarYellow, size: 10),
                           Text(
-                            ' ${product.rating != null && product.rating!.isNotEmpty ? double.parse(product.rating![0].average!) : 0.0}',
+                            ' ${product.rating != null && product.rating!.isNotEmpty ? double.parse(product.rating![0].average!) : 0}',
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8),
                           ),
                           const SizedBox(width: 5),

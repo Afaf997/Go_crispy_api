@@ -11,34 +11,44 @@ import 'custom_snackbar.dart';
 class WishButton extends StatelessWidget {
   final Product? product;
   final EdgeInsetsGeometry edgeInset;
-  const WishButton({Key? key, required this.product, this.edgeInset = EdgeInsets.zero}) : super(key: key);
+  final double iconSize;
+
+  const WishButton({
+    Key? key,
+    required this.product,
+    this.edgeInset = EdgeInsets.zero,
+    this.iconSize = 24.0, // Default size is 24.0
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<WishListProvider>(builder: (context, wishList, child) {
-      return InkWell(
-        onTap: () {
-          if (Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
-            List<int?> productIdList = [];
-            productIdList.add(product!.id);
+    return Consumer<WishListProvider>(
+      builder: (context, wishList, child) {
+        return InkWell(
+          onTap: () {
+            if (Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
+              List<int?> productIdList = [];
+              productIdList.add(product!.id);
 
-            if (wishList.wishIdList.contains(product!.id)) {
-              wishList.removeFromWishList(product!, context);
+              if (wishList.wishIdList.contains(product!.id)) {
+                wishList.removeFromWishList(product!, context);
+              } else {
+                wishList.addToWishList(product!, context);
+              }
             } else {
-              wishList.addToWishList(product!, context);
+              showCustomSnackBar(getTranslated('now_you_are_in_guest_mode', context));
             }
-          } else {
-            showCustomSnackBar(getTranslated('now_you_are_in_guest_mode', context));
-          }
-        },
-        child: Padding(
-          padding: edgeInset,
-          child: Icon(
-            wishList.wishIdList.contains(product!.id) ? Icons.favorite : Icons.favorite,
-            color: wishList.wishIdList.contains(product!.id) ? ColorResources.kredcolor : ColorResources.kWhite,
+          },
+          child: Padding(
+            padding: edgeInset,
+            child: Icon(
+              wishList.wishIdList.contains(product!.id) ? Icons.favorite : Icons.favorite,
+              size: iconSize, // Use the provided iconSize parameter
+              color: wishList.wishIdList.contains(product!.id) ? ColorResources.kredcolor : ColorResources.kfavouriteColor,
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
