@@ -6,12 +6,16 @@ import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
+import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/filter_button_widget.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/base/product_shimmer.dart';
 import 'package:flutter_restaurant/view/base/wish_button.dart';
+import 'package:flutter_restaurant/view/screens/home/widget/cart_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_restaurant/provider/cart_provider.dart';
+import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 
 class CategoryScreen extends StatefulWidget {
   final String categoryId;
@@ -123,14 +127,13 @@ class _CategoryScreenState extends State<CategoryScreen>
                                 border: Border.all(color: ColorResources.klgreyColor),
                               ),
                               child: Text(
-  subCategory.name ?? '',
-  style: TextStyle(
-    color: isSelected ? Colors.white : ColorResources.korgGrey,
-    fontWeight: FontWeight.w400,
-    fontSize: 14,
-  ),
-),
-
+                                subCategory.name ?? '',
+                                style: TextStyle(
+                                  color: isSelected ? Colors.white : ColorResources.korgGrey,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              ),
                             ),
                           );
                         },
@@ -147,11 +150,11 @@ class _CategoryScreenState extends State<CategoryScreen>
         builder: (context, category, child) {
           if (category.isLoading || category.categoryProductList == null) {
             return ProductShimmer(
-        isEnabled: category.isLoading, // Set isEnabled based on loading state
-      );
+              isEnabled: category.isLoading, // Set isEnabled based on loading state
+            );
           } else {
             return CustomScrollView(
-              physics:const BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               slivers: [
                 SliverToBoxAdapter(
                   child: Column(
@@ -215,113 +218,143 @@ class _CategoryScreenState extends State<CategoryScreen>
             ? double.parse(product.rating![0].average ?? '0')
             : 0.0;
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
-          child: Container(
-            decoration: BoxDecoration(
-              color: ColorResources.kcontainergrey,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-  width: 139,
-  height: 116,
-  decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(10),
-    image: productImage != null
-        ? DecorationImage(
-            fit: BoxFit.cover,
-            image: NetworkImage(productImage),
-          )
-        :const  DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage(Images.placeholderImage),
-          ),
-  ),
-),
-
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+        return InkWell(
+          onTap: (){_addToCart(context, product);},
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: ColorResources.kcontainergrey,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 139,
+                      height: 116,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: productImage != null
+                            ? DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(productImage),
+                              )
+                            : const DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage(Images.placeholderImage),
+                              ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Row(
+                              children: [
+                                Text(
+                                  title,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Spacer(),
+                                WishButton(
+                                  product: product,
+                                  edgeInset: EdgeInsets.zero,
+                                  iconSize: 20,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
+                                Text(
+                                  ' $rating',
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                ),
+                              ],
+                            ),
                             Text(
-                              title,
-                              style:const TextStyle(
-                                fontSize: 16,
+                              description,
+                              style: const TextStyle(fontSize: 8, color: ColorResources.kIncreasedColor),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              price,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: ColorResources.kredcolor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                           const Spacer(),
-                 WishButton(
-                  product: product,
-                  edgeInset: EdgeInsets.zero,
-                  iconSize: 20,
-                ),
+                        
                           ],
                         ),
-                        Row(
-                          children: [
-                           const Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
-                            Text(
-                              ' $rating',
-                              style:const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          description,
-                          style:const TextStyle(fontSize: 8,color: ColorResources.kIncreasedColor),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          price,
-                          style:const TextStyle(
-                            fontSize: 14,
-                            color: ColorResources.kredcolor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-               
-              ],
-            ),
+              ),
           ),
         );
       },
     );
   }
 
-  Widget _productGridShimmer(BuildContext context) {
-  final category = Provider.of<CategoryProvider>(context);
-
-  return GridView.builder(
-    shrinkWrap: true,
-    itemCount: 10, // Increase itemCount to show more shimmer placeholders
-    physics: NeverScrollableScrollPhysics(),
-    padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
-      crossAxisCount: ResponsiveHelper.isDesktop(context) ? 4 : 2,
-      childAspectRatio: 2,
-    ),
-    itemBuilder: (context, index) {
-      return ProductShimmer(
-        isEnabled: category.isLoading, // Set isEnabled based on loading state
+  void _addToCart(BuildContext context, var product) {
+    if (ResponsiveHelper.isMobile()) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (con) => CartBottomSheet(
+          product: product,
+          callback: (CartModel cartModel) {
+            showCustomSnackBar('Added to cart', isError: false);
+          },
+        ),
       );
-    },
-  );
-}
+    } else {
+      showDialog(
+        context: context,
+        builder: (con) => Dialog(
+          backgroundColor: Colors.transparent,
+          child: CartBottomSheet(
+            product: product,
+            fromSetMenu: true,
+            callback: (CartModel cartModel) {
+              showCustomSnackBar('Added to cart', isError: false);
+            },
+          ),
+        ),
+      );
+    }
+  }
 
+  Widget _productGridShimmer(BuildContext context) {
+    final category = Provider.of<CategoryProvider>(context);
 
+    return GridView.builder(
+      shrinkWrap: true,
+      itemCount: 10, // Increase itemCount to show more shimmer placeholders
+      physics: NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        crossAxisCount: ResponsiveHelper.isDesktop(context) ? 4 : 2,
+        childAspectRatio: 2,
+      ),
+      itemBuilder: (context, index) {
+        return ProductShimmer(
+          isEnabled: category.isLoading, // Set isEnabled based on loading state
+        );
+      },
+    );
+  }
 }

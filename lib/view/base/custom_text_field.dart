@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/language_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -91,21 +92,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
         focusedBorder: getBorder(),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(width: 1,
-            color: Theme.of(context).primaryColor.withOpacity(0.4),
-          ),
+          borderSide: BorderSide.none
         ),
         enabledBorder: getBorder(),
         contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
         border: getBorder(),
         isDense: true,
         hintText: widget.hintText ?? getTranslated('write_something', context),
-        fillColor: widget.fillColor ?? Theme.of(context).cardColor,
+        fillColor:ColorResources.klgreyColor,
         hintStyle: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor.withOpacity(0.7)),
         filled: true,
         prefixIcon: widget.isShowPrefixIcon ? Padding(
           padding: const EdgeInsets.only(left: Dimensions.paddingSizeLarge, right: Dimensions.paddingSizeSmall),
-          child: Image.asset(widget.prefixIconUrl!, color: Theme.of(context).textTheme.bodyLarge?.color),
+          child: Image.asset(widget.prefixIconUrl!, color:ColorResources.kblack),
         ) : const SizedBox.shrink(),
         prefixIconConstraints: const BoxConstraints(minWidth: 23, maxHeight: 20),
         suffixIcon: widget.isShowSuffixIcon
@@ -143,10 +142,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   OutlineInputBorder getBorder() => OutlineInputBorder(
     borderRadius: BorderRadius.circular(10.0),
-    borderSide: BorderSide(
-      style: widget.isShowBorder ? BorderStyle.solid : BorderStyle.none,
-      width: widget.isShowBorder ?  1 : 0,
-      color: Theme.of(context).primaryColor.withOpacity(0.2),
+    borderSide:const  BorderSide(
+      style: BorderStyle.none,
     ),
   );
 }

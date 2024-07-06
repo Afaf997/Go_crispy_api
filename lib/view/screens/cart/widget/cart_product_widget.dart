@@ -110,13 +110,13 @@ class CartProductWidget extends StatelessWidget {
                 child: FadeInImage.assetNetwork(
                   placeholder: Images.placeholderImage,
                   height: 116,
-                  width: 85,
+                  width: 139,
                   fit: BoxFit.cover,
                   image:
                       '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.productImageUrl}/${cart!.product!.image}',
                   imageErrorBuilder: (context, error, stackTrace) => Image.asset(
                     Images.placeholderImage,
-                    width: 85,
+                    width: 139,
                     height: 116,
                     fit: BoxFit.cover,
                   ),

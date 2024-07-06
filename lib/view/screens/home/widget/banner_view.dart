@@ -18,6 +18,7 @@ class BannerView extends StatefulWidget {
 
 class _BannerViewState extends State<BannerView> {
   int _currentIndex = 0;
+  final CarouselController _controller = CarouselController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +54,7 @@ class _BannerViewState extends State<BannerView> {
             return Column(
               children: [
                 CarouselSlider.builder(
+                  carouselController: _controller,
                   itemCount: bannerList.length,
                   itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
                     final bannerItem = bannerList[itemIndex];
@@ -115,9 +117,7 @@ class _BannerViewState extends State<BannerView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: bannerList.asMap().entries.map((entry) {
                     return GestureDetector(
-                      onTap: () => setState(() {
-                        _currentIndex = entry.key;
-                      }),
+                      onTap: () => _controller.animateToPage(entry.key),
                       child: Container(
                         width: 6,
                         height: 6,

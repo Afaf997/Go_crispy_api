@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/filter_button_widget.dart';
@@ -48,7 +49,8 @@ class _PopularItemScreenState extends State<PopularItemScreen> {
       }
     });
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: getTranslated('popular_item', context)),
+      backgroundColor: ColorResources.kWhite,
+      appBar: CustomAppBar(context: context, title: getTranslated('best_selling', context)),
       body: Consumer<ProductProvider>(
           builder: (context, productProvider, child) {
           return Column(
@@ -81,9 +83,9 @@ class _PopularItemScreenState extends State<PopularItemScreen> {
                           gridDelegate: ResponsiveHelper.isDesktop(context)
                               ? const SliverGridDelegateWithMaxCrossAxisExtent( maxCrossAxisExtent: 195, mainAxisExtent: 250) :
                           SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisSpacing: 5,
-                            mainAxisSpacing: 5,
-                            childAspectRatio: 3.5,
+                              crossAxisSpacing: 10,
+                                                      mainAxisSpacing: 3,
+                                                      childAspectRatio: 1.9,
                             crossAxisCount: ResponsiveHelper.isTab(context) ? 2 : 1,
                           ),
                           itemCount: productProvider.popularProductList!.length,

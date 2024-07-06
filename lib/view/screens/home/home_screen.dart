@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/data/model/response/config_model.dart';
 import 'package:flutter_restaurant/helper/product_type.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/main.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/banner_provider.dart';
+import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
 import 'package:flutter_restaurant/provider/location_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
@@ -80,13 +82,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    final locationProvider = Provider.of<LocationProvider>(context, listen: false);
-
-    locationProvider.checkPermission(() =>
-        locationProvider.getCurrentLocation(context, false).then((currentPosition) {}), context);
-
-    Provider.of<ProductProvider>(context, listen: false).seeMoreReturn();
-    Provider.of<ProductProvider>(context, listen: false).getLatestProductList(true, '1');
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      final locationProvider = Provider.of<LocationProvider>(context, listen: false);
+      // locationProvider.checkPermission(() =>
+        // locationProvider.getCurrentLocation(context, false).then((currentPosition) {}));
+      // Provider.of<ProductProvider>(context, listen: false).seeMoreReturn();
+      Provider.of<ProductProvider>(context, listen: false).getLatestProductList(true, '1');
+    });
   }
 
   @override
@@ -103,14 +105,14 @@ class _HomeScreenState extends State<HomeScreen> {
             right: 0,
             child: Container(
               height: 177,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: ColorResources.kOrangeColor,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(24.0),
                   bottomRight: Radius.circular(24.0),
                 ),
               ),
-              padding: const EdgeInsets.only(right: 18, left: 18, top: 40),
+              padding: EdgeInsets.only(right: 18, left: 18, top: 40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -125,32 +127,41 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.location_on,
                                 color: ColorResources.kWhite,
                               ),
                               GestureDetector(
                                 onTap: () => RouterHelper.getAddressRoute(),
-                                child: Text(
-                                  Provider.of<LocationProvider>(context).address!.isNotEmpty
-                                      ? Provider.of<LocationProvider>(context).address!.length > 35
-                                          ? '${Provider.of<LocationProvider>(context).address!.substring(0, 26)}...'
-                                          : Provider.of<LocationProvider>(context).address!
-                                      : getTranslated('top_to_get_best_food_for_you', context)!,
-                                  style: const TextStyle(
-                                    color: ColorResources.kWhite,
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
+                                child: Consumer<BranchProvider>(
+                                  builder: (context, branchProvider, _) {
+                                    if (branchProvider.getBranchId() == -1) return SizedBox();
+
+                                    List<Branches?> sortedBranches = List.from(branchProvider.branches);
+                                    sortedBranches.sort((a, b) {
+                                      if (a!.id == branchProvider.getBranchId()) return -1;
+                                      if (b!.id == branchProvider.getBranchId()) return 1;
+                                      return 0;
+                                    });
+
+                                    return Text(
+                                      sortedBranches.isNotEmpty ? sortedBranches[0]!.name??'' : '',
+                                      style: TextStyle(
+                                        color: ColorResources.kWhite,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                    );
+                                  },
                                 ),
                               ),
                             ],
                           ),
                         ],
                       ),
-                      const Spacer(),
+                      Spacer(),
                       Image.asset(
                         Images.logo,
                         width: 50.0,
@@ -158,19 +169,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 25),
+                  SizedBox(height: 25),
                   GestureDetector(
                     onTap: () => RouterHelper.getSearchRoute(),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                       decoration: BoxDecoration(
                         color: ColorResources.kWhite,
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.search, color: ColorResources.kTextHintColor, size: kIconSize),
-                          const SizedBox(width: 10),
+                          Icon(Icons.search, color: ColorResources.kTextHintColor, size: kIconSize),
+                          SizedBox(width: 10),
                           Text(
                             getTranslated('search_items_here', context)!,
                             style: kSearchHintTextStyle.copyWith(color: ColorResources.kTextHintColor),
@@ -184,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 177.0),
+            padding: EdgeInsets.only(top: 177.0),
             child: RefreshIndicator(
               onRefresh: () async {
                 Provider.of<OrderProvider>(context, listen: false).changeStatus(true, notify: true);
@@ -197,51 +208,53 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               backgroundColor: ColorResources.kWhite,
               child: SingleChildScrollView(
+                controller: _scrollController,
                 child: Center(
                   child: Column(
                     children: [
-                      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        ResponsiveHelper.isDesktop(context) ? const Padding(
-                          padding: EdgeInsets.only(top: Dimensions.paddingSizeDefault),
-                          child: slider.MainSlider(),
-                        ):  const SizedBox(),
-                        ResponsiveHelper.isDesktop(context) ?  const SizedBox(): const BannerView(),
-                        ResponsiveHelper.isDesktop(context)? const CategoryViewWeb() : const CategoryView(),
-                       
-                        ResponsiveHelper.isDesktop(context) ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                              child: Text(getTranslated('best_selling', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
-                            ),
-                          ],
-                        ) :
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                          child: TitleWidget(title: getTranslated('best_selling', context), onTap: (){
-                            RouterHelper.getPopularItemScreen();
-                          },),
-                        ),
-                        const ProductView(productType: ProductType.popularProduct,),
-                        ResponsiveHelper.isDesktop(context) ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                              child: Text(getTranslated('latest_item', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
-                            ),
-                          ],
-                        ) :
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                          child: TitleWidget(title: getTranslated('latest_item', context)),
-                        ),
-                       const ProductView(productType: ProductType.latestProduct,),
-                        buildLocateContainer(context),
-                      ]),
-                      
-                      // if(ResponsiveHelper.isDesktop(context)) const FooterView(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (ResponsiveHelper.isDesktop(context)) const Padding(
+                            padding: EdgeInsets.only(top: Dimensions.paddingSizeDefault),
+                            child: slider.MainSlider(),
+                          ),
+                          if (!ResponsiveHelper.isDesktop(context)) BannerView(),
+                          if (ResponsiveHelper.isDesktop(context)) CategoryViewWeb() else CategoryView(),
+                          if (ResponsiveHelper.isDesktop(context)) Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                child: Text(getTranslated('best_selling', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
+                              ),
+                            ],
+                          ) else Padding(
+                            padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                            child: TitleWidget(title: getTranslated('best_selling', context), onTap: (){
+                              RouterHelper.getPopularItemScreen();
+                            }),
+                          ),
+                          ProductView(productType: ProductType.popularProduct),
+                          if (ResponsiveHelper.isDesktop(context)) Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                child: Text(getTranslated('latest_item', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
+                              ),
+                            ],
+                          ) else Padding(
+                            padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                            child: TitleWidget(title: getTranslated('latest_item', context)),
+                          ),
+                          ProductView(productType: ProductType.latestProduct),
+                          buildLocateContainer(context),
+                        ],
+                      ),
+                      // if(ResponsiveHelper.isDesktop(context)) FooterView(),
                     ],
                   ),
                 ),
@@ -250,43 +263,39 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Consumer<SplashProvider>(
             builder: (context, splashProvider, _) {
-              return !splashProvider.isRestaurantOpenNow(context) 
-                ? Positioned(
-                    bottom: Dimensions.paddingSizeExtraSmall,
-                    left: 0,
-                    right: 0,
-                    child: Consumer<OrderProvider>(
-                      builder: (context, orderProvider, _) {
-                        return orderProvider.isRestaurantCloseShow 
-                          ? Container(
-                              padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
-                              alignment: Alignment.center,
-                              color: Theme.of(context).primaryColor.withOpacity(0.9),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                                    child: Text(
-                                      '${getTranslated('restaurant_is_close_now', context)}',
-                                      style: rubikRegular.copyWith(fontSize: 12, color: Colors.white),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () => orderProvider.changeStatus(false, notify: true),
-                                    child: const Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-                                      child: Icon(Icons.cancel_outlined, color: Colors.white, size: Dimensions.paddingSizeLarge),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ) 
-                          : const SizedBox();
-                      },
-                    ),
-                  ) 
-                : const SizedBox();
+              return !splashProvider.isRestaurantOpenNow(context) ? Positioned(
+                bottom: Dimensions.paddingSizeExtraSmall,
+                left: 0,
+                right: 0,
+                child: Consumer<OrderProvider>(
+                  builder: (context, orderProvider, _) {
+                    return orderProvider.isRestaurantCloseShow ? Container(
+                      padding: EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
+                      alignment: Alignment.center,
+                      color: Theme.of(context).primaryColor.withOpacity(0.9),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                            child: Text(
+                              '${getTranslated('restaurant_is_close_now', context)}',
+                              style: rubikRegular.copyWith(fontSize: 12, color: Colors.white),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => orderProvider.changeStatus(false, notify: true),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+                              child: Icon(Icons.cancel_outlined, color: Colors.white, size: Dimensions.paddingSizeLarge),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ) : SizedBox();
+                  },
+                ),
+              ) : SizedBox();
             }
           ),
         ],

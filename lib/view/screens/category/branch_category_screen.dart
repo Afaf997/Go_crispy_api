@@ -49,21 +49,6 @@ class _BranchCategoryScreenState extends State<BranchCategoryScreen> with Single
     categoryProvider.getCategoryList(true).then((value){
       categoryProvider.getSubCategoryList('${categoryProvider.selectedSubCategoryId}', );
     });
-
-    tabController?.addListener(() {
-      if(!tabController!.indexIsChanging){
-        if(tabController?.index == 0){
-          type = 'all';
-
-        }else if(tabController?.index == 1){
-          type = 'veg';
-        }else{
-          type = 'non_veg';
-        }
-        categoryProvider.getSubCategoryList('${categoryProvider.selectedSubCategoryId}', type: type);
-
-      }
-    });
   }
   @override
   void dispose() {
@@ -129,33 +114,6 @@ class _BranchCategoryScreenState extends State<BranchCategoryScreen> with Single
                   hintStyle: MaterialStateProperty.all(rubikRegular.copyWith(color: Theme.of(context).hintColor)),
                 ),
               )),
-
-              SliverToBoxAdapter(child: Center(child: TabBar(
-                controller: tabController,
-                labelColor: Colors.black,
-                tabs: [
-                  Tab(child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    const Icon(Icons.all_inbox),
-                    const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-
-                    Text(getTranslated('all', context)!),
-                  ])),
-
-                  Tab(child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Image.asset(Images.getImageUrl('veg'), height: IconTheme.of(context).size),
-                    const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-
-                    Text(getTranslated('veg', context)!),
-                  ])),
-
-                  Tab(child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Image.asset(Images.getImageUrl('non_veg'), height: IconTheme.of(context).size),
-                    const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-
-                    Text(getTranslated('non_veg', context)!),
-                  ])),
-                ],
-              ))),
             ], body: Row(children: [
               Expanded(flex: 1, child: Container(
                 color: Theme.of(context).primaryColor.withOpacity(0.05),
