@@ -198,8 +198,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                               crossAxisCount: ResponsiveHelper.isDesktop(context) ? 6 : ResponsiveHelper.isTab(context) ? 3 : 1,
                             ),
                             itemBuilder: (context, index) => ResponsiveHelper.isDesktop(context)
-                                ? ProductWidgetWebShimmer()
-                                : ProductShimmer(isEnabled: searchProvider.searchProductList == null),
+                                ? CircularProgressIndicator(color: ColorResources.kOrangeColor,)
+                                : CircularProgressIndicator(color: ColorResources.kOrangeColor)
                           ),
                         ),
                       ),

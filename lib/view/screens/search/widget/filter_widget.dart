@@ -83,24 +83,22 @@ class FilterWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.displaySmall,
               ),
 
-              Center(
-                child: SizedBox(
-                  height: 30,
-                  child: ListView.builder(
-                    itemCount: 5,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        child: Icon(
-                          searchProvider.rating < (index + 1) ? Icons.star_border : Icons.star,
-                          size: 20,
-                          color: searchProvider.rating < (index + 1) ? Theme.of(context).hintColor.withOpacity(0.7) : Theme.of(context).primaryColor,
-                        ),
-                        onTap: () => searchProvider.setRating(index + 1),
-                      );
-                    },
-                  ),
+              SizedBox(
+                height: 30,
+                child: ListView.builder(
+                  itemCount: 5,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      child: Icon(
+                        searchProvider.rating < (index + 1) ? Icons.star_border : Icons.star,
+                        size: 20,
+                        color: searchProvider.rating < (index + 1) ? Theme.of(context).hintColor.withOpacity(0.7) : Theme.of(context).primaryColor,
+                      ),
+                      onTap: () => searchProvider.setRating(index + 1),
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 15),
@@ -114,13 +112,14 @@ class FilterWidget extends StatelessWidget {
                 builder: (context, category, child) {
                   return category.categoryList != null
                       ? GridView.builder(
+                      
                         itemCount: category.categoryList!.length,
                         padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: ResponsiveHelper.isDesktop(context)?4:3,
-                            childAspectRatio: 2.0, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                            childAspectRatio: 3.0, crossAxisSpacing: 10, mainAxisSpacing: 12),
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
@@ -132,10 +131,11 @@ class FilterWidget extends StatelessWidget {
                               decoration: BoxDecoration(
                                   border: Border.all(
                                       color: category.selectCategory == index
-                                          ? Colors.transparent
-                                          : ColorResources.getHintColor(context)),
+                                          ? ColorResources.klgreyColor
+                                          : ColorResources.klgreyColor
+                                          ),
                                   borderRadius: BorderRadius.circular(7.0),
-                                  color: category.selectCategory == index ? Theme.of(context).primaryColor : Colors.transparent),
+                                  color: category.selectCategory == index ? Theme.of(context).primaryColor : ColorResources.kColorgrey),
                               child: Text(
                                 category.categoryList![index].name!,
                                 textAlign: TextAlign.center,

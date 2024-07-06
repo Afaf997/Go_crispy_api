@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/repository/auth_repo.dart';
-import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
@@ -48,8 +47,7 @@ class _ContactDetailsState extends State<ContactDetails> {
         String token = response.data["token"];
         await _updateAuthToken(token);
         showCustomSnackBar('Registration successful', isError: false);
-         Navigator.push(context, MaterialPageRoute(builder: (context) =>const BranchListScreen()));
-        // Navigate to the next screen or perform other actions
+         Navigator.push(context, MaterialPageRoute(builder: (context) => BranchListScreen()));
       } else {
         showCustomSnackBar('Registration failed', );
       }
@@ -95,7 +93,6 @@ class _ContactDetailsState extends State<ContactDetails> {
               const ReusableLabelText(text: 'First Name'),
               const SizedBox(height: 15.0),
               CustomTextField(
-                
                 controller: _firstNameController,
                 labelText: 'Enter your First Name',
                 validator: (value) {
@@ -134,7 +131,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                   return null;
                 },
               ),
-              const SizedBox(height: 100.0),
+              const SizedBox(height: 20.0),
               CustomButton(
                 btnTxt: 'Continue',
                 backgroundColor: ColorResources.kOrangeColor,
@@ -178,7 +175,6 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: controller,
       keyboardType: keyboardType,
       decoration: InputDecoration(

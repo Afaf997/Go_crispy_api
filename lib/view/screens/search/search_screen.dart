@@ -13,7 +13,7 @@ import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/view/base/custom_text_field.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
-import 'package:flutter_restaurant/view/base/product_shimmer.dart';
+// import 'package:flutter_restaurant/view/base/product_shimmer.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/base/wish_button.dart';
 import 'package:provider/provider.dart';
@@ -109,9 +109,10 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Consumer<CategoryProvider>(
               builder: (context, category, child) {
                 if (category.isLoading || category.categoryProductList == null) {
-                  return ProductShimmer(
-                    isEnabled: category.isLoading, // Set isEnabled based on loading state
-                  );
+                  return CircularProgressIndicator(color: ColorResources.kOrangeColor,);
+                  // return ProductShimmer(
+                  //   isEnabled: category.isLoading, // Set isEnabled based on loading state
+                  // );
                 } else {
                   return CustomScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -316,11 +317,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final String searchText = searchString ?? _searchController.text.trim();
     if (searchText.isNotEmpty) {
       searchProvider.saveSearchAddress(searchText);
-
-      // Assuming searchProduct method searches products based on the entered text
       searchProvider.searchProduct(searchText, context);
-
-      // Assuming RouterHelper.getSearchResultRoute navigates to search results
       RouterHelper.getSearchResultRoute(searchText.replaceAll(' ', '-'));
     }
   }
