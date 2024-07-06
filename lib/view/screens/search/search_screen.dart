@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/data/model/response/product_model.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
+import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/provider/search_provider.dart';
+import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/view/base/custom_text_field.dart';
+import 'package:flutter_restaurant/view/base/footer_view.dart';
+import 'package:flutter_restaurant/view/base/no_data_screen.dart';
+import 'package:flutter_restaurant/view/base/product_shimmer.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
+import 'package:flutter_restaurant/view/base/wish_button.dart';
 import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -20,6 +27,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   late int _selectedIndex = 0; // Initialize _selectedIndex
+  late String _type = '';
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -27,6 +35,9 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
     Provider.of<SearchProvider>(context, listen: false).initHistoryList();
+    _type = Provider.of<ProductProvider>(context, listen: false).productTypeList.isNotEmpty
+        ? Provider.of<ProductProvider>(context, listen: false).productTypeList[0]
+        : '';
   }
 
   @override
@@ -92,22 +103,54 @@ class _SearchScreenState extends State<SearchScreen> {
             ],
           ),
           const SizedBox(height: 20),
-          _buildCategoryGridView(),
+          _buildCategoryGridView(searchProvider),
           const SizedBox(height: 10),
-          // Expanded(
-          //   // child: _buildRecentSearchSection(searchProvider),
-          // ),
+          Expanded(
+            child: Consumer<CategoryProvider>(
+              builder: (context, category, child) {
+                if (category.isLoading || category.categoryProductList == null) {
+                  return ProductShimmer(
+                    isEnabled: category.isLoading, // Set isEnabled based on loading state
+                  );
+                } else {
+                  return CustomScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: MediaQuery.of(context).size.height < 600
+                                ? MediaQuery.of(context).size.height
+                                : MediaQuery.of(context).size.height - 600,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            child: category.categoryProductList != null
+                                ? category.categoryProductList!.isNotEmpty
+                                    ? _productGrid(category, context)
+                                    : NoDataScreen(isFooter: false)
+                                : NoDataScreen(isFooter: false)
+                          ),
+                        ),
+                      ),
+                      if (ResponsiveHelper.isDesktop(context)) FooterView(),
+                    ],
+                  );
+                }
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildCategoryGridView() {
+  Widget _buildCategoryGridView(SearchProvider searchProvider) {
     return Consumer<CategoryProvider>(
       builder: (context, category, child) {
         return category.categoryList != null && category.categoryList!.isNotEmpty
             ? Container(
-                height:33, 
+                height: 33,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: category.categoryList!.length,
@@ -126,7 +169,15 @@ class _SearchScreenState extends State<SearchScreen> {
 
                         // Trigger logic to fetch or display items associated with the selected category
                         // Example:
-                        // searchProvider.fetchItemsByCategory(category.categoryList![index].id); // Adjust as per your provider logic
+                        // Assuming getCategoryProductList fetches products associated with the selected category
+                        Provider.of<CategoryProvider>(context, listen: false)
+                            .getCategoryProductList(
+                              category.categoryList![index].id.toString(),
+                              type: _type,
+                            );
+
+                        // Optionally, you can also clear the search field or perform any other action here
+                        _searchController.clear();
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -139,11 +190,12 @@ class _SearchScreenState extends State<SearchScreen> {
                           border: Border.all(color: ColorResources.klgreyColor),
                         ),
                         child: Text(
-                          category.categoryList![index].name!,
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+  category.categoryList![index].name!,
+  textAlign: TextAlign.center,
+  maxLines: 2, // Set maxLines to 2 to limit the text to two lines
+  overflow: TextOverflow.ellipsis, // Use ellipsis to indicate overflow
+),
+
                       ),
                     );
                   },
@@ -154,12 +206,128 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  Widget _productGrid(CategoryProvider category, BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: category.categoryProductList!.length,
+      physics: NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        final product = category.categoryProductList![index];
+        String? productImage = product.image != null
+            ? '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.productImageUrl}/${product.image}'
+            : null;
+        final title = product.name ?? 'Unknown';
+        final description = product.description ?? 'No description available';
+        final price = product.price?.toString() ?? 'N/A';
+        final rating = product.rating != null && product.rating!.isNotEmpty
+            ? double.parse(product.rating![0].average ?? '0')
+            : 0.0;
+
+        return InkWell(
+          onTap: () {
+            _addToCart(context, product);
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
+            child: Container(
+              decoration: BoxDecoration(
+                color: ColorResources.kcontainergrey,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 139,
+                    height: 116,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: productImage != null
+                          ? DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(productImage),
+                            )
+                          : const DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage(Images.placeholderImage),
+                            ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                title,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const Spacer(),
+                              WishButton(
+                                product: product,
+                                edgeInset: EdgeInsets.zero,
+                                iconSize: 20,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
+                              Text(
+                                ' $rating',
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            description,
+                            style: const TextStyle(fontSize: 8, color: ColorResources.kIncreasedColor),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            price,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: ColorResources.kredcolor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void _performSearch(SearchProvider searchProvider, {String? searchString}) {
     final String searchText = searchString ?? _searchController.text.trim();
     if (searchText.isNotEmpty) {
       searchProvider.saveSearchAddress(searchText);
+
+      // Assuming searchProduct method searches products based on the entered text
       searchProvider.searchProduct(searchText, context);
+
+      // Assuming RouterHelper.getSearchResultRoute navigates to search results
       RouterHelper.getSearchResultRoute(searchText.replaceAll(' ', '-'));
     }
+  }
+
+  void _addToCart(BuildContext context, Product product) {
+    // Add your logic to handle adding product to cart here
+    // Example:
+    // Provider.of<CartProvider>(context, listen: false).addToCart(product);
   }
 }
