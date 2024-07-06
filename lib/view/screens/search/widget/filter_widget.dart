@@ -127,7 +127,6 @@ class FilterWidget extends StatelessWidget {
                               category.updateSelectCategory(index);
                             },
                             child: Container(
-                              height: 33,
                               alignment: Alignment.center,
                               padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
                               decoration: BoxDecoration(

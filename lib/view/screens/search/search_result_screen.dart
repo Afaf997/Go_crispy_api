@@ -133,6 +133,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                         Expanded(
                           child: Text(
                             '${searchProvider.searchProductList!.length} ${getTranslated('product_found', context)}',
+                          
                           ),
                         ),
                         InkWell(
