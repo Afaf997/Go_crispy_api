@@ -540,5 +540,6 @@
   "enter_your_payment_note": "Enter your payment note",
   "please_submit_a_valid_phone_number": "Please submit a valid phone number.",
   "enter_valid_order_id": "Enter valid order ID",
-  "delivery_address_and_time":"Delivery Address & Time"
+  "delivery_address_and_time":"Delivery Address & Time",
+  "login_and_sign":"Login or create an account"
 }

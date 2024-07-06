@@ -1,5 +1,6 @@
 
 class Images {
+    static const String qatar ='assets/image/qatar_logo.png';
    static const String locate ='assets/image/end-image.png';
   static const String crispyLogo = 'assets/image/crispy-logo.png';
   static const String group = 'assets/image/Group.png';

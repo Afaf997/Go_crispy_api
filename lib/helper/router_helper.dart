@@ -17,6 +17,7 @@ import 'package:flutter_restaurant/view/screens/address/address_screen.dart';
 import 'package:flutter_restaurant/view/screens/auth/create_account_screen.dart';
 import 'package:flutter_restaurant/view/screens/auth/login_screen.dart';
 import 'package:flutter_restaurant/view/screens/auth/maintainance_screen.dart';
+import 'package:flutter_restaurant/view/screens/auth/otp_screen.dart';
 import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
 import 'package:flutter_restaurant/view/screens/category/branch_category_screen.dart';
 import 'package:flutter_restaurant/view/screens/category/category_screen.dart';
@@ -58,7 +59,7 @@ import 'package:provider/provider.dart';
 enum RouteAction{push, pushReplacement, popAndPush, pushNamedAndRemoveUntil}
 
 class RouterHelper {
-
+  static const String otpScreen = '/OtpScreen';
   static const String splashScreen = '/splash';
   static const String languageScreen = '/select-language';
   static const String onBoardingScreen = '/on_boarding';
@@ -111,7 +112,7 @@ class RouterHelper {
   static const String orderSearchScreen = '/order-search';
 
 
-
+   static String getotpRoute({RouteAction? action}) => _navigateRoute(otpScreen, route: action);
   static String getSplashRoute({RouteAction? action}) => _navigateRoute(splashScreen, route: action);
   static String getLanguageRoute(bool isFromMenu, {RouteAction? action}) => _navigateRoute('$languageScreen?page=${isFromMenu ? 'menu' : 'splash'}', route: action);
   static String getOnBoardingRoute({RouteAction? action}) => _navigateRoute(onBoardingScreen, route: action);
@@ -180,6 +181,7 @@ class RouterHelper {
   static String getWalletRoute(bool fromWallet, {String? token, String? flag, RouteAction? action}) => _navigateRoute('$wallet?page=${fromWallet ? 'wallet' : 'loyalty_points'}&&token=$token&&flag=$flag', route: action);
   static String getReferAndEarnRoute() => _navigateRoute(referAndEarn);
   static String getBranchListScreen({RouteAction action = RouteAction.push}) => _navigateRoute(branchListScreen, route: action);
+   static String getotpScreen({RouteAction action = RouteAction.push}) => _navigateRoute(otpScreen, route: action);
   static String getProductImageScreen(Product product)  {
     String productJson = base64Encode(utf8.encode(jsonEncode(product)));
     return _navigateRoute('$productImageScreen?product=$productJson');

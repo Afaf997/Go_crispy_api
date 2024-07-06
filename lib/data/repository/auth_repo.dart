@@ -17,6 +17,23 @@ class AuthRepo {
   final SharedPreferences? sharedPreferences;
 
   AuthRepo({required this.dioClient, required this.sharedPreferences});
+  //phone
+
+ Future<ApiResponse> phoneNumber(String phone) async {
+    try {
+      final response = await dioClient!.post(
+        AppConstants.phoneApi,
+        data: {'phone': phone},
+      );
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
+
+
+
 
   Future<ApiResponse> registration(SignUpModel signUpModel) async {
     try {
