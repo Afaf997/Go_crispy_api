@@ -135,14 +135,205 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       key: _scaffoldKey,
       appBar: (ResponsiveHelper.isDesktop(context) ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar()) : CustomAppBar(context: context, title: getTranslated('checkout', context))) as PreferredSizeWidget?,
 
-      body: _isLoggedIn || splashProvider.configModel!.isGuestCheckout! ?  Column(
-        children: [
-          Expanded(child: CustomScrollView(slivers: [
-
-              SliverToBoxAdapter(child: Consumer<LocationProvider>(builder: (context, locationProvider, _) {
-                return Consumer<OrderProvider>(builder: (context, orderProvider, _) {
+      body: _isLoggedIn || splashProvider.configModel!.isGuestCheckout! ?  Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            Expanded(child: CustomScrollView(slivers: [
+        
+                SliverToBoxAdapter(child: Consumer<LocationProvider>(builder: (context, locationProvider, _) {
+                  return Consumer<OrderProvider>(builder: (context, orderProvider, _) {
+                    double? deliveryCharge = 0;
+        
+                    if(!takeAway && kmWiseCharge) {
+                      deliveryCharge = orderProvider.distance * configModel.deliveryManagement!.shippingPerKm!;
+                      if(deliveryCharge < configModel.deliveryManagement!.minShippingCharge!) {
+                        deliveryCharge = configModel.deliveryManagement!.minShippingCharge;
+                      }
+                    }else if(!takeAway && !kmWiseCharge) {
+                      deliveryCharge = configModel.deliveryCharge;
+                    }
+                    return Center(child: Container(
+                      // margin: EdgeInsets.symmetric(vertical: ResponsiveHelper.isDesktop(context) ? Dimensions.paddingSizeLarge : 0),
+                      alignment: Alignment.topCenter,
+                      width: Dimensions.webScreenWidth,
+                      decoration: ResponsiveHelper.isDesktop(context) ? BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                         
+                      ) : const BoxDecoration(),
+                      child: Column(children: [
+                        if(ResponsiveHelper.isDesktop(context)) Padding(
+                          padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeLarge),
+                          child: Text(getTranslated('checkout', context)!, style:const TextStyle(fontSize: 20,fontWeight: FontWeight.w700)
+                            
+                          ),
+                        ),
+                        SizedBox(height: 15,),
+        
+        
+                        if(splashProvider.isBranchSelectDisable()) Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(getTranslated('delivery_address_and_time', context)!, style:const TextStyle(fontSize: 16,fontWeight:FontWeight.w700 )),
+                            
+                                ],
+                              ),
+                            ),
+        
+                                    Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const BranchButton(isRow: true),
+          ),
+          SizedBox(height: 10,),
+        
+                           if(ResponsiveHelper.isDesktop(context)) const Expanded(flex: 4,child: SizedBox())
+                          ],
+                        ),
+        
+                        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Expanded(flex: 6, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                           // Address
+                            !takeAway ? Column(children: [
+                              Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
+          child: Column(
+            children: [
+        SizedBox(
+          height: 30,
+          child: InkWell(
+            onTap: () => _checkPermission(() => RouterHelper.getAddAddressRoute('checkout', 'add', AddressModel())),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add_circle_rounded,
+                  size: Dimensions.paddingSizeDefault,
+                  color: Theme.of(context).primaryColor,
+                ),
+                SizedBox(width: 8), // Adding some space between the icon and text
+                Text(
+                  getTranslated('add_new_address', context)!,
+                  style: rubikMedium.copyWith(
+                    fontSize: Dimensions.fontSizeDefault,
+                    color:ColorResources.kOrangeColor,
+                    fontWeight:FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+            ],
+          ),
+        ),
+                            ]) : const SizedBox(),
+        
+                           
+                            PaymentWidget(total: (widget.amount ?? 0) + (deliveryCharge ?? 0)),
+                            if(ResponsiveHelper.isDesktop(context)) const SizedBox(height: Dimensions.paddingSizeDefault),
+        
+                            PartialPayView(totalPrice: (widget.amount ?? 0) + (deliveryCharge ?? 0)),
+        
+        
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                Text(getTranslated('add_delivery_note', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
+                                // const SizedBox(height: Dimensions.fontSizeSmall),
+                              
+                                CustomTextField(
+                                    controller: _noteController,
+                                    hintText: getTranslated('additional_note', context),
+                                    maxLines: 5,
+                                    inputType: TextInputType.multiline,
+                                    inputAction: TextInputAction.newline,
+                                    capitalization: TextCapitalization.sentences,
+                                    fillColor:ColorResources.kColorgrey ,
+                                  ),
+                              ]),
+                            ),
+                            // const SizedBox(height: Dimensions.paddingSizeDefault),
+                            if (!ResponsiveHelper.isDesktop(context))
+                              CostSummeryView(
+                                kmWiseCharge: kmWiseCharge,
+                                takeAway: takeAway,
+                                deliveryCharge: deliveryCharge,
+                                subtotal: widget.amount,
+                              ),
+        
+        
+        
+        
+        
+        
+                          ])),
+        
+                          if(ResponsiveHelper.isDesktop(context)) Expanded(
+                            flex: 4,
+                            child: Container(
+                              padding: ResponsiveHelper.isDesktop(context) ?   const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge,vertical: Dimensions.paddingSizeLarge) : const EdgeInsets.all(0),
+                              margin: ResponsiveHelper.isDesktop(context) ?  const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault,vertical: Dimensions.paddingSizeSmall) : const EdgeInsets.all(0),
+                              decoration:ResponsiveHelper.isDesktop(context) ? BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color:ColorResources.cardShadowColor.withOpacity(0.2),
+                                      blurRadius: 10,
+                                    )
+                                  ]
+                              ) : const BoxDecoration(),
+                              child: Column(children: [
+                                CostSummeryView(
+                                  kmWiseCharge: kmWiseCharge,
+                                  takeAway: takeAway,
+                                  deliveryCharge: deliveryCharge,
+                                  subtotal: widget.amount,
+                                ),
+        
+                                if(ResponsiveHelper.isDesktop(context))  ConfirmButtonView(
+                                  noteController: _noteController,
+                                  callBack: _callback,
+                                  cartList: _cartList,
+                                  kmWiseCharge: kmWiseCharge,
+                                  orderType: widget.orderType!,
+                                  orderAmount: widget.amount!,
+                                  couponCode: widget.couponCode,
+                                  deliveryCharge: deliveryCharge,
+                                ),
+        
+                              ]),
+                            ),
+                          ),
+        
+                        ]),
+        
+                      ]),
+                    ));
+                  });
+                })),
+        
+                if(ResponsiveHelper.isDesktop(context)) const SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    SizedBox(height: Dimensions.paddingSizeLarge),
+        
+                    FooterView(),
+                  ]),
+                ),
+        
+              ])),
+        
+            if(!ResponsiveHelper.isDesktop(context))   Consumer<OrderProvider>(
+                builder: (context, orderProvider, _) {
                   double? deliveryCharge = 0;
-
+        
                   if(!takeAway && kmWiseCharge) {
                     deliveryCharge = orderProvider.distance * configModel.deliveryManagement!.shippingPerKm!;
                     if(deliveryCharge < configModel.deliveryManagement!.minShippingCharge!) {
@@ -151,403 +342,32 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   }else if(!takeAway && !kmWiseCharge) {
                     deliveryCharge = configModel.deliveryCharge;
                   }
-                  return Center(child: Container(
-                    margin: EdgeInsets.symmetric(vertical: ResponsiveHelper.isDesktop(context) ? Dimensions.paddingSizeLarge : 0),
-                    alignment: Alignment.topCenter,
-                    width: Dimensions.webScreenWidth,
-                    decoration: ResponsiveHelper.isDesktop(context) ? BoxDecoration(
-                        // color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.circular(10),
-                       
-                    ) : const BoxDecoration(),
-                    child: Column(children: [
-                      if(ResponsiveHelper.isDesktop(context)) Padding(
-                        padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeLarge),
-                        child: Text(getTranslated('checkout', context)!, style:const TextStyle(fontSize: 20,fontWeight: FontWeight.w700)
-                          
-                        ),
+        
+                  return Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge, vertical: Dimensions.paddingSizeSmall),
+                      child: ItemView(
+                        title: getTranslated('total_amount', context)!,
+                        subTitle: PriceConverter.convertPrice(widget.amount! + deliveryCharge!),
+                         titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
                       ),
-                      SizedBox(height: 15,),
-
-
-                      if(splashProvider.isBranchSelectDisable()) Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(getTranslated('delivery_address_and_time', context)!, style:const TextStyle(fontSize: 16,fontWeight:FontWeight.w700 )),
-                          
-                              ],
-                            ),
-                          ),
-
-                                  Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: const BranchButton(isRow: true),
-        ),
-        SizedBox(height: 10,),
-
-                         if(ResponsiveHelper.isDesktop(context)) const Expanded(flex: 4,child: SizedBox())
-                        ],
+                    ),
+                  
+                    ConfirmButtonView(
+                        noteController: _noteController,
+                        callBack: _callback,
+                        cartList: _cartList,
+                        kmWiseCharge: kmWiseCharge,
+                        orderType: widget.orderType!,
+                        orderAmount: widget.amount!,
+                        couponCode: widget.couponCode,
+                        deliveryCharge: deliveryCharge,
                       ),
-
-                      Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        Expanded(flex: 6, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                         // Address
-                          !takeAway ? Column(children: [
-                            Padding(
-  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-  child: Column(
-    children: [
-      SizedBox(
-        height: 30,
-        child: InkWell(
-          onTap: () => _checkPermission(() => RouterHelper.getAddAddressRoute('checkout', 'add', AddressModel())),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.add_circle_rounded,
-                size: Dimensions.paddingSizeDefault,
-                color: Theme.of(context).primaryColor,
-              ),
-              SizedBox(width: 8), // Adding some space between the icon and text
-              Text(
-                getTranslated('add_new_address', context)!,
-                style: rubikMedium.copyWith(
-                  fontSize: Dimensions.fontSizeDefault,
-                  color: Theme.of(context).primaryColor,
-                  fontWeight:FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ],
-  ),
-),
-
-
-                            // SizedBox(
-                            //   height: 60,
-                            //   child: locationProvider.addressList != null ? locationProvider.addressList!.isNotEmpty ? ListView.builder(
-                            //     physics: const BouncingScrollPhysics(),
-                            //     scrollDirection: Axis.horizontal,
-                            //     padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
-                            //     itemCount: locationProvider.addressList!.length,
-                            //     itemBuilder: (context, index) {
-                            //       bool isAvailable = currentBranch == null || (currentBranch!.latitude == null || currentBranch!.latitude!.isEmpty);
-                            //       if(!isAvailable) {
-                            //         double distance = Geolocator.distanceBetween(
-                            //           double.parse(currentBranch!.latitude!), double.parse(currentBranch!.longitude!),
-                            //           double.parse(locationProvider.addressList![index].latitude!), double.parse(locationProvider.addressList![index].longitude!),
-                            //         ) / 1000;
-
-                            //         isAvailable = distance < currentBranch!.coverage!;
-                            //       }
-                            //       return Padding(
-                            //         padding: const EdgeInsets.only(right: Dimensions.paddingSizeLarge, top: Dimensions.paddingSizeSmall),
-                            //         child: InkWell(
-                            //           onTap: () async {
-                            //             if(isAvailable) {
-                            //               orderProvider.setAddressIndex(index);
-
-                            //               if(kmWiseCharge) {
-                            //                 if(orderProvider.selectedPaymentMethod != null){
-                            //                   showCustomSnackBar(getTranslated('your_payment_method_has_been', context), isError: false);
-                            //                 }
-                            //                 orderProvider.savePaymentMethod(index: null, method: null);
-                            //                 orderProvider.changePartialPayment();
-
-                            //                 showDialog(context: context, builder: (context) => Center(child: Container(
-                            //                   height: 100, width: 100, decoration: BoxDecoration(
-                            //                   color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(10),
-                            //                 ),
-                            //                   alignment: Alignment.center,
-                            //                   child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
-                            //                 )), barrierDismissible: false);
-                            //                 orderProvider.getDistanceInMeter(
-                            //                   LatLng(
-                            //                     double.parse(currentBranch!.latitude!),
-                            //                     double.parse(currentBranch!.longitude!),
-                            //                   ),
-                            //                   LatLng(
-                            //                     double.parse(locationProvider.addressList![index].latitude!),
-                            //                     double.parse(locationProvider.addressList![index].longitude!),
-                            //                   ),
-                            //                 ).then((isSuccess) {
-                            //                   context.pop();
-                            //                   if(isSuccess) {
-                            //                     showDialog(context: context, builder: (context) => DeliveryFeeDialog(
-                            //                       amount: widget.amount, distance: orderProvider.distance,
-                            //                     ));
-                            //                   }else {
-                            //                     showCustomSnackBar(getTranslated('failed_to_fetch_distance', context));
-                            //                   }
-                            //                   return isSuccess;
-                            //                 });
-
-                            //               }
-                            //             }
-                            //           },
-                            //           // child: Stack(children: [
-                            //           //   Container(
-                            //           //     height: 60,
-                            //           //     width: 200,
-                            //           //     decoration: BoxDecoration(
-                            //           //       color: index == orderProvider.addressIndex ? Theme.of(context).cardColor : Theme.of(context).colorScheme.background.withOpacity(0.2),
-                            //           //       borderRadius: BorderRadius.circular(10),
-                            //           //       border: index == orderProvider.addressIndex ? Border.all(color: Theme.of(context).primaryColor, width: 2) : null,
-                            //           //     ),
-                            //           //     child: Row(children: [
-                            //           //       Padding(
-                            //           //         padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                            //           //         child: Icon(
-                            //           //           locationProvider.addressList![index].addressType == 'Home' ? Icons.home_outlined
-                            //           //               : locationProvider.addressList![index].addressType == 'Workplace' ? Icons.work_outline : Icons.list_alt_outlined,
-                            //           //           color: index == orderProvider.addressIndex ? Theme.of(context).primaryColor
-                            //           //               : Theme.of(context).textTheme.bodyLarge!.color,
-                            //           //           size: 30,
-                            //           //         ),
-                            //           //       ),
-                            //           //       Expanded(
-                            //           //         child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                            //           //           Text(locationProvider.addressList![index].addressType!, style: rubikRegular.copyWith(
-                            //           //             fontSize: Dimensions.fontSizeSmall, color: ColorResources.getGreyBunkerColor(context),
-                            //           //           )),
-                            //           //           Text(locationProvider.addressList![index].address!, style: rubikRegular, maxLines: 1, overflow: TextOverflow.ellipsis),
-                            //           //         ]),
-                            //           //       ),
-                            //           //       index == orderProvider.addressIndex ? Align(
-                            //           //         alignment: Alignment.topRight,
-                            //           //         child: Icon(Icons.check_circle, color: Theme.of(context).primaryColor),
-                            //           //       ) : const SizedBox(),
-                            //           //     ]),
-                            //           //   ),
-                            //           //   !isAvailable ? Positioned(
-                            //           //     top: 0, left: 0, bottom: 0, right: 0,
-                            //           //     child: Container(
-                            //           //       alignment: Alignment.center,
-                            //           //       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black.withOpacity(0.6)),
-                            //           //       child: Text(
-                            //           //         getTranslated('out_of_coverage_for_this_branch', context)!,
-                            //           //         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                            //           //         style: rubikRegular.copyWith(color: Colors.white, fontSize: 10),
-                            //           //       ),
-                            //           //     ),
-                            //           //   ) : const SizedBox(),
-                            //           // ]),
-                            //         ),
-                            //       );
-                            //     },
-                            //   ) : Center(child: Text(getTranslated('no_address_available', context)!))
-                            //       : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor))),
-                            // ),
-                          ]) : const SizedBox(),
-
-                          // Time Slot
-                          // Padding(
-                          //   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-                          //   child: Text(getTranslated('preference_time', context)!, style: rubikMedium),
-                          // ),
-                          // const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-                          // SizedBox(
-                          //   height: 50,
-                          //   child: ListView.builder(
-                          //     scrollDirection: Axis.horizontal,
-                          //     shrinkWrap: true,
-                          //     physics: const BouncingScrollPhysics(),
-                          //     padding: const EdgeInsets.only(left: Dimensions.paddingSizeExtraSmall),
-                          //     itemCount: 2,
-                          //     itemBuilder: (context, index) {
-                          //       return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                          //         Radio(
-                          //           activeColor: Theme.of(context).primaryColor,
-                          //           value: index,
-                          //           groupValue: orderProvider.selectDateSlot,
-                          //           onChanged: (value)=> orderProvider.updateDateSlot(index),
-                          //         ),
-                          //         const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-
-                          //         Text(index == 0 ? getTranslated('today', context)! : getTranslated('tomorrow', context)!, style: rubikRegular.copyWith(
-                          //           color: index == orderProvider.selectDateSlot ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyLarge?.color,
-                          //         )),
-                          //         const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                          //       ]);
-                          //     },
-                          //   ),
-                          // ),
-                          // const SizedBox(height: Dimensions.paddingSizeSmall),
-
-                          // SizedBox(
-                          //   height: 40,
-                          //   child: orderProvider.timeSlots != null ? orderProvider.timeSlots!.isNotEmpty ? ListView.builder(
-                          //     scrollDirection: Axis.horizontal,
-                          //     shrinkWrap: true,
-                          //     physics: const BouncingScrollPhysics(),
-                          //     padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
-                          //     itemCount: orderProvider.timeSlots!.length,
-                          //     itemBuilder: (context, index) {
-                          //       return SlotWidget(
-                          //         title: (
-                          //             index == 0 && orderProvider.selectDateSlot == 0  && Provider.of<SplashProvider>(context, listen: false).isRestaurantOpenNow(context))
-                          //             ? getTranslated('now', context)
-                          //             : '${DateConverter.dateToTimeOnly(orderProvider.timeSlots![index].startTime!, context)} '
-                          //             '- ${DateConverter.dateToTimeOnly(orderProvider.timeSlots![index].endTime!, context)}',
-                          //         isSelected: orderProvider.selectTimeSlot == index,
-                          //         onTap: () => orderProvider.updateTimeSlot(index),
-                          //       );
-                          //     },
-                          //   ) : Center(child: Text(getTranslated('no_slot_available', context)!)) : const Center(child: CircularProgressIndicator()),
-                          // ),
-                          // const SizedBox(height: Dimensions.paddingSizeLarge),
-
-                          PaymentWidget(total: (widget.amount ?? 0) + (deliveryCharge ?? 0)),
-                          if(ResponsiveHelper.isDesktop(context)) const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                          PartialPayView(totalPrice: (widget.amount ?? 0) + (deliveryCharge ?? 0)),
-
-
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                              Text(getTranslated('add_delivery_note', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                              // const SizedBox(height: Dimensions.fontSizeSmall),
-                            
-                              Container(
-                             decoration: BoxDecoration(
-                                    color:ColorResources.kColorgrey ,
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(color:ColorResources.klgreyColor,)
-                                ),
-                                child: CustomTextField(
-                                    controller: _noteController,
-                                    hintText: getTranslated('additional_note', context),
-                                    maxLines: 5,
-                                    inputType: TextInputType.multiline,
-                                    inputAction: TextInputAction.newline,
-                                    capitalization: TextCapitalization.sentences,
-                                  ),
-                              ),
-                            
-                            ]),
-                          ),
-                          // const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                          if (!ResponsiveHelper.isDesktop(context))
-                            CostSummeryView(
-                              kmWiseCharge: kmWiseCharge,
-                              takeAway: takeAway,
-                              deliveryCharge: deliveryCharge,
-                              subtotal: widget.amount,
-                            ),
-
-
-
-
-
-
-                        ])),
-
-                        if(ResponsiveHelper.isDesktop(context)) Expanded(
-                          flex: 4,
-                          child: Container(
-                            padding: ResponsiveHelper.isDesktop(context) ?   const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge,vertical: Dimensions.paddingSizeLarge) : const EdgeInsets.all(0),
-                            margin: ResponsiveHelper.isDesktop(context) ?  const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault,vertical: Dimensions.paddingSizeSmall) : const EdgeInsets.all(0),
-                            decoration:ResponsiveHelper.isDesktop(context) ? BoxDecoration(
-                                color: Theme.of(context).cardColor,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color:ColorResources.cardShadowColor.withOpacity(0.2),
-                                    blurRadius: 10,
-                                  )
-                                ]
-                            ) : const BoxDecoration(),
-                            child: Column(children: [
-                              CostSummeryView(
-                                kmWiseCharge: kmWiseCharge,
-                                takeAway: takeAway,
-                                deliveryCharge: deliveryCharge,
-                                subtotal: widget.amount,
-                              ),
-
-                              if(ResponsiveHelper.isDesktop(context))  ConfirmButtonView(
-                                noteController: _noteController,
-                                callBack: _callback,
-                                cartList: _cartList,
-                                kmWiseCharge: kmWiseCharge,
-                                orderType: widget.orderType!,
-                                orderAmount: widget.amount!,
-                                couponCode: widget.couponCode,
-                                deliveryCharge: deliveryCharge,
-                              ),
-
-                            ]),
-                          ),
-                        ),
-
-                      ]),
-
-                    ]),
-                  ));
-                });
-              })),
-
-              if(ResponsiveHelper.isDesktop(context)) const SliverFillRemaining(
-                hasScrollBody: false,
-                child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  SizedBox(height: Dimensions.paddingSizeLarge),
-
-                  FooterView(),
-                ]),
-              ),
-
-            ])),
-
-          if(!ResponsiveHelper.isDesktop(context))   Consumer<OrderProvider>(
-              builder: (context, orderProvider, _) {
-                double? deliveryCharge = 0;
-
-                if(!takeAway && kmWiseCharge) {
-                  deliveryCharge = orderProvider.distance * configModel.deliveryManagement!.shippingPerKm!;
-                  if(deliveryCharge < configModel.deliveryManagement!.minShippingCharge!) {
-                    deliveryCharge = configModel.deliveryManagement!.minShippingCharge;
-                  }
-                }else if(!takeAway && !kmWiseCharge) {
-                  deliveryCharge = configModel.deliveryCharge;
+                  ]);
                 }
-
-                return Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge, vertical: Dimensions.paddingSizeSmall),
-                    child: ItemView(
-                      title: getTranslated('total_amount', context)!,
-                      subTitle: PriceConverter.convertPrice(widget.amount! + deliveryCharge!),
-                       titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                
-                  ConfirmButtonView(
-                      noteController: _noteController,
-                      callBack: _callback,
-                      cartList: _cartList,
-                      kmWiseCharge: kmWiseCharge,
-                      orderType: widget.orderType!,
-                      orderAmount: widget.amount!,
-                      couponCode: widget.couponCode,
-                      deliveryCharge: deliveryCharge,
-                    ),
-                ]);
-              }
-          ),
-        ],
+            ),
+          ],
+        ),
       ) : const NotLoggedInScreen(),
     );
   }

@@ -4,17 +4,15 @@ import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:provider/provider.dart';
 
-
 class DeliveryOptionButton extends StatelessWidget {
   final String value;
   final String? title;
-  final IconData icon;
-
+  final String imagePath; // New parameter for image path
   const DeliveryOptionButton({
     Key? key,
     required this.value,
     required this.title,
-    required this.icon,
+    required this.imagePath, // Updated constructor
   }) : super(key: key);
 
   @override
@@ -26,23 +24,25 @@ class DeliveryOptionButton extends StatelessWidget {
         return GestureDetector(
           onTap: () => order.setOrderType(value, notify: true),
           child: Container(
-            width: 120, // Maintain specified width
+            width: 109, // Maintain specified width
             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-            margin: EdgeInsets.symmetric(horizontal: 2), 
+            margin: EdgeInsets.symmetric(horizontal: 3),
             decoration: BoxDecoration(
-              color: ColorResources.kDeliveryBox, 
+              color: ColorResources.kDeliveryBox,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: isSelected ? ColorResources.kOrangeColor : Colors.transparent, // Orange border when selected
+                color: isSelected ? ColorResources.kOrangeColor : Colors.transparent,
                 width: 1,
               ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  icon,
-                  color: isSelected ? ColorResources.kOrangeColor : ColorResources.ktextgrey, // Orange icon color when selected
+                Image.asset(
+                  imagePath,
+                  width: 24, // Adjust width as needed
+                  height: 24, // Adjust height as needed
+                  color: isSelected ? ColorResources.kOrangeColor : ColorResources.ktextgrey, // Color when selected
                 ),
                 SizedBox(width: 8),
                 Flexible(
@@ -50,7 +50,7 @@ class DeliveryOptionButton extends StatelessWidget {
                     title!,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: isSelected ? ColorResources.kOrangeColor : ColorResources.ktextgrey, // Orange title color when selected
+                      color: isSelected ? ColorResources.kOrangeColor : ColorResources.ktextgrey,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),

@@ -53,34 +53,31 @@ class _PaymentWidgetState extends State<PaymentWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          InkWell(
-            onTap: () => toggleDetails(),
-            child: Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: ColorResources.kColorgrey ,
-                border: Border.all(color: ColorResources.klgreyColor),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.credit_score_outlined),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'Add Payment Method',
-                      style: TextStyle(
-                        color: ColorResources.klgreyColor ?? Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
+          Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: ColorResources.kColorgrey ,
+              border: Border.all(color: ColorResources.klgreyColor),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.credit_score_outlined),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Add Payment Method',
+                    style: TextStyle(
+                      color: ColorResources.klgreyColor ?? Colors.black,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  InkWell(
-                    onTap: () => openDialog(context),
-                    child: Icon(Icons.arrow_drop_down),
-                  ),
-                ],
-              ),
+                ),
+                InkWell(
+                  onTap: () => openDialog(context),
+                  child: Icon(Icons.arrow_drop_down),
+                ),
+              ],
             ),
           ),
           if (showDetails)

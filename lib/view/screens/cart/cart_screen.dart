@@ -13,6 +13,7 @@ import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
+import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
@@ -199,7 +200,8 @@ class _CartScreenState extends State<CartScreen> {
 
     return Scaffold(
       backgroundColor: ColorResources.kWhite,
-      appBar: (ResponsiveHelper.isDesktop(context) ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar()) :CustomAppBar(context: context, title: getTranslated('my_cart', context), isBackButtonExist: !ResponsiveHelper.isMobile())) as PreferredSizeWidget?,
+      appBar: (CustomAppBar(context: context, title: getTranslated('my_cart', context)
+      , isBackButtonExist: !ResponsiveHelper.isMobile())) as PreferredSizeWidget?,
       body: Consumer<OrderProvider>(
           builder: (context, order, child) {
           return Consumer<CartProvider>(
@@ -252,7 +254,7 @@ class _CartScreenState extends State<CartScreen> {
                     physics: const BouncingScrollPhysics(),
                     child: Column(children: [
                       Padding(
-                        padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
                         child: Center(child: ConstrainedBox(
                           constraints: BoxConstraints(minHeight: !ResponsiveHelper.isDesktop(context) && height < 600 ? height : height - 400),
                           child: SizedBox(width: 1170, child: Row(
@@ -269,12 +271,7 @@ class _CartScreenState extends State<CartScreen> {
                                 decoration:ResponsiveHelper.isDesktop(context) ? BoxDecoration(
                                     color: Theme.of(context).canvasColor,
                                     borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Theme.of(context).shadowColor,
-                                        blurRadius: 10,
-                                      )
-                                    ]
+                                  
                                 ) : const BoxDecoration(),
                                 margin: ResponsiveHelper.isDesktop(context) ? const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall,vertical: Dimensions.paddingSizeLarge) : const EdgeInsets.all(0),
                                 padding: ResponsiveHelper.isDesktop(context) ? const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge,vertical: Dimensions.paddingSizeLarge) : const EdgeInsets.all(0),
@@ -304,7 +301,7 @@ class _CartScreenState extends State<CartScreen> {
                                              ),
                                             ),
                                           )),
-
+                                           const SizedBox(width: 10,),
                                           InkWell(
                                             onTap: () {
                                               if(_couponController.text.isNotEmpty && !coupon.isLoading) {
@@ -352,8 +349,8 @@ class _CartScreenState extends State<CartScreen> {
                                                               .homeDelivery!
                                                           ? DeliveryOptionButton(
                                                               value: 'delivery',
-                                                              title: getTranslated('delivery', context),
-                                                              icon: Icons.shopping_bag,
+                                                              title: getTranslated('delivery', context), imagePath: Images.box,
+                                                              
                                                             )
                                                           : Container(),
 
@@ -364,7 +361,7 @@ class _CartScreenState extends State<CartScreen> {
                                                           ? DeliveryOptionButton(
                                                               value: 'take_away',
                                                               title: getTranslated('take_away', context),
-                                                              icon: Icons.car_rental,
+                                                             imagePath: Images.shop,
                                                             )
                                                           : Container(),
 
@@ -375,7 +372,7 @@ class _CartScreenState extends State<CartScreen> {
                                                           ? DeliveryOptionButton(
                                                               value: 'car_hop',
                                                               title: getTranslated('car_hop', context),
-                                                              icon: Icons.delivery_dining,
+                                                              imagePath: Images.car,
                                                             )
                                                           : Container(),
                                                     ],
@@ -413,10 +410,10 @@ class _CartScreenState extends State<CartScreen> {
                                   const Divider(color:ColorResources.borderColor,),
 
                                   ItemView(
-                                    title: getTranslated(kmWiseCharge ? 'subtotal' : 'total_amount', context)!,
+                                    title: getTranslated('total_amount', context)!,
                                     subTitle: PriceConverter.convertPrice(total),
-                                    titleStyle:const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color:ColorResources.kredcolor),
-                                    subTitleStyle:const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color:ColorResources.kredcolor),
+                                    titleStyle:const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, ),
+                                    subTitleStyle:const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, ),
                                   ),
 
                                   if(ResponsiveHelper.isDesktop(context)) const SizedBox(height: Dimensions.paddingSizeDefault),
@@ -469,7 +466,7 @@ class CheckOutButtonView extends StatelessWidget {
     ConfigModel configModel = Provider.of<SplashProvider>(context, listen: false).configModel!;
     return ((configModel.selfPickup ?? false) || (configModel.homeDelivery ?? false)) ? Container(
       width: 1170,
-      padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+      padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
       child: CustomButton(btnTxt: getTranslated('continue_checkout', context), onTap: () {
         if(orderAmount < Provider.of<SplashProvider>(context, listen: false).configModel!.minimumOrderValue!) {
           showCustomSnackBar('Minimum order amount is ${PriceConverter.convertPrice(Provider.of<SplashProvider>(context, listen: false).configModel!

@@ -211,7 +211,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: category.categoryProductList!.length,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         final product = category.categoryProductList![index];
         String? productImage = product.image != null

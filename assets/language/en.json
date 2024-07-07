@@ -87,7 +87,7 @@
   "apply": "Apply",
   "subtotal": "Subtotal",
   "delivery_fee": "Delivery Fee",
-  "total_amount": "Total Amount",
+  "total_amount": "Subtotal",
   "place_order": "Place Order",
   "no_data_available": "No data available",
   "order_placed_successfully": "Order placed successfully",

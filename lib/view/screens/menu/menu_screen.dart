@@ -4,6 +4,7 @@ import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -41,7 +42,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 child: Container(
                   width: 1170,
                   padding: const EdgeInsets.symmetric(vertical: 30),
-                  decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+                  decoration:const BoxDecoration(color:ColorResources.kOrangeColor),
                   child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                     SizedBox(height: MediaQuery.of(context).padding.top),
                     Container(

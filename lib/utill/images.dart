@@ -86,6 +86,9 @@ class Images {
   static const  categoryBanner = 'assets/image/category_banner.png';
 
   // for Icon
+  static const String car = 'assets/icon/car.png';
+  static const String box = 'assets/icon/box.png';
+  static const String shop = 'assets/icon/shop.png';
   static const String logo = 'assets/image/logo1.png';
   static const String webAppBarLogo = 'web/assets/logo.jpg';
   static const String marker = 'assets/icon/marker.png';

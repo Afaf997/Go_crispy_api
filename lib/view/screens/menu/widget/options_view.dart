@@ -40,13 +40,6 @@ class OptionsView extends StatelessWidget {
 
               SizedBox(height: ResponsiveHelper.isTab(context) ? 50 : 0),
 
-              SwitchListTile(
-                value: Provider.of<ThemeProvider>(context).darkTheme,
-                onChanged: (bool isActive) =>Provider.of<ThemeProvider>(context, listen: false).toggleTheme(),
-                title: Text(getTranslated('dark_theme', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                activeColor: Theme.of(context).primaryColor,
-              ),
-
               ResponsiveHelper.isTab(context) ? ListTile(
                 onTap: () => RouterHelper.getDashboardRoute('home'),
                 leading: Image.asset(Images.home, width: 20, height: 20, color: Theme.of(context).textTheme.bodyLarge!.color),
