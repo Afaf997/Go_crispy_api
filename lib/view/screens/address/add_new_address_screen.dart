@@ -315,7 +315,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                 height: ResponsiveHelper.isMobile() ? 130 : 250,
                 width: MediaQuery.of(context).size.width,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(Dimensions.paddingSizeSmall),
+                  borderRadius: BorderRadius.circular(32),
                   child: Stack(
                     clipBehavior: Clip.none, children: [
                     GoogleMap(
@@ -414,55 +414,60 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Center(
-                    child: Text(
-                      getTranslated('add_the_location_correctly', context)!,
-                      style:
-                      Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorResources.getGreyBunkerColor(context), fontSize: Dimensions.fontSizeSmall),
-                    )),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 10),
+              //   child: Center(
+              //       child: Text(
+              //         getTranslated('add_the_location_correctly', context)!,
+              //         style:
+              //         Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorResources.getGreyBunkerColor(context), fontSize: Dimensions.fontSizeSmall),
+              //       )),
+              // ),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24.0),
-                child: Text(
-                  getTranslated('label_us', context)!,
-                  style:
-                  Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorResources.getGreyBunkerColor(context), fontSize: Dimensions.fontSizeLarge),
-                ),
-              ),
-              SizedBox(
-                height: 50,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  // physics: BouncingScrollPhysics(),
-                  itemCount: locationProvider.getAllAddressType.length,
-                  itemBuilder: (context, index) => InkWell(
-                    onTap: () {
-                      locationProvider.updateAddressIndex(index, true);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault, horizontal: Dimensions.paddingSizeLarge),
-                      margin: const EdgeInsets.only(right: 17),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            Dimensions.paddingSizeSmall,
-                          ),
-                          border: Border.all(
-                              color:
-                              locationProvider.selectAddressIndex == index ? Theme.of(context).primaryColor : ColorResources.borderColor),
-                          color: locationProvider.selectAddressIndex == index ? Theme.of(context).primaryColor : Colors.white.withOpacity(0.8)),
-                      child: Text(
-                        getTranslated(locationProvider.getAllAddressType[index].toLowerCase(), context)!,
-                        style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                            color: locationProvider.selectAddressIndex == index ? Colors.white : Colors.black),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(vertical: 24.0),
+              //   child: Text(
+              //     getTranslated('label_us', context)!,
+              //     style:
+              //     Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorResources.getGreyBunkerColor(context), fontSize: Dimensions.fontSizeLarge),
+              //   ),
+              // ),
+             const SizedBox(height: 15,),
+            SizedBox(
+  height: 44,
+  child: ListView.builder(
+    shrinkWrap: true,
+    scrollDirection: Axis.horizontal,
+    // physics: BouncingScrollPhysics(),
+    itemCount: locationProvider.getAllAddressType.length,
+    itemBuilder: (context, index) => InkWell(
+      onTap: () {
+        locationProvider.updateAddressIndex(index, true);
+      },
+      child: Container(
+        height: 44,
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 18.0), // Adjusted padding
+        margin: const EdgeInsets.only(right: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15), // Adjusted borderRadius
+          border: Border.all(
+            color: locationProvider.selectAddressIndex == index ? Theme.of(context).primaryColor : ColorResources.borderColor,
+          ),
+          color: locationProvider.selectAddressIndex == index ? Theme.of(context).primaryColor : Colors.white.withOpacity(0.8),
+        ),
+        alignment: Alignment.center, // Center alignment for text
+        child: Text(
+           getTranslated(locationProvider.getAllAddressType[index].toLowerCase(), context)!,
+           style:TextStyle(
+              color: locationProvider.selectAddressIndex == index ? Colors.white : Colors.black,
+            fontSize: 14.0,
+           ),
+        ),
+      ),
+    ),
+  ),
+),
+
             ],
           );
         }
@@ -478,12 +483,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
           decoration: ResponsiveHelper.isDesktop(context) ?  BoxDecoration(
               color: Theme.of(context).canvasColor,
               borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color:ColorResources.cardShadowColor.withOpacity(0.2),
-                  blurRadius: 10,
-                )
-              ]
           ) : const BoxDecoration(),
 
           padding: ResponsiveHelper.isDesktop(context) ?  const EdgeInsets.symmetric(
@@ -504,7 +503,8 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
               // for Address Field
               Text(
                 getTranslated('address_line_01', context)!,
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorResources.getHintColor(context)),
+                // style: Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorResources.getHintColor(context)),
+                style: TextStyle(fontSize: 12,fontWeight: FontWeight.w400),
               ),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               CustomTextField(
@@ -520,7 +520,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
 
               Text(
                 '${getTranslated('street', context)} ${getTranslated('number', context)}',
-                style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
+                style:const TextStyle(fontSize: 12,fontWeight: FontWeight.w400),
               ),
               const SizedBox(height: Dimensions.paddingSizeSmall),
 
@@ -539,7 +539,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                 '${getTranslated('house', context)} / ${
                     getTranslated('floor', context)} ${
                     getTranslated('number', context)}',
-                style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
+                style:const TextStyle(fontSize: 12,fontWeight: FontWeight.w400),
               ),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               Row(children: [
@@ -575,7 +575,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
               // for Contact Person Name
               Text(
                 getTranslated('contact_person_name', context)!,
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorResources.getHintColor(context)),
+                style: const TextStyle(fontSize: 12,fontWeight: FontWeight.w400),
               ),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               CustomTextField(
@@ -593,7 +593,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
               // for Contact Person Number
               Text(
                 getTranslated('contact_person_number', context)!,
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorResources.getHintColor(context)),
+                style: const TextStyle(fontSize: 12,fontWeight: FontWeight.w400),
               ),
               const SizedBox(height: Dimensions.paddingSizeSmall),
 

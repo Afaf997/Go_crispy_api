@@ -242,7 +242,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Create an account link
                         InkWell(
                           onTap: () => RouterHelper.getCreateAccountRoute(),
-                          child: Padding(
+                          child:const Padding(
                             padding: const EdgeInsets.all(
                                 Dimensions.paddingSizeSmall),
                             
