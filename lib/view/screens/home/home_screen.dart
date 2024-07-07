@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Row(
                             children: [
-                              Icon(
+                             const Icon(
                                 Icons.location_on,
                                 color: ColorResources.kWhite,
                               ),
@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                     return Text(
                                       sortedBranches.isNotEmpty ? sortedBranches[0]!.name??'' : '',
-                                      style: TextStyle(
+                                      style:const TextStyle(
                                         color: ColorResources.kWhite,
                                         fontSize: 14.0,
                                         fontWeight: FontWeight.w800,
@@ -173,15 +173,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   GestureDetector(
                     onTap: () => RouterHelper.getSearchRoute(),
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                      padding:const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                       decoration: BoxDecoration(
                         color: ColorResources.kWhite,
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.search, color: ColorResources.kTextHintColor, size: kIconSize),
-                          SizedBox(width: 10),
+                         const Icon(Icons.search, color: ColorResources.kTextHintColor, size: kIconSize),
+                         const SizedBox(width: 10),
                           Text(
                             getTranslated('search_items_here', context)!,
                             style: kSearchHintTextStyle.copyWith(color: ColorResources.kTextHintColor),
@@ -221,8 +221,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: EdgeInsets.only(top: Dimensions.paddingSizeDefault),
                               child: slider.MainSlider(),
                             ),
-                            if (!ResponsiveHelper.isDesktop(context)) BannerView(),
-                            if (ResponsiveHelper.isDesktop(context)) CategoryViewWeb() else CategoryView(),
+                            if (!ResponsiveHelper.isDesktop(context)) const BannerView(),
+                            if (ResponsiveHelper.isDesktop(context))const CategoryViewWeb() else CategoryView(),
                             if (ResponsiveHelper.isDesktop(context)) Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,

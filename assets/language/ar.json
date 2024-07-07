@@ -542,6 +542,7 @@
   "please_submit_a_valid_phone_number": "يرجى تقديم رقم هاتف صالح.",
   "enter_valid_order_id": "أدخل معرف الطلب الصحيح",
   "delivery_address_and_time":"عنوان_التسليم_ووقت_التسليم",
-  "login_and_sign":"تسجيل الدخول أو إنشاء حساب"
+  "login_and_sign":"تسجيل الدخول أو إنشاء حساب",
+  "total":"المجموع"
 
 }

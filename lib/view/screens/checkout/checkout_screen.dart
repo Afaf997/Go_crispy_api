@@ -240,24 +240,44 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         
                             PartialPayView(totalPrice: (widget.amount ?? 0) + (deliveryCharge ?? 0)),
         
-        
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                Text(getTranslated('add_delivery_note', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                                // const SizedBox(height: Dimensions.fontSizeSmall),
-                              
-                                CustomTextField(
-                                    controller: _noteController,
-                                    hintText: getTranslated('additional_note', context),
-                                    maxLines: 5,
-                                    inputType: TextInputType.multiline,
-                                    inputAction: TextInputAction.newline,
-                                    capitalization: TextCapitalization.sentences,
-                                    fillColor:ColorResources.kColorgrey ,
-                                  ),
-                              ]),
-                            ),
+        Padding(
+  padding: const EdgeInsets.all(16.0),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        getTranslated('add_delivery_note', context)!,
+        style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
+      ),
+      // const SizedBox(height: Dimensions.fontSizeSmall),
+
+      CustomTextField(
+  controller: _noteController,
+  hintText: getTranslated('additional_note', context),
+  maxLines: 5,
+  inputType: TextInputType.multiline,
+  inputAction: TextInputAction.newline,
+  capitalization: TextCapitalization.sentences,
+  inputDecoration: InputDecoration(
+    filled: true,
+    fillColor: ColorResources.kColorgrey,
+    hintText: getTranslated('additional_note', context),
+    contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10.0),
+      borderSide:const BorderSide(color:ColorResources.klgreyColor),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10.0),
+      borderSide:const BorderSide(color:ColorResources.klgreyColor),
+    ),
+  ),
+),
+
+    ],
+  ),
+),
+
                             // const SizedBox(height: Dimensions.paddingSizeDefault),
                             if (!ResponsiveHelper.isDesktop(context))
                               CostSummeryView(
@@ -282,12 +302,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               decoration:ResponsiveHelper.isDesktop(context) ? BoxDecoration(
                                   color: Theme.of(context).cardColor,
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color:ColorResources.cardShadowColor.withOpacity(0.2),
-                                      blurRadius: 10,
-                                    )
-                                  ]
+                              
                               ) : const BoxDecoration(),
                               child: Column(children: [
                                 CostSummeryView(
@@ -347,7 +362,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge, vertical: Dimensions.paddingSizeSmall),
                       child: ItemView(
-                        title: getTranslated('total_amount', context)!,
+                        title: getTranslated('total', context)!,
                         subTitle: PriceConverter.convertPrice(widget.amount! + deliveryCharge!),
                          titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
                       ),
