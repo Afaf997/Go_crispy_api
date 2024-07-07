@@ -26,14 +26,14 @@ class _OtpScreenState extends State<OtpScreen> {
         AppConstants.otp,
         data: {'phone': widget.phoneNumber, 'otp': otp},
       );
-   if (response.statusCode == 200) {
+      if (response.statusCode == 200) {
         showCustomSnackBar('OTP verified successfully', isError: false);
         Navigator.push(context, MaterialPageRoute(builder: (context) => ContactDetails(phoneNumber: widget.phoneNumber)));
-      }else{
-        showCustomSnackBar('Failed to verify OTP', );
+      } else {
+        showCustomSnackBar('Failed to verify OTP');
       }
     } catch (e) {
-      showCustomSnackBar('An error occurred: ${e.toString()}', );
+      showCustomSnackBar('An error occurred: ${e.toString()}');
     }
   }
 
@@ -61,7 +61,8 @@ class _OtpScreenState extends State<OtpScreen> {
                   height: 0.99,
                 ),
                 textAlign: TextAlign.center,
-              ), const SizedBox(height: 20,),
+              ),
+              const SizedBox(height: 20),
               const Text(
                 'We have sent you a 4 digit code.',
                 style: TextStyle(fontSize: 12),
@@ -70,7 +71,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 'Please enter it here to verify your number',
                 style: TextStyle(fontSize: 12),
               ),
-             const SizedBox(height: 20,),
+              const SizedBox(height: 20),
               PinCodeTextField(
                 maxLength: 4,
                 autofocus: true,
@@ -80,14 +81,15 @@ class _OtpScreenState extends State<OtpScreen> {
                 pinBoxRadius: screenWidth * 0.03,
                 pinTextStyle: TextStyle(fontSize: screenWidth * 0.05),
                 pinBoxColor: ColorResources.kGrayLogo,
-                defaultBorderColor: ColorResources.kGrayLogo,
+                defaultBorderColor: ColorResources.kGrayLogo, // Use brand guideline color
                 pinBoxDecoration: ProvidedPinBoxDecoration.defaultPinBoxDecoration,
                 onDone: (pin) {
                   setState(() {
                     _otpCode = pin;
                   });
                 },
-              ), const SizedBox(height: 240,),
+              ),
+              const SizedBox(height: 240),
               CustomButton(
                 btnTxt: 'Continue',
                 backgroundColor: ColorResources.kOrangeColor,
@@ -95,10 +97,10 @@ class _OtpScreenState extends State<OtpScreen> {
                   if (_otpCode != null) {
                     _verifyOtp(_otpCode!);
                   } else {
-                    showCustomSnackBar('Please enter the OTP', );
+                    showCustomSnackBar('Please enter the OTP');
                   }
                 },
-              )
+              ),
             ],
           ),
         ),

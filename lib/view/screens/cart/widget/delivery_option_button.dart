@@ -44,7 +44,6 @@ class DeliveryOptionButton extends StatelessWidget {
                   height: 24, // Adjust height as needed
                   color: isSelected ? ColorResources.kOrangeColor : ColorResources.ktextgrey, // Color when selected
                 ),
-                SizedBox(width: 8),
                 Flexible(
                   child: Text(
                     title!,

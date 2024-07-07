@@ -34,7 +34,6 @@ class CustomTextField extends StatefulWidget {
   final InputDecoration? inputDecoration;
   final String? Function(String? )? onValidate;
 
-
   const CustomTextField(
       {Key? key, this.hintText,
       this.controller,
@@ -60,8 +59,8 @@ class CustomTextField extends StatefulWidget {
       this.prefixIconUrl,
       this.isSearch = false,
       this.languageProvider,
-        this.inputDecoration,
-        this.onValidate,
+      this.inputDecoration,
+      this.onValidate,
       }) : super(key: key);
 
   @override
@@ -84,27 +83,22 @@ class _CustomTextFieldState extends State<CustomTextField> {
       textCapitalization: widget.capitalization,
       enabled: widget.isEnabled,
       autofocus: false,
-      //onChanged: widget.isSearch ? widget.languageProvider.searchLanguage : null,
       obscureText: widget.isPassword ? _obscureText : false,
       inputFormatters: widget.inputType == TextInputType.phone ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9+]'))] : null,
       decoration: widget.inputDecoration ?? InputDecoration(
         errorStyle: rubikRegular.copyWith(color: Theme.of(context).colorScheme.error, fontSize: Dimensions.fontSizeSmall),
-        focusedBorder: getBorder(),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide.none
-        ),
-        enabledBorder: getBorder(),
+        focusedBorder: getBorder(ColorResources.klgreyColor),
+        enabledBorder: getBorder(ColorResources.klgreyColor),
         contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
-        border: getBorder(),
+        border: getBorder(ColorResources.klgreyColor),
         isDense: true,
         hintText: widget.hintText ?? getTranslated('write_something', context),
-        fillColor:ColorResources.klgreyColor,
+        fillColor: ColorResources.kColorgrey,
         hintStyle: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor.withOpacity(0.7)),
         filled: true,
         prefixIcon: widget.isShowPrefixIcon ? Padding(
           padding: const EdgeInsets.only(left: Dimensions.paddingSizeLarge, right: Dimensions.paddingSizeSmall),
-          child: Image.asset(widget.prefixIconUrl!, color:ColorResources.kblack),
+          child: Image.asset(widget.prefixIconUrl!, color: ColorResources.kblack),
         ) : const SizedBox.shrink(),
         prefixIconConstraints: const BoxConstraints(minWidth: 23, maxHeight: 20),
         suffixIcon: widget.isShowSuffixIcon
@@ -130,7 +124,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
           : widget.onSubmit != null ? widget.onSubmit!(text) : null,
       onChanged: widget.onChanged as void Function(String)?,
       validator: widget.onValidate != null ? widget.onValidate!: null,
-
     );
   }
 
@@ -140,10 +133,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
     });
   }
 
-  OutlineInputBorder getBorder() => OutlineInputBorder(
+  OutlineInputBorder getBorder(Color borderColor) => OutlineInputBorder(
     borderRadius: BorderRadius.circular(10.0),
-    borderSide:const  BorderSide(
-      style: BorderStyle.none,
+    borderSide: BorderSide(
+      color: borderColor,
+      width: 1.5,
     ),
   );
 }

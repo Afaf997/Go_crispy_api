@@ -4,6 +4,7 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
@@ -41,6 +42,7 @@ class _OrderSearchScreenState extends State<OrderSearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorResources.kWhite,
       appBar: ResponsiveHelper.isDesktop(context) ? const PreferredSize(
         preferredSize: Size.fromHeight(100), child: WebAppBar(),
       ) : CustomAppBar(
@@ -285,27 +287,35 @@ class PhoneNumberFieldView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
+          color: ColorResources.kColorgrey,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.2))
+          border: Border.all(color:ColorResources.klgreyColor,)
       ),
       child: Row(children: [
-        CodePickerWidget(
-          onChanged: (CountryCode value)=> onValueChange(value.code!),
-          initialSelection: countryCode,
-          favorite: [countryCode ?? ''],
-          showDropDownButton: true,
-          padding: EdgeInsets.zero,
-          showFlagMain: true,
-          textStyle: TextStyle(color: Theme.of(context).textTheme.displayLarge!.color),
-
+        Padding(
+          padding: const EdgeInsets.all(8.0), 
+          child: Row(
+            children: [
+              Image.asset(
+                Images.qatar, 
+                width: 24, // Adjust the size as needed
+                height: 24,
+              ),
+             const SizedBox(width: 8),
+             const Text(
+                '+974', // Display the country code
+                style: TextStyle(
+                  fontSize: 16, // Adjust the font size as needed
+                ),
+              ),
+            ],
+          ),
         ),
         Expanded(child: CustomTextField(
           controller: phoneNumberTextController,
           focusNode: phoneFocusNode,
           inputType: TextInputType.phone,
           hintText: getTranslated('number_hint', context),
-
         )),
       ]),
     );

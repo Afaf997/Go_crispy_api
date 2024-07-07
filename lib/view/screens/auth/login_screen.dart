@@ -106,53 +106,54 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 35),
 
                       // Phone Number input
-                      TextFormField(
-                        controller: _phoneController,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          filled: true,
-                          fillColor: ColorResources.kGrayLogo,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: 'Enter your phone number',
-                          hintStyle:const TextStyle(
-                            fontSize: 13,
-                            color: ColorResources.kTextgreyColor,
-                          ),
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.only(left: 16, right: 8),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Image.asset(
-                                  Images.qatar,
-                                  height: 24,
-                                  width: 24,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  _countryCode ?? '',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: ColorResources.kTextgreyColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.phone,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your mobile number';
-                          }
-                          return null;
-                        },
-                      ),
+                  TextFormField(
+  controller: _phoneController,
+  decoration: InputDecoration(
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    filled: true,
+    fillColor: ColorResources.kGrayLogo,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(15),
+      borderSide: BorderSide.none,
+    ),
+    hintText: 'Enter your phone number',
+    hintStyle: const TextStyle(
+      fontSize: 13,
+      color: ColorResources.kTextgreyColor,
+    ),
+    prefixIcon: Padding(
+      padding: const EdgeInsets.only(left: 16, right: 8),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            Images.qatar,
+            height: 24,
+            width: 24,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            _countryCode ?? '',
+            style: TextStyle(
+              fontSize: 16,
+              color: ColorResources.kTextgreyColor,
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+  textAlign: TextAlign.left, // Changed from TextAlign.center to TextAlign.left
+  keyboardType: TextInputType.phone,
+  autovalidateMode: AutovalidateMode.onUserInteraction,
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your mobile number';
+    }
+    return null;
+  },
+),
+
 
                       const SizedBox(height: 300),
 
@@ -172,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
                               ),
                             ),
-                      const SizedBox(height: 20), 
+                      const SizedBox(height: 20),
 
                       SizedBox(
                         width: double.infinity,

@@ -95,6 +95,36 @@ class AuthProvider with ChangeNotifier {
 
     return responseModel;
   }
+// login with_mobilenumber
+  
+  Future<void>loginWithMobileNumber(String phone)async{
+    
+  }
+
+  // phone login  Future<void> _verifyPhoneNumber(String phone) async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   try {
+  //     final Dio dio = Dio();
+  //     final response = await dio.post(
+  //       AppConstants.phoneApi,
+  //       data: {'phone': phone},
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       Navigator.push(context, MaterialPageRoute(builder: (context) => OtpScreen(phoneNumber: phone)));
+  //     } else {
+  //       showCustomSnackBar('Failed to verify phone number');
+  //     }
+  //   } catch (e) {
+  //     showCustomSnackBar('An error occurred: ${e.toString()}');
+  //   } finally {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
 
   // for login section
   String? _loginErrorMessage = '';

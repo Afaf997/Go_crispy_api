@@ -221,85 +221,80 @@ class _CategoryScreenState extends State<CategoryScreen>
         return InkWell(
           onTap: (){_addToCart(context, product);},
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: ColorResources.kcontainergrey,
-                  borderRadius: BorderRadius.circular(10),
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 139,
+                  height: 116,
+                  decoration: BoxDecoration(
+                    color: ColorResources.kcontainergrey,
+                    borderRadius: BorderRadius.circular(10),
+                    image: productImage != null
+                        ? DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(productImage),
+                          )
+                        : const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(Images.placeholderImage),
+                          ),
+                  ),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 139,
-                      height: 116,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: productImage != null
-                            ? DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(productImage),
-                              )
-                            : const DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage(Images.placeholderImage),
-                              ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
                           children: [
-                            Row(
-                              children: [
-                                Text(
-                                  title,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const Spacer(),
-                                WishButton(
-                                  product: product,
-                                  edgeInset: EdgeInsets.zero,
-                                  iconSize: 20,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                const Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
-                                Text(
-                                  ' $rating',
-                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                                ),
-                              ],
-                            ),
                             Text(
-                              description,
-                              style: const TextStyle(fontSize: 8, color: ColorResources.kIncreasedColor),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              price,
+                              title,
                               style: const TextStyle(
-                                fontSize: 14,
-                                color: ColorResources.kredcolor,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                        
+                            const Spacer(),
+                            WishButton(
+                              product: product,
+                              edgeInset: EdgeInsets.zero,
+                              iconSize: 20,
+                            ),
                           ],
                         ),
-                      ),
+                        Row(
+                          children: [
+                            const Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
+                            Text(
+                              ' $rating',
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          description,
+                          style: const TextStyle(fontSize: 8, color: ColorResources.kIncreasedColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          price,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: ColorResources.kredcolor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                    
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
+            ),
           ),
         );
       },

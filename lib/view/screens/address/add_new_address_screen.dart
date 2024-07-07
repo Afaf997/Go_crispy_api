@@ -446,7 +446,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       },
       child: Container(
         height: 44,
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 18.0), // Adjusted padding
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0), // Adjusted padding
         margin: const EdgeInsets.only(right: 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), // Adjusted borderRadius
@@ -461,6 +461,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
            style:TextStyle(
               color: locationProvider.selectAddressIndex == index ? Colors.white : Colors.black,
             fontSize: 14.0,
+            fontWeight: FontWeight.w500
            ),
         ),
       ),
@@ -489,131 +490,124 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
             horizontal: Dimensions.paddingSizeLarge, vertical: Dimensions.paddingSizeSmall,
           ) : EdgeInsets.zero,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeLarge),
-                child: Text(
-                  getTranslated('delivery_address', context)!,
-                  style:
-                  Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorResources.getGreyBunkerColor(context), fontSize: Dimensions.fontSizeLarge),
-                ),
-              ),
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Padding(
+      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
+      child: Text(
+        getTranslated('delivery_address', context)!,
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+      ),
+    ),
 
-              // for Address Field
-              Text(
-                getTranslated('address_line_01', context)!,
-                // style: Theme.of(context).textTheme.displayMedium!.copyWith(color: ColorResources.getHintColor(context)),
-                style: TextStyle(fontSize: 12,fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(height: Dimensions.paddingSizeSmall),
-              CustomTextField(
-                hintText: getTranslated('address_line_02', context),
-                isShowBorder: true,
-                inputType: TextInputType.streetAddress,
-                inputAction: TextInputAction.next,
-                focusNode: _addressNode,
-                nextFocus: _nameNode,
-                controller: _locationTextController,
-              ),
-              const SizedBox(height: Dimensions.paddingSizeLarge),
+    // for Address Field
+    Text(
+      getTranslated('address_line_01', context)!,
+      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+    ),
+    const SizedBox(height: Dimensions.paddingSizeSmall),
+    CustomTextField(
+      hintText: getTranslated('address_line_02', context),
+      isShowBorder: true,
+      inputType: TextInputType.streetAddress,
+      inputAction: TextInputAction.next,
+      focusNode: _addressNode,
+      nextFocus: _nameNode,
+      controller: _locationTextController,
+    ),
+    const SizedBox(height: Dimensions.paddingSizeLarge),
 
-              Text(
-                '${getTranslated('street', context)} ${getTranslated('number', context)}',
-                style:const TextStyle(fontSize: 12,fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(height: Dimensions.paddingSizeSmall),
+    Text(
+      '${getTranslated('street', context)} ${getTranslated('number', context)}',
+      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+    ),
+    const SizedBox(height: Dimensions.paddingSizeSmall),
 
-              CustomTextField(
-                hintText: getTranslated('ex_10_th', context),
-                isShowBorder: true,
-                inputType: TextInputType.streetAddress,
-                inputAction: TextInputAction.next,
-                focusNode: _stateNode,
-                nextFocus: _houseNode,
-                controller: _streetNumberController,
-              ),
-              const SizedBox(height: Dimensions.paddingSizeLarge),
+    CustomTextField(
+      hintText: getTranslated('ex_10_th', context),
+      isShowBorder: true,
+      inputType: TextInputType.streetAddress,
+      inputAction: TextInputAction.next,
+      focusNode: _stateNode,
+      nextFocus: _houseNode,
+      controller: _streetNumberController,
+    ),
+    const SizedBox(height: Dimensions.paddingSizeLarge),
 
-              Text(
-                '${getTranslated('house', context)} / ${
-                    getTranslated('floor', context)} ${
-                    getTranslated('number', context)}',
-                style:const TextStyle(fontSize: 12,fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(height: Dimensions.paddingSizeSmall),
-              Row(children: [
-                Expanded(
-                  child: CustomTextField(
-                    hintText: getTranslated('ex_2', context),
-                    isShowBorder: true,
-                    inputType: TextInputType.streetAddress,
-                    inputAction: TextInputAction.next,
-                    focusNode: _houseNode,
-                    nextFocus: _floorNode,
-                    controller: _houseNumberController,
-                  ),
-                ),
+    Text(
+      '${getTranslated('house', context)} / ${getTranslated('floor', context)} ${getTranslated('number', context)}',
+      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+    ),
+    const SizedBox(height: Dimensions.paddingSizeSmall),
+    Row(children: [
+      Expanded(
+        child: CustomTextField(
+          hintText: getTranslated('ex_2', context),
+          isShowBorder: true,
+          inputType: TextInputType.streetAddress,
+          inputAction: TextInputAction.next,
+          focusNode: _houseNode,
+          nextFocus: _floorNode,
+          controller: _houseNumberController,
+        ),
+      ),
 
-                const SizedBox(width: Dimensions.paddingSizeLarge),
+      const SizedBox(width: Dimensions.paddingSizeLarge),
 
-                Expanded(
-                  child: CustomTextField(
-                    hintText: getTranslated('ex_2b', context),
-                    isShowBorder: true,
-                    inputType: TextInputType.streetAddress,
-                    inputAction: TextInputAction.next,
-                    focusNode: _floorNode,
-                    nextFocus: _nameNode,
-                    controller: _florNumberController,
-                  ),
-                ),
+      Expanded(
+        child: CustomTextField(
+          hintText: getTranslated('ex_2b', context),
+          isShowBorder: true,
+          inputType: TextInputType.streetAddress,
+          inputAction: TextInputAction.next,
+          focusNode: _floorNode,
+          nextFocus: _nameNode,
+          controller: _florNumberController,
+        ),
+      ),
+    ],),
+    const SizedBox(height: Dimensions.paddingSizeLarge),
 
-              ],),
-              const SizedBox(height: Dimensions.paddingSizeLarge),
+    // for Contact Person Name
+    Text(
+      getTranslated('contact_person_name', context)!,
+      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+    ),
+    const SizedBox(height: Dimensions.paddingSizeSmall),
+    CustomTextField(
+      hintText: getTranslated('enter_contact_person_name', context),
+      isShowBorder: true,
+      inputType: TextInputType.name,
+      controller: _contactPersonNameController,
+      focusNode: _nameNode,
+      nextFocus: _numberNode,
+      inputAction: TextInputAction.next,
+      capitalization: TextCapitalization.words,
+    ),
+    const SizedBox(height: Dimensions.paddingSizeLarge),
 
-              // for Contact Person Name
-              Text(
-                getTranslated('contact_person_name', context)!,
-                style: const TextStyle(fontSize: 12,fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(height: Dimensions.paddingSizeSmall),
-              CustomTextField(
-                hintText: getTranslated('enter_contact_person_name', context),
-                isShowBorder: true,
-                inputType: TextInputType.name,
-                controller: _contactPersonNameController,
-                focusNode: _nameNode,
-                nextFocus: _numberNode,
-                inputAction: TextInputAction.next,
-                capitalization: TextCapitalization.words,
-              ),
-              const SizedBox(height: Dimensions.paddingSizeLarge),
+    // for Contact Person Number
+    Text(
+      getTranslated('contact_person_number', context)!,
+      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+    ),
+    const SizedBox(height: Dimensions.paddingSizeSmall),
 
-              // for Contact Person Number
-              Text(
-                getTranslated('contact_person_number', context)!,
-                style: const TextStyle(fontSize: 12,fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(height: Dimensions.paddingSizeSmall),
+    PhoneNumberFieldView(
+      onValueChange: (code) {
+        countryCode = code;
+      },
+      countryCode: countryCode,
+      phoneNumberTextController: _contactPersonNumberController,
+      phoneFocusNode: _numberNode,
+    ),
 
-              PhoneNumberFieldView(
-                onValueChange: (code){
-                  countryCode = code;
-                },
-                countryCode: countryCode,
-                phoneNumberTextController: _contactPersonNumberController,
-                phoneFocusNode: _numberNode,
-              ),
+    const SizedBox(height: Dimensions.paddingSizeLarge),
 
-              const SizedBox(height: Dimensions.paddingSizeLarge),
+    if (ResponsiveHelper.isDesktop(context)) saveButtonWidget(context),
+  ],
+)
 
-              const SizedBox(
-                height: Dimensions.paddingSizeDefault,
-              ),
-              if(ResponsiveHelper.isDesktop(context)) saveButtonWidget(context),
-            ],
-          ),
         );
       }
     );

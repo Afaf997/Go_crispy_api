@@ -100,7 +100,7 @@ class _ContactDetailsState extends State<ContactDetails> {
               const SizedBox(height: 15.0),
               CustomTextField(
                 controller: _firstNameController,
-                labelText: 'Enter your First Name',
+                hintText: 'Enter your first name', // Changed from labelText to hintText
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your first name';
@@ -113,7 +113,7 @@ class _ContactDetailsState extends State<ContactDetails> {
               const SizedBox(height: 15.0),
               CustomTextField(
                 controller: _lastNameController,
-                labelText: 'Enter your last name',
+                hintText: 'Enter your last name', // Changed from labelText to hintText
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your last name';
@@ -126,7 +126,7 @@ class _ContactDetailsState extends State<ContactDetails> {
               const SizedBox(height: 15.0),
               CustomTextField(
                 controller: _emailController,
-                labelText: 'Enter your email',
+                hintText: 'Enter your email', // Changed from labelText to hintText
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -137,7 +137,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                   return null;
                 },
               ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 120.0),
               CustomButton(
                 btnTxt: 'Continue',
                 backgroundColor: ColorResources.kOrangeColor,
@@ -166,13 +166,13 @@ class ReusableLabelText extends StatelessWidget {
 }
 
 class CustomTextField extends StatelessWidget {
-  final String labelText;
+  final String hintText;
   final TextEditingController controller;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
 
   const CustomTextField({
-    required this.labelText,
+    required this.hintText,
     required this.controller,
     this.keyboardType,
     this.validator,
@@ -184,8 +184,8 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       decoration: InputDecoration(
-        labelText: labelText,
-        labelStyle: TextStyle(color: ColorResources.korgGrey, fontSize: 14),
+        hintText: hintText, // Changed from labelText to hintText
+        hintStyle: TextStyle(color: ColorResources.korgGrey, fontSize: 14),
         fillColor: ColorResources.kGrayLogo,
         filled: true,
         border: OutlineInputBorder(
