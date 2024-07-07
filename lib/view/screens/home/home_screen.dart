@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
             right: 0,
             child: Container(
               height: 177,
-              decoration: BoxDecoration(
+              decoration:const BoxDecoration(
                 color: ColorResources.kOrangeColor,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(24.0),
@@ -207,55 +207,58 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
               },
               backgroundColor: ColorResources.kWhite,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                child: Center(
-                  child: Column(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (ResponsiveHelper.isDesktop(context)) const Padding(
-                            padding: EdgeInsets.only(top: Dimensions.paddingSizeDefault),
-                            child: slider.MainSlider(),
-                          ),
-                          if (!ResponsiveHelper.isDesktop(context)) BannerView(),
-                          if (ResponsiveHelper.isDesktop(context)) CategoryViewWeb() else CategoryView(),
-                          if (ResponsiveHelper.isDesktop(context)) Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                child: Text(getTranslated('best_selling', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
-                              ),
-                            ],
-                          ) else Padding(
-                            padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-                            child: TitleWidget(title: getTranslated('best_selling', context), onTap: (){
-                              RouterHelper.getPopularItemScreen();
-                            }),
-                          ),
-                          ProductView(productType: ProductType.popularProduct),
-                          if (ResponsiveHelper.isDesktop(context)) Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-                                child: Text(getTranslated('latest_item', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
-                              ),
-                            ],
-                          ) else Padding(
-                            padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-                            child: TitleWidget(title: getTranslated('latest_item', context)),
-                          ),
-                          ProductView(productType: ProductType.latestProduct),
-                          buildLocateContainer(context),
-                        ],
-                      ),
-                      // if(ResponsiveHelper.isDesktop(context)) FooterView(),
-                    ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (ResponsiveHelper.isDesktop(context)) const Padding(
+                              padding: EdgeInsets.only(top: Dimensions.paddingSizeDefault),
+                              child: slider.MainSlider(),
+                            ),
+                            if (!ResponsiveHelper.isDesktop(context)) BannerView(),
+                            if (ResponsiveHelper.isDesktop(context)) CategoryViewWeb() else CategoryView(),
+                            if (ResponsiveHelper.isDesktop(context)) Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                  child: Text(getTranslated('best_selling', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
+                                ),
+                              ],
+                            ) else Padding(
+                              padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                              child: TitleWidget(title: getTranslated('best_selling', context), onTap: (){
+                                RouterHelper.getPopularItemScreen();
+                              }),
+                            ),
+                            ProductView(productType: ProductType.popularProduct),
+                            if (ResponsiveHelper.isDesktop(context)) Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                  child: Text(getTranslated('latest_item', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
+                                ),
+                              ],
+                            ) else Padding(
+                              padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                              child: TitleWidget(title: getTranslated('latest_item', context)),
+                            ),
+                            ProductView(productType: ProductType.latestProduct),
+                            buildLocateContainer(context),
+                          ],
+                        ),
+                        // if(ResponsiveHelper.isDesktop(context)) FooterView(),
+                      ],
+                    ),
                   ),
                 ),
               ),

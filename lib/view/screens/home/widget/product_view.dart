@@ -90,14 +90,14 @@ class ProductView extends StatelessWidget {
 
         return productType == ProductType.popularProduct
             ? SizedBox(
-              height: 155,
+              height: 135,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
                 itemCount: productList.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                     width: 195,
                     child: ProductWidgetWeb(product: productList![index], fromPopularItem: true),
                   );
@@ -111,7 +111,7 @@ class ProductView extends StatelessWidget {
       ? const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 195, mainAxisExtent: 250)
       : SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisSpacing: 10,
-          mainAxisSpacing: 3,
+          mainAxisSpacing: 16,
           childAspectRatio: 1.9,
           crossAxisCount: ResponsiveHelper.isTab(context) ? 2 : 1,
         ),
@@ -128,7 +128,7 @@ class ProductView extends StatelessWidget {
         : ProductWidget(product: productList![index]);
   },
 ),
-const SizedBox(height: 30),
+const SizedBox(height: 15),
 
 
           productList.isNotEmpty ? Padding(

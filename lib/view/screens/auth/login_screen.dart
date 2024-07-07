@@ -13,6 +13,8 @@ import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/auth/otp_screen.dart';
+import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
+import 'package:flutter_restaurant/view/screens/dashboard/dashboard_screen.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -170,12 +172,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
                               ),
                             ),
-                      const SizedBox(height: 20), // Added space
+                      const SizedBox(height: 20), 
 
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen(pageIndex: 0,)));
+                          },
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(

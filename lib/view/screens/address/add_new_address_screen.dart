@@ -125,6 +125,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: ColorResources.kWhite,
       appBar:(ResponsiveHelper.isDesktop(context) ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar()) : CustomAppBar(context: context, title: widget.isEnableUpdate ? getTranslated('update_address', context) : getTranslated('add_new_address', context))) as PreferredSizeWidget?,
       body: Consumer<LocationProvider>(
         builder: (context, locationProvider, child) {

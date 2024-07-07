@@ -35,207 +35,204 @@ class ProductWidget extends StatelessWidget {
       String productImage =
           '${Provider.of<SplashProvider>(context, listen: false).baseUrls?.productImageUrl ?? ''}/${product.image ?? ''}';
 
-      return Padding(
-        padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
-        child: InkWell(
-          onTap: isAvailable
-              ? () {
-                  ResponsiveHelper.isMobile()
-                      ? showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (con) => CartBottomSheet(
-                            product: product,
-                            callback: (CartModel cartModel) {
-                              showCustomSnackBar(
-                                  getTranslated('added_to_cart', context),
-                                  isError: false);
-                            },
+      return InkWell(
+        onTap: isAvailable
+            ? () {
+                ResponsiveHelper.isMobile()
+                    ? showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (con) => CartBottomSheet(
+                          product: product,
+                          callback: (CartModel cartModel) {
+                            showCustomSnackBar(
+                                getTranslated('added_to_cart', context),
+                                isError: false);
+                          },
+                        ),
+                      )
+                    : showDialog(
+                        context: context,
+                        builder: (con) => Dialog(
+                              backgroundColor: Colors.transparent,
+                              child: CartBottomSheet(
+                                product: product,
+                                callback: (CartModel cartModel) {
+                                  showCustomSnackBar(
+                                      getTranslated('added_to_cart', context),
+                                      isError: false);
+                                },
+                              ),
+                            ));
+              }
+            : null,
+        child: Center(
+          child: Container(
+            width: 354,
+            height: 191,
+            decoration: BoxDecoration(
+              color: ColorResources.kmaincontainergrey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: Images.placeholderImage,
+                        height: 144,
+                        width: 354,
+                        fit: BoxFit.cover,
+                        image: productImage,
+                        imageErrorBuilder: (c, o, s) => Image.asset(
+                            Images.placeholderImage,
+                            height: 144,
+                            width: 354,
+                            fit: BoxFit.cover),
+                      ),
+                    ),
+                    if (!isAvailable)
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.black.withOpacity(0.6)),
+                          child: Text(
+                            getTranslated('not_available_now_break', context)!,
+                            textAlign: TextAlign.center,
+                            style: rubikRegular.copyWith(
+                              color: Colors.white,
+                              fontSize: 8,
+                            ),
                           ),
-                        )
-                      : showDialog(
-                          context: context,
-                          builder: (con) => Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: CartBottomSheet(
-                                  product: product,
-                                  callback: (CartModel cartModel) {
-                                    showCustomSnackBar(
-                                        getTranslated('added_to_cart', context),
-                                        isError: false);
-                                  },
-                                ),
-                              ));
-                }
-              : null,
-          child: Center(
-            child: Container(
-              width: 354,
-              height: 191,
-              decoration: BoxDecoration(
-                color: ColorResources.kmaincontainergrey,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: FadeInImage.assetNetwork(
-                          placeholder: Images.placeholderImage,
-                          height: 144,
-                          width: 354,
-                          fit: BoxFit.cover,
-                          image: productImage,
-                          imageErrorBuilder: (c, o, s) => Image.asset(
-                              Images.placeholderImage,
-                              height: 144,
-                              width: 354,
-                              fit: BoxFit.cover),
                         ),
                       ),
-                      if (!isAvailable)
-                        Positioned(
-                          top: 0,
-                          left: 0,
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.black.withOpacity(0.6)),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: WishButton(
+                          product: product, edgeInset: const EdgeInsets.all(5)),
+                    ),
+                    if (product.discount != null &&
+                        product.discountType == 'percent')
+                      Positioned(
+                        top: 100,
+                        left: 4,
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: ColorResources.kColorgreen,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            '${product.discount}%',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    Positioned(
+                      bottom: 10,
+                      right: 10,
+                      child: Image.asset(
+                        Images.group,
+                        height: 18,
+                        width: 25,
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              product.name!,
+                              style: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                        if (product.price! > discountedPrice!)
+                          CustomDirectionality(
                             child: Text(
-                              getTranslated('not_available_now_break', context)!,
-                              textAlign: TextAlign.center,
-                              style: rubikRegular.copyWith(
-                                color: Colors.white,
-                                fontSize: 8,
+                              PriceConverter.convertPrice(startingPrice),
+                              style: rubikMedium.copyWith(
+                                color: Theme.of(context)
+                                    .hintColor
+                                    .withOpacity(0.7),
+                                decoration: TextDecoration.lineThrough,
+                                fontSize: Dimensions.fontSizeExtraSmall,
                               ),
                             ),
                           ),
-                        ),
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: WishButton(
-                            product: product, edgeInset: const EdgeInsets.all(5)),
-                      ),
-                      if (product.discount != null &&
-                          product.discountType == 'percent')
-                        Positioned(
-                          top: 100,
-                          left: 4,
-                          child: Container(
-                            width: 35,
-                            height: 35,
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: ColorResources.kColorgreen,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              '${product.discount}%',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
+                        Row(
+                          children: [
+                            if (product.rating != null && product.rating!.isNotEmpty)
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.star,
+                                    color: ColorResources.kstarYellow,
+                                    size: 9,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    ' ${product.rating![0].average}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 9,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ),
-                        ),
-                      Positioned(
-                        bottom: 10,
-                        right: 10,
-                        child: Image.asset(
-                          Images.group,
-                          height: 18,
-                          width: 25,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                product.name!,
-                                style: const TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
+                            const SizedBox(width: 5),
+                            Expanded(
+                              child: Text(
+                                product.description!,
+                                style: const TextStyle(fontSize: 8),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                            ],
-                          ),
-                          if (product.price! > discountedPrice!)
+                            ),
+                            Spacer(),
                             CustomDirectionality(
                               child: Text(
-                                PriceConverter.convertPrice(startingPrice),
-                                style: rubikMedium.copyWith(
-                                  color: Theme.of(context)
-                                      .hintColor
-                                      .withOpacity(0.7),
-                                  decoration: TextDecoration.lineThrough,
-                                  fontSize: Dimensions.fontSizeExtraSmall,
+                                PriceConverter.convertPrice(discountedPrice),
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                             ),
-                          Row(
-                            children: [
-                              if (product.rating != null && product.rating!.isNotEmpty)
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.star,
-                                      color: ColorResources.kstarYellow,
-                                      size: 9,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      ' ${product.rating![0].average}',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 9,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              const SizedBox(width: 5),
-                              Expanded(
-                                child: Text(
-                                  product.description!,
-                                  style: const TextStyle(fontSize: 8),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              Spacer(),
-                              CustomDirectionality(
-                                child: Text(
-                                  PriceConverter.convertPrice(discountedPrice),
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

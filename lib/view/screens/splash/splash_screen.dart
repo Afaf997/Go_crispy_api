@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/main.dart';
-import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/onboarding_provider.dart';
@@ -19,6 +17,7 @@ import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   final String? routeTo;
@@ -58,55 +57,56 @@ class _SplashScreenState extends State<SplashScreen> {
     Provider.of<SplashProvider>(context, listen: false).initSharedData();
     Provider.of<CartProvider>(context, listen: false).getCartData();
 
-   _route();
-
+    _route();
   }
 
   @override
   void dispose() {
     super.dispose();
-
     _onConnectivityChanged.cancel();
   }
 
-  void _route() {
+  void _route() async {
     final SplashProvider splashProvider = Provider.of<SplashProvider>(context, listen: false);
-    splashProvider.initConfig(context).then((bool isSuccess) {
+    splashProvider.initConfig(context).then((bool isSuccess) async {
       if (isSuccess) {
-        Timer(const Duration(seconds: 1), () async {
-          final config = splashProvider.configModel!;
-          double? minimumVersion;
+        final config = splashProvider.configModel!;
+        double? minimumVersion;
 
-          //
-          if(defaultTargetPlatform == TargetPlatform.android  && config.playStoreConfig != null) {
-            minimumVersion = config.playStoreConfig!.minVersion;
-
-          }else if(defaultTargetPlatform == TargetPlatform.iOS  &&  config.appStoreConfig != null) {
-            minimumVersion = config.appStoreConfig!.minVersion;
-          }
-
-          if(config.maintenanceMode!) {
-            RouterHelper.getMaintainRoute(action: RouteAction.pushNamedAndRemoveUntil);
-
-          }else if(Version.parse('$minimumVersion') > Version.parse(AppConstants.appVersion)) {
-            RouterHelper.getUpdateRoute(action: RouteAction.pushNamedAndRemoveUntil);
-          }else if (Provider.of<AuthProvider>(Get.context!, listen: false).isLoggedIn()) {
-            Provider.of<AuthProvider>(Get.context!, listen: false).updateToken();
-            RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
-          } else {
-            if(widget.routeTo != null){
-              context.pushReplacement(widget.routeTo!);
-            }else{
-              ResponsiveHelper.isMobile() && Provider.of<OnBoardingProvider>(Get.context!, listen: false).showOnBoardingStatus
-                  ? RouterHelper.getLanguageRoute(false, action: RouteAction.pushNamedAndRemoveUntil) : Provider.of<BranchProvider>(Get.context!, listen: false).getBranchId() != -1
-                  ? RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil) : RouterHelper.getBranchListScreen(action: RouteAction.pushNamedAndRemoveUntil);
-
-            }
-          }
-
+        // Check the platform and set the minimum version
+        if (defaultTargetPlatform == TargetPlatform.android && config.playStoreConfig != null) {
+          minimumVersion = config.playStoreConfig!.minVersion;
+        } else if (defaultTargetPlatform == TargetPlatform.iOS && config.appStoreConfig != null) {
+          minimumVersion = config.appStoreConfig!.minVersion;
         }
 
-        );
+        // Directly access shared preferences to check for the token
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? token = prefs.getString(AppConstants.token);
+
+        // If the token is present, navigate to the dashboard immediately
+        if (token != null && token.isNotEmpty) {
+          RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
+        } else {
+          // Otherwise, proceed with the normal flow after the delay
+          Timer(const Duration(seconds: 1), () async {
+            if (config.maintenanceMode!) {
+              RouterHelper.getMaintainRoute(action: RouteAction.pushNamedAndRemoveUntil);
+            } else if (Version.parse('$minimumVersion') > Version.parse(AppConstants.appVersion)) {
+              RouterHelper.getUpdateRoute(action: RouteAction.pushNamedAndRemoveUntil);
+            } else {
+              if (widget.routeTo != null) {
+                context.pushReplacement(widget.routeTo!);
+              } else {
+                ResponsiveHelper.isMobile() && Provider.of<OnBoardingProvider>(Get.context!, listen: false).showOnBoardingStatus
+                    ? RouterHelper.getLanguageRoute(false, action: RouteAction.pushNamedAndRemoveUntil)
+                    : Provider.of<BranchProvider>(Get.context!, listen: false).getBranchId() != -1
+                        ? RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil)
+                        : RouterHelper.getBranchListScreen(action: RouteAction.pushNamedAndRemoveUntil);
+              }
+            }
+          });
+        }
       }
     });
   }
@@ -115,17 +115,23 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _globalKey,
-      backgroundColor:ColorResources.kOrangeColor,
+      backgroundColor: ColorResources.kOrangeColor,
       body: Center(
         child: Consumer<SplashProvider>(builder: (context, splash, child) {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ResponsiveHelper.isWeb() ? FadeInImage.assetNetwork(
-                placeholder: Images.placeholderRectangle, height: 165,
-                image: splash.baseUrls != null ? '${splash.baseUrls!.restaurantImageUrl}/${splash.configModel!.restaurantLogo}' : '',
-                imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholderRectangle, height: 165),
-              ) : Image.asset(Images.logo, height: 150),
+              ResponsiveHelper.isWeb()
+                  ? FadeInImage.assetNetwork(
+                      placeholder: Images.placeholderRectangle,
+                      height: 165,
+                      image: splash.baseUrls != null
+                          ? '${splash.baseUrls!.restaurantImageUrl}/${splash.configModel!.restaurantLogo}'
+                          : '',
+                      imageErrorBuilder: (c, o, s) =>
+                          Image.asset(Images.placeholderRectangle, height: 165),
+                    )
+                  : Image.asset(Images.logo, height: 150),
             ],
           );
         }),

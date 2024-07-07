@@ -1,6 +1,7 @@
+import 'package:flutter_restaurant/helper/router_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_restaurant/data/repository/auth_repo.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
@@ -9,15 +10,14 @@ import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
 
 class ContactDetails extends StatefulWidget {
   final String phoneNumber;
-   ContactDetails({
+
+  ContactDetails({
     Key? key,
-    required this.phoneNumber, this.authRepo,
+    required this.phoneNumber,
   }) : super(key: key);
-   final AuthRepo? authRepo;
 
   @override
   _ContactDetailsState createState() => _ContactDetailsState();
-   
 }
 
 class _ContactDetailsState extends State<ContactDetails> {
@@ -45,21 +45,27 @@ class _ContactDetailsState extends State<ContactDetails> {
 
       if (response.statusCode == 200) {
         String token = response.data["token"];
-        await _updateAuthToken(token);
-        showCustomSnackBar('Registration successful', isError: false);
-         Navigator.push(context, MaterialPageRoute(builder: (context) => BranchListScreen()));
+        await _saveToken(token);
+        showCustomSnackBar('Registration successful');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => BranchListScreen()));
       } else {
-        showCustomSnackBar('Registration failed', );
+        showCustomSnackBar('Registration failed');
       }
     } catch (e) {
-      showCustomSnackBar('An error occurred: ${e.toString()}', );
+      showCustomSnackBar('An error occurred: ${e.toString()}');
     }
   }
 
-  Future<void> _updateAuthToken(String token) async {
+  Future<void> _saveToken(String token) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? existingToken = prefs.getString('token');
 
-    widget.authRepo?.saveUserToken(token);
-    await widget.authRepo?.updateToken();
+    if (existingToken == null) {
+      await prefs.setString('token', token);
+    } else {
+      await prefs.remove('token');
+      await prefs.setString('token', token);
+    }
   }
 
   @override

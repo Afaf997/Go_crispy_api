@@ -43,8 +43,7 @@ class ProductWidgetWeb extends StatelessWidget {
           onTap: isAvailable ? () => _addToCart(context, cartIndex) : null,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.35,
-            height: 125,
-            margin: const EdgeInsets.all(5.0),
+            margin: const EdgeInsets.all(2.0),
             decoration: BoxDecoration(
               color: ColorResources.kcontainergrey,
               borderRadius: BorderRadius.circular(10),
@@ -66,7 +65,7 @@ class ProductWidgetWeb extends StatelessWidget {
                     : Image.asset('assets/placeholder.png', fit: BoxFit.cover, height: 85, width: double.infinity),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(8,2,8,2),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
