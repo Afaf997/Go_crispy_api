@@ -19,6 +19,7 @@ import 'package:flutter_restaurant/view/base/custom_dialog.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/branch/widget/bracnh_cart_view.dart';
+import 'package:flutter_restaurant/view/screens/dashboard/dashboard_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -253,13 +254,13 @@ class _BranchListScreenState extends State<BranchListScreen> {
       }
     );
   }
-
-  void _setBranch() {
+void _setBranch() {
 
     final branchProvider = Provider.of<BranchProvider>(context, listen: false);
 
       branchProvider.setBranch(branchProvider.selectedBranchId!);
-      RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
+      // RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
+       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardScreen(pageIndex: 0,)));
       showCustomSnackBar(getTranslated('branch_successfully_selected', context), isError: false);
 
   }

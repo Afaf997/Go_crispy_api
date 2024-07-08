@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:flutter_restaurant/view/screens/auth/details.dart';
+import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
+import 'package:flutter_restaurant/view/screens/dashboard/dashboard_screen.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phoneNumber;
@@ -20,21 +23,33 @@ class _OtpScreenState extends State<OtpScreen> {
   String? _otpCode;
 
   Future<void> _verifyOtp(String otp) async {
-    try {
-      final Dio dio = Dio();
-      final response = await dio.post(
-        AppConstants.otp,
-        data: {'phone': widget.phoneNumber, 'otp': otp},
-      );
-      if (response.statusCode == 200) {
+  try {
+    final Dio dio = Dio();
+    final response = await dio.post(
+      AppConstants.otp,
+      data: {'phone': widget.phoneNumber, 'otp': otp},
+    );
+    if (response.statusCode == 200) {
+      final responseData = response.data;
+
+      if (responseData['status_code'] == 0) {
         showCustomSnackBar('OTP verified successfully', isError: false);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ContactDetails(phoneNumber: widget.phoneNumber)));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ContactDetails(phoneNumber: widget.phoneNumber)));
+      } else if (responseData['status_code'] == 1) {
+        final token = responseData['token'];
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+        showCustomSnackBar('Welcome back!', isError: false);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const BranchListScreen()));
       } else {
         showCustomSnackBar('Failed to verify OTP');
       }
-    } catch (e) {
-      showCustomSnackBar('An error occurred: ${e.toString()}');
+    } else {
+      showCustomSnackBar('Failed to verify OTP');
     }
+  } catch (e) {
+    showCustomSnackBar('An error occurred: ${e.toString()}');
+  }
   }
 
   @override
