@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 
 class CustomButton extends StatelessWidget {
@@ -31,10 +32,8 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
       backgroundColor: onTap == null 
-        ? Theme.of(context).disabledColor 
-        : transparent 
-          ? Colors.transparent 
-          : backgroundColor ?? Theme.of(context).primaryColor,
+        ? ColorResources.kOrangeColor
+          : backgroundColor ?? ColorResources.kOrangeColor,
       minimumSize: Size(width ?? Dimensions.webScreenWidth, height ?? 50),
       padding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(

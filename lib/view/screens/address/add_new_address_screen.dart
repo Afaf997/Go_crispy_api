@@ -216,7 +216,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
     return Consumer<LocationProvider>(
       builder: (context, locationProvider, _) {
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall, horizontal: Dimensions.paddingSizeExtraSmall),
+          padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall, horizontal: Dimensions.paddingSizeLarge),
           child: SizedBox(
             height: 50.0,
             width: 1170,
@@ -297,12 +297,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       decoration: ResponsiveHelper.isDesktop(context) ?  BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color:ColorResources.cardShadowColor.withOpacity(0.2),
-              blurRadius: 10,
-            )
-          ]
+         
       ) : const BoxDecoration(),
       //margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall,vertical: Dimensions.paddingSizeLarge),
       padding: ResponsiveHelper.isDesktop(context) ?  const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge,vertical: Dimensions.paddingSizeLarge) : EdgeInsets.zero,
@@ -451,9 +446,9 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), // Adjusted borderRadius
           border: Border.all(
-            color: locationProvider.selectAddressIndex == index ? Theme.of(context).primaryColor : ColorResources.borderColor,
+            color:  ColorResources.klgreyColor,
           ),
-          color: locationProvider.selectAddressIndex == index ? Theme.of(context).primaryColor : Colors.white.withOpacity(0.8),
+          color: locationProvider.selectAddressIndex == index ? ColorResources.kOrangeColor : ColorResources.kColorgrey,
         ),
         alignment: Alignment.center, // Center alignment for text
         child: Text(
@@ -493,7 +488,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
   crossAxisAlignment: CrossAxisAlignment.start,
   children: [
     Padding(
-      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
+      padding: const EdgeInsets.fromLTRB(0,20,0,0),
       child: Text(
         getTranslated('delivery_address', context)!,
         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
@@ -501,6 +496,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
     ),
 
     // for Address Field
+    const SizedBox(height: 8,),
     Text(
       getTranslated('address_line_01', context)!,
       style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
@@ -601,8 +597,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       phoneNumberTextController: _contactPersonNumberController,
       phoneFocusNode: _numberNode,
     ),
-
-    const SizedBox(height: Dimensions.paddingSizeLarge),
 
     if (ResponsiveHelper.isDesktop(context)) saveButtonWidget(context),
   ],

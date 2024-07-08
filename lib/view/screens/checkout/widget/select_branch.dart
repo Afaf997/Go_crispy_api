@@ -4,6 +4,7 @@ import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
+import 'package:flutter_restaurant/utill/images.dart';
 import 'package:provider/provider.dart';
 
 class BranchButton extends StatelessWidget {
@@ -38,8 +39,7 @@ class BranchButton extends StatelessWidget {
                               children: sortedBranches
                                   .map((branch) => buildCategoryItems(
                                         branch!.name ?? 'Unknown Branch',
-                                        color ?? Theme.of(context).primaryColor,
-                                        Icons.location_on,
+                                        color ?? ColorResources.kOrangeColor,
                                         branchProvider.getBranchId() == branch.id,
                                       ))
                                   .toList(),
@@ -53,7 +53,6 @@ class BranchButton extends StatelessWidget {
                                 .map((branch) => buildCategoryItems(
                                       branch!.name ?? 'Unknown Branch',
                                       Theme.of(context).primaryColor,
-                                      Icons.location_on,
                                       branchProvider.getBranchId() == branch.id,
                                     ))
                                 .toList(),
@@ -66,7 +65,7 @@ class BranchButton extends StatelessWidget {
     );
   }
 
-  Widget buildCategoryItems(String categoryName, Color color, IconData icon, bool isSelected) {
+  Widget buildCategoryItems(String categoryName, Color color, bool isSelected) {
     return IntrinsicWidth(
       child: Container(
         height: 44,
@@ -80,16 +79,16 @@ class BranchButton extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Row(
             children: [
-              Icon(
-                icon,
-                color: isSelected ? color :ColorResources.kblack,
+              Image.asset(
+                Images.mapicon, 
+                color: isSelected ? color : ColorResources.kblack,
               ),
               const SizedBox(width: 3),
               Expanded(
                 child: Text(
                   categoryName,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color:ColorResources.kblack,),
+                  style: TextStyle(color: ColorResources.kblack),
                 ),
               ),
             ],

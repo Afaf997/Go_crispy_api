@@ -11,6 +11,7 @@ import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
+import 'package:flutter_restaurant/view/base/show_custom_error.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/auth/otp_screen.dart';
 import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
@@ -37,31 +38,47 @@ class _LoginScreenState extends State<LoginScreen> {
     final configModel = Provider.of<SplashProvider>(context, listen: false).configModel;
     _countryCode = CountryCode.fromCountryCode(configModel!.countryCode!).dialCode;
   }
+Future<void> _verifyPhoneNumber(String phone) async {
+  setState(() {
+    _isLoading = true;
+  });
+  try {
+    final Dio dio = Dio();
+    final response = await dio.post(
+      AppConstants.phoneApi,
+      data: {'phone': phone},
+    );
 
-  Future<void> _verifyPhoneNumber(String phone) async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      final Dio dio = Dio();
-      final response = await dio.post(
-        AppConstants.phoneApi,
-        data: {'phone': phone},
-      );
-
-      if (response.statusCode == 200) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => OtpScreen(phoneNumber: phone)));
-      } else {
-        showCustomSnackBar('Failed to verify phone number');
-      }
-    } catch (e) {
-      showCustomSnackBar('An error occurred: ${e.toString()}');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
+    if (response.statusCode == 200) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => OtpScreen(phoneNumber: phone)));
+    } else {
+      showCustomErrorDialog(context, 'Failed to verify phone number');
     }
+  } catch (e) {
+    String errorMessage = 'An error occurred';
+    if (e is DioError) {
+      if (e.response != null && e.response?.data != null) {
+        final data = e.response?.data;
+
+        if (data['errors'] != null) {
+          final errors = data['errors'] as Map<String, dynamic>;
+          errors.forEach((field, messages) {
+            if (messages is List) {
+              for (var message in messages) {
+                errorMessage +='\n$message';
+              }
+            }
+          });
+        }
+      }
+    }
+    showCustomErrorDialog(context, errorMessage);
+  } finally {
+    setState(() {
+      _isLoading = false;
+    });
   }
+}
 
   @override
   Widget build(BuildContext context) {

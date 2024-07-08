@@ -32,36 +32,37 @@ class CustomTextField extends StatefulWidget {
   final TextCapitalization capitalization;
   final LanguageProvider? languageProvider;
   final InputDecoration? inputDecoration;
-  final String? Function(String? )? onValidate;
+  final String? Function(String?)? onValidate;
 
-  const CustomTextField(
-      {Key? key, this.hintText,
-      this.controller,
-      this.focusNode,
-      this.nextFocus,
-      this.isEnabled = true,
-      this.inputType = TextInputType.text,
-      this.inputAction = TextInputAction.next,
-      this.maxLines = 1,
-      this.onSuffixTap,
-      this.fillColor,
-      this.onSubmit,
-      this.onChanged,
-      this.capitalization = TextCapitalization.none,
-      this.isCountryPicker = false,
-      this.isShowBorder = false,
-      this.isShowSuffixIcon = false,
-      this.isShowPrefixIcon = false,
-      this.onTap,
-      this.isIcon = false,
-      this.isPassword = false,
-      this.suffixIconUrl,
-      this.prefixIconUrl,
-      this.isSearch = false,
-      this.languageProvider,
-      this.inputDecoration,
-      this.onValidate,
-      }) : super(key: key);
+  const CustomTextField({
+    Key? key,
+    this.hintText,
+    this.controller,
+    this.focusNode,
+    this.nextFocus,
+    this.isEnabled = true,
+    this.inputType = TextInputType.text,
+    this.inputAction = TextInputAction.next,
+    this.maxLines = 1,
+    this.onSuffixTap,
+    this.fillColor,
+    this.onSubmit,
+    this.onChanged,
+    this.capitalization = TextCapitalization.none,
+    this.isCountryPicker = false,
+    this.isShowBorder = false,
+    this.isShowSuffixIcon = false,
+    this.isShowPrefixIcon = false,
+    this.onTap,
+    this.isIcon = false,
+    this.isPassword = false,
+    this.suffixIconUrl,
+    this.prefixIconUrl,
+    this.isSearch = false,
+    this.languageProvider,
+    this.inputDecoration,
+    this.onValidate,
+  }) : super(key: key);
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -96,10 +97,24 @@ class _CustomTextFieldState extends State<CustomTextField> {
         fillColor: ColorResources.kColorgrey,
         hintStyle: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor.withOpacity(0.7)),
         filled: true,
-        prefixIcon: widget.isShowPrefixIcon ? Padding(
-          padding: const EdgeInsets.only(left: Dimensions.paddingSizeLarge, right: Dimensions.paddingSizeSmall),
-          child: Image.asset(widget.prefixIconUrl!, color: ColorResources.kblack),
-        ) : const SizedBox.shrink(),
+        prefixIcon: widget.isShowPrefixIcon
+            ? Padding(
+                padding: const EdgeInsets.only(left: Dimensions.paddingSizeLarge, right: Dimensions.paddingSizeSmall),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (widget.prefixIconUrl != null)
+                      Image.asset(
+                        widget.prefixIconUrl!,
+                        width: 15,
+                        height: 15,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
+                    const SizedBox(width: 8),
+                  ],
+                ),
+              )
+            : null,
         prefixIconConstraints: const BoxConstraints(minWidth: 23, maxHeight: 20),
         suffixIcon: widget.isShowSuffixIcon
             ? widget.isPassword
@@ -123,7 +138,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       onFieldSubmitted: (text) => widget.nextFocus != null ? FocusScope.of(context).requestFocus(widget.nextFocus)
           : widget.onSubmit != null ? widget.onSubmit!(text) : null,
       onChanged: widget.onChanged as void Function(String)?,
-      validator: widget.onValidate != null ? widget.onValidate!: null,
+      validator: widget.onValidate != null ? widget.onValidate! : null,
     );
   }
 
@@ -134,10 +149,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
   }
 
   OutlineInputBorder getBorder(Color borderColor) => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(10.0),
-    borderSide: BorderSide(
-      color: borderColor,
-      width: 1.5,
-    ),
-  );
+        borderRadius: BorderRadius.circular(15.0),
+        borderSide: BorderSide(
+          color: borderColor,
+          width: 1.5,
+        ),
+      );
 }

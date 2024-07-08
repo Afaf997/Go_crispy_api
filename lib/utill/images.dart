@@ -86,6 +86,19 @@ class Images {
   static const  categoryBanner = 'assets/image/category_banner.png';
 
   // for Icon
+static const String mapicon = 'assets/icon/location-1.png';
+static const String ordericon= 'assets/icon/bag-2.png';
+static const String  notificationicon= 'assets/icon/notification.png';
+static const String  profileicon= 'assets/icon/user-edit.png';
+static const String  walleticon= 'assets/icon/wallet-minus.png';
+static const String  coupenicon= 'assets/icon/ group.png';
+static const String  addressicon= 'assets/icon/personalcard.png';
+static const String  languageicon= 'assets/icon/language-circle.png';
+static const String  helpicon= 'assets/icon/music-play.png';
+static const String  policyicon= 'assets/icon/stickynote.png';
+static const String  termsicon= 'assets/icon/task-square.png';  
+  
+   static const String cardTick = 'assets/icon/card-tick.png';
   static const String gif = 'assets/icon/app.gif';
   static const String car = 'assets/icon/car.png';
   static const String box = 'assets/icon/box.png';

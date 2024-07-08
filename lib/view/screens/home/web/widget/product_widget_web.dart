@@ -43,7 +43,6 @@ class ProductWidgetWeb extends StatelessWidget {
           onTap: isAvailable ? () => _addToCart(context, cartIndex) : null,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.35,
-            margin: const EdgeInsets.all(2.0),
             decoration: BoxDecoration(
               color: ColorResources.kcontainergrey,
               borderRadius: BorderRadius.circular(10),

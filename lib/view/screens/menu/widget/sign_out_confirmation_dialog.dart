@@ -44,7 +44,7 @@ class SignOutConfirmationDialog extends StatelessWidget {
                       RouterHelper.getLoginRoute(action: RouteAction.pushNamedAndRemoveUntil);
                     }else {
                       context.pop();
-                      RouterHelper.getMainRoute();
+                      RouterHelper.getLoginRoute(action: RouteAction.pushNamedAndRemoveUntil);
                     }
                   });
                 },

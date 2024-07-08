@@ -29,7 +29,7 @@ class CostSummeryView extends StatelessWidget {
 
     return Column(children: [
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+        padding: const EdgeInsets.symmetric(horizontal:16),
         child: Column(children: [
 
           if(ResponsiveHelper.isDesktop(context)) Text(
@@ -47,7 +47,7 @@ class CostSummeryView extends StatelessWidget {
          if(!takeAway) ItemView(
             title: getTranslated('delivery_fee', context)!,
             subTitle: (!takeAway || orderProvider.distance != -1) ?
-            '(+) ${PriceConverter.convertPrice( takeAway ? 0 : deliveryCharge)}'
+            ' ${PriceConverter.convertPrice( takeAway ? 0 : deliveryCharge)}'
                 : getTranslated('not_found', context)!,
           ),
 

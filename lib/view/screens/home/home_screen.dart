@@ -238,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 RouterHelper.getPopularItemScreen();
                               }),
                             ),
-                            ProductView(productType: ProductType.popularProduct),
+                           const ProductView(productType: ProductType.popularProduct),
                             if (ResponsiveHelper.isDesktop(context)) Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,

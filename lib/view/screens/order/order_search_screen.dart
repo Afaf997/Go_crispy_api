@@ -285,42 +285,58 @@ class PhoneNumberFieldView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: ColorResources.kColorgrey,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color:ColorResources.klgreyColor,)
-      ),
-      child: Row(children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0), 
+    return TextFormField(
+      controller: phoneNumberTextController,
+      focusNode: phoneFocusNode,
+      keyboardType: TextInputType.phone,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(8.0),
+        filled: true,
+        fillColor: ColorResources.kColorgrey,
+        focusedBorder: getBorder(ColorResources.klgreyColor),
+        enabledBorder: getBorder(ColorResources.klgreyColor),
+        prefixIcon: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset(
-                Images.qatar, 
-                width: 24, // Adjust the size as needed
+                Images.qatar,
+                width: 24,
                 height: 24,
               ),
-             const SizedBox(width: 8),
-             const Text(
+              const SizedBox(width: 8),
+              Text(
                 '+974', // Display the country code
                 style: TextStyle(
-                  fontSize: 16, // Adjust the font size as needed
+                  fontSize: 16,
                 ),
               ),
+              const SizedBox(width: 8), // Space after '+974'
             ],
           ),
         ),
-        Expanded(child: CustomTextField(
-          controller: phoneNumberTextController,
-          focusNode: phoneFocusNode,
-          inputType: TextInputType.phone,
-          hintText: getTranslated('number_hint', context),
-        )),
-      ]),
+        hintText: getTranslated('number_hint', context),
+        hintStyle:const TextStyle(
+          fontSize: 14,
+        ),
+      ),
+      onChanged: (value) {
+        onValueChange(value); // Notify parent widget of value change
+      },
     );
   }
+
+  OutlineInputBorder getBorder(Color borderColor) => OutlineInputBorder(
+    borderRadius: BorderRadius.circular(15.0),
+    borderSide: BorderSide(
+      color: borderColor,
+      width: 1.5,
+    ),
+  );
 }
+
+
 
 class OrderIdTextField extends StatelessWidget {
   const OrderIdTextField({

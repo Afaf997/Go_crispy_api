@@ -97,8 +97,8 @@ class ProductView extends StatelessWidget {
                 itemCount: productList.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-                    width: 195,
+                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                    width: 175,
                     child: ProductWidgetWeb(product: productList![index], fromPopularItem: true),
                   );
                 },

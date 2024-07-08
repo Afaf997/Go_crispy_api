@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
+import 'package:flutter_restaurant/view/base/show_custom_error.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
@@ -26,10 +27,32 @@ class _ContactDetailsState extends State<ContactDetails> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
+  final FocusNode _firstNameFocusNode = FocusNode();
+  final FocusNode _lastNameFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _firstNameFocusNode.addListener(() => _formKey.currentState!.validate());
+    _lastNameFocusNode.addListener(() => _formKey.currentState!.validate());
+    _emailFocusNode.addListener(() => _formKey.currentState!.validate());
+  }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _firstNameFocusNode.dispose();
+    _lastNameFocusNode.dispose();
+    _emailFocusNode.dispose();
+    super.dispose();
+  }
+
   Future<void> _registerUser() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
 
     try {
       final Dio dio = Dio();
@@ -46,26 +69,25 @@ class _ContactDetailsState extends State<ContactDetails> {
       if (response.statusCode == 200) {
         String token = response.data["token"];
         await _saveToken(token);
-        showCustomSnackBar('Registration successful');
-        Navigator.push(context, MaterialPageRoute(builder: (context) => BranchListScreen()));
+        showCustomSnackBar('Registration successful',);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BranchListScreen()),
+        );
+      } else if (response.statusCode == 403) {
+        showCustomErrorDialog(context, 'The email is already used. Please use a different email.');
       } else {
-        showCustomSnackBar('Registration failed');
+        showCustomErrorDialog(context, 'Registration failed');
       }
     } catch (e) {
-      showCustomSnackBar('An error occurred: ${e.toString()}');
-    }
+  showCustomErrorDialog(context, 'An error occurred\nThe email is already used. Please use a different email.');
+}
+
   }
 
   Future<void> _saveToken(String token) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? existingToken = prefs.getString('token');
-
-    if (existingToken == null) {
-      await prefs.setString('token', token);
-    } else {
-      await prefs.remove('token');
-      await prefs.setString('token', token);
-    }
+    await prefs.setString('token', token);
   }
 
   @override
@@ -100,7 +122,8 @@ class _ContactDetailsState extends State<ContactDetails> {
               const SizedBox(height: 15.0),
               CustomTextField(
                 controller: _firstNameController,
-                hintText: 'Enter your first name', // Changed from labelText to hintText
+                hintText: 'Enter your first name',
+                focusNode: _firstNameFocusNode,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your first name';
@@ -113,7 +136,8 @@ class _ContactDetailsState extends State<ContactDetails> {
               const SizedBox(height: 15.0),
               CustomTextField(
                 controller: _lastNameController,
-                hintText: 'Enter your last name', // Changed from labelText to hintText
+                hintText: 'Enter your last name',
+                focusNode: _lastNameFocusNode,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your last name';
@@ -126,7 +150,8 @@ class _ContactDetailsState extends State<ContactDetails> {
               const SizedBox(height: 15.0),
               CustomTextField(
                 controller: _emailController,
-                hintText: 'Enter your email', // Changed from labelText to hintText
+                hintText: 'Enter your email',
+                focusNode: _emailFocusNode,
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -170,22 +195,25 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
+  final FocusNode? focusNode;
 
   const CustomTextField({
     required this.hintText,
     required this.controller,
     this.keyboardType,
     this.validator,
+    this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: keyboardType,
       decoration: InputDecoration(
-        hintText: hintText, // Changed from labelText to hintText
-        hintStyle: TextStyle(color: ColorResources.korgGrey, fontSize: 14),
+        hintText: hintText,
+        hintStyle: const TextStyle(color: ColorResources.korgGrey, fontSize: 12), // Reduced hint text size
         fillColor: ColorResources.kGrayLogo,
         filled: true,
         border: OutlineInputBorder(

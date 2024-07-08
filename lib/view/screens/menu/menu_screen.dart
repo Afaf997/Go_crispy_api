@@ -33,6 +33,7 @@ class _MenuScreenState extends State<MenuScreen> {
     final SplashProvider splashProvider = Provider.of<SplashProvider>(context, listen: false);
 
     return Scaffold(
+      backgroundColor: ColorResources.kWhite,
       appBar: ResponsiveHelper.isDesktop(context) ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar()) : null,
       body: ResponsiveHelper.isDesktop(context) ? const MenuScreenWeb() : Consumer<AuthProvider>(
         builder: (context, authProvider, _) {
@@ -42,23 +43,28 @@ class _MenuScreenState extends State<MenuScreen> {
                 child: Container(
                   width: 1170,
                   padding: const EdgeInsets.symmetric(vertical: 30),
-                  decoration:const BoxDecoration(color:ColorResources.kOrangeColor),
+                  decoration:const BoxDecoration(color:ColorResources.kOrangeColor,
+                  borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                   ),),
+                  
                   child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                     SizedBox(height: MediaQuery.of(context).padding.top),
                     Container(
                       height: 80, width: 80,
-                      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 2)),
+                      // decoration: BoxDecoration( border: Border.all(,color: Colors.white, width: 2,),),
                       child: ClipOval(
                         child: authProvider.isLoggedIn() ? FadeInImage.assetNetwork(
                           placeholder: Images.placeholderUser, height: 80, width: 80, fit: BoxFit.cover,
                           image: '${Provider.of<SplashProvider>(context,).baseUrls!.customerImageUrl}/'
                               '${profileProvider.userInfoModel != null ? profileProvider.userInfoModel!.image : ''}',
-                          imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholderUser, height: 80, width: 80, fit: BoxFit.cover),
+                          imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholderUser, height: 80, width: 80, fit: BoxFit.cover,),
                         ) : Image.asset(Images.placeholderUser, height: 80, width: 80, fit: BoxFit.cover),
                       ),
                     ),
                     Column(children: [
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       authProvider.isLoggedIn() ? profileProvider.userInfoModel != null ? Text(
                         '${profileProvider.userInfoModel!.fName ?? ''} ${profileProvider.userInfoModel!.lName ?? ''}',
                         style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Colors.white),
@@ -66,9 +72,6 @@ class _MenuScreenState extends State<MenuScreen> {
                         getTranslated('guest', context)!,
                         style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Colors.white),
                       ),
-                      const SizedBox(height: 10),
-
-
                       if(authProvider.isLoggedIn() && profileProvider.userInfoModel != null)  Text(
                         profileProvider.userInfoModel!.email ?? '',
                         style: rubikRegular.copyWith(color: Colors.white),
@@ -80,6 +83,22 @@ class _MenuScreenState extends State<MenuScreen> {
                         style: rubikRegular.copyWith(color: Colors.white),
                       ) : const SizedBox(),
 
+                     const Text(
+                'QR 250',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+             const Text(
+                'Wallet amount',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                ),)
+
+                      
                     ]),
                   ]),
                 ),

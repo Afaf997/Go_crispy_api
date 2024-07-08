@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
+import 'package:flutter_restaurant/view/base/show_custom_error.dart';
 import 'package:flutter_restaurant/view/screens/auth/details.dart';
 import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
 import 'package:flutter_restaurant/view/screens/dashboard/dashboard_screen.dart';
@@ -21,8 +22,7 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   String? _otpCode;
-
-  Future<void> _verifyOtp(String otp) async {
+Future<void> _verifyOtp(String otp) async {
   try {
     final Dio dio = Dio();
     final response = await dio.post(
@@ -37,20 +37,28 @@ class _OtpScreenState extends State<OtpScreen> {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ContactDetails(phoneNumber: widget.phoneNumber)));
       } else if (responseData['status_code'] == 1) {
         final token = responseData['token'];
-        SharedPreferences prefs = await SharedPreferences.getInstance();
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.remove('token');
         await prefs.setString('token', token);
         showCustomSnackBar('Welcome back!', isError: false);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const BranchListScreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const BranchListScreen()));
       } else {
-        showCustomSnackBar('Failed to verify OTP');
+        showCustomErrorDialog(context, 'Failed to verify OTP');
       }
     } else {
-      showCustomSnackBar('Failed to verify OTP');
+      showCustomErrorDialog(context, 'Failed to verify OTP');
     }
   } catch (e) {
-    showCustomSnackBar('An error occurred: ${e.toString()}');
+    String errorMessage = 'An error occurred';
+    if (e is DioError) {
+      if (e.response != null && e.response?.data != null) {
+        errorMessage = e.response?.data['message'] ?? 'An error occurred';
+      }
+    }
+    showCustomErrorDialog(context, errorMessage);
   }
-  }
+}
+
 
   @override
   Widget build(BuildContext context) {

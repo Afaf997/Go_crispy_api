@@ -205,7 +205,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           child: Column(
             children: [
         SizedBox(
-          height: 30,
+          height: 20,
           child: InkWell(
             onTap: () => _checkPermission(() => RouterHelper.getAddAddressRoute('checkout', 'add', AddressModel())),
             child: Row(
@@ -213,10 +213,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               children: [
                 Icon(
                   Icons.add_circle_rounded,
-                  size: Dimensions.paddingSizeDefault,
+                  size: Dimensions.paddingSizeLarge,
                   color: Theme.of(context).primaryColor,
                 ),
-                SizedBox(width: 8), // Adding some space between the icon and text
+                SizedBox(width: 4), // Adding some space between the icon and text
                 Text(
                   getTranslated('add_new_address', context)!,
                   style: rubikMedium.copyWith(
@@ -233,7 +233,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ),
         ),
                             ]) : const SizedBox(),
-        
+                            const SizedBox(height: 10,),
+                           
                            
                             PaymentWidget(total: (widget.amount ?? 0) + (deliveryCharge ?? 0)),
                             if(ResponsiveHelper.isDesktop(context)) const SizedBox(height: Dimensions.paddingSizeDefault),
@@ -247,14 +248,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     children: [
       Text(
         getTranslated('add_delivery_note', context)!,
-        style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
+        style:TextStyle(fontSize: 16,fontWeight:FontWeight.w700)
       ),
-      // const SizedBox(height: Dimensions.fontSizeSmall),
+      const SizedBox(height: Dimensions.fontSizeSmall),
 
       CustomTextField(
   controller: _noteController,
   hintText: getTranslated('additional_note', context),
-  maxLines: 5,
+  maxLines: 4,
   inputType: TextInputType.multiline,
   inputAction: TextInputAction.newline,
   capitalization: TextCapitalization.sentences,
@@ -262,13 +263,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     filled: true,
     fillColor: ColorResources.kColorgrey,
     hintText: getTranslated('additional_note', context),
-    contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
+    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(15.0),
       borderSide:const BorderSide(color:ColorResources.klgreyColor),
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(15.0),
       borderSide:const BorderSide(color:ColorResources.klgreyColor),
     ),
   ),
@@ -286,6 +287,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 deliveryCharge: deliveryCharge,
                                 subtotal: widget.amount,
                               ),
+                               Padding(
+                                 padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge,),
+                                 child: ItemView(
+                                  title: getTranslated('total', context)!,
+                                 subTitle: PriceConverter.convertPrice(widget.amount! + deliveryCharge!),
+                                 titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
+                      ),
+                    ),
         
         
         
@@ -294,38 +303,38 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         
                           ])),
         
-                          if(ResponsiveHelper.isDesktop(context)) Expanded(
-                            flex: 4,
-                            child: Container(
-                              padding: ResponsiveHelper.isDesktop(context) ?   const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge,vertical: Dimensions.paddingSizeLarge) : const EdgeInsets.all(0),
-                              margin: ResponsiveHelper.isDesktop(context) ?  const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault,vertical: Dimensions.paddingSizeSmall) : const EdgeInsets.all(0),
-                              decoration:ResponsiveHelper.isDesktop(context) ? BoxDecoration(
-                                  color: Theme.of(context).cardColor,
-                                  borderRadius: BorderRadius.circular(10),
+                          // if(ResponsiveHelper.isDesktop(context)) Expanded(
+                          //   flex: 4,
+                          //   child: Container(
+                          //     padding: ResponsiveHelper.isDesktop(context) ?   const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge,vertical: Dimensions.paddingSizeLarge) : const EdgeInsets.all(0),
+                          //     margin: ResponsiveHelper.isDesktop(context) ?  const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault,vertical: Dimensions.paddingSizeSmall) : const EdgeInsets.all(0),
+                          //     decoration:ResponsiveHelper.isDesktop(context) ? BoxDecoration(
+                          //         color: Theme.of(context).cardColor,
+                          //         borderRadius: BorderRadius.circular(10),
                               
-                              ) : const BoxDecoration(),
-                              child: Column(children: [
-                                CostSummeryView(
-                                  kmWiseCharge: kmWiseCharge,
-                                  takeAway: takeAway,
-                                  deliveryCharge: deliveryCharge,
-                                  subtotal: widget.amount,
-                                ),
+                          //     ) : const BoxDecoration(),
+                          //     child: Column(children: [
+                          //       CostSummeryView(
+                          //         kmWiseCharge: kmWiseCharge,
+                          //         takeAway: takeAway,
+                          //         deliveryCharge: deliveryCharge,
+                          //         subtotal: widget.amount,
+                          //       ),
         
-                                if(ResponsiveHelper.isDesktop(context))  ConfirmButtonView(
-                                  noteController: _noteController,
-                                  callBack: _callback,
-                                  cartList: _cartList,
-                                  kmWiseCharge: kmWiseCharge,
-                                  orderType: widget.orderType!,
-                                  orderAmount: widget.amount!,
-                                  couponCode: widget.couponCode,
-                                  deliveryCharge: deliveryCharge,
-                                ),
+                          //       if(ResponsiveHelper.isDesktop(context))  ConfirmButtonView(
+                          //         noteController: _noteController,
+                          //         callBack: _callback,
+                          //         cartList: _cartList,
+                          //         kmWiseCharge: kmWiseCharge,
+                          //         orderType: widget.orderType!,
+                          //         orderAmount: widget.amount!,
+                          //         couponCode: widget.couponCode,
+                          //         deliveryCharge: deliveryCharge,
+                          //       ),
         
-                              ]),
-                            ),
-                          ),
+                          //     ]),
+                          //   ),
+                          // ),
         
                         ]),
         
@@ -334,14 +343,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   });
                 })),
         
-                if(ResponsiveHelper.isDesktop(context)) const SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                    SizedBox(height: Dimensions.paddingSizeLarge),
+                // if(ResponsiveHelper.isDesktop(context)) const SliverFillRemaining(
+                //   hasScrollBody: false,
+                //   child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                //     SizedBox(height: Dimensions.paddingSizeLarge),
         
-                    FooterView(),
-                  ]),
-                ),
+                //     FooterView(),
+                //   ]),
+                // ),
         
               ])),
         
@@ -349,24 +358,24 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 builder: (context, orderProvider, _) {
                   double? deliveryCharge = 0;
         
-                  if(!takeAway && kmWiseCharge) {
-                    deliveryCharge = orderProvider.distance * configModel.deliveryManagement!.shippingPerKm!;
-                    if(deliveryCharge < configModel.deliveryManagement!.minShippingCharge!) {
-                      deliveryCharge = configModel.deliveryManagement!.minShippingCharge;
-                    }
-                  }else if(!takeAway && !kmWiseCharge) {
-                    deliveryCharge = configModel.deliveryCharge;
-                  }
+                  // if(!takeAway && kmWiseCharge) {
+                  //   deliveryCharge = orderProvider.distance * configModel.deliveryManagement!.shippingPerKm!;
+                  //   if(deliveryCharge < configModel.deliveryManagement!.minShippingCharge!) {
+                  //     deliveryCharge = configModel.deliveryManagement!.minShippingCharge;
+                  //   }
+                  // }else if(!takeAway && !kmWiseCharge) {
+                  //   deliveryCharge = configModel.deliveryCharge;
+                  // }
         
                   return Column(children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge, vertical: Dimensions.paddingSizeSmall),
-                      child: ItemView(
-                        title: getTranslated('total', context)!,
-                        subTitle: PriceConverter.convertPrice(widget.amount! + deliveryCharge!),
-                         titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge, vertical: Dimensions.paddingSizeExtraSmall),
+                    //   child: ItemView(
+                    //     title: getTranslated('total', context)!,
+                    //     subTitle: PriceConverter.convertPrice(widget.amount! + deliveryCharge!),
+                    //      titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
+                    //   ),
+                    // ),
                   
                     ConfirmButtonView(
                         noteController: _noteController,
