@@ -35,6 +35,7 @@ import 'package:flutter_restaurant/view/screens/address/widget/permission_dialog
 import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/confirm_button_view.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/delivery_fee_dialog.dart';
+import 'package:flutter_restaurant/view/screens/checkout/widget/order_confirm.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/select_branch.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/slot_widget.dart';
 import 'package:geolocator/geolocator.dart';
@@ -199,12 +200,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Expanded(flex: 6, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                            // Address
-                            !takeAway ? Column(children: [
-                              Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
-          child: Column(
-            children: [
-        SizedBox(
+                  !takeAway ? Column(children: [
+                                    SizedBox(
           height: 20,
           child: InkWell(
             onTap: () => _checkPermission(() => RouterHelper.getAddAddressRoute('checkout', 'add', AddressModel())),
@@ -229,17 +226,139 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
           ),
         ),
-            ],
-          ),
-        ),
-                            ]) : const SizedBox(),
-                            const SizedBox(height: 10,),
+
+                            SizedBox(
+                              height: 60,
+                              child: locationProvider.addressList != null ? locationProvider.addressList!.isNotEmpty ? ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
+                                itemCount: locationProvider.addressList!.length,
+                                itemBuilder: (context, index) {
+                                  bool isAvailable = currentBranch == null || (currentBranch!.latitude == null || currentBranch!.latitude!.isEmpty);
+                                  if(!isAvailable) {
+                                    double distance = Geolocator.distanceBetween(
+                                      double.parse(currentBranch!.latitude!), double.parse(currentBranch!.longitude!),
+                                      double.parse(locationProvider.addressList![index].latitude!), double.parse(locationProvider.addressList![index].longitude!),
+                                    ) / 1000;
+
+                                    isAvailable = distance < currentBranch!.coverage!;
+                                  }
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: Dimensions.paddingSizeLarge, top: Dimensions.paddingSizeSmall),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        if(isAvailable) {
+                                          orderProvider.setAddressIndex(index);
+
+                                          if(kmWiseCharge) {
+                                            if(orderProvider.selectedPaymentMethod != null){
+                                              showCustomSnackBar(getTranslated('your_payment_method_has_been', context), isError: false);
+                                            }
+                                            orderProvider.savePaymentMethod(index: null, method: null);
+                                            orderProvider.changePartialPayment();
+
+                                            showDialog(context: context, builder: (context) => Center(child: Container(
+                                              height: 100, width: 100, decoration: BoxDecoration(
+                                              color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(10),
+                                            ),
+                                              alignment: Alignment.center,
+                                              child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
+                                            )), barrierDismissible: false);
+                                            orderProvider.getDistanceInMeter(
+                                              LatLng(
+                                                double.parse(currentBranch!.latitude!),
+                                                double.parse(currentBranch!.longitude!),
+                                              ),
+                                              LatLng(
+                                                double.parse(locationProvider.addressList![index].latitude!),
+                                                double.parse(locationProvider.addressList![index].longitude!),
+                                              ),
+                                            ).then((isSuccess) {
+                                              context.pop();
+                                              if(isSuccess) {
+                                                showDialog(context: context, builder: (context) => DeliveryFeeDialog(
+                                                  amount: widget.amount, distance: orderProvider.distance,
+                                                ));
+                                              }else {
+                                                showCustomSnackBar(getTranslated('failed_to_fetch_distance', context));
+                                              }
+                                              return isSuccess;
+                                            });
+
+                                          }
+                                        }
+                                      },
+                                      child: Stack(children: [
+                                        Container(
+                                          height: 60,
+                                          width: 200,
+                                        decoration: BoxDecoration(
+  color: index == orderProvider.addressIndex 
+      ? ColorResources.kColorgrey
+      : ColorResources.kColorgrey,
+  borderRadius: BorderRadius.circular(15),
+  border: Border.all(
+    color: index == orderProvider.addressIndex 
+        ? Theme.of(context).primaryColor 
+        : ColorResources.klgreyColor, 
+    width: index == orderProvider.addressIndex ? 1 : 1, // Optional: width of the border
+  ),
+),
+
+                                          child: Row(children: [
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
+                                              child: Icon(
+                                                locationProvider.addressList![index].addressType == 'Home' ? Icons.home_outlined
+                                                    : locationProvider.addressList![index].addressType == 'Workplace' ? Icons.work_outline : Icons.list_alt_outlined,
+                                                color: index == orderProvider.addressIndex ? Theme.of(context).primaryColor
+                                                    : Theme.of(context).textTheme.bodyLarge!.color,
+                                                size: 30,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
+                                                Text(locationProvider.addressList![index].addressType!, style: rubikRegular.copyWith(
+                                                  fontSize: Dimensions.fontSizeSmall, color: ColorResources.getGreyBunkerColor(context),
+                                                )),
+                                                Text(locationProvider.addressList![index].address!, style: rubikRegular, maxLines: 1, overflow: TextOverflow.ellipsis),
+                                              ]),
+                                            ),
+                                            index == orderProvider.addressIndex ? Align(
+                                              alignment: Alignment.topRight,
+                                              child: Icon(Icons.check_circle, color: Theme.of(context).primaryColor),
+                                            ) : const SizedBox(),
+                                          ]),
+                                        ),
+                                        !isAvailable ? Positioned(
+                                          top: 0, left: 0, bottom: 0, right: 0,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black.withOpacity(0.6)),
+                                            child: Text(
+                                              getTranslated('out_of_coverage_for_this_branch', context)!,
+                                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                              style: rubikRegular.copyWith(color: Colors.white, fontSize: 10),
+                                            ),
+                                          ),
+                                        ) : const SizedBox(),
+                                      ]),
+                                    ),
+                                  );
+                                },
+                              ) : Center(child: Text(getTranslated('no_address_available', context)!))
+                                  : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor))),
+                            ),
+                            const SizedBox(height: 20),
+                          ]) : const SizedBox(),
+   const SizedBox(height: 10,),
                            
                            
-                            PaymentWidget(total: (widget.amount ?? 0) + (deliveryCharge ?? 0)),
-                            if(ResponsiveHelper.isDesktop(context)) const SizedBox(height: Dimensions.paddingSizeDefault),
-        
-                            PartialPayView(totalPrice: (widget.amount ?? 0) + (deliveryCharge ?? 0)),
+   PaymentWidget(total: (widget.amount ?? 0) + (deliveryCharge ?? 0)),
+           if(ResponsiveHelper.isDesktop(context)) const SizedBox(height: Dimensions.paddingSizeDefault),
+
+    PartialPayView(totalPrice: (widget.amount ?? 0) + (deliveryCharge ?? 0)),
         
         Padding(
   padding: const EdgeInsets.all(16.0),
@@ -279,7 +398,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   ),
 ),
 
-                            // const SizedBox(height: Dimensions.paddingSizeDefault),
                             if (!ResponsiveHelper.isDesktop(context))
                               CostSummeryView(
                                 kmWiseCharge: kmWiseCharge,
@@ -294,47 +412,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                  subTitle: PriceConverter.convertPrice(widget.amount! + deliveryCharge!),
                                  titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
                       ),
-                    ),
-        
-        
-        
-        
-        
-        
-                          ])),
-        
-                          // if(ResponsiveHelper.isDesktop(context)) Expanded(
-                          //   flex: 4,
-                          //   child: Container(
-                          //     padding: ResponsiveHelper.isDesktop(context) ?   const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge,vertical: Dimensions.paddingSizeLarge) : const EdgeInsets.all(0),
-                          //     margin: ResponsiveHelper.isDesktop(context) ?  const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault,vertical: Dimensions.paddingSizeSmall) : const EdgeInsets.all(0),
-                          //     decoration:ResponsiveHelper.isDesktop(context) ? BoxDecoration(
-                          //         color: Theme.of(context).cardColor,
-                          //         borderRadius: BorderRadius.circular(10),
-                              
-                          //     ) : const BoxDecoration(),
-                          //     child: Column(children: [
-                          //       CostSummeryView(
-                          //         kmWiseCharge: kmWiseCharge,
-                          //         takeAway: takeAway,
-                          //         deliveryCharge: deliveryCharge,
-                          //         subtotal: widget.amount,
-                          //       ),
-        
-                          //       if(ResponsiveHelper.isDesktop(context))  ConfirmButtonView(
-                          //         noteController: _noteController,
-                          //         callBack: _callback,
-                          //         cartList: _cartList,
-                          //         kmWiseCharge: kmWiseCharge,
-                          //         orderType: widget.orderType!,
-                          //         orderAmount: widget.amount!,
-                          //         couponCode: widget.couponCode,
-                          //         deliveryCharge: deliveryCharge,
-                          //       ),
-        
-                          //     ]),
-                          //   ),
-                          // ),
+                    ),])),
         
                         ]),
         
@@ -343,50 +421,48 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   });
                 })),
         
-                // if(ResponsiveHelper.isDesktop(context)) const SliverFillRemaining(
-                //   hasScrollBody: false,
-                //   child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                //     SizedBox(height: Dimensions.paddingSizeLarge),
-        
-                //     FooterView(),
-                //   ]),
-                // ),
+               
         
               ])),
         
             if(!ResponsiveHelper.isDesktop(context))   Consumer<OrderProvider>(
                 builder: (context, orderProvider, _) {
                   double? deliveryCharge = 0;
-        
-                  // if(!takeAway && kmWiseCharge) {
-                  //   deliveryCharge = orderProvider.distance * configModel.deliveryManagement!.shippingPerKm!;
-                  //   if(deliveryCharge < configModel.deliveryManagement!.minShippingCharge!) {
-                  //     deliveryCharge = configModel.deliveryManagement!.minShippingCharge;
-                  //   }
-                  // }else if(!takeAway && !kmWiseCharge) {
-                  //   deliveryCharge = configModel.deliveryCharge;
-                  // }
-        
                   return Column(children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge, vertical: Dimensions.paddingSizeExtraSmall),
-                    //   child: ItemView(
-                    //     title: getTranslated('total', context)!,
-                    //     subTitle: PriceConverter.convertPrice(widget.amount! + deliveryCharge!),
-                    //      titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
-                    //   ),
-                    // ),
+                     SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:ColorResources.kOrangeColor,
+                  padding: EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () {
+                  showDeliveryFeeDialog(context);
+                },
+                child: const Text(
+                  "Confirm Order",
+                  style: TextStyle(
+                    color:ColorResources. kWhite,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            )
                   
-                    ConfirmButtonView(
-                        noteController: _noteController,
-                        callBack: _callback,
-                        cartList: _cartList,
-                        kmWiseCharge: kmWiseCharge,
-                        orderType: widget.orderType!,
-                        orderAmount: widget.amount!,
-                        couponCode: widget.couponCode,
-                        deliveryCharge: deliveryCharge,
-                      ),
+                    // ConfirmButtonView(
+                    //     noteController: _noteController,
+                    //     callBack: _callback,
+                    //     cartList: _cartList,
+                    //     kmWiseCharge: kmWiseCharge,
+                    //     orderType: widget.orderType!,
+                    //     orderAmount: widget.amount!,
+                    //     couponCode: widget.couponCode,
+                    //     deliveryCharge: deliveryCharge,
+                    //   ),
                   ]);
                 }
             ),

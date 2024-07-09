@@ -245,7 +245,7 @@ class _CartScreenState extends State<CartScreen> {
 
               double orderAmount = itemPrice + addOns;
 
-              bool kmWiseCharge = Provider.of<SplashProvider>(context, listen: false).configModel!.deliveryManagement!.status == 1;
+              // bool kmWiseCharge = Provider.of<SplashProvider>(context, listen: false).configModel!.deliveryManagement!.status == 1;
 
               return cart.cartList.isNotEmpty ? Column(
                 children: [
@@ -327,7 +327,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 borderRadius: BorderRadius.circular(15.0),
                                               ),
                                               child: coupon.discount! <= 0 ? !coupon.isLoading ? Text(
-                                                getTranslated('apply', context)!,
+                                                getTranslated('apply', context),
                                                 style: rubikMedium.copyWith(color: Colors.white),
                                               ) : const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white)) : const Icon(Icons.clear, color: Colors.white),
                                             ),
@@ -338,7 +338,7 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 
                                   const SizedBox(height: Dimensions.paddingSizeLarge),
-                                 Text(getTranslated('delivery_option', context)!, style:const TextStyle(fontSize:16,fontWeight: FontWeight.w700 )),
+                                 Text(getTranslated('delivery_option', context), style:const TextStyle(fontSize:16,fontWeight: FontWeight.w700 )),
                                   const SizedBox(height: Dimensions.paddingSizeLarge),
                                   // Order type
                                   Row(
@@ -349,7 +349,8 @@ class _CartScreenState extends State<CartScreen> {
                                                               .homeDelivery!
                                                           ? DeliveryOptionButton(
                                                               value: 'delivery',
-                                                              title: getTranslated('delivery', context), imagePath: Images.box,
+                                                              title: getTranslated('delivery', context), 
+                                                              imagePath: Images.box,
                                                               
                                                             )
                                                           : Container(),
@@ -377,40 +378,33 @@ class _CartScreenState extends State<CartScreen> {
                                                           : Container(),
                                                     ],
                                                   ),
-                                                 const SizedBox(height: 15,),
+                                                 const SizedBox(height: 13,),
                                                  const Divider(color: ColorResources.kDeliveryBox,),
-                                                 const SizedBox(height: 15,),
                                                  
                                  _buildAdditionalUI(context),
-                                 const SizedBox(height: 15,),
+                                 const SizedBox(height: 10,),
                                   // Totals
                                   ItemView(
-                                    title: getTranslated('items_price', context)!,
+                                    title: getTranslated('items_price', context),
                                     subTitle: PriceConverter.convertPrice(itemPrice),
                                   ),
                                   const SizedBox(height: 10),
 
                                   ItemView(
-                                    title: getTranslated('addons', context)!,
+                                    title: getTranslated('addons', context),
                                     subTitle: '${PriceConverter.convertPrice(addOns)}',
                                   ),
                                   const SizedBox(height: 10),
 
                                   ItemView(
-                                    title: getTranslated('discount', context)!,
+                                    title: getTranslated('discount', context),
                                     subTitle: '- ${PriceConverter.convertPrice(discount)}',
                                     subTitleStyle:const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color:ColorResources.kredcolor),
                                   ),
-                                  const SizedBox(height: 10),
-
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
-                                    
-                                  ), 
                                   const Divider(color:ColorResources.borderColor,),
 
                                   ItemView(
-                                    title: getTranslated('total_amount', context)!,
+                                    title: getTranslated('total_amount', context),
                                     subTitle: PriceConverter.convertPrice(total),
                                     titleStyle:const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, ),
                                     subTitleStyle:const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, ),

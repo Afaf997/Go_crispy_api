@@ -13,6 +13,7 @@ static const String phoneApi ='https://interfuel.qa/go-crispy/api/v1/auth/sent-m
   static const String baseUrl =  'https://interfuel.qa/go-crispy';
   static const String categoryUri = '/api/v1/categories';
   static const String bannerUri = '/api/v1/banners';
+  
   static const String latestProductUri = '/api/v1/products/latest';
   static const String popularProductUri = '/api/v1/products/popular';
   static const String searchProductUri = '/api/v1/products/details/';

@@ -16,18 +16,21 @@ class ItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: titleStyle ?? const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-        ),
-        Text(
-          subTitle,
-          style: subTitleStyle ?? const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: titleStyle ?? const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          ),
+          Text(
+            subTitle,
+            style: subTitleStyle ?? const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
     );
   }
 }

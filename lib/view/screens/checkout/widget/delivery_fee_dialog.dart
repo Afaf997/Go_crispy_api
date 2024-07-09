@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/helper/price_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
+import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
@@ -92,8 +93,9 @@ class DeliveryFeeDialog extends StatelessWidget {
               const SizedBox(height: 30),
 
               CustomButton(btnTxt: getTranslated('ok', context), onTap: () {
-                context.pop();
-              }),
+                 RouterHelper.orderSuccessScreen;
+              }
+              ),
 
             ]),
           ),

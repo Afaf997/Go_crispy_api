@@ -21,41 +21,44 @@ class DeliveryOptionButton extends StatelessWidget {
       builder: (context, order, child) {
         bool isSelected = order.orderType == value;
 
-        return GestureDetector(
-          onTap: () => order.setOrderType(value, notify: true),
-          child: Container(
-            width: 109, // Maintain specified width
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-            margin: EdgeInsets.symmetric(horizontal: 3),
-            decoration: BoxDecoration(
-              color: ColorResources.kDeliveryBox,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: isSelected ? ColorResources.kOrangeColor : Colors.transparent,
-                width: 1,
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  imagePath,
-                  width: 24, // Adjust width as needed
-                  height: 24, // Adjust height as needed
-                  color: isSelected ? ColorResources.kOrangeColor : ColorResources.ktextgrey, // Color when selected
+        return Center(
+          child: GestureDetector(
+            onTap: () => order.setOrderType(value, notify: true),
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+              margin: EdgeInsets.symmetric(horizontal: 6),
+              decoration: BoxDecoration(
+                color: ColorResources.kDeliveryBox,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: isSelected ? ColorResources.kOrangeColor : Colors.transparent,
+                  width: 1,
                 ),
-                Flexible(
-                  child: Text(
-                    title!,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: isSelected ? ColorResources.kOrangeColor : ColorResources.ktextgrey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    imagePath,
+                    width: 15, // Adjust width as needed
+                    height: 15, // Adjust height as needed
+                    color: isSelected ? ColorResources.kOrangeColor : ColorResources.ktextgrey, // Color when selected
+                  ),
+                  SizedBox(width: 1
+                  ),
+                  Flexible(
+                    child: Text(
+                      title!,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: isSelected ? ColorResources.kOrangeColor : ColorResources.ktextboarder,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

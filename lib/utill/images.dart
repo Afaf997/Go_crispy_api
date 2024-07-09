@@ -74,6 +74,8 @@ class Images {
   static const String trackOrder = 'assets/image/track_order.png';
   static const String scanner = 'assets/image/scanner.png';
   static const String schedule = 'assets/image/schedule.png';
+  static const String deliveryman = 'assets/image/delivery-man.png';
+
 
 
 
