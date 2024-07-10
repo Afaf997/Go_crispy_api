@@ -440,7 +440,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
                 onPressed: () {
-                  showDeliveryFeeDialog(context);
+                  showDeliveryFeeDialog(
+    context,
+    deliveryCharge,
+    widget.amount!,
+    confirmButtonView: ConfirmButtonView(
+                        noteController: _noteController,
+                        callBack: _callback,
+                        cartList: _cartList,
+                        kmWiseCharge: kmWiseCharge,
+                        orderType: widget.orderType!,
+                        orderAmount: widget.amount!,
+                        couponCode: widget.couponCode,
+                        deliveryCharge: deliveryCharge,
+                      ),
+  );
                 },
                 child: const Text(
                   "Confirm Order",
@@ -452,17 +466,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
               ),
             )
-                  
-                    // ConfirmButtonView(
-                    //     noteController: _noteController,
-                    //     callBack: _callback,
-                    //     cartList: _cartList,
-                    //     kmWiseCharge: kmWiseCharge,
-                    //     orderType: widget.orderType!,
-                    //     orderAmount: widget.amount!,
-                    //     couponCode: widget.couponCode,
-                    //     deliveryCharge: deliveryCharge,
-                    //   ),
                   ]);
                 }
             ),

@@ -52,7 +52,7 @@ class ConfirmButtonView extends StatelessWidget {
             padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
             child: !orderProvider.isLoading ? Builder(
               builder: (context) => CustomButton(
-                  btnTxt: getTranslated('confirm_order', context),
+                  btnTxt: getTranslated('ok', context),
                   onTap: () {
                     final AuthProvider authProvider = Provider.of<AuthProvider>(context, listen: false);
                     final ConfigModel configModel = Provider.of<SplashProvider>(context, listen: false).configModel!;

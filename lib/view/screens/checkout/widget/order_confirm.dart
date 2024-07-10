@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/images.dart';
+import 'package:flutter_restaurant/view/screens/checkout/widget/confirm_button_view.dart';
 
-void showDeliveryFeeDialog(BuildContext context, double deliveryFee, double subtotal) {
-  final double total = deliveryFee + subtotal;
+void showDeliveryFeeDialog(BuildContext context, double deliveryCharge, double subtotal, {required ConfirmButtonView confirmButtonView}) {
+  final double total = deliveryCharge + subtotal;
 
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return Dialog(
-        backgroundColor: ColorResources.kWhite,
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
@@ -26,8 +28,7 @@ void showDeliveryFeeDialog(BuildContext context, double deliveryFee, double subt
                 style: TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 16),
-              Text(
-                '${deliveryFee.toStringAsFixed(2)} QR',
+              Text('${subtotal.toStringAsFixed(2)} QR',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -47,7 +48,7 @@ void showDeliveryFeeDialog(BuildContext context, double deliveryFee, double subt
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Delivery fee'),
-                  Text('${deliveryFee.toStringAsFixed(2)} QR'),
+                  Text('${deliveryCharge.toStringAsFixed(2)} QR'),
                 ],
               ),
               const Divider(),
@@ -67,26 +68,7 @@ void showDeliveryFeeDialog(BuildContext context, double deliveryFee, double subt
                 ],
               ),
               const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                height: 40,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorResources.kOrangeColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  onPressed: () {
-                    // Navigate to the order success screen
-                    // RouterHelper.orderSuccessScreen(context);
-                  },
-                  child: const Text(
-                    'Okay',
-                    style: TextStyle(color: ColorResources.kWhite, fontSize: 16),
-                  ),
-                ),
-              ),
+              confirmButtonView,
             ],
           ),
         ),

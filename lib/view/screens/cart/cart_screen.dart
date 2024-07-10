@@ -401,8 +401,12 @@ class _CartScreenState extends State<CartScreen> {
                                     subTitle: '- ${PriceConverter.convertPrice(discount)}',
                                     subTitleStyle:const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color:ColorResources.kredcolor),
                                   ),
+                                  const SizedBox(height: 10),
+                                 ItemView(
+                                    title: getTranslated('delivery_fee', context)!,
+                                    subTitle: PriceConverter.convertPrice(deliveryCharge),
+                                  ),
                                   const Divider(color:ColorResources.borderColor,),
-
                                   ItemView(
                                     title: getTranslated('total_amount', context),
                                     subTitle: PriceConverter.convertPrice(total),
@@ -428,13 +432,11 @@ class _CartScreenState extends State<CartScreen> {
                       if(ResponsiveHelper.isDesktop(context))  const FooterView(),
                     ]),
                   )),
-
-                 if(!ResponsiveHelper.isDesktop(context))
+  if(!ResponsiveHelper.isDesktop(context))
                    CheckOutButtonView(
                      orderAmount: orderAmount,
                      totalWithoutDeliveryFee: totalWithoutDeliveryFee,
                    ),
-
                 ],
               ) : const NoDataScreen(isCart: true);
             },
