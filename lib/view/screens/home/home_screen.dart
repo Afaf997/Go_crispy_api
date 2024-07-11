@@ -84,9 +84,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       final locationProvider = Provider.of<LocationProvider>(context, listen: false);
-      // locationProvider.checkPermission(() =>
-        // locationProvider.getCurrentLocation(context, false).then((currentPosition) {}));
-      // Provider.of<ProductProvider>(context, listen: false).seeMoreReturn();
       Provider.of<ProductProvider>(context, listen: false).getLatestProductList(true, '1');
     });
   }
@@ -112,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   bottomRight: Radius.circular(24.0),
                 ),
               ),
-              padding: EdgeInsets.only(right: 18, left: 18, top: 40),
+              padding: EdgeInsets.only(right: 18, left: 18, top: 70),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -131,31 +128,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icons.location_on,
                                 color: ColorResources.kWhite,
                               ),
-                              GestureDetector(
-                                onTap: () => RouterHelper.getAddressRoute(),
-                                child: Consumer<BranchProvider>(
-                                  builder: (context, branchProvider, _) {
-                                    if (branchProvider.getBranchId() == -1) return SizedBox();
-
-                                    List<Branches?> sortedBranches = List.from(branchProvider.branches);
-                                    sortedBranches.sort((a, b) {
-                                      if (a!.id == branchProvider.getBranchId()) return -1;
-                                      if (b!.id == branchProvider.getBranchId()) return 1;
-                                      return 0;
-                                    });
-
-                                    return Text(
-                                      sortedBranches.isNotEmpty ? sortedBranches[0]!.name??'' : '',
-                                      style:const TextStyle(
-                                        color: ColorResources.kWhite,
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.center,
-                                    );
-                                  },
-                                ),
+                              Consumer<BranchProvider>(
+                                builder: (context, branchProvider, _) {
+                                  if (branchProvider.getBranchId() == -1) return SizedBox();
+                              
+                                  List<Branches?> sortedBranches = List.from(branchProvider.branches);
+                                  sortedBranches.sort((a, b) {
+                                    if (a!.id == branchProvider.getBranchId()) return -1;
+                                    if (b!.id == branchProvider.getBranchId()) return 1;
+                                    return 0;
+                                  });
+                              
+                                  return Text(
+                                    sortedBranches.isNotEmpty ? sortedBranches[0]!.name??'' : '',
+                                    style:const TextStyle(
+                                      color: ColorResources.kWhite,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -169,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 25),
+                  SizedBox(height: 10),
                   GestureDetector(
                     onTap: () => RouterHelper.getSearchRoute(),
                     child: Container(
