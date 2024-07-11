@@ -68,6 +68,7 @@ static const Color kIncreasedColor = Color(0xFFB3B3B3);
 static const Color kstarYellow =  Color(0xFFFFBF34);
 static const Color kDeliveryBox =  Color(0xFFF0F0F0);
 static const Color ktextboarder =  Color(0xFF989898);
+static const Color kprofileboarder =  Color(0xFFEEEEEE);
 
   
 

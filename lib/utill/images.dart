@@ -22,7 +22,7 @@ class Images {
   static const String image = 'assets/image/image.png';
   static const String send = 'assets/image/send.png';
   static const String line = 'assets/image/line.png';
-  static const String couponBg = 'assets/image/coupon_bg.png';
+  static const String couponBg = 'assets/image/coupon.png';
   static const String percentage = 'assets/image/percentage.png';
   static const String placeholderImage = 'assets/image/placeholder_image.jpg';
   static const String placeholderBanner = 'assets/image/placeholder_banner.jpg';

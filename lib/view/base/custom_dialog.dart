@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/main.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 
 import '../../utill/dimensions.dart';
@@ -38,7 +39,7 @@ class CustomDialog extends StatelessWidget {
           const SizedBox(height: 20),
           CircleAvatar(
             radius: 30,
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: ColorResources.kOrangeColor,
             child: Icon(icon, size: 50),
           ),
           Container(

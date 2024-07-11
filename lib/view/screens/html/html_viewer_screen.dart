@@ -3,6 +3,7 @@ import 'package:flutter_restaurant/helper/html_type.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
@@ -58,6 +59,7 @@ class HtmlViewerScreen extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: ColorResources.kWhite,
       appBar: (ResponsiveHelper.isDesktop(context) ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar()) :  CustomAppBar(
         title: getTranslated(appBarText, context),
         context: context,

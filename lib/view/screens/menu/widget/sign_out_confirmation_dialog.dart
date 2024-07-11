@@ -5,6 +5,7 @@ import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
+import 'package:flutter_restaurant/view/screens/auth/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,9 +43,10 @@ class SignOutConfirmationDialog extends StatelessWidget {
 
                     if(ResponsiveHelper.isWeb()) {
                       RouterHelper.getLoginRoute(action: RouteAction.pushNamedAndRemoveUntil);
+                      Navigator. pushReplacement(context,MaterialPageRoute(builder: (context)=>LoginScreen()));
                     }else {
                       context.pop();
-                      RouterHelper.getLoginRoute(action: RouteAction.pushNamedAndRemoveUntil);
+                       Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>LoginScreen()));
                     }
                   });
                 },

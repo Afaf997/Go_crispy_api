@@ -6,6 +6,7 @@ import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/coupon_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -44,6 +45,7 @@ class _CouponScreenState extends State<CouponScreen> {
 
 
     return Scaffold(
+      backgroundColor: ColorResources.kWhite,
       appBar: (ResponsiveHelper.isDesktop(context) ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar()) : CustomAppBar(context: context, title: getTranslated('coupon', context))) as PreferredSizeWidget?,
       body: (splashProvider.configModel!.isGuestCheckout! || _isLoggedIn) ? Consumer<CouponProvider>(
         builder: (context, coupon, child) {

@@ -33,6 +33,8 @@ class CustomTextField extends StatefulWidget {
   final LanguageProvider? languageProvider;
   final InputDecoration? inputDecoration;
   final String? Function(String?)? onValidate;
+  final Color? borderColor;
+  final Color? backgroundColor;
 
   const CustomTextField({
     Key? key,
@@ -62,6 +64,8 @@ class CustomTextField extends StatefulWidget {
     this.languageProvider,
     this.inputDecoration,
     this.onValidate,
+    this.borderColor,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -77,7 +81,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
       maxLines: widget.maxLines,
       controller: widget.controller,
       focusNode: widget.focusNode,
-      style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color, fontSize: Dimensions.fontSizeLarge),
+      style: Theme.of(context).textTheme.displayMedium!.copyWith(
+            color: Theme.of(context).textTheme.bodyLarge!.color,
+            fontSize: Dimensions.fontSizeLarge,
+          ),
       textInputAction: widget.inputAction,
       keyboardType: widget.inputType,
       cursorColor: Theme.of(context).primaryColor,
@@ -85,58 +92,83 @@ class _CustomTextFieldState extends State<CustomTextField> {
       enabled: widget.isEnabled,
       autofocus: false,
       obscureText: widget.isPassword ? _obscureText : false,
-      inputFormatters: widget.inputType == TextInputType.phone ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9+]'))] : null,
-      decoration: widget.inputDecoration ?? InputDecoration(
-        errorStyle: rubikRegular.copyWith(color: Theme.of(context).colorScheme.error, fontSize: Dimensions.fontSizeSmall),
-        focusedBorder: getBorder(ColorResources.klgreyColor),
-        enabledBorder: getBorder(ColorResources.klgreyColor),
-        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
-        border: getBorder(ColorResources.klgreyColor),
-        isDense: true,
-        hintText: widget.hintText ?? getTranslated('write_something', context),
-        fillColor: ColorResources.kColorgrey,
-        hintStyle: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor.withOpacity(0.7)),
-        filled: true,
-        prefixIcon: widget.isShowPrefixIcon
-            ? Padding(
-                padding: const EdgeInsets.only(left: Dimensions.paddingSizeLarge, right: Dimensions.paddingSizeSmall),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (widget.prefixIconUrl != null)
-                      Image.asset(
-                        widget.prefixIconUrl!,
-                        width: 15,
-                        height: 15,
-                        color: Theme.of(context).textTheme.bodyLarge?.color,
-                      ),
-                    const SizedBox(width: 8),
-                  ],
+      inputFormatters: widget.inputType == TextInputType.phone
+          ? <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp('[0-9+]'))
+            ]
+          : null,
+      decoration: widget.inputDecoration ??
+          InputDecoration(
+            errorStyle: rubikRegular.copyWith(
+              color: Theme.of(context).colorScheme.error,
+              fontSize: Dimensions.fontSizeSmall,
+            ),
+            focusedBorder: getBorder(widget.borderColor ?? ColorResources.klgreyColor),
+            enabledBorder: getBorder(widget.borderColor ?? ColorResources.klgreyColor),
+            contentPadding: const EdgeInsets.symmetric(
+                vertical: 16, horizontal: 22),
+            border: getBorder(widget.borderColor ?? ColorResources.klgreyColor),
+            isDense: true,
+            hintText: widget.hintText ?? getTranslated('write_something', context),
+            fillColor: widget.backgroundColor ?? ColorResources.kColorgrey,
+            hintStyle: Theme.of(context).textTheme.displayMedium!.copyWith(
+                  fontSize: Dimensions.fontSizeSmall,
+                  color: Theme.of(context).hintColor.withOpacity(0.7),
                 ),
-              )
-            : null,
-        prefixIconConstraints: const BoxConstraints(minWidth: 23, maxHeight: 20),
-        suffixIcon: widget.isShowSuffixIcon
-            ? widget.isPassword
-                ? IconButton(
-                    icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility, color: Theme.of(context).hintColor.withOpacity(0.3)),
-                    onPressed: _toggle)
-                : widget.isIcon
+            filled: true,
+            prefixIcon: widget.isShowPrefixIcon
+                ? Padding(
+                    padding: const EdgeInsets.only(
+                        left: Dimensions.paddingSizeLarge,
+                        right: Dimensions.paddingSizeSmall),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (widget.prefixIconUrl != null)
+                          Image.asset(
+                            widget.prefixIconUrl!,
+                            width: 15,
+                            height: 15,
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
+                          ),
+                        const SizedBox(width: 8),
+                      ],
+                    ),
+                  )
+                : null,
+            prefixIconConstraints:
+                const BoxConstraints(minWidth: 23, maxHeight: 20),
+            suffixIcon: widget.isShowSuffixIcon
+                ? widget.isPassword
                     ? IconButton(
-                        onPressed: widget.onSuffixTap as void Function()?,
-                        icon: Image.asset(
-                          widget.suffixIconUrl!,
-                          width: 15,
-                          height: 15,
-                          color: Theme.of(context).textTheme.bodyLarge?.color,
+                        icon: Icon(
+                          _obscureText
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Theme.of(context).hintColor.withOpacity(0.3),
                         ),
+                        onPressed: _toggle,
                       )
-                    : null
-            : null,
-      ),
+                    : widget.isIcon
+                        ? IconButton(
+                            onPressed: widget.onSuffixTap as void Function()?,
+                            icon: Image.asset(
+                              widget.suffixIconUrl!,
+                              width: 15,
+                              height: 15,
+                              color:
+                                  Theme.of(context).textTheme.bodyLarge?.color,
+                            ),
+                          )
+                        : null
+                : null,
+          ),
       onTap: widget.onTap as void Function()?,
-      onFieldSubmitted: (text) => widget.nextFocus != null ? FocusScope.of(context).requestFocus(widget.nextFocus)
-          : widget.onSubmit != null ? widget.onSubmit!(text) : null,
+      onFieldSubmitted: (text) => widget.nextFocus != null
+          ? FocusScope.of(context).requestFocus(widget.nextFocus)
+          : widget.onSubmit != null
+              ? widget.onSubmit!(text)
+              : null,
       onChanged: widget.onChanged as void Function(String)?,
       validator: widget.onValidate != null ? widget.onValidate! : null,
     );

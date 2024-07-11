@@ -12,6 +12,7 @@ import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
+import 'package:flutter_restaurant/view/screens/language/model.dart';
 import 'package:flutter_restaurant/view/screens/menu/widget/sign_out_confirmation_dialog.dart';
 import 'package:flutter_restaurant/view/screens/scaner/scaner_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -91,7 +92,7 @@ class OptionsView extends StatelessWidget {
                 title: Text(getTranslated('address', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
               ),
               ListTile(
-                onTap: () => RouterHelper.getLanguageRoute(true),
+                onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context)=>const LanguagemodelScreen())),
                 leading: Image.asset(Images.languageicon, width: 20, height: 20, ),
                 title: Text(getTranslated('language', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
               ),
