@@ -80,7 +80,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
             margin: ResponsiveHelper.isDesktop(context) ? EdgeInsets.symmetric(horizontal: (width - Dimensions.webScreenWidth) / 2) : null,
             decoration: ResponsiveHelper.isDesktop(context) ? BoxDecoration(
               color: Theme.of(context).canvasColor, borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              boxShadow: [BoxShadow(color: Theme.of(context).shadowColor, blurRadius: 5, spreadRadius: 1)],
+              // boxShadow: [BoxShadow(color: Theme.of(context).shadowColor, blurRadius: 5, spreadRadius: 1)],
             ) : null,
             child: Column(children: [
               Container(
@@ -101,11 +101,11 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
 
                   orderProvider.trackModel != null ? Column(children: [
                     const SizedBox(height: Dimensions.paddingSizeDefault),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                       Text('${getTranslated('your_order', context)}', style: rubikMedium),
 
                       Text(' #${orderProvider.trackModel?.id}', style: rubikMedium.copyWith(
-                        fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).primaryColor,
+                        fontSize: Dimensions.fontSizeLarge,
                       )),
                     ]),
                     const SizedBox(height: Dimensions.paddingSizeLarge),
@@ -121,7 +121,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                             || status == OrderStatus.delivered,
                         isActive: status == OrderStatus.pending,
                         haveTopBar: false,
-                        statusImage: Images.order,
+                        statusImage: Images.icon1,
                         subTitle: '${DateConverter.estimatedDate(DateConverter.convertStringToDatetime(orderProvider.trackModel!.createdAt!))} ${DateConverter.estimatedDate(DateConverter.convertStringToDatetime(orderProvider.trackModel!.createdAt!))}',
                       ),
 
@@ -133,7 +133,8 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                             || status == OrderStatus.outForDelivery
                             || status == OrderStatus.delivered,
                         isActive: status == OrderStatus.confirmed,
-                        statusImage: Images.done,
+                        statusImage: Images.icon2,
+                        
                       ),
 
                       CustomStepper(
@@ -143,7 +144,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                             || status == OrderStatus.outForDelivery
                             ||status == OrderStatus.delivered,
                         isActive: status == OrderStatus.cooking,
-                        statusImage: Images.cooking,
+                        statusImage: Images.icon3,
                       ),
 
                       CustomStepper(
@@ -151,7 +152,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                         isComplete: status == OrderStatus.processing
                             || status == OrderStatus.outForDelivery
                             ||status == OrderStatus.delivered,
-                        statusImage: Images.preparing,
+                        statusImage: Images.icon4,
                         isActive: status == OrderStatus.processing,
                         subTitle: getTranslated('your_delivery_man_is_coming', context),
                       ),
@@ -168,7 +169,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                         return CustomStepper(
                           title: getTranslated('order_is_on_the_way', context),
                           isComplete: status == OrderStatus.outForDelivery || status == OrderStatus.delivered,
-                          statusImage: Images.outForDelivery,
+                          statusImage: Images.icon5,
                           height: orderProvider.trackModel?.deliveryMan == null ? 30 : 130,
                           isActive: status == OrderStatus.outForDelivery,
                           trailing: orderProvider.trackModel?.deliveryMan?.phone != null ? InkWell(
@@ -197,7 +198,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                         title: getTranslated('order_delivered', context),
                         isComplete: status == OrderStatus.delivered,
                         isActive: status == OrderStatus.delivered,
-                        statusImage: Images.done,
+                        statusImage: Images.icon6,
                       ),
                     ]),
                   ]) : widget.orderID == null ?  Column(children: [

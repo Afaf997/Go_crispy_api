@@ -99,7 +99,13 @@ static const String  addressicon= 'assets/icon/personalcard.png';
 static const String  languageicon= 'assets/icon/language-circle.png';
 static const String  helpicon= 'assets/icon/music-play.png';
 static const String  policyicon= 'assets/icon/stickynote.png';
-static const String  termsicon= 'assets/icon/task-square.png';  
+static const String  termsicon= 'assets/icon/task-square.png'; 
+static const String icon1 = 'assets/icon/icon1.png'; 
+static const String icon2 = 'assets/icon/icon2.png'; 
+static const String icon3 = 'assets/icon/icon3.png'; 
+static const String icon4 = 'assets/icon/icon4.png'; 
+static const String icon5 = 'assets/icon/icon5.png'; 
+static const String icon6 = 'assets/icon/icon6.png'; 
   
    static const String cardTick = 'assets/icon/card-tick.png';
   static const String gif = 'assets/icon/app.gif';

@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   bottomRight: Radius.circular(24.0),
                 ),
               ),
-              padding: EdgeInsets.only(right: 18, left: 18, top: 70),
+              padding: EdgeInsets.only(right: 18, left: 18, top: 60),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

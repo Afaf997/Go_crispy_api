@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/time_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -26,11 +27,11 @@ class _TimerViewState extends State<TimerView> {
             seconds = orderTimer.duration!.inSeconds - (24 * days * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
           }
           return Column( children: [
-            Image.asset(Images.deliveryman, height: 200),
+            Image.asset(Images.deliveryman, height: 78,width: 78,),
 
             Text(
               minutes! < 5 ? getTranslated('be_prepared_your_food', context)! : getTranslated('your_food_delivery', context)!,
-              style: rubikRegular.copyWith(color: Theme.of(context).hintColor),
+              style:const TextStyle(fontSize: 10,fontWeight: FontWeight.w400,color: ColorResources.kIncreasedColor),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -65,15 +66,12 @@ class _TimerViewState extends State<TimerView> {
 
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
-                '${minutes < 5 ? 0 : minutes - 5} - ${minutes < 5 ? 5 : minutes}',
-                style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeOverLarge),
+                '${minutes < 5 ? 0 : minutes - 5}-${minutes < 5 ? 5 : minutes}',
+                style:const TextStyle(fontSize: 20,fontWeight: FontWeight.w700,color: ColorResources.kOrangeColor),
               ),
               const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 
-              Text(getTranslated('min', context)!, style: rubikRegular.copyWith(
-                color: Theme.of(context).primaryColor,
-                fontSize: Dimensions.fontSizeLarge,
-              )),
+              Text(getTranslated('min', context)!, style:const TextStyle(fontSize: 20,fontWeight: FontWeight.w700,color: ColorResources.kOrangeColor),),
 
             ],),
 
