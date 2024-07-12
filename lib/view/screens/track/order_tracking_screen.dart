@@ -6,6 +6,7 @@ import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/location_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/time_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/order_status.dart';
@@ -60,11 +61,12 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.sizeOf(context).width;
     return Scaffold(
+      backgroundColor: ColorResources.kWhite,
       appBar: ResponsiveHelper.isDesktop(context) ? const PreferredSize(
         preferredSize: Size.fromHeight(100), child: WebAppBar(),
       ) : CustomAppBar(
         title: getTranslated('track_order', context)!,
-        centerTitle: false,
+        centerTitle: true,
       ) as PreferredSizeWidget,
 
       body: CustomScrollView(slivers: [

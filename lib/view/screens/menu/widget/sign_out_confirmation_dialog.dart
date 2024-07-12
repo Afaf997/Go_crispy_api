@@ -42,11 +42,11 @@ class SignOutConfirmationDialog extends StatelessWidget {
                   Provider.of<AuthProvider>(context, listen: false).clearSharedData(context).then((condition) {
 
                     if(ResponsiveHelper.isWeb()) {
-                      RouterHelper.getLoginRoute(action: RouteAction.pushNamedAndRemoveUntil);
-                      Navigator. pushReplacement(context,MaterialPageRoute(builder: (context)=>LoginScreen()));
+                      // RouterHelper.getLoginRoute(action: RouteAction.pushNamedAndRemoveUntil);
+                      Navigator. push(context,MaterialPageRoute(builder: (context)=>const LoginScreen()));
                     }else {
                       context.pop();
-                       Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>LoginScreen()));
+                       Navigator.push(context,MaterialPageRoute(builder: (context)=>const LoginScreen()));
                     }
                   });
                 },

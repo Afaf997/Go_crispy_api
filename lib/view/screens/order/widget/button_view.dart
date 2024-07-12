@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -28,12 +29,13 @@ class ButtonView extends StatelessWidget {
               child: Row(children: [
                 order.trackModel!.orderStatus == 'pending' ? Expanded(child: Padding(
                   padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                  child: TextButton(
+                  child: ElevatedButton(
+            
                     style: TextButton.styleFrom(
                       minimumSize: const Size(1, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(width: 2, color: Theme.of(context).disabledColor),
+                        side:const BorderSide(width: 2, color: ColorResources.kblack),
                       ),
                     ),
                     onPressed: () {
@@ -55,7 +57,7 @@ class ButtonView extends StatelessWidget {
                     child: Text(
                       getTranslated('cancel_order', context)!,
                       style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                        color: Theme.of(context).disabledColor,
+                        color: ColorResources.kblack,
                         fontSize: Dimensions.fontSizeLarge,
                       ),
                     ),

@@ -3,6 +3,7 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
@@ -36,7 +37,7 @@ class _OrderScreenState extends State<OrderScreen> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).cardColor,
+      backgroundColor: ColorResources.kWhite,
       appBar: (ResponsiveHelper.isDesktop(context) ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar()) : CustomAppBar(context: context, title: getTranslated('my_order', context), isBackButtonExist: !ResponsiveHelper.isMobile())) as PreferredSizeWidget?,
       body: _isLoggedIn ? Consumer<OrderProvider>(
         builder: (context, order, child) {
@@ -45,7 +46,7 @@ class _OrderScreenState extends State<OrderScreen> with TickerProviderStateMixin
             Center(
               child: Container(
                 width: 1170,
-                color: Theme.of(context).cardColor,
+                color:ColorResources.kWhite,
                 child: TabBar(
                   controller: _tabController,
                   labelColor: Theme.of(context).textTheme.bodyLarge!.color,

@@ -38,7 +38,7 @@ Future<void> _verifyOtp(String otp) async {
       } else if (responseData['status_code'] == 1) {
         final token = responseData['token'];
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-        // await prefs.remove('token');
+        await prefs.remove('token');
         await prefs.setString('token', token);
         showCustomSnackBar('Welcome back!', isError: false);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const BranchListScreen()));

@@ -78,11 +78,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       ),
                       const SizedBox(height: 10),
 
-                      authProvider.isLoggedIn() && splashProvider.configModel!.loyaltyPointStatus! && profileProvider.userInfoModel != null ? Text(
-                        '${getTranslated('loyalty_point', context)}: ${profileProvider.userInfoModel?.point?.toInt() ?? ''}',
-                        style: rubikRegular.copyWith(color: Colors.white),
-                      ) : const SizedBox(),
-
                      const Text(
                 'QR 250',
                 style: TextStyle(

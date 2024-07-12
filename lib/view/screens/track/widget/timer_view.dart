@@ -26,8 +26,7 @@ class _TimerViewState extends State<TimerView> {
             seconds = orderTimer.duration!.inSeconds - (24 * days * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
           }
           return Column( children: [
-            Image.asset(Images.deliveryManGif, height: 200),
-            const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+            Image.asset(Images.deliveryman, height: 200),
 
             Text(
               minutes! < 5 ? getTranslated('be_prepared_your_food', context)! : getTranslated('your_food_delivery', context)!,

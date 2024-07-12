@@ -7,6 +7,7 @@ import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -52,42 +53,63 @@ class DetailsView extends StatelessWidget {
                   ]),
               const SizedBox(height: Dimensions.paddingSizeLarge),
 
-              Row(children: [
-                Text('${getTranslated('item', context)}:', style: rubikRegular),
-                const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+            Row(
+  children: [
+    Text('${getTranslated('item', context)}:', style: rubikRegular),
+    const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 
-                Text(order.orderDetails!.length.toString(), style: rubikMedium.copyWith(color: Theme.of(context).primaryColor)),
-                const Expanded(child: SizedBox()),
+    Text(order.orderDetails!.length.toString(), style: rubikMedium.copyWith(color: Theme.of(context).primaryColor)),
+    const Expanded(child: SizedBox()),
 
-                order.trackModel!.orderType == 'delivery' ? TextButton.icon(
-                  onPressed: () {
-                    if(order.trackModel!.deliveryAddress != null) {
-                      RouterHelper.getMapRoute(AddressModel(), deliveryAddress: order.trackModel!.deliveryAddress!);
-                    } else{
-                      showCustomSnackBar(getTranslated('address_not_found', context));
-                    }
-                  },
-                  icon: const Icon(Icons.map, size: 18),
-                  label: Text(getTranslated('delivery_address', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeSmall)),
-                  style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5), side: const BorderSide(width: 1)),
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-                      minimumSize: const Size(1, 30)
+    order.trackModel!.orderType == 'delivery'
+        ? GestureDetector(
+            onTap: () {
+              if (order.trackModel!.deliveryAddress != null) {
+                RouterHelper.getMapRoute(AddressModel(), deliveryAddress: order.trackModel!.deliveryAddress!);
+              } else {
+                showCustomSnackBar(getTranslated('address_not_found', context));
+              }
+            },
+            child: Container(
+              height: 44,
+              padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(width: 1, color:ColorResources.kOrangeColor),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    Images.mapicon, 
+                    height: 18,
+                    width: 18,
                   ),
-                ) : order.trackModel!.orderType == 'pos'
-                    ? Text(getTranslated('pos_order', context)!, style: poppinsRegular) :
-                order.trackModel!.orderType == 'dine_in' ? Text(getTranslated('dine_in', context)!, style: poppinsRegular) :
-                Text(getTranslated('${order.trackModel!.orderType}', context)!, style: rubikMedium),
+                  const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                  Text(
+                    getTranslated('delivery_address', context)!,
+                    style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeSmall,color: ColorResources.kOrangeColor),
+                  ),
+                ],
+              ),
+            ),
+          )
+        : order.trackModel!.orderType == 'pos'
+            ? Text(getTranslated('pos_order', context)!, style: poppinsRegular)
+            : order.trackModel!.orderType == 'dine_in'
+                ? Text(getTranslated('dine_in', context)!, style: poppinsRegular)
+                : Text(getTranslated('${order.trackModel!.orderType}', context)!, style: rubikMedium),
+  ],
+),
 
-              ]),
-              const Divider(height: 20),
+              const Divider(height: 25,color: ColorResources.borderColor,),
 
               // Payment info
               Align(
                 alignment: Alignment.center,
                 child: Text(
                   getTranslated('payment_info', context)!,
-                  style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
+                  style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeDefault,fontWeight: FontWeight.w700),
                 ),
               ),
               const SizedBox(height: 10),
@@ -95,26 +117,25 @@ class DetailsView extends StatelessWidget {
               Row(children: [
                 Expanded(flex: 2, child: Text(getTranslated('status', context)!, style: rubikRegular)),
 
-                Expanded(flex: 8, child: Text(
+                Expanded(flex: 12, child: Text(
                   getTranslated(order.trackModel!.paymentStatus, context)!,
-                  style: rubikMedium.copyWith(color: Theme.of(context).primaryColor),
+                  style:const TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: ColorResources.koffGreen)
                 )),
               ]),
               const SizedBox(height: 5),
 
               Row(children: [
-                Expanded(flex: 2, child: Text(getTranslated('method', context)!, style: rubikRegular)),
-
-                Expanded(flex: 8, child: Row(children: [
+                Text(getTranslated('method', context)!, style: rubikRegular),
+                Row(children: [
                   Text(
                     order.trackModel!.orderPartialPayments != null && order.trackModel!.orderPartialPayments!.isNotEmpty ?
                         getTranslated('partial_payment', context)! :
                     (order.trackModel!.paymentMethod != null && order.trackModel!.paymentMethod!.isNotEmpty)
                         ? '${order.trackModel!.paymentMethod![0].toUpperCase()}${order.trackModel!.paymentMethod!.substring(1).replaceAll('_', ' ')}'
                         : getTranslated('digital_payment', context)!,
-                    style: poppinsRegular.copyWith(color: Theme.of(context).primaryColor),
+                    style: poppinsRegular.copyWith(color: Theme.of(context).primaryColor,fontSize: 14),
                   ),
-
+                
                   // (order.trackModel!.paymentStatus != 'paid' && order.trackModel!.paymentMethod != 'cash_on_delivery' && order.trackModel!.orderStatus != 'cash' && order.trackModel!.orderStatus != 'delivered') ? InkWell(
                   //   onTap: () {
                   //     if(!Provider.of<SplashProvider>(context, listen: false).configModel!.cashOnDelivery!){
@@ -136,9 +157,9 @@ class DetailsView extends StatelessWidget {
                   //   child: Text(getTranslated('change', context)!, style: rubikRegular.copyWith(fontSize: 10, color: Colors.black)),
                   // ),
                   // ) : const SizedBox(),
-                ])),
+                ]),
               ]),
-              const Divider(height: 40),
+              const Divider(height: 20,color: ColorResources.borderColor,),
 
               ListView.builder(
                 shrinkWrap: true,
@@ -178,10 +199,10 @@ class DetailsView extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: FadeInImage.assetNetwork(
-                          placeholder: Images.placeholderImage, height: 70, width: 80, fit: BoxFit.cover,
+                          placeholder: Images.placeholderImage, height: 96, width: 96, fit: BoxFit.cover,
                           image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.productImageUrl}/'
                               '${order.orderDetails![index].productDetails!.image}',
-                          imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholderImage, height: 70, width: 80, fit: BoxFit.cover),
+                          imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholderImage, height: 96, width: 96, fit: BoxFit.cover),
                         ),
                       ),
                       const SizedBox(width: Dimensions.paddingSizeSmall),
@@ -189,18 +210,22 @@ class DetailsView extends StatelessWidget {
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Row(
                             children: [
-                              Expanded(
-                                child: Text(
-                                  order.orderDetails![index].productDetails!.name!,
-                                  style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                              Text(
+                                order.orderDetails![index].productDetails!.name!,
+                                style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge,fontWeight: FontWeight.w700),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              Text('${getTranslated('quantity', context)}:', style: rubikRegular),
-                              Text(order.orderDetails![index].quantity.toString(), style: rubikMedium.copyWith(color: Theme.of(context).primaryColor)),
+                           
                             ],
                           ),
+                          Text(
+                                order.orderDetails![index].productDetails!.description!,
+                                style: rubikMedium.copyWith(fontSize:12,fontWeight: FontWeight.w500,color: ColorResources.ktextboarder),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                           
                           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -208,7 +233,7 @@ class DetailsView extends StatelessWidget {
                               Flexible(child: Row(children: [
                                 CustomDirectionality(child: Text(
                                   PriceConverter.convertPrice( order.orderDetails![index].price! - order.orderDetails![index].discountOnProduct!),
-                                  style: rubikBold,
+                                  style:const TextStyle(color:ColorResources.kredcolor,fontSize: 16,fontWeight: FontWeight.w700)
                                 )),
                                 const SizedBox(width: 5),
 
@@ -275,7 +300,7 @@ class DetailsView extends StatelessWidget {
                     )
                         : const SizedBox(),
 
-                    const Divider(height: 40),
+                    const Divider(height: 40,color: ColorResources.borderColor,),
                   ]) : const SizedBox.shrink();
                 },
               ),

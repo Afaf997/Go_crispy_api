@@ -10,6 +10,7 @@ import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/location_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
@@ -63,6 +64,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     final double width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: ColorResources.kWhite,
       key: _scaffold,
       appBar: (ResponsiveHelper.isDesktop(context)
           ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar())
@@ -117,6 +119,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
                       child: SizedBox(width: 1170,
+                      height: 116,
                         child: Row(crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
@@ -125,13 +128,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 width: width > 700 ? 700 : width,
                                 padding: width > 700 ? const EdgeInsets.all(Dimensions.paddingSizeDefault) : null,
                                 decoration: width > 700 ? BoxDecoration(
-                                  color: Theme.of(context).canvasColor,
+                                  color: const Color.fromARGB(255, 178, 46, 46),
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [BoxShadow(
-                                    color: Theme.of(context).shadowColor,
-                                    blurRadius: 5,
-                                    spreadRadius: 1,
-                                  )],
+                                 
                                 ) : null,
                                 child: const DetailsView(),
                               ),
@@ -143,11 +142,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 decoration: width > 700 ? BoxDecoration(
                                   color: Theme.of(context).canvasColor,
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [BoxShadow(
-                                    color: Theme.of(context).shadowColor,
-                                    blurRadius: 5,
-                                    spreadRadius: 1,
-                                  )],
+                                  
                                 ) : null,
                                 child: OrderAmountView(
                                   itemsPrice: itemsPrice, tax: tax, addOns: addOns,
@@ -260,20 +255,16 @@ class _OrderAmountViewState extends State<OrderAmountView> {
       const SizedBox(height: 10),
 
       ItemView(
-        title: getTranslated('tax', context)!,
-        subTitle: '(+) ${PriceConverter.convertPrice( widget.tax)}',
-      ),
-      const SizedBox(height: 10),
-
-      ItemView(
         title: getTranslated('addons', context)!,
         subTitle: '(+) ${PriceConverter.convertPrice(widget.addOns)}',
       ),
-
-      const Padding(
-        padding: EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
-        child: CustomDivider(),
+           const SizedBox(height: 10),
+      ItemView(
+        title: getTranslated('discount', context)!,
+        subTitle: '(-) ${PriceConverter.convertPrice(widget.discount)}',
       ),
+         const Divider(height: 40,color: ColorResources.borderColor,),
+
 
       ItemView(
         title: getTranslated('subtotal', context)!,
@@ -281,77 +272,51 @@ class _OrderAmountViewState extends State<OrderAmountView> {
        
       ),
       const SizedBox(height: 10),
-
-      ItemView(
-        title: getTranslated('discount', context)!,
-        subTitle: '(-) ${PriceConverter.convertPrice(widget.discount)}',
-      ),
-      const SizedBox(height: 10),
-
-      ///....Extra discount..
-
-     if(widget.extraDiscount > 0) Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: ItemView(
-          title: getTranslated('extra_discount', context)!,
-          subTitle: '(-) ${PriceConverter.convertPrice(widget.extraDiscount)}',
-          // style: poppinsRegular.copyWith(fontSize: Dimensions.fontSizeLarge),
-        ),
-      ),
-
-      ItemView(
-        title: getTranslated('coupon_discount', context)!,
-        subTitle: '(-) ${PriceConverter.convertPrice(orderProvider.trackModel!.couponDiscountAmount)}',
-      ),
-      const SizedBox(height: 10),
-
       ItemView(
         title: getTranslated('delivery_fee', context)!,
         subTitle: '(+) ${PriceConverter.convertPrice(widget.deliveryCharge)}',
       ),
 
 
-      const Padding(
-        padding: EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
-        child: CustomDivider(),
-      ),
+         const Divider(height: 30,color: ColorResources.borderColor,),
 
       ItemView(
-        title: getTranslated('total_amount', context)!,
+        title: getTranslated('Total', context)!,
         subTitle: PriceConverter.convertPrice(widget.total),
-        // style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
+        titleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
+        subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700) ,
       ),
 
-     orderProvider.trackModel != null && orderProvider.trackModel!.orderPartialPayments != null && orderProvider.trackModel!.orderPartialPayments!.isNotEmpty ?  Padding(
-       padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
-       child: DottedBorder(
-          dashPattern: const [8, 4],
-          strokeWidth: 1.1,
-          borderType: BorderType.RRect,
-          color: Theme.of(context).colorScheme.primary,
-          radius: const Radius.circular(Dimensions.radiusDefault),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.02),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal : Dimensions.paddingSizeSmall, vertical: 1),
-            child: Column(children: paymentList.map((payment) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 1),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+    //  orderProvider.trackModel != null && orderProvider.trackModel!.orderPartialPayments != null && orderProvider.trackModel!.orderPartialPayments!.isNotEmpty ?  Padding(
+    //    padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
+    //    child: DottedBorder(
+    //       dashPattern: const [8, 4],
+    //       strokeWidth: 1.1,
+    //       borderType: BorderType.RRect,
+    //       color: Theme.of(context).colorScheme.primary,
+    //       radius: const Radius.circular(Dimensions.radiusDefault),
+    //       child: Container(
+    //         decoration: BoxDecoration(
+    //           color: Theme.of(context).primaryColor.withOpacity(0.02),
+    //         ),
+    //         padding: const EdgeInsets.symmetric(horizontal : Dimensions.paddingSizeSmall, vertical: 1),
+    //         child: Column(children: paymentList.map((payment) => Padding(
+    //           padding: const EdgeInsets.symmetric(vertical: 1),
+    //           child: Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
 
-                Text("${getTranslated(payment.paidAmount! > 0 ? 'paid_amount' : 'due_amount', context)} (${getTranslated('${payment.paidWith}', context)})",
-                  style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge!.color),
-                  overflow: TextOverflow.ellipsis,),
+    //             Text("${getTranslated(payment.paidAmount! > 0 ? 'paid_amount' : 'due_amount', context)} (${getTranslated('${payment.paidWith}', context)})",
+    //               style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge!.color),
+    //               overflow: TextOverflow.ellipsis,),
 
-                Text( PriceConverter.convertPrice(payment.paidAmount! > 0 ? payment.paidAmount : payment.dueAmount),
-                  style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeDefault, color: Theme.of(context).textTheme.bodyLarge!.color),),
-              ],
-              ),
-            )).toList()),
-          ),
-        ),
-     ) : const SizedBox(),
+    //             Text( PriceConverter.convertPrice(payment.paidAmount! > 0 ? payment.paidAmount : payment.dueAmount),
+    //               style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeDefault, color: Theme.of(context).textTheme.bodyLarge!.color),),
+    //           ],
+    //           ),
+    //         )).toList()),
+    //       ),
+    //     ),
+    //  ) : const SizedBox(),
 
       if(ResponsiveHelper.isDesktop(context))  ButtonView(phoneNumber: widget.phoneNumber),
 

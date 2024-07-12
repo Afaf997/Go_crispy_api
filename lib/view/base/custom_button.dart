@@ -13,7 +13,8 @@ class CustomButton extends StatelessWidget {
   final bool transparent;
   final EdgeInsets? margin;
   final Color? textColor;
-  final Color? borderColor; // Add this line for border color
+  final Color? borderColor;
+  final double? fontSize; // Add this line for font size
 
   const CustomButton({
     Key? key, 
@@ -27,7 +28,8 @@ class CustomButton extends StatelessWidget {
     this.height, 
     this.margin,
     this.textColor,
-    this.borderColor, // Add this line for border color
+    this.borderColor,
+    this.fontSize, // Add this line for font size
   }) : super(key: key);
 
   @override
@@ -40,7 +42,7 @@ class CustomButton extends StatelessWidget {
       padding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
-        side: borderColor != null ? BorderSide(color: borderColor!) : BorderSide.none, // Add border side
+        side: borderColor != null ? BorderSide(color: borderColor!) : BorderSide.none,
       ),
     );
 
@@ -54,11 +56,14 @@ class CustomButton extends StatelessWidget {
             style: flatButtonStyle,
             child: Text(
               btnTxt ?? '',
-              style: textStyle?.copyWith(color: textColor) ??
-                     Theme.of(context).textTheme.displaySmall!.copyWith(
-                       color: textColor ?? Colors.white, 
-                       fontSize: Dimensions.fontSizeLarge,
-                     ),
+              style: textStyle?.copyWith(
+                color: textColor,
+                fontSize: fontSize ?? Dimensions.fontSizeLarge,
+              ) ??
+              Theme.of(context).textTheme.displaySmall!.copyWith(
+                color: textColor ?? Colors.white, 
+                fontSize: fontSize ?? Dimensions.fontSizeLarge,
+              ),
             ),
           ),
         ),

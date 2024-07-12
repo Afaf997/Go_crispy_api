@@ -53,12 +53,6 @@ class OptionsView extends StatelessWidget {
                 title: Text(getTranslated('my_order', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
               ),
 
-              // ListTile(
-              //   onTap: () => RouterHelper.getOrderSearchScreen(),
-              //   leading: Image.asset(Images.trackOrder, width: 20, height: 20, color: Theme.of(context).textTheme.bodyLarge!.color),
-              //   title: Text(getTranslated('order_details', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-              // ),
-
               ListTile(
                 onTap: () => RouterHelper.getNotificationRoute(),
                 leading: Image.asset(Images.notificationicon, width: 20, height: 20,),

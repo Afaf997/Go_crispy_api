@@ -15,9 +15,10 @@ class OrderCancelDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-
+    backgroundColor: ColorResources.kWhite,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: SizedBox(
+        
         width: 300,
         child: Consumer<OrderProvider>(builder: (context, order, child) {
           return Column(mainAxisSize: MainAxisSize.min, children: [
@@ -42,7 +43,7 @@ class OrderCancelDialog extends StatelessWidget {
                   padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
                   alignment: Alignment.center,
                   decoration: const BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10))),
-                  child: Text(getTranslated('yes', context)!, style: rubikBold.copyWith(color: Theme.of(context).primaryColor)),
+                  child: Text(getTranslated('yes', context)!, style: rubikBold.copyWith(color:ColorResources.kOrangeColor)),
                 ),
               )),
 
@@ -51,14 +52,14 @@ class OrderCancelDialog extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: const BorderRadius.only(bottomRight: Radius.circular(10))),
+                  decoration:const BoxDecoration(color:ColorResources.kOrangeColor),
                   child: Text(getTranslated('no', context)!, style: rubikBold.copyWith(color: Colors.white)),
                 ),
               )),
 
-            ]) : Center(child: Padding(
+            ]) :const Center(child: Padding(
               padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-              child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
+              child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(ColorResources.kOrangeColor)),
             )),
           ]);
         },

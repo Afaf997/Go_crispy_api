@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/order_model.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
@@ -16,6 +17,7 @@ class OrderView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorResources.kWhite,
       body: Consumer<OrderProvider>(
         builder: (context, order, index) {
           List<OrderModel>? orderList;
@@ -27,35 +29,41 @@ class OrderView extends StatelessWidget {
             onRefresh: () async {
               await Provider.of<OrderProvider>(context, listen: false).getOrderList(context);
             },
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: ColorResources.kWhite,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(children: [
                 Center(
                   child: ConstrainedBox(
-                    constraints: BoxConstraints(minHeight: ResponsiveHelper.isDesktop(context) ? MediaQuery.of(context).size.height - 400 : MediaQuery.of(context).size.height),
+                    constraints: BoxConstraints(
+                      minHeight: ResponsiveHelper.isDesktop(context) ? MediaQuery.of(context).size.height - 400 : MediaQuery.of(context).size.height,
+                    ),
                     child: SizedBox(
                       width: 1170,
-                      child: ResponsiveHelper.isDesktop(context) ?  GridView.builder(
-                        gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: Dimensions.paddingSizeDefault, childAspectRatio: 3/1),
-                        padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                        itemCount: orderList.length,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => OrderItem(orderProvider: order, isRunning: isRunning, orderItem: orderList![index]),
-                      ) :
-                      ListView.builder(
-                        padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                        itemCount: orderList.length,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => OrderItem(orderProvider: order, isRunning: isRunning, orderItem: orderList![index]),
-                      ),
+                      child: ResponsiveHelper.isDesktop(context) 
+                        ? GridView.builder(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, 
+                              crossAxisSpacing: Dimensions.paddingSizeDefault, 
+                              childAspectRatio: 3/1
+                            ),
+                            padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                            itemCount: orderList.length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => OrderItem(orderProvider: order, isRunning: isRunning, orderItem: orderList![index]),
+                          )
+                        : ListView.builder(
+                            padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                            itemCount: orderList.length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => OrderItem(orderProvider: order, isRunning: isRunning, orderItem: orderList![index]),
+                          ),
                     ),
                   ),
                 ),
-
-                if(ResponsiveHelper.isDesktop(context)) const Padding(
+                if (ResponsiveHelper.isDesktop(context)) const Padding(
                   padding: EdgeInsets.only(top: Dimensions.paddingSizeDefault),
                   child: FooterView(),
                 ),
