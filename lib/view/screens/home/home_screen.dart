@@ -223,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                  child: Text(getTranslated('best_selling', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
+                                  child: Text(getTranslated('best_selling', context), style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
                                 ),
                               ],
                             ) else Padding(
@@ -239,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-                                  child: Text(getTranslated('latest_item', context)!, style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
+                                  child: Text(getTranslated('latest_item', context), style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
                                 ),
                               ],
                             ) else Padding(
