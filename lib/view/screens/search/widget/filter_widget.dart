@@ -149,7 +149,7 @@ class FilterWidget extends StatelessWidget {
                           );
                         },
                       )
-                      : const CategoryShimmer();
+                      : const CircularProgressIndicator();
                 },
               ),
               const SizedBox(height: 30),

@@ -239,9 +239,7 @@ class NotificationScreen extends StatelessWidget {
                   )
                 : const NoDataScreen()
             : Center(
-                child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).primaryColor)));
+             child:Image.asset(Images.gif,height:200,width: 200,));
       }),
     );
   }

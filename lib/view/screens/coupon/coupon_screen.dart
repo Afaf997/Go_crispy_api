@@ -221,7 +221,7 @@ class _CouponScreenState extends State<CouponScreen> {
                       ),
                     )
                   : const NoDataScreen()
-              : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)))
+              : Center( child:Image.asset(Images.gif,height:200,width: 200,))
           : const NotLoggedInScreen(),
     );
   }

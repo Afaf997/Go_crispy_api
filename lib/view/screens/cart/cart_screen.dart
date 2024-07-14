@@ -5,9 +5,9 @@ import 'package:flutter_restaurant/helper/date_converter.dart';
 import 'package:flutter_restaurant/helper/price_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
+import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/coupon_provider.dart';
-import 'package:flutter_restaurant/provider/localization_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
@@ -17,14 +17,11 @@ import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
-import 'package:flutter_restaurant/view/base/custom_directionality.dart';
-import 'package:flutter_restaurant/view/base/custom_divider.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/cart_product_widget.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/delivery_option_button.dart';
-import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
 import 'package:provider/provider.dart';
 
@@ -123,18 +120,33 @@ class _CartScreenState extends State<CartScreen> {
                       border: Border.all(color:ColorResources.klgreyColor ),
                       borderRadius: BorderRadius.circular(15.0),
                     ),
-                    child:const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "any location",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                            color: ColorResources.korgGrey, // Replace with your preferred color
-                          ),
-                        ),
-                        Icon(Icons.location_on, color: ColorResources.kOrangeColor),
+                         Consumer<BranchProvider>(
+                                builder: (context, branchProvider, _) {
+                                  if (branchProvider.getBranchId() == -1) return SizedBox();
+                              
+                                  List<Branches?> sortedBranches = List.from(branchProvider.branches);
+                                  sortedBranches.sort((a, b) {
+                                    if (a!.id == branchProvider.getBranchId()) return -1;
+                                    if (b!.id == branchProvider.getBranchId()) return 1;
+                                    return 0;
+                                  });
+                              
+                                  return Text(
+                                    sortedBranches.isNotEmpty ? sortedBranches[0]!.name??'' : '',
+                                    style:const TextStyle(
+                                      color: ColorResources.kblack,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  );
+                                },
+                              ),
+                        Image.asset(Images.mapicon),
                       ],
                     ),
                   ),
@@ -165,18 +177,33 @@ class _CartScreenState extends State<CartScreen> {
                         border: Border.all(color:ColorResources.klgreyColor ),
                         borderRadius: BorderRadius.circular(15.0),
                       ),
-                      child: const Row(
+                      child:  Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "any location",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: ColorResources.kblack,
-                              fontSize: 14
-                            ),
-                          ),
-                          Icon(Icons.location_on, color: ColorResources.kOrangeColor),
+                           Consumer<BranchProvider>(
+                                builder: (context, branchProvider, _) {
+                                  if (branchProvider.getBranchId() == -1) return SizedBox();
+                              
+                                  List<Branches?> sortedBranches = List.from(branchProvider.branches);
+                                  sortedBranches.sort((a, b) {
+                                    if (a!.id == branchProvider.getBranchId()) return -1;
+                                    if (b!.id == branchProvider.getBranchId()) return 1;
+                                    return 0;
+                                  });
+                              
+                                  return Text(
+                                    sortedBranches.isNotEmpty ? sortedBranches[0]!.name??'' : '',
+                                    style:const TextStyle(
+                                      color: ColorResources.kblack,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  );
+                                },
+                              ),
+                          Image.asset(Images.mapicon),
                         ],
                       ),
                     ),

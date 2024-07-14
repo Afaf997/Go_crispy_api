@@ -5,6 +5,7 @@ import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/wishlist_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
+import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
@@ -137,9 +138,7 @@ class _WishListScreenState extends State<WishListScreen> {
                           )
                         : const NoDataScreen()
                     : Center(
-                        child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context).primaryColor)));
+                        child:Image.asset(Images.gif,height:200,width: 200,));
               },
             )
           : const NotLoggedInScreen(),

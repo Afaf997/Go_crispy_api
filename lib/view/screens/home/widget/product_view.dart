@@ -5,10 +5,11 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
+import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/product_shimmer.dart';
 import 'package:flutter_restaurant/view/base/product_widget.dart';
-import 'package:flutter_restaurant/view/screens/home/web/widget/product_web_card_shimmer.dart';
+// import 'package:flutter_restaurant/view/screens/home/web/widget/product_web_card_shimmer.dart';
 import 'package:flutter_restaurant/view/screens/home/web/widget/product_widget_web.dart';
 import 'package:provider/provider.dart';
 
@@ -64,7 +65,7 @@ class ProductView extends StatelessWidget {
                 return Container(
                   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   width: 195,
-                  child: const ProductWidgetWebShimmer(),
+                  child: Image.asset(Images.gif), 
                 );},
             ),
           ) :
@@ -79,7 +80,7 @@ class ProductView extends StatelessWidget {
             ),
             itemCount: 12,
             itemBuilder: (BuildContext context, int index) {
-              return ResponsiveHelper.isDesktop(context) ? const ProductWidgetWebShimmer() : ProductShimmer(isEnabled: productList == null);
+              return ResponsiveHelper.isDesktop(context) ? Image.asset(Images.gif) :Image.asset(Images.gif)  ;
               },
             padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
           );

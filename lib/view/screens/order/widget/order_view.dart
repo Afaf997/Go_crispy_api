@@ -4,6 +4,7 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
+import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/screens/order/widget/order_item.dart';
@@ -69,7 +70,7 @@ class OrderView extends StatelessWidget {
                 ),
               ]),
             ),
-          ) : const NoDataScreen(isOrder: true) : const OrderShimmer();
+          ) : const NoDataScreen(isOrder: true) :  Image.asset(Images.gif);
         },
       ),
     );
