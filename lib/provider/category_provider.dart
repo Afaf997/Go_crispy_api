@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/base/api_response.dart';
 import 'package:flutter_restaurant/data/model/response/category_model.dart';
@@ -28,8 +29,10 @@ class CategoryProvider extends ChangeNotifier {
   String? get selectedSubCategoryId => _selectedSubCategoryId;
 
   Future<void> getCategoryList(bool reload) async {
+    log('category api call started');
     if(_categoryList == null || reload) {
       _isLoading = true;
+        notifyListeners();
       ApiResponse apiResponse = await categoryRepo!.getCategoryList();
       if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
         _categoryList = [];
@@ -49,7 +52,9 @@ class CategoryProvider extends ChangeNotifier {
 
   void getSubCategoryList(String categoryID, {String type = 'all', String? name}) async {
     _subCategoryList = null;
+    log('category api call started-');
     _isLoading = true;
+     notifyListeners();
     ApiResponse apiResponse = await categoryRepo!.getSubCategoryList(categoryID);
     if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
       _subCategoryList= [];
@@ -63,6 +68,9 @@ class CategoryProvider extends ChangeNotifier {
   }
 
   void getCategoryProductList(String? categoryID, {String type = 'all', String? name}) async {
+      log('category api call started');
+     _isLoading = true;
+     notifyListeners();
     _categoryProductList = null;
     _selectedSubCategoryId = categoryID;
     notifyListeners();
@@ -70,7 +78,8 @@ class CategoryProvider extends ChangeNotifier {
     if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
       _categoryProductList = [];
       apiResponse.response!.data.forEach((category) => _categoryProductList!.add(Product.fromJson(category)));
-      notifyListeners();
+    _isLoading = false;
+     notifyListeners();
     } else {
       showCustomSnackBar(apiResponse.error.toString());
     }
