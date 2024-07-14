@@ -9,6 +9,7 @@ import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/provider/theme_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
@@ -60,7 +61,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
               ),
               padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
               decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
+                color: ColorResources.kWhite,
                 borderRadius: ResponsiveHelper.isMobile()
                     ? const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))
                     : const BorderRadius.all(Radius.circular(20)),
@@ -171,7 +172,6 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                                           )),
                                         ]),
                                         const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
                                         Row(children: [
                                           variationList[index].isMultiSelect! ? Text(
                                             '${getTranslated('you_need_to_select_minimum', context)} ${'${variationList[index].min}'
@@ -279,7 +279,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                               ]),
                               const SizedBox(height: Dimensions.paddingSizeLarge),
                               //Add to cart Button
-                             // if(ResponsiveHelper.isDesktop(context)) _cartButton(isAvailable, context, cartModel, variationList),
+                             if(ResponsiveHelper.isDesktop(context)) _cartButton(isAvailable, context, cartModel, variationList),
                             ]),
                           ),
                         ),
@@ -411,7 +411,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
       BuildContext context,
       ) {
     return Row(children: [
-      Text(getTranslated('quantity', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
+      Text(getTranslated('quantity', context)!, style: rubikMedium.copyWith(fontSize:14,fontWeight: FontWeight.w700)),
       const Expanded(child: SizedBox()),
       _quantityButton(context),
     ]);
@@ -428,7 +428,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
         margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).primaryColor.withOpacity(0.1),
+          color: ColorResources.kOrangeColor
         ),
         child: Column(children: [
           Text(getTranslated('not_available_now', context)!,
@@ -450,7 +450,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
           int quantity =  cartProvider.getCartProductQuantityCount(widget.product!);
           return CustomButton(
               btnTxt: getTranslated(widget.cart != null ? 'update_in_cart' : 'add_to_cart', context),
-              backgroundColor: Theme.of(context).primaryColor,
+              backgroundColor: ColorResources.kOrangeColor,
               onTap: widget.cart == null && !productProvider.checkStock(widget.product!, quantity: quantity)  ? null : () {
                 if(variationList != null){
                   for(int index=0; index<variationList.length; index++) {
@@ -494,35 +494,35 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   placeholder: Images.placeholderRectangle,
                   image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.productImageUrl}/${widget.product!.image}',
                   width: ResponsiveHelper.isMobile()
-                      ? 100
+                      ? 136
                       : ResponsiveHelper.isTab(context)
-                      ? 140
+                      ? 136
                       : ResponsiveHelper.isDesktop(context)
-                      ? 140
+                      ? 136
                       : null,
                   height: ResponsiveHelper.isMobile()
-                      ? 100
+                      ? 108
                       : ResponsiveHelper.isTab(context)
-                      ? 140
+                      ? 108
                       : ResponsiveHelper.isDesktop(context)
-                      ? 140
+                      ? 108
                       : null,
                   fit: BoxFit.cover,
                   imageErrorBuilder: (c, o, s) => Image.asset(
                     Images.placeholderRectangle,
                     width: ResponsiveHelper.isMobile()
-                        ? 100
+                        ? 136
                         : ResponsiveHelper.isTab(context)
-                        ? 140
+                        ? 136
                         : ResponsiveHelper.isDesktop(context)
-                        ? 140
+                        ? 136
                         : null,
                     height: ResponsiveHelper.isMobile()
-                        ? 100
+                        ? 108
                         : ResponsiveHelper.isTab(context)
-                        ? 140
+                        ? 108
                         : ResponsiveHelper.isDesktop(context)
-                        ? 140
+                        ? 108
                         : null,
                     fit: BoxFit.cover,
                   ),
@@ -544,28 +544,45 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                child: Text(
-                  widget.product!.name!,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
+                child: Row(
+                  children: [
+                    Text(
+                      widget.product!.name!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge,fontWeight: FontWeight.w700),
+                    ),Spacer(),
+                      if(ResponsiveHelper.isMobile()) WishButton(product: widget.product,iconSize: 16,),
+                    
+                  ],
                 ),
-              ),
-
-             if(!ResponsiveHelper.isMobile()) WishButton(product: widget.product),
-
-
-
-            ],
+              ),],
           ),
-          const SizedBox(height: 10),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              RatingBar(rating: widget.product!.rating!.isNotEmpty ? double.parse(widget.product!.rating![0].average!) : 0.0, size: 15),
-              widget.product!.productType != null ? VegTagView(product: widget.product) : const SizedBox(),
-            ],
-          ),
-          const SizedBox(height: 20),
+        Row(
+  children: [
+   const Icon(Icons.star,color: ColorResources.kstarYellow,size: 10,),
+    Text(
+      widget.product!.rating!.isNotEmpty 
+        ? double.parse(widget.product!.rating![0].average!).toStringAsFixed(1) 
+        : '0.0',
+      style: const TextStyle(
+        fontSize: 9,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    widget.product!.productType != null 
+      ? VegTagView(product: widget.product!) 
+      : const SizedBox(),
+  ],
+),
+
+          // const SizedBox(height: 20),
+           Text(
+                      widget.product!.description!,
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                      style: rubikMedium.copyWith(fontSize: Dimensions.fontExtraSmall,fontWeight: FontWeight.w400,color: ColorResources.kIncreasedColor),
+                    ),
 
           Row( mainAxisSize: MainAxisSize.min, children: [
             Expanded(
@@ -574,8 +591,9 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   PriceConverter.convertPrice(price, discount: widget.product!.discount, discountType: widget.product!.discountType),
                   style: rubikMedium.copyWith(
                     fontSize: Dimensions.fontSizeLarge,
+                    fontWeight: FontWeight.w700,
                     overflow: TextOverflow.ellipsis,
-                    color: Theme.of(context).primaryColor,
+                    color: ColorResources.kOrangeColor
                   ),
                   maxLines: 1,
                 ))),
@@ -594,7 +612,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
 
               ]),
             ),
-           if(ResponsiveHelper.isMobile()) WishButton(product: widget.product),
+         
 
           ]),
           if(!ResponsiveHelper.isMobile()) _quantityView(context)
@@ -606,17 +624,17 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
   Widget _quantityButton(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context, listen: false);
     return Container(
-      decoration: BoxDecoration(color: Theme.of(context).colorScheme.background.withOpacity(0.2), borderRadius: BorderRadius.circular(5)),
+      decoration:const BoxDecoration(color:ColorResources.kradiuscolor,borderRadius: BorderRadius.all(Radius.circular(15))),
       child: Row(children: [
         InkWell(
           onTap: () => productProvider.quantity! > 1 ?  productProvider.setQuantity(false) : null,
           child: const Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
-            child: Icon(Icons.remove, size: 20),
+            child: Icon(Icons.remove, size: 14),
           ),
         ),
-        Text(productProvider.quantity.toString(), style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge)),
+        Text(productProvider.quantity.toString(), style: rubikMedium.copyWith(fontSize:14)),
 
         InkWell(
           onTap: () {
@@ -634,7 +652,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
           child: const Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
-            child: Icon(Icons.add, size: 20),
+            child: Icon(Icons.add, size: 14),
           ),
         ),
       ]),
@@ -653,26 +671,7 @@ class CartProductDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return product.description != null && product.description!.isNotEmpty ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(getTranslated('description', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-      const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-      Align(
-        alignment: Alignment.topLeft,
-        child: ReadMoreText(product.description ?? '',
-          trimLines: 2,
-          trimCollapsedText: getTranslated('show_more', context),
-          trimExpandedText: getTranslated('show_less', context),
-          moreStyle: robotoRegular.copyWith(
-            color: Theme.of(context).primaryColor.withOpacity(0.8),
-            fontSize: Dimensions.fontSizeExtraSmall,
-          ),
-          lessStyle: robotoRegular.copyWith(
-            color: Theme.of(context).primaryColor.withOpacity(0.8),
-            fontSize: Dimensions.fontSizeExtraSmall,
-          ),
-        ),
-      ),
-      const SizedBox(height: Dimensions.paddingSizeLarge),
+   const SizedBox(height: Dimensions.paddingSizeLarge),
     ]) : const SizedBox();
   }
 }

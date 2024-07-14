@@ -256,9 +256,8 @@ class _BranchListScreenState extends State<BranchListScreen> {
   }
 void _setBranch() {
 
-    final branchProvider = Provider.of<BranchProvider>(context, listen: false);
-
-      branchProvider.setBranch(branchProvider.selectedBranchId!);
+final branchProvider = Provider.of<BranchProvider>(context, listen: false);
+    branchProvider.setBranch(branchProvider.selectedBranchId!);
       // RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardScreen(pageIndex: 0,)));
       showCustomSnackBar(getTranslated('branch_successfully_selected', context), isError: false);

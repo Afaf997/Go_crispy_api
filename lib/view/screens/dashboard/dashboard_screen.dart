@@ -21,6 +21,7 @@ import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   final int pageIndex;
+  
   const DashboardScreen({Key? key, required this.pageIndex}) : super(key: key);
 
   @override

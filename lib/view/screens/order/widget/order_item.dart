@@ -44,6 +44,7 @@ class OrderItem extends StatelessWidget {
               Row(
                 children: [
                   ClipRRect(
+                    
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
                       Images.placeholderImage,
@@ -55,6 +56,10 @@ class OrderItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Text(
+                        //               '(${getTranslated(orderItem.n, context)})',
+                        //               style: rubikMedium.copyWith(color: Theme.of(context).primaryColor),
+                        //             ),
                         Row(
                           children: [
                             Text('${getTranslated('order_id', context)}:', style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
@@ -107,76 +112,17 @@ class OrderItem extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 5),
                                 Expanded(
-                                  child: orderItem.orderType != 'pos' && orderItem.orderType != 'dine_in'
-                                      ? CustomButton(
-                                          fontSize: 12,
-                                          btnTxt: getTranslated(isRunning ? 'track_order' : 'reorder', context),
-                                          onTap: () async {
-                                            if (isRunning) {
-                                              RouterHelper.getOrderTrackingRoute(orderItem.id);
-                                            } else {
-                                              List<OrderDetailsModel> orderDetails = (await orderProvider.getOrderDetails(orderItem.id.toString()))!;
-                                              List<CartModel> cartList = [];
-                                              List<bool> availableList = [];
-                                              for (var orderDetail in orderDetails) {
-                                                List<AddOn> addOnList = [];
-                                                List<List<bool?>> selectedVariations = [];
-                                                for (int i = 0; i < orderDetail.addOnIds!.length; i++) {
-                                                  addOnList.add(AddOn(id: orderDetail.addOnIds![i], quantity: orderDetail.addOnQtys![i]));
-                                                }
-                                                if (orderDetail.productDetails != null && orderDetail.productDetails!.id != null) {
-                                                  Product? product = await bannerProvider.getProductDetails('${orderDetail.productDetails!.id}');
-                                                  if (product != null && product.variations != null && orderDetail.variations != null) {
-                                                    if (productProvider.checkStock(product)) {
-                                                      for (int j = 0; j < product.variations!.length; j++) {
-                                                        selectedVariations.add([]);
-                                                        for (int index = 0; index < product.variations![j].variationValues!.length; index++) {
-                                                          for (int i = 0; i < orderDetail.variations![j].variationValues!.length; i++) {
-                                                            selectedVariations[j].add(product.variations![j].variationValues![index].level == orderDetail.variations![j].variationValues![i].level);
-                                                          }
-                                                        }
-                                                      }
-                                                    } else {
-                                                      availableList.add(false);
-                                                    }
-                                                    cartList.add(CartModel(
-                                                      orderDetail.price,
-                                                      PriceConverter.convertWithDiscount(orderDetail.price, orderDetail.discountOnProduct, 'amount'),
-                                                      product.variations ?? [],
-                                                      orderDetail.discountOnProduct,
-                                                      orderDetail.quantity,
-                                                      orderDetail.taxAmount,
-                                                      addOnList,
-                                                      orderDetail.productDetails,
-                                                      selectedVariations,
-                                                    ));
-                                                  }
-                                                }
-                                              }
-                                              if (availableList.contains(false)) {
-                                                showCustomSnackBar(getTranslated('one_or_more_product_unavailable', Get.context!));
-                                              } else {
-                                                if (orderItem.isProductAvailable!) {
-                                                  if (context.mounted) {
-                                                    Navigator.of(context).push(MaterialPageRoute(
-                                                      builder: (context) => CheckoutScreen(
-                                                        cartList: cartList,
-                                                        fromCart: false,
-                                                        amount: orderItem.orderAmount,
-                                                        orderType: orderItem.orderType,
-                                                        couponCode: orderItem.couponDiscountTitle ?? '',
-                                                      ),
-                                                    ));
-                                                  }
-                                                } else {
-                                                  showCustomSnackBar(getTranslated('one_or_more_product_unavailable', Get.context!));
-                                                }
-                                              }
-                                            }
-                                          },
-                                        )
-                                      : const SizedBox.shrink(),
-                                ),
+  child: orderItem.orderType != 'pos' && orderItem.orderType != 'dine_in' && isRunning
+      ? CustomButton(
+          fontSize: 12,
+          btnTxt: getTranslated('track_order', context),
+          onTap: () async {
+            RouterHelper.getOrderTrackingRoute(orderItem.id);
+          },
+        )
+      : const SizedBox.shrink(),
+),
+
                               ],
                             ),
                           ),
