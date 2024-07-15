@@ -70,7 +70,7 @@ class OrderView extends StatelessWidget {
                 ),
               ]),
             ),
-          ) : const NoDataScreen(isOrder: true) :  Image.asset(Images.gif);
+          ) : const NoDataScreen(isOrder: true) :  Center(child: Image.asset(Images.gif,width: 150,height: 150,));
         },
       ),
     );

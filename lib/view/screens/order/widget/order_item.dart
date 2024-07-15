@@ -33,7 +33,7 @@ class OrderItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: 116,
+        height: 106,
         decoration: BoxDecoration(
           color: ColorResources.kallcontainer,
           borderRadius: BorderRadius.circular(10),
@@ -47,8 +47,8 @@ class OrderItem extends StatelessWidget {
                     
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
-                      Images.placeholderImage,
-                      height: 116, width: 116, fit: BoxFit.cover,
+                      Images.logo1,
+                      height: 106, width: 106, fit: BoxFit.cover,
                     ),
                   ),
                   const SizedBox(width: Dimensions.paddingSizeSmall),
@@ -56,16 +56,15 @@ class OrderItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Text(
-                        //               '(${getTranslated(orderItem., context)})',
-                        //               style: rubikMedium.copyWith(color: Theme.of(context).primaryColor),
-                        //             ),
+                         
                         Row(
                           children: [
                             Text('${getTranslated('order_id', context)}:', style: rubikRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
                             const SizedBox(width: Dimensions.paddingSizeExtraSmall),
                             Text(orderItem.id.toString(), style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeSmall)),
                             const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                           const Spacer(),
+                             Text(orderItem.orderAmount.toString(), style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeSmall,color: ColorResources.kOrangeColor,fontWeight: FontWeight.w600)),
                             Expanded(
                               child: orderItem.orderType == 'take_away' || orderItem.orderType == 'dine_in'
                                   ? Text(

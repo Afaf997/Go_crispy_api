@@ -23,6 +23,7 @@ import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/cart_product_widget.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/delivery_option_button.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
@@ -146,7 +147,11 @@ class _CartScreenState extends State<CartScreen> {
                                   );
                                 },
                               ),
-                        Image.asset(Images.mapicon),
+                        GestureDetector(
+                          onTap: (){
+                            GoRouter.of(context).go('/branch-list'); 
+                          },
+                          child: Image.asset(Images.mapicon)),
                       ],
                     ),
                   ),
@@ -203,7 +208,11 @@ class _CartScreenState extends State<CartScreen> {
                                   );
                                 },
                               ),
-                          Image.asset(Images.mapicon),
+                           GestureDetector(
+                          onTap: (){
+                            GoRouter.of(context).go('/branch-list'); 
+                          },
+                          child: Image.asset(Images.mapicon)),
                         ],
                       ),
                     ),

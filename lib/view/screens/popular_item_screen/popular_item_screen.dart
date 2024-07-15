@@ -4,6 +4,7 @@ import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
+import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/filter_button_widget.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
@@ -116,7 +117,7 @@ class _PopularItemScreenState extends State<PopularItemScreen> {
                     crossAxisCount: ResponsiveHelper.isDesktop(context) ? 6 : ResponsiveHelper.isTab(context) ? 2 : 1,
                   ),
                   itemBuilder: (context, index) {
-                    return ResponsiveHelper.isDesktop(context)? const ProductWidgetWebShimmer ():ProductShimmer(isEnabled: productProvider.popularProductList == null,);
+                    return ResponsiveHelper.isDesktop(context)? Image.asset(Images.gif,width: 150,height: 150,):Image.asset(Images.gif,width: 150,height: 150,);
                   },
                 ),
               ),
