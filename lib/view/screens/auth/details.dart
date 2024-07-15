@@ -72,7 +72,7 @@ class _ContactDetailsState extends State<ContactDetails> {
         showCustomSnackBar('Registration successful',);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => BranchListScreen()),
+          MaterialPageRoute(builder: (context) => BranchListScreen(useNavigator: true,)),
         );
       } else if (response.statusCode == 403) {
         showCustomErrorDialog(context, 'The email is already used. Please use a different email.');

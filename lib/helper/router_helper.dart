@@ -208,7 +208,7 @@ class RouterHelper {
   static  Widget _routeHandler(BuildContext context, Widget route, {bool isBranchCheck = false}) {
    return Provider.of<SplashProvider>(context, listen: false).configModel!.maintenanceMode!
        ? const MaintenanceScreen() : (Provider.of<BranchProvider>(context, listen: false).getBranchId() != -1 || !isBranchCheck)
-       ?  route : const BranchListScreen();
+       ?  route : const BranchListScreen(useNavigator: false,);
 
   }
 
@@ -347,7 +347,7 @@ class RouterHelper {
       ))),
       
       GoRoute(path: referAndEarn, builder: (context, state) => _routeHandler(context,  const ReferAndEarnScreen())),
-      GoRoute(path: branchListScreen, builder: (context, state) => _routeHandler(context,  const BranchListScreen())),
+      GoRoute(path: branchListScreen, builder: (context, state) => _routeHandler(context,  const BranchListScreen(useNavigator: false,))),
       GoRoute(path: productImageScreen, builder: (context, state){
         final productJson = jsonDecode(utf8.decode(base64Url.decode('${state.uri.queryParameters['product']?.replaceAll(' ', '+')}')));
         return _routeHandler(context, ProductImageScreen(product: Product.fromJson(productJson)), isBranchCheck: true);

@@ -46,7 +46,6 @@ class HomeScreen extends StatefulWidget {
   static Future<void> loadData(bool reload, {bool isFcmUpdate = false}) async {
     final context = Get.context!;
     final ProductProvider productProvider = Provider.of<ProductProvider>(context, listen: false);
-    final SetMenuProvider setMenuProvider = Provider.of<SetMenuProvider>(context, listen: false);
     final CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
     final SplashProvider splashProvider = Provider.of<SplashProvider>(context, listen: false);
     final BannerProvider bannerProvider = Provider.of<BannerProvider>(context, listen: false);
@@ -96,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
       endDrawerEnableOpenDragGesture: false,
       body: Consumer3<CategoryProvider,BannerProvider,ProductProvider>(
         builder: (context,cp,bp,pp,_) {
-          if(cp.isLoading || bp.isloading||pp.isLoading ){
+          if(pp.isLoading ){
             return Center(child:Image.asset(Images.gif,width: 150,height: 150,),);
           }
            
@@ -256,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 buildLocateContainer(context),
                               ],
                             ),
-                            // if(ResponsiveHelper.isDesktop(context)) FooterView(),
+
                           ],
                         ),
                       ),

@@ -45,9 +45,6 @@ class BannerProvider extends ChangeNotifier {
   }
 
   Future<Product?> getProductDetails(String productID) async {
-        log('banner api call');
-    isloading= true;
-    notifyListeners();
     Product? product;
     ApiResponse apiResponse = await bannerRepo!.getProductDetails(productID);
     if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {

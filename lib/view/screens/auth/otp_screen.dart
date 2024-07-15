@@ -41,7 +41,7 @@ Future<void> _verifyOtp(String otp) async {
         await prefs.remove('token');
         await prefs.setString('token', token);
         showCustomSnackBar('Welcome back!', isError: false);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const BranchListScreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const BranchListScreen(useNavigator:true ,)));
       } else {
         showCustomErrorDialog(context, 'Failed to verify OTP');
       }

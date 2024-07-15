@@ -55,7 +55,7 @@ class ProductProvider extends ChangeNotifier {
 
 
   Future<void> getLatestProductList(bool reload, String offset) async {
-    _isLoading = false;
+    _isLoading = true;
     notifyListeners();
     if(reload || offset == '1' || _latestProductList == null) {
       latestOffset = 1 ;

@@ -57,7 +57,7 @@ class OrderItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Text(
-                        //               '(${getTranslated(orderItem.n, context)})',
+                        //               '(${getTranslated(orderItem., context)})',
                         //               style: rubikMedium.copyWith(color: Theme.of(context).primaryColor),
                         //             ),
                         Row(

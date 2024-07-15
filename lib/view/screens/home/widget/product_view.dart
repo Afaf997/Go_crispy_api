@@ -5,163 +5,139 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
-import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
-import 'package:flutter_restaurant/view/base/product_shimmer.dart';
 import 'package:flutter_restaurant/view/base/product_widget.dart';
-// import 'package:flutter_restaurant/view/screens/home/web/widget/product_web_card_shimmer.dart';
 import 'package:flutter_restaurant/view/screens/home/web/widget/product_widget_web.dart';
 import 'package:provider/provider.dart';
 
 class ProductView extends StatelessWidget {
   final ProductType productType;
   final ScrollController? scrollController;
+
   const ProductView({Key? key, required this.productType, this.scrollController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context, listen: false);
 
-    if(!ResponsiveHelper.isDesktop(context) && productType == ProductType.latestProduct) {
+    if (!ResponsiveHelper.isDesktop(context) && productType == ProductType.latestProduct) {
       scrollController?.addListener(() {
-
         if (scrollController!.position.pixels == scrollController!.position.maxScrollExtent &&
-            (productProvider.latestProductList != null) && !productProvider.isLoading
-        ) {
-          late int pageSize;
-          if (productType == ProductType.latestProduct) {
-            pageSize = (productProvider.latestPageSize! / 10).ceil();
-          }
+            (productProvider.latestProductList != null) && !productProvider.isLoading) {
+          int pageSize = ((productProvider.latestPageSize ?? 10) / 10).ceil();
           if (productProvider.latestOffset < pageSize) {
-            productProvider.latestOffset ++;
+            productProvider.latestOffset++;
             productProvider.showBottomLoader();
-            if(productType == ProductType.latestProduct) {
-              productProvider.getLatestProductList(false, productProvider.latestOffset.toString());
-            }
-
+            productProvider.getLatestProductList(false, productProvider.latestOffset.toString());
           }
         }
       });
-
     }
+
     return Consumer<ProductProvider>(
       builder: (context, prodProvider, child) {
         List<Product>? productList;
         if (productType == ProductType.latestProduct) {
           productList = prodProvider.latestProductList;
-        }
-        else if (productType == ProductType.popularProduct) {
+        } else if (productType == ProductType.popularProduct) {
           productList = prodProvider.popularProductList;
         }
-        if(productList == null ) {
-          return productType == ProductType.popularProduct ?
-          SizedBox(
-            height: 250,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                  width: 195,
-                  child: Image.asset(Images.gif), 
-                );},
-            ),
-          ) :
-          GridView.builder(
-            shrinkWrap: true,
-            gridDelegate:ResponsiveHelper.isDesktop(context) ? const SliverGridDelegateWithMaxCrossAxisExtent( maxCrossAxisExtent: 195, mainAxisExtent: 250) :
-            SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 5,
-              mainAxisSpacing: 5,
-              childAspectRatio: 4,
-              crossAxisCount: ResponsiveHelper.isDesktop(context) ? 3 : ResponsiveHelper.isTab(context) ? 2 : 1,
-            ),
-            itemCount: 12,
-            itemBuilder: (BuildContext context, int index) {
-              return ResponsiveHelper.isDesktop(context) ? Image.asset(Images.gif) :Image.asset(Images.gif)  ;
-              },
-            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-          );
-        }
-        if(productList.isEmpty) {
-          return const SizedBox();
+
+        // Ensure the product list is not null and not empty
+        if (productList == null || productList.isEmpty) {
+          return const SizedBox.shrink();
         }
 
         return productType == ProductType.popularProduct
             ? SizedBox(
-              height: 135,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(),
-                itemCount: productList.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                    width: 175,
-                    child: ProductWidgetWeb(product: productList![index], fromPopularItem: true),
-                  );
-                },
-              ),
-        ) :
-        Column(children: [
-
-          GridView.builder(
-  gridDelegate: ResponsiveHelper.isDesktop(context)
-      ? const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 195, mainAxisExtent: 250)
-      : SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 16,
-          childAspectRatio: 1.8,
-          crossAxisCount: ResponsiveHelper.isTab(context) ? 2 : 1,
-        ),
-  itemCount: productList.length,
-  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-  physics: const NeverScrollableScrollPhysics(),
-  shrinkWrap: true,
-  itemBuilder: (BuildContext context, int index) {
-    return ResponsiveHelper.isDesktop(context)
-        ? Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: ProductWidgetWeb(product: productList![index]),
-          )
-        : ProductWidget(product: productList![index]);
-  },
-),
-const SizedBox(height: 15),
-
-
-          productList.isNotEmpty ? Padding(
-            padding: ResponsiveHelper.isDesktop(context)? const EdgeInsets.only(top: 40,bottom: 70) :  const EdgeInsets.all(0),
-            child: ResponsiveHelper.isDesktop(context) ?
-            prodProvider.isLoading ? Center(
-              child: Padding(
-                padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
-              ),
-            ) : (productProvider.latestOffset == (Provider.of<ProductProvider>(context, listen: false).latestPageSize! / 10).ceil())
-                ? const SizedBox() :
-            SizedBox(
-              width: 300,
-              child: ElevatedButton(
-                style : ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                ),
-                onPressed: (){
-                  productProvider.moreProduct(context);
+                height: 135,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: productList.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                      width: 175,
+                      child: ProductWidgetWeb(product: productList![index], fromPopularItem: true),
+                    );
                   },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text(getTranslated('see_more', context)!, style: poppinsRegular.copyWith(fontSize: Dimensions.fontSizeLarge)),
                 ),
-              ),
-            ) : prodProvider.isLoading
-                ? Center(child: Padding(padding: const EdgeInsets.all(Dimensions.paddingSizeSmall), child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor,)),
-            )) : const SizedBox.shrink(),
-          ) : const SizedBox.shrink(),
-        ]);
+              )
+            : Column(
+                children: [
+                  GridView.builder(
+                    gridDelegate: ResponsiveHelper.isDesktop(context)
+                        ? const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 195, mainAxisExtent: 250)
+                        : SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 16,
+                            childAspectRatio: 1.8,
+                            crossAxisCount: ResponsiveHelper.isTab(context) ? 2 : 1,
+                          ),
+                    itemCount: productList.length,
+                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ResponsiveHelper.isDesktop(context)
+                          ? Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: ProductWidgetWeb(product: productList![index]),
+                            )
+                          : ProductWidget(product: productList![index]);
+                    },
+                  ),
+                  const SizedBox(height: 15),
+                  Padding(
+                    padding: ResponsiveHelper.isDesktop(context)
+                        ? const EdgeInsets.only(top: 40, bottom: 70)
+                        : const EdgeInsets.all(0),
+                    child: ResponsiveHelper.isDesktop(context)
+                        ? prodProvider.isLoading
+                            ? Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                                  child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
+                                ),
+                              )
+                            : (productProvider.latestOffset ==
+                                    ((Provider.of<ProductProvider>(context, listen: false).latestPageSize ?? 10) / 10)
+                                        .ceil())
+                                ? const SizedBox()
+                                : SizedBox(
+                                    width: 300,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Theme.of(context).primaryColor,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(30)),
+                                      ),
+                                      onPressed: () {
+                                        productProvider.moreProduct(context);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                        child: Text(
+                                            getTranslated('see_more', context)!,
+                                            style: poppinsRegular.copyWith(fontSize: Dimensions.fontSizeLarge)),
+                                      ),
+                                    ),
+                                  )
+                        : prodProvider.isLoading
+                            ? Center(
+                                child: Padding(
+                                padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                                ),
+                              ))
+                            : const SizedBox.shrink(),
+                  ),
+                ],
+              );
       },
     );
   }
