@@ -27,7 +27,7 @@ void showCustomSnackBar(String? message, {bool isError = true, bool isToast = fa
             : EdgeInsets.zero,
         behavior: SnackBarBehavior.floating,
         backgroundColor: isError ? Colors.red : Colors.green,
-        duration: const Duration(seconds: 1), // Set duration to 1 second
+        duration: const Duration(seconds: 1), 
       ),
     );
 }

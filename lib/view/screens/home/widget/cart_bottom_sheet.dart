@@ -463,7 +463,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                         > productProvider.selectedVariationLength(productProvider.selectedVariations, index)) {
                       showCustomSnackBar('${getTranslated('you_need_to_select_minimum', context)} ${variationList[index].min} '
                           '${getTranslated('to_maximum', context)} ${variationList[index].max} ${getTranslated('options_from', context)
-                      } ${variationList[index].name} ${getTranslated('variation', context)}',isError: true, isToast: true);
+                      } ${variationList[index].name} ${getTranslated('variation', context)}',isError: true, );
                       return;
                     }
                   }

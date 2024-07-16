@@ -86,7 +86,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
           }
         },
         child: Scaffold(
-          backgroundColor: ColorResources.kColorgrey,
+          backgroundColor: ColorResources.kWhite,
           appBar: (ResponsiveHelper.isDesktop(context)
               ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar())
               : CustomAppBar(context: context, title: getTranslated('select_branch', context))) as PreferredSizeWidget?,
@@ -239,7 +239,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
                           final cartProvider = Provider.of<CartProvider>(context, listen: false);
                           return CustomButton(
                               btnTxt: getTranslated('confirm_branch', context),
-                              borderRadius: 30,
+                              borderRadius: 10,
                               onTap: () {
                                 if (branchProvider.selectedBranchId != null) {
                                   if (branchProvider.selectedBranchId != branchProvider.getBranchId() &&
