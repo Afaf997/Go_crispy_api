@@ -167,7 +167,7 @@ class _CartScreenState extends State<CartScreen> {
                 children: [
                   const Text(
                     "Select Store",
-                    style: TextStyle(
+                              style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 12
                     ),

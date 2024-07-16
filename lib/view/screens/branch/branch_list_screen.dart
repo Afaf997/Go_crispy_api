@@ -10,6 +10,7 @@ import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/localization_provider.dart';
 import 'package:flutter_restaurant/provider/location_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -85,6 +86,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
           }
         },
         child: Scaffold(
+          backgroundColor: ColorResources.kColorgrey,
           appBar: (ResponsiveHelper.isDesktop(context)
               ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar())
               : CustomAppBar(context: context, title: getTranslated('select_branch', context))) as PreferredSizeWidget?,
@@ -203,15 +205,17 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                     const SizedBox(height: Dimensions.paddingSizeDefault),
                                     _branchesValue.isNotEmpty
                                         ? Flexible(
+                                        
                                             child: GridView.builder(
                                               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisSpacing: 50,
-                                                mainAxisSpacing: ResponsiveHelper.isDesktop(context)
-                                                    ? Dimensions.paddingSizeLarge
-                                                    : 0.01,
-                                                childAspectRatio: ResponsiveHelper.isDesktop(context) ? 3.6 : 2.8,
+                                               mainAxisExtent: 230,
+
+                                      
+                                                   crossAxisSpacing: 5,
+                                                  mainAxisSpacing: 5,
+                                                  childAspectRatio: 1.8,
                                                 crossAxisCount: ResponsiveHelper.isDesktop(context)
-                                                    ? 2
+                                                    ? 3
                                                     : MediaQuery.of(context).size.width > 780
                                                         ? 2
                                                         : 1,
@@ -222,7 +226,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                               ),
                                             ),
                                           )
-                                        : const CircularProgressIndicator(),
+                                        : Center(child: Image.asset(Images.gif,height: 150,width: 150,)),
                                   ],
                                 ),
                               ),

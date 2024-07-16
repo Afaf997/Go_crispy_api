@@ -64,15 +64,20 @@ class OrderItem extends StatelessWidget {
                             Text(orderItem.id.toString(), style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeSmall)),
                             const SizedBox(width: Dimensions.paddingSizeExtraSmall),
                            const Spacer(),
-                             Text(orderItem.orderAmount.toString(), style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeSmall,color: ColorResources.kOrangeColor,fontWeight: FontWeight.w600)),
-                            Expanded(
-                              child: orderItem.orderType == 'take_away' || orderItem.orderType == 'dine_in'
-                                  ? Text(
-                                      '(${getTranslated(orderItem.orderType, context)})',
-                                      style: rubikMedium.copyWith(color: Theme.of(context).primaryColor),
-                                    )
-                                  : const SizedBox(),
-                            ),
+                             Column(
+                               children: [
+                                 Padding(
+                                   padding: const EdgeInsets.only(right: 5),
+                                   child: Text(orderItem.orderAmount.toString(), style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeSmall,color: ColorResources.kOrangeColor,fontWeight: FontWeight.w600)),
+                                 ),
+                                  orderItem.orderType == 'take_away' || orderItem.orderType == 'dine_in'
+                                      ? Text(
+                                          '(${getTranslated(orderItem.orderType, context)})',
+                                          style:const TextStyle(color: ColorResources.ktextboarder,)
+                                        )
+                                      : const SizedBox(),
+                               ],
+                             ),
                           ],
                         ),
                         const SizedBox(height: Dimensions.paddingSizeExtraSmall),
