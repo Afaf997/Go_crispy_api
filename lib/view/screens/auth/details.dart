@@ -70,7 +70,7 @@ class _ContactDetailsState extends State<ContactDetails> {
         String token = response.data["token"];
         await _saveToken(token);
         // showCustomSnackBar('Registration successful',);
-        showCustomNotification(context, 'Registration successful', isError: false);
+        showCustomNotification(context, 'Registration successful',type: NotificationType.success );
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => BranchListScreen(useNavigator: true,)),

@@ -46,7 +46,7 @@ class ProductWidget extends StatelessWidget {
                         builder: (con) => CartBottomSheet(
                           product: product,
                           callback: (CartModel cartModel) {
-                                                             showCustomNotification(context, 'enter_valid_email', isError: true);
+                          showCustomNotification(context, 'enter_valid_email', type: NotificationType.error);
                           },
                         ),
                       )
@@ -60,7 +60,7 @@ class ProductWidget extends StatelessWidget {
                                   // showCustomSnackBar(
                                   //     getTranslated('added_to_cart', context),
                                   //     isError: false);
-                                                                         showCustomNotification(context, 'enter_valid_email', isError: false);
+                              showCustomNotification(context, 'added_to_cart', type: NotificationType.success);
                                 },
                               ),
                             ));

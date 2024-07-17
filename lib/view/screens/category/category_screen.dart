@@ -221,8 +221,8 @@ class _CategoryScreenState extends State<CategoryScreen>
   child: Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(
-          width: 326, // Width of the image
-          height: 116, 
+          width: 348, // Width of the image
+          height: 106, 
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: ColorResources.kallcontainer),
@@ -230,8 +230,8 @@ class _CategoryScreenState extends State<CategoryScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 139, // Width of the image
-            height: 116, // Height of the image
+            width: 129, // Width of the image
+            height: 106, // Height of the image
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               image: productImage != null

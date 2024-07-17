@@ -1,18 +1,42 @@
 import 'package:flutter/material.dart';
 
 class CustomNotificationOverlay {
-  static void show(BuildContext context, {required String message, bool isError = true}) {
+  static void show(BuildContext context, {required String message, NotificationType type = NotificationType.error}) {
+    Color bgColor;
+    IconData iconData;
+    String title;
+
+    switch (type) {
+      case NotificationType.error:
+        bgColor = Colors.red;
+        iconData = Icons.error;
+        title = 'Oh snap!';
+        break;
+      case NotificationType.success:
+        bgColor = const Color.fromARGB(255, 52, 120, 54); 
+        iconData = Icons.check_circle;
+        title = 'Well done!';
+        break;
+      case NotificationType.warning:
+        bgColor = Colors.amber;
+        iconData = Icons.warning;
+        title = 'Warning!';
+        break;
+    }
+
     OverlayState? overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-        top: 50.0,
+        bottom: 90.0, // Adjusted to start from the top
         left: MediaQuery.of(context).size.width * 0.1,
         right: MediaQuery.of(context).size.width * 0.1,
         child: Material(
           color: Colors.transparent,
           child: _CustomNotification(
             message: message,
-            isError: isError,
+            bgColor: bgColor,
+            iconData: iconData,
+            title: title,
           ),
         ),
       ),
@@ -20,54 +44,61 @@ class CustomNotificationOverlay {
 
     overlayState?.insert(overlayEntry);
 
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       overlayEntry.remove();
     });
   }
 }
 
+
 class _CustomNotification extends StatelessWidget {
   final String message;
-  final bool isError;
+  final Color bgColor;
+  final IconData iconData;
+  final String title;
 
-  _CustomNotification({required this.message, required this.isError});
+  _CustomNotification({required this.message, required this.bgColor, required this.iconData, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding:const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
-        color: isError ? Colors.red : const Color.fromARGB(255, 52, 120, 54),
-        borderRadius: BorderRadius.circular(30.0),
+        color: bgColor,
+        borderRadius: BorderRadius.circular(20.0),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            isError ? Icons.error : Icons.check_circle,
+            iconData,
             color: Colors.white,
           ),
-          SizedBox(width: 8.0),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                isError ? 'Oh snap!' : 'Well done!',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
+         const SizedBox(width: 8.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              SizedBox(height: 4.0),
-              Text(
-                message,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
+                SizedBox(height: 4.0),
+                Text(
+                  message,
+                  style:const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.0,
+                  ),
+                  maxLines: 2, // Adjust this value based on your needs
+                  overflow: TextOverflow.ellipsis, // Handles overflow
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
@@ -75,7 +106,14 @@ class _CustomNotification extends StatelessWidget {
   }
 }
 
+
+enum NotificationType {
+  error,
+  success,
+  warning,
+}
+
 // Usage
-void showCustomNotification(BuildContext context, String message, {bool isError = true}) {
-  CustomNotificationOverlay.show(context, message: message, isError: isError);
+void showCustomNotification(BuildContext context, String message, {NotificationType type = NotificationType.error}) {
+  CustomNotificationOverlay.show(context, message: message, type: type);
 }

@@ -420,7 +420,8 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
 
 
   Widget _cartButton(bool isAvailable, BuildContext context, CartModel cartModel, List<Variation>? variationList) {
-    return Column(children: [
+  return Column(
+    children: [
       isAvailable ? const SizedBox() :
       Container(
         alignment: Alignment.center,
@@ -428,55 +429,63 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
         margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: ColorResources.kOrangeColor
+          color: ColorResources.kOrangeColor,
         ),
-        child: Column(children: [
-          Text(getTranslated('not_available_now', context)!,
+        child: Column(
+          children: [
+            Text(
+              getTranslated('not_available_now', context)!,
               style: rubikMedium.copyWith(
                 color: Theme.of(context).primaryColor,
                 fontSize: Dimensions.fontSizeLarge,
-              )),
-          Text(
-            '${getTranslated('available_will_be', context)} ${DateConverter.convertTimeToTime(widget.product!.availableTimeStarts!, context)} '
-                '- ${DateConverter.convertTimeToTime(widget.product!.availableTimeEnds!, context)}',
-            style: rubikRegular,
-          ),
-        ]),
+              ),
+            ),
+            Text(
+              '${getTranslated('available_will_be', context)} ${DateConverter.convertTimeToTime(widget.product!.availableTimeStarts!, context)} '
+                  '- ${DateConverter.convertTimeToTime(widget.product!.availableTimeEnds!, context)}',
+              style: rubikRegular,
+            ),
+          ],
+        ),
       ),
 
-      Consumer<ProductProvider>(
+      // Only show the add to cart button if the product is available
+      if (isAvailable) Consumer<ProductProvider>(
         builder: (context, productProvider, _) {
-          final CartProvider cartProvider =  Provider.of<CartProvider>(context, listen: false);
-          int quantity =  cartProvider.getCartProductQuantityCount(widget.product!);
+          final CartProvider cartProvider = Provider.of<CartProvider>(context, listen: false);
+          int quantity = cartProvider.getCartProductQuantityCount(widget.product!);
+
           return CustomButton(
-              btnTxt: getTranslated(widget.cart != null ? 'update_in_cart' : 'add_to_cart', context),
-              backgroundColor: ColorResources.kOrangeColor,
-              onTap: widget.cart == null && !productProvider.checkStock(widget.product!, quantity: quantity)  ? null : () {
-                if(variationList != null){
-                  for(int index=0; index<variationList.length; index++) {
-                    if(!variationList[index].isMultiSelect! && variationList[index].isRequired!
-                        && !productProvider.selectedVariations[index].contains(true)) {
-                      // showCustomSnackBar('${getTranslated('choose_a_variation_from', context)} ${variationList[index].name}', isToast: true, isError: true);
-                      return;
-                    }else if(variationList[index].isMultiSelect! && (variationList[index].isRequired!
-                        || productProvider.selectedVariations[index].contains(true)) && variationList[index].min!
-                        > productProvider.selectedVariationLength(productProvider.selectedVariations, index)) {
-                      // showCustomSnackBar('${getTranslated('you_need_to_select_minimum', context)} ${variationList[index].min} '
-                      //     '${getTranslated('to_maximum', context)} ${variationList[index].max} ${getTranslated('options_from', context)
-                      // } ${variationList[index].name} ${getTranslated('variation', context)}',isError: true, );
-                      return;
-                    }
+            btnTxt: getTranslated(widget.cart != null ? 'update_in_cart' : 'add_to_cart', context),
+            backgroundColor: ColorResources.kOrangeColor,
+            onTap: widget.cart == null && !productProvider.checkStock(widget.product!, quantity: quantity) ? null : () {
+              if (variationList != null) {
+                for (int index = 0; index < variationList.length; index++) {
+                  if (!variationList[index].isMultiSelect! && variationList[index].isRequired!
+                      && !productProvider.selectedVariations[index].contains(true)) {
+                    // showCustomSnackBar('${getTranslated('choose_a_variation_from', context)} ${variationList[index].name}', isToast: true, isError: true);
+                    return;
+                  } else if (variationList[index].isMultiSelect! && (variationList[index].isRequired!
+                      || productProvider.selectedVariations[index].contains(true)) && variationList[index].min!
+                      > productProvider.selectedVariationLength(productProvider.selectedVariations, index)) {
+                    // showCustomSnackBar('${getTranslated('you_need_to_select_minimum', context)} ${variationList[index].min} '
+                    //     '${getTranslated('to_maximum', context)} ${variationList[index].max} ${getTranslated('options_from', context)
+                    // } ${variationList[index].name} ${getTranslated('variation', context)}',isError: true, );
+                    return;
                   }
                 }
-
-                context.pop();
-                Provider.of<CartProvider>(context, listen: false).addToCart(cartModel, widget.cart != null ? widget.cartIndex : productProvider.cartIndex);
               }
+
+              context.pop();
+              Provider.of<CartProvider>(context, listen: false).addToCart(cartModel, widget.cart != null ? widget.cartIndex : productProvider.cartIndex);
+            },
           );
-        }
+        },
       ),
-    ]);
-  }
+    ],
+  );
+}
+
 
   Widget _productView(
       BuildContext context,double price,
@@ -690,7 +699,7 @@ class VegTagView extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background.withOpacity(0.2),
               borderRadius: BorderRadius.circular(5),
-              boxShadow: [BoxShadow(blurRadius: 5, color: Theme.of(context).colorScheme.background.withOpacity(0.2).withOpacity(0.05))],
+             
             ),
 
             child: SizedBox(height:  30,

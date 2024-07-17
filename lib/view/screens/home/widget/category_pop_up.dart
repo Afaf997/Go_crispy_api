@@ -72,7 +72,7 @@ class CategoryPopUp extends StatelessWidget {
                                     ),
                                   );
                                 },
-                              ) : Center(child: Text(getTranslated('no_category_available', context)!)) : const CategoryShimmer(),
+                              ) : Center(child: Text(getTranslated('no_category_available', context)!)) : Center(child: Image.asset(Images.gif)),
                   ),
                 ),
               ],
@@ -84,42 +84,41 @@ class CategoryPopUp extends StatelessWidget {
   }
 }
 
-class CategoryShimmer extends StatelessWidget {
-  const CategoryShimmer({Key? key}) : super(key: key);
+// class CategoryShimmer extends StatelessWidget {
+//   const CategoryShimmer({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 80,
-      child: ListView.builder(
-        itemCount: 10,
-        padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
-        physics: const BouncingScrollPhysics(),
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-            child: Shimmer(
-              duration: const Duration(seconds: 2),
-              enabled: Provider.of<CategoryProvider>(context).categoryList == null,
-              child: Column(children: [
-                Container(
-                  height: 65,
-                  width: 65,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).shadowColor,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Container(
-                    height: 10, width: 50, color: Theme.of(context).shadowColor),
-              ]),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       height: 80,
+//       child: ListView.builder(
+//         itemCount: 10,
+//         padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
+//         physics: const BouncingScrollPhysics(),
+//         shrinkWrap: true,
+//         scrollDirection: Axis.horizontal,
+//         itemBuilder: (context, index) {
+//           return Padding(
+//             padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
+//             child: Shimmer(
+//               duration: const Duration(seconds: 2),
+//               enabled: Provider.of<CategoryProvider>(context).categoryList == null,
+//               child: Column(children: [
+//                 Container(
+//                   height: 65,
+//                   width: 65,
+//                   decoration: BoxDecoration(
+//                     shape: BoxShape.circle,
+//                   ),
+//                 ),
+//                 const SizedBox(height: 5),
+//                 Container(
+//                     height: 10, width: 50,),
+//               ]),
+//             ),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }

@@ -87,9 +87,21 @@ class _BranchListScreenState extends State<BranchListScreen> {
         },
         child: Scaffold(
           backgroundColor: ColorResources.kWhite,
-          appBar: (ResponsiveHelper.isDesktop(context)
-              ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar())
-              : CustomAppBar(context: context, title: getTranslated('select_branch', context))) as PreferredSizeWidget?,
+          appBar: AppBar(
+  title: Text(
+    getTranslated('select_branch', context),
+    style:const TextStyle(
+      fontSize: 20.0, 
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  backgroundColor: ColorResources.kWhite,
+  centerTitle: true,
+),
+
+          // appBar: (ResponsiveHelper.isDesktop(context)
+          //     ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar())
+          //     : CustomAppBar(context: context, title: getTranslated('select_branch', context))) as PreferredSizeWidget?,
 
           body: Center(
             child: SizedBox(
@@ -162,7 +174,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                           child: Container(
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(30),
-                                              border: Border.all(color: Theme.of(context).primaryColor),
+                                              border: Border.all(color:ColorResources.kOrangeColor),
                                             ),
                                             child: Row(
                                               children: [
@@ -170,7 +182,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                                   height: 25,
                                                   width: 25,
                                                   decoration: BoxDecoration(
-                                                      color: Theme.of(context).primaryColor,
+                                                      color:ColorResources.kOrangeColor,
                                                       borderRadius: Provider.of<LocalizationProvider>(context,
                                                                   listen: false)
                                                               .isLtr
@@ -193,7 +205,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                                       horizontal: Dimensions.paddingSizeExtraSmall),
                                                   child: Text(
                                                     getTranslated('select_from_map', context)!,
-                                                    style: rubikMedium.copyWith(color: Theme.of(context).primaryColor),
+                                                    style: rubikMedium.copyWith(color:ColorResources.kOrangeColor),
                                                   ),
                                                 ),
                                               ],
@@ -268,7 +280,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                     _setBranch(widget.useNavigator); // Use the parameter here
                                   }
                                 } else {
-                                    showCustomNotification(context, 'select_branch_first', isError: true);
+                                    showCustomNotification(context, 'select_branch_first', type:NotificationType.error);
                                   // showCustomSnackBar(getTranslated('select_branch_first', context));
                                   
                                 }
@@ -293,7 +305,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
     } else {
       RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
     }
-    showCustomNotification(context, 'branch_successfully_selected', isError: false);
+    showCustomNotification(context, 'branch_successfully_selected', type:NotificationType.success);
     // showCustomSnackBar(getTranslated('branch_successfully_selected', context), isError: false);
   }
 

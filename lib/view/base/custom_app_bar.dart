@@ -35,7 +35,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return ResponsiveHelper.isDesktop(context)
         ? Center(
             child: Container(
-              color: Colors.white, // Set background color here
+              color: Colors.white,
               width: 1170,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

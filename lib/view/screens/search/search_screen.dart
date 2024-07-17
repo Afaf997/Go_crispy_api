@@ -95,9 +95,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 },
                 child: Text(
                   getTranslated('cancel', context)!,
-                  style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                        color: ColorResources.getGreyBunkerColor(context),
-                      ),
+                  style: TextStyle(fontSize: 15)
                 ),
               )
             ],
@@ -109,10 +107,7 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Consumer<CategoryProvider>(
               builder: (context, category, child) {
                 if (category.isLoading || category.categoryProductList == null) {
-                  return CircularProgressIndicator(color: ColorResources.kOrangeColor,);
-                  // return ProductShimmer(
-                  //   isEnabled: category.isLoading, // Set isEnabled based on loading state
-                  // );
+                  return Center(child: Image.asset(Images.gif,width: 150,height: 150,));
                 } else {
                   return CustomScrollView(
                     physics: const BouncingScrollPhysics(),

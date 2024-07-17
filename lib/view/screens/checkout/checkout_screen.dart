@@ -208,10 +208,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+               const Icon(
                   Icons.add_circle_rounded,
                   size: Dimensions.paddingSizeLarge,
-                  color: Theme.of(context).primaryColor,
+                  color:ColorResources.kOrangeColor,
                 ),
                 SizedBox(width: 4), // Adding some space between the icon and text
                 Text(
@@ -431,40 +431,44 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   return Column(children: [
                      SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:ColorResources.kOrangeColor,
-                  padding: EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: () {
-                  showDeliveryFeeDialog(
-    context,
-    deliveryCharge,
-    widget.amount!,
-    confirmButtonView: ConfirmButtonView(
-                        noteController: _noteController,
-                        callBack: _callback,
-                        cartList: _cartList,
-                        kmWiseCharge: kmWiseCharge,
-                        orderType: widget.orderType!,
-                        orderAmount: widget.amount!,
-                        couponCode: widget.couponCode,
-                        deliveryCharge: deliveryCharge,
-                      ),
-  );
-                },
-                child: const Text(
-                  "Confirm Order",
-                  style: TextStyle(
-                    color:ColorResources. kWhite,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: ColorResources.kOrangeColor,
+                                padding: EdgeInsets.symmetric(vertical: 14),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              onPressed: () {
+                                if (orderProvider.addressIndex == -1 || orderProvider.selectedPaymentMethod == null) {
+                                  showCustomNotification(context,"Please select address and payment method", type:NotificationType.warning);
+                                } else {
+                                  showDeliveryFeeDialog(
+                                    context,
+                                    deliveryCharge,
+                                    widget.amount!,
+                                    confirmButtonView: ConfirmButtonView(
+                                      noteController: _noteController,
+                                      callBack: _callback,
+                                      cartList: _cartList,
+                                      kmWiseCharge: kmWiseCharge,
+                                      orderType: widget.orderType!,
+                                      orderAmount: widget.amount!,
+                                      couponCode: widget.couponCode,
+                                      deliveryCharge: deliveryCharge,
+                                    ),
+                                  );
+                                }
+                              },
+                              child: const Text(
+                                "Confirm Order",
+                                style: TextStyle(
+                                  color: ColorResources.kWhite,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
             )
                   ]);
                 }

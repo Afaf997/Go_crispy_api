@@ -190,7 +190,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                         child: SizedBox(
                           width: 1170,
                           child: GridView.builder(
-                            itemCount: 10,
+                            itemCount: 1,
                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 5,
@@ -198,8 +198,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                               crossAxisCount: ResponsiveHelper.isDesktop(context) ? 6 : ResponsiveHelper.isTab(context) ? 3 : 1,
                             ),
                             itemBuilder: (context, index) => ResponsiveHelper.isDesktop(context)
-                                ? CircularProgressIndicator(color: ColorResources.kOrangeColor,)
-                                : CircularProgressIndicator(color: ColorResources.kOrangeColor)
+                                ? Image.asset(Images.gif,width: 150,height: 150,)
+                                :  Image.asset(Images.gif,width: 150,height: 150,)
                           ),
                         ),
                       ),
