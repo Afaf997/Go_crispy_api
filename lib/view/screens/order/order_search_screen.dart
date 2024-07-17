@@ -254,12 +254,12 @@ class TrackOrderButtonView extends StatelessWidget {
 
         final String phoneNumber = '${CountryCode.fromCountryCode(countryCode!).dialCode}${phoneNumberTextController.text.trim()}';
         if(orderId.isEmpty){
-          showCustomSnackBar(getTranslated('enter_order_id', context));
+          // showCustomSnackBar(getTranslated('enter_order_id', context));
         }else if(checkOrderId == null){
-          showCustomSnackBar(getTranslated('enter_valid_order_id', context));
+          // showCustomSnackBar(getTranslated('enter_valid_order_id', context));
 
         }else if(phoneNumberTextController.text.isEmpty){
-          showCustomSnackBar(getTranslated('enter_phone_number', context));
+          // showCustomSnackBar(getTranslated('enter_phone_number', context));
         }else{
           RouterHelper.getOrderDetailsRoute(orderId, phoneNumber: phoneNumber);
         }

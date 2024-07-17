@@ -45,9 +45,9 @@ class ButtonView extends StatelessWidget {
                           orderID: order.trackModel!.id.toString(),
                           callback: (String message, bool isSuccess, String orderID) {
                             if (isSuccess) {
-                              showCustomSnackBar('$message. ${getTranslated('order_id', context)}: $orderID', isError: false);
+                              // showCustomSnackBar('$message. ${getTranslated('order_id', context)}: $orderID', isError: false);
                             } else {
-                              showCustomSnackBar(message, isError: true);
+                              // showCustomSnackBar(message, isError: true);
                             }
                           },
                         ),

@@ -50,7 +50,7 @@ class ProductView extends StatelessWidget {
 
         return productType == ProductType.popularProduct
             ? SizedBox(
-                height: 135,
+                height: 130,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   physics: const BouncingScrollPhysics(),

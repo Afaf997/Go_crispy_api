@@ -100,13 +100,13 @@ class CreateNewPasswordScreen extends StatelessWidget {
                       btnTxt: getTranslated('save', context),
                       onTap: () {
                         if (_passwordController.text.isEmpty) {
-                          showCustomSnackBar(getTranslated('enter_password', context));
+                          // showCustomSnackBar(getTranslated('enter_password', context));
                         }else if (_passwordController.text.length < 6) {
-                          showCustomSnackBar(getTranslated('password_should_be', context));
+                          // showCustomSnackBar(getTranslated('password_should_be', context));
                         }else if (_confirmPasswordController.text.isEmpty) {
-                          showCustomSnackBar(getTranslated('enter_confirm_password', context));
+                          // showCustomSnackBar(getTranslated('enter_confirm_password', context));
                         }else if(_passwordController.text != _confirmPasswordController.text) {
-                          showCustomSnackBar(getTranslated('password_did_not_match', context));
+                          // showCustomSnackBar(getTranslated('password_did_not_match', context));
                         }else {
 
                           auth.resetPassword(emailOrPhone, resetToken, _passwordController.text, _confirmPasswordController.text).then((value) {
@@ -118,7 +118,7 @@ class CreateNewPasswordScreen extends StatelessWidget {
                                 RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
                               });
                             }else {
-                              showCustomSnackBar('Failed to reset password');
+                              // showCustomSnackBar('Failed to reset password');
                             }
                           });
                         }

@@ -36,7 +36,7 @@ class WishButton extends StatelessWidget {
                 wishList.addToWishList(product!, context);
               }
             } else {
-              showCustomSnackBar(getTranslated('now_you_are_in_guest_mode', context));
+              // showCustomSnackBar(getTranslated('now_you_are_in_guest_mode', context));
             }
           },
           child: Padding(

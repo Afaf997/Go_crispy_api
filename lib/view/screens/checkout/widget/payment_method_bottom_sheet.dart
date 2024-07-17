@@ -178,7 +178,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                               totalPrice: widget.totalPrice,
                             ));
                           }else{
-                            showCustomSnackBar(getTranslated('your_wallet_have_not_sufficient_balance', context));
+                            // showCustomSnackBar(getTranslated('your_wallet_have_not_sufficient_balance', context));
                           }
                         },
                       ),
@@ -204,7 +204,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                       if(notHideOffline &&  paymentList[index].type == 'offline'){
                         orderProvider.changePaymentMethod(digitalMethod: paymentList[index]);
                       }else if(!notHideDigital){
-                        showCustomSnackBar('${getTranslated('you_can_not_use', context)} ${getTranslated('digital_payment', context)} ${getTranslated('in_partial_payment', context)}');
+                        // showCustomSnackBar('${getTranslated('you_can_not_use', context)} ${getTranslated('digital_payment', context)} ${getTranslated('in_partial_payment', context)}');
                       }else{
                         orderProvider.changePaymentMethod(digitalMethod: paymentList[index]);
                       }

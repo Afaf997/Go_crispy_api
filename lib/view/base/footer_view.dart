@@ -78,9 +78,13 @@ class FooterView extends StatelessWidget {
                                   onTap: (){
                                     String email = newsLetterController.text.trim().toString();
                                     if (email.isEmpty) {
-                                      showCustomSnackBar(getTranslated('enter_email_address', context));
+                                      // showCustomSnackBar(getTranslated('enter_email_address', context));
+                                      showCustomNotification(context, 'enter_email_address', isError: true);
+
                                     }else if (EmailChecker.isNotValid(email)) {
-                                      showCustomSnackBar(getTranslated('enter_valid_email', context));
+                                      // showCustomSnackBar(getTranslated('enter_valid_email', context));
+                                        showCustomNotification(context, 'enter_valid_email', isError: true);
+                                      
                                     }else{
                                       Provider.of<NewsLetterProvider>(context, listen: false).addToNewsLetter(email).then((value) {
                                         newsLetterController.clear();

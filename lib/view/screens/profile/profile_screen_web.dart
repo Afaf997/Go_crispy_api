@@ -275,18 +275,18 @@ class _ProfileScreenWebState extends State<ProfileScreenWeb> {
                                             profileProvider.userInfoModel!.phone == phoneNumber &&
                                             profileProvider.userInfoModel!.email == widget.emailController!.text && widget.file == null
                                             && password.isEmpty && confirmPassword.isEmpty) {
-                                          showCustomSnackBar(getTranslated('change_something_to_update', context));
+                                          // showCustomSnackBar(getTranslated('change_something_to_update', context));
                                         }else if (firstName.isEmpty) {
-                                          showCustomSnackBar(getTranslated('enter_first_name', context));
+                                          // showCustomSnackBar(getTranslated('enter_first_name', context));
                                         }else if (lastName.isEmpty) {
-                                          showCustomSnackBar(getTranslated('enter_last_name', context));
+                                          // showCustomSnackBar(getTranslated('enter_last_name', context));
                                         }else if (phoneNumber.isEmpty) {
-                                          showCustomSnackBar(getTranslated('enter_phone_number', context));
+                                          // showCustomSnackBar(getTranslated('enter_phone_number', context));
                                         } else if((password.isNotEmpty && password.length < 6)
                                             || (confirmPassword.isNotEmpty && confirmPassword.length < 6)) {
-                                          showCustomSnackBar(getTranslated('password_should_be', context));
+                                          // showCustomSnackBar(getTranslated('password_should_be', context));
                                         } else if(password != confirmPassword) {
-                                          showCustomSnackBar(getTranslated('password_did_not_match', context));
+                                          // showCustomSnackBar(getTranslated('password_did_not_match', context));
                                         } else {
                                           UserInfoModel updateUserInfoModel = UserInfoModel();
                                           updateUserInfoModel.fName = firstName;
@@ -302,10 +302,10 @@ class _ProfileScreenWebState extends State<ProfileScreenWeb> {
                                           if(responseModel.isSuccess) {
                                             profileProvider.getUserInfo(true);
                                             if(context.mounted){
-                                              showCustomSnackBar(getTranslated('updated_successfully', context), isError: false);
+                                              // showCustomSnackBar(getTranslated('updated_successfully', context), isError: false);
                                             }
                                           }else {
-                                            showCustomSnackBar(responseModel.message);
+                                            // showCustomSnackBar(responseModel.message);
                                           }
                                           setState(() {});
                                         }

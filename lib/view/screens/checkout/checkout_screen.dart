@@ -253,7 +253,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                                           if(kmWiseCharge) {
                                             if(orderProvider.selectedPaymentMethod != null){
-                                              showCustomSnackBar(getTranslated('your_payment_method_has_been', context), isError: false);
+                                              // showCustomSnackBar(getTranslated('your_payment_method_has_been', context), isError: false);
                                             }
                                             orderProvider.savePaymentMethod(index: null, method: null);
                                             orderProvider.changePartialPayment();
@@ -281,7 +281,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                   amount: widget.amount, distance: orderProvider.distance,
                                                 ));
                                               }else {
-                                                showCustomSnackBar(getTranslated('failed_to_fetch_distance', context));
+                                                // showCustomSnackBar(getTranslated('failed_to_fetch_distance', context));
                                               }
                                               return isSuccess;
                                             });
@@ -486,7 +486,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       RouterHelper.getOrderSuccessScreen(orderID, 'success');
 
     }else {
-      showCustomSnackBar(message);
+      // showCustomSnackBar(message);
     }
   }
 
@@ -543,7 +543,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       permission = await Geolocator.requestPermission();
     }
     if(permission == LocationPermission.denied) {
-      showCustomSnackBar(getTranslated('you_have_to_allow', Get.context!));
+      // showCustomSnackBar(getTranslated('you_have_to_allow', Get.context!));
     }else if(permission == LocationPermission.deniedForever) {
       showDialog(context: Get.context!, barrierDismissible: false, builder: (context) => const PermissionDialog());
     }else {

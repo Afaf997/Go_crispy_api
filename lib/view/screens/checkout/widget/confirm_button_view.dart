@@ -82,18 +82,18 @@ class ConfirmButtonView extends StatelessWidget {
                       }
 
                       if(orderAmount < configModel.minimumOrderValue!) {
-                        showCustomSnackBar('Minimum order amount is ${configModel.minimumOrderValue}');
+                        // showCustomSnackBar('Minimum order amount is ${configModel.minimumOrderValue}');
                       }else if(orderProvider.partialAmount != null && (orderProvider.selectedPaymentMethod == null ? (orderProvider.selectedOfflineValue == null) : orderProvider.selectedPaymentMethod == null )){
-                        showCustomSnackBar(getTranslated('add_a_payment_method', context));
+                        // showCustomSnackBar(getTranslated('add_a_payment_method', context));
 
                       } else if(!takeAway && (locationProvider.addressList == null || locationProvider.addressList!.isEmpty || orderProvider.addressIndex < 0)) {
-                        showCustomSnackBar(getTranslated('select_an_address', context));
+                        // showCustomSnackBar(getTranslated('select_an_address', context));
                       }else if (orderProvider.timeSlots == null || orderProvider.timeSlots!.isEmpty) {
-                        showCustomSnackBar(getTranslated('select_a_time', context));
+                        // showCustomSnackBar(getTranslated('select_a_time', context));
                       }else if (!isAvailable) {
-                        showCustomSnackBar(getTranslated('one_or_more_products_are_not_available_for_this_selected_time', context));
+                        // showCustomSnackBar(getTranslated('one_or_more_products_are_not_available_for_this_selected_time', context));
                       }else if (!takeAway && kmWiseCharge && orderProvider.distance == -1) {
-                        showCustomSnackBar(getTranslated('delivery_fee_not_set_yet', context));
+                        // showCustomSnackBar(getTranslated('delivery_fee_not_set_yet', context));
                       }else {
                         List<Cart> carts = [];
                         for (int index = 0; index < cartList.length; index++) {
@@ -187,7 +187,7 @@ class ConfirmButtonView extends StatelessWidget {
                         }
                       }
                     } else{
-                      showCustomSnackBar(getTranslated('select_payment_method', context));
+                      // showCustomSnackBar(getTranslated('select_payment_method', context));
                     }
                   }),
             ) : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor))),

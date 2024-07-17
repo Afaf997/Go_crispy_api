@@ -147,9 +147,9 @@ class ProductReviewWidget extends StatelessWidget {
                                       onTap: () {
                                         if(!reviewProvider.submitList[index]) {
                                           if (reviewProvider.ratingList[index] == 0) {
-                                            showCustomSnackBar('Give a rating');
+                                            // showCustomSnackBar('Give a rating');
                                           } else if (reviewProvider.reviewList[index].isEmpty) {
-                                            showCustomSnackBar('Write a review');
+                                            // showCustomSnackBar('Write a review');
                                           } else {
                                             FocusScopeNode currentFocus = FocusScope.of(context);
                                             if (!currentFocus.hasPrimaryFocus) {
@@ -163,10 +163,10 @@ class ProductReviewWidget extends StatelessWidget {
                                             );
                                             reviewProvider.submitReview(index, reviewBody).then((value) {
                                               if (value.isSuccess) {
-                                                showCustomSnackBar(value.message, isError: false);
+                                                // showCustomSnackBar(value.message, isError: false);
                                                 reviewProvider.setReview(index, '');
                                               } else {
-                                                showCustomSnackBar(value.message);
+                                                // showCustomSnackBar(value.message);
                                               }
                                             });
                                           }

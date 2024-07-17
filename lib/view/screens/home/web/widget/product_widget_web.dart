@@ -121,7 +121,7 @@ class ProductWidgetWeb extends StatelessWidget {
       builder: (con) => CartBottomSheet(
         product: product,
         callback: (CartModel cartModel) {
-          showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+          // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
         },
       ),
     ) : showDialog(context: context, builder: (con) => Dialog(
@@ -130,7 +130,7 @@ class ProductWidgetWeb extends StatelessWidget {
         product: product,
         fromSetMenu: true,
         callback: (CartModel cartModel) {
-          showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+          // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
         },
       ),
     ));

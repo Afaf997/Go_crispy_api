@@ -223,16 +223,17 @@ class RouterHelper {
       GoRoute(path: onBoardingScreen, builder: (context, state) => OnBoardingScreen()),
       GoRoute(path: welcomeScreen, builder: (context, state) => _routeHandler(context, const WelcomeScreen())),
       GoRoute(path: loginScreen, builder: (context, state) => _routeHandler(context, const LoginScreen())),
-      GoRoute(path: verify, builder: (context, state) {
-        return _routeHandler(context, VerificationScreen(
-          fromSignUp: state.uri.queryParameters['page'] == 'sign-up',
-          emailAddress: jsonDecode(state.uri.queryParameters['email'] ?? ''),
-          session: state.uri.queryParameters['data'] == 'null'
-              ? null
-              : utf8.decode(base64Url.decode(state.uri.queryParameters['data'] ?? '')),
-        ));
-      }),
-      GoRoute(path: forgotPassScreen, builder: (context, state) => _routeHandler(context, const ForgotPasswordScreen())),
+      // GoRoute(path: verify, builder: (context, state) {
+      //   return _routeHandler(context, VerificationScreen(
+      //     fromSignUp: state.uri.queryParameters['page'] == 'sign-up',
+      //     emailAddress: jsonDecode(state.uri.queryParameters['email'] ?? ''),
+      //     session: state.uri.queryParameters['data'] == 'null'
+      //         ? null
+      //         : utf8.decode(base64Url.decode(state.uri.queryParameters['data'] ?? '')),
+      //   )
+      //   );
+      // }),
+      // GoRoute(path: forgotPassScreen, builder: (context, state) => _routeHandler(context, const ForgotPasswordScreen())),
       GoRoute(path: createNewPassScreen, builder: (context, state) => _routeHandler(context, CreateNewPasswordScreen(
         emailOrPhone: Uri.decodeComponent(state.uri.queryParameters['email_or_phone'] ?? ''),
         resetToken: state.uri.queryParameters['token'],
@@ -257,7 +258,7 @@ class RouterHelper {
         context, SearchResultScreen(searchString: jsonDecode(state.uri.queryParameters['text'] ?? '')), isBranchCheck: true,
       )),
       GoRoute(path: update, builder: (context, state) => _routeHandler(context, const UpdateScreen())),
-      GoRoute(path: setMenuScreen, builder: (context, state) => _routeHandler(context, const SetMenuScreen(), isBranchCheck: true)),
+      // GoRoute(path: setMenuScreen, builder: (context, state) => _routeHandler(context, const SetMenuScreen(), isBranchCheck: true)),
       GoRoute(path: categoryScreen,  builder: (context, state) {
         String image  = utf8.decode(base64Decode(state.uri.queryParameters['img'] ?? ''));
 

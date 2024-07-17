@@ -109,7 +109,7 @@ class _CouponScreenState extends State<CouponScreen> {
                                             child: InkWell(
                                               onTap: () {
                                                 Clipboard.setData(ClipboardData(text: couponProvider.couponList![index].code ?? ''));
-                                                showCustomSnackBar(getTranslated('coupon_code_copied', context), isError: false);
+                                                // showCustomSnackBar(getTranslated('coupon_code_copied', context), isError: false);
                                               },
                                               child: Stack(
                                                 alignment: Alignment.center,

@@ -268,7 +268,9 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                     _setBranch(widget.useNavigator); // Use the parameter here
                                   }
                                 } else {
-                                  showCustomSnackBar(getTranslated('select_branch_first', context));
+                                    showCustomNotification(context, 'select_branch_first', isError: true);
+                                  // showCustomSnackBar(getTranslated('select_branch_first', context));
+                                  
                                 }
                               });
                         }),
@@ -291,8 +293,8 @@ class _BranchListScreenState extends State<BranchListScreen> {
     } else {
       RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
     }
-
-    showCustomSnackBar(getTranslated('branch_successfully_selected', context), isError: false);
+    showCustomNotification(context, 'branch_successfully_selected', isError: false);
+    // showCustomSnackBar(getTranslated('branch_successfully_selected', context), isError: false);
   }
 
   void _setMarkers(int selectedIndex, {bool fromBranchSelect = false}) async {

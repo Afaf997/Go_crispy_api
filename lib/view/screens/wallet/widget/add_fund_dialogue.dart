@@ -154,9 +154,9 @@ class _AddFundDialogueState extends State<AddFundDialogue> {
                     onTap: (){
                       final ProfileProvider profileProvider = Provider.of<ProfileProvider>(context, listen: false);
                       if(inputAmountController.text.isEmpty){
-                        showCustomSnackBar(getTranslated('please_enter_amount', context));
+                        // showCustomSnackBar(getTranslated('please_enter_amount', context));
                       }else if(orderProvider.paymentMethod == null){
-                        showCustomSnackBar(getTranslated('please_select_payment_method', context));
+                        // showCustomSnackBar(getTranslated('please_select_payment_method', context));
                       }else{
                         context.pop();
                         double amount = double.parse(inputAmountController.text.replaceAll(configModel!.currencySymbol!, ''));

@@ -48,7 +48,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
                 ));
                 Provider.of<LocationProvider>(context, listen: false).deleteUserAddressByID(addressModel.id, index, (bool isSuccessful, String message) {
                   context.pop();
-                  showCustomSnackBar(message, isError: !isSuccessful);
+                  // showCustomSnackBar(message, isError: !isSuccessful);
                   context.pop();
                 });
               },

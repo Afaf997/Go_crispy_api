@@ -68,7 +68,7 @@ class SetMenuPageView extends StatelessWidget {
                               child: CartBottomSheet(
                                 product: setMenuProvider.setMenuList![currentIndex0], fromSetMenu: true,
                                 callback: (CartModel cartModel) {
-                                  showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+                                  // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
                                 },
                               ),
                             ));
@@ -163,7 +163,7 @@ class SetMenuPageView extends StatelessWidget {
                                                   child: CartBottomSheet(
                                                     product: setMenuProvider.setMenuList![currentIndex0], fromSetMenu: true,
                                                     callback: (CartModel cartModel) {
-                                                      showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+                                                      // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
                                                     },
                                                   ),
                                                 ));

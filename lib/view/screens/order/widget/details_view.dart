@@ -67,7 +67,7 @@ class DetailsView extends StatelessWidget {
               if (order.trackModel!.deliveryAddress != null) {
                 RouterHelper.getMapRoute(AddressModel(), deliveryAddress: order.trackModel!.deliveryAddress!);
               } else {
-                showCustomSnackBar(getTranslated('address_not_found', context));
+                // showCustomSnackBar(getTranslated('address_not_found', context));
               }
             },
             child: Container(

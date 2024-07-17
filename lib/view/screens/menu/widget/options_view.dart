@@ -9,6 +9,7 @@ import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/provider/theme_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -205,7 +206,7 @@ class OptionsView extends StatelessWidget {
                     RouterHelper.getLoginRoute();
                   }
                 },
-                leading: Image.asset(Images.login, width: 20, height: 20, color: Theme.of(context).textTheme.bodyLarge!.color),
+                leading: Image.asset(Images.login, width: 20, height: 20, color:ColorResources.kOrangeColor),
                 title: Text(getTranslated(authProvider.isLoggedIn() ? 'logout' : 'login', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
               ),
 

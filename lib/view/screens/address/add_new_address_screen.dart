@@ -238,7 +238,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   }
                 }
                 if(!isAvailable) {
-                  showCustomSnackBar(getTranslated('service_is_not_available', context));
+                  // showCustomSnackBar(getTranslated('service_is_not_available', context));
                 }else {
                   AddressModel addressModel = AddressModel(
                     addressType: locationProvider.getAllAddressType[locationProvider.selectAddressIndex],
@@ -271,11 +271,11 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                           Provider.of<LocationProvider>(context, listen: false).initAddressList();
                           Provider.of<OrderProvider>(context, listen: false).setAddressIndex(-1);
                         } else {
-                          showCustomSnackBar(value.message, isError: false);
+                          // showCustomSnackBar(value.message, isError: false);
                         }
 
                       } else {
-                        showCustomSnackBar(value.message);
+                        // showCustomSnackBar(value.message);
                       }
                     });
                   }

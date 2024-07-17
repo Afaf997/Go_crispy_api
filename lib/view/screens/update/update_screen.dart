@@ -46,7 +46,7 @@ class UpdateScreen extends StatelessWidget {
                 launchUrl(Uri.parse(appUrl));
               }else {
                 if(context.mounted){
-                  showCustomSnackBar('${getTranslated('can_not_launch', context)} $appUrl');
+                  // showCustomSnackBar('${getTranslated('can_not_launch', context)} $appUrl');
                 }
               }
             }),

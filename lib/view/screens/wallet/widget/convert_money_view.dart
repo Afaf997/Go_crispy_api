@@ -150,12 +150,12 @@ class _ConvertMoneyViewState extends State<ConvertMoneyView> {
                 borderRadius: 30,
                 btnTxt: getTranslated('convert_point', context), onTap: (){
                 if(_pointController.text.isEmpty) {
-                  showCustomSnackBar(getTranslated('please_enter_your_point', context));
+                  // showCustomSnackBar(getTranslated('please_enter_your_point', context));
                 }else{
                   int point = int.parse(_pointController.text.trim());
 
                   if(point < configModel!.loyaltyPointMinimumPoint!){
-                    showCustomSnackBar('${getTranslated('please_exchange_more_then', context)!} ${configModel.loyaltyPointMinimumPoint} ${getTranslated('points', context)!}');
+                    // showCustomSnackBar('${getTranslated('please_exchange_more_then', context)!} ${configModel.loyaltyPointMinimumPoint} ${getTranslated('points', context)!}');
                   } else {
                     walletProvider.pointToWallet(point, false).then((isSuccess) => openDialog(Stack(
                       children: [

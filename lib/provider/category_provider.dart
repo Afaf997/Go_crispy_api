@@ -74,7 +74,7 @@ class CategoryProvider extends ChangeNotifier {
     _isLoading = false;
      notifyListeners();
     } else {
-      showCustomSnackBar(apiResponse.error.toString());
+      // showCustomSnackBar(apiResponse.error.toString());
     }
   }
 

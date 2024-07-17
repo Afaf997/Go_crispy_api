@@ -57,12 +57,12 @@ class _WalletScreenState extends State<WalletScreen> {
       if(widget.status!.contains('success')){
 
         if(!kIsWeb || (kIsWeb && widget.token != null && walletProvide.checkToken(widget.token!))){
-          showCustomSnackBar(getTranslated('add_fund_successful', context), isError: false);
+          // showCustomSnackBar(getTranslated('add_fund_successful', context), isError: false);
         }
         Provider.of<ProfileProvider>(Get.context!, listen: false).getUserInfo(true, isUpdate: true);
 
       }else if(widget.status!.contains('fail')){
-        showCustomSnackBar(getTranslated('add_fund_failed', context));
+        // showCustomSnackBar(getTranslated('add_fund_failed', context));
       }
     });
 

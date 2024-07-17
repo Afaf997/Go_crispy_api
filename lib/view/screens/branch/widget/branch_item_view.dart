@@ -27,9 +27,9 @@ class BranchItemView extends StatelessWidget {
             if (branchesValue!.branches!.status!) {
               branchProvider.updateBranchId(branchesValue!.branches!.id);
             } else {
-              showCustomSnackBar(
-                '${branchesValue!.branches!.name} ${getTranslated('close_now', context)}',
-              );
+              // showCustomSnackBar(
+              //   '${branchesValue!.branches!.name} ${getTranslated('close_now', context)}',
+              // );
             }
           },
           child: Stack(

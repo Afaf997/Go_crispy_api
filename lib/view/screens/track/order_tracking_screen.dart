@@ -179,7 +179,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                 await launchUrl(uri);
                               } else {
                                 if(context.mounted){
-                                  showCustomSnackBar(getTranslated('phone_number_not_found', context));
+                                  // showCustomSnackBar(getTranslated('phone_number_not_found', context));
                                 }
                               }
                             },

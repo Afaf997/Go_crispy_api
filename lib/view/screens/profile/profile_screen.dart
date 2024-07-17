@@ -260,11 +260,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       profileProvider.userInfoModel!.phone == phoneNumber &&
                                       profileProvider.userInfoModel!.email == _emailController!.text && file == null && data == null
                                       && password.isEmpty && confirmPassword.isEmpty) {
-                                    showCustomSnackBar(getTranslated('change_something_to_update', context));
+                                    // showCustomSnackBar(getTranslated('change_something_to_update', context));
                                   } else if (firstName.isEmpty) {
-                                    showCustomSnackBar(getTranslated('enter_first_name', context));
+                                    // showCustomSnackBar(getTranslated('enter_first_name', context));
                                   } else if (lastName.isEmpty) {
-                                    showCustomSnackBar(getTranslated('enter_last_name', context));
+                                    // showCustomSnackBar(getTranslated('enter_last_name', context));
                                   } else {
                                     UserInfoModel updateUserInfoModel = UserInfoModel();
                                     updateUserInfoModel.fName = firstName;
@@ -281,10 +281,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       profileProvider.getUserInfo(true);
 
                                       if (context.mounted) {
-                                        showCustomSnackBar(getTranslated('updated_successfully', context), isError: false);
+                                        // showCustomSnackBar(getTranslated('updated_successfully', context), isError: false);
                                       }
                                     } else {
-                                      showCustomSnackBar(responseModel.message);
+                                      // showCustomSnackBar(responseModel.message);
                                     }
                                     setState(() {});
                                   }

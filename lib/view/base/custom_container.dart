@@ -37,7 +37,9 @@ class ProductWidgetContainer extends StatelessWidget {
                     builder: (con) => CartBottomSheet(
                       product: product,
                       callback: (CartModel cartModel) {
-                        showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+                        // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+                        showCustomNotification(context, 'Your message here', isError: false);
+
                       },
                     ),
                   )
@@ -48,7 +50,9 @@ class ProductWidgetContainer extends StatelessWidget {
                       child: CartBottomSheet(
                         product: product,
                         callback: (CartModel cartModel) {
-                          showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+                          // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+                          showCustomNotification(context, 'Your message here', isError: false);
+
                         },
                       ),
                     ));

@@ -78,7 +78,7 @@ class ProductProvider extends ChangeNotifier {
       } else {
         _latestProductList = [];
 
-        showCustomSnackBar(apiResponse.error.toString());
+        // showCustomSnackBar(apiResponse.error.toString());
       }
     } else {
       if(isLoading) {
@@ -114,7 +114,7 @@ class ProductProvider extends ChangeNotifier {
         _isLoading = false;
         notifyListeners();
       } else {
-        showCustomSnackBar(apiResponse.error.toString());
+        // showCustomSnackBar(apiResponse.error.toString());
       }
     } else {
       if(isLoading) {
@@ -205,8 +205,8 @@ class ProductProvider extends ChangeNotifier {
       }
     } else {
       if(!_selectedVariations[index][i]! && selectedVariationLength(_selectedVariations, index) >= product!.variations![index].max!) {
-        showCustomSnackBar('${getTranslated('maximum_variation_for', Get.context!)} ${product.variations![index].name
-        } ${getTranslated('is', Get.context!)} ${product.variations![index].max}', isToast: true);
+        // showCustomSnackBar('${getTranslated('maximum_variation_for', Get.context!)} ${product.variations![index].name
+        // } ${getTranslated('is', Get.context!)} ${product.variations![index].max}', isToast: true);
 
       }else {
         _selectedVariations[index][i] = !_selectedVariations[index][i]!;

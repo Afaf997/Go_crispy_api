@@ -344,16 +344,16 @@ class _CartScreenState extends State<CartScreen> {
                                                 if(coupon.discount! < 1) {
                                                   coupon.applyCoupon(_couponController.text, total).then((discount) {
                                                     if (discount! > 0) {
-                                                      showCustomSnackBar('You got ${PriceConverter.convertPrice(discount)} discount', isError: false);
+                                                      // showCustomSnackBar('You got ${PriceConverter.convertPrice(discount)} discount', isError: false);
                                                     } else {
-                                                      showCustomSnackBar(getTranslated('invalid_code_or', context), isError: true);
+                                                      // showCustomSnackBar(getTranslated('invalid_code_or', context), isError: true);
                                                     }
                                                   });
                                                 } else {
                                                   coupon.removeCouponData(true);
                                                 }
                                               } else if(_couponController.text.isEmpty) {
-                                                showCustomSnackBar(getTranslated('enter_a_Couponcode', context));
+                                                // showCustomSnackBar(getTranslated('enter_a_Couponcode', context));
                                               }
                                             },
                                             child: Container(width: 100,
@@ -501,8 +501,8 @@ class CheckOutButtonView extends StatelessWidget {
       padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
       child: CustomButton(btnTxt: getTranslated('continue_checkout', context), onTap: () {
         if(orderAmount < Provider.of<SplashProvider>(context, listen: false).configModel!.minimumOrderValue!) {
-          showCustomSnackBar('Minimum order amount is ${PriceConverter.convertPrice(Provider.of<SplashProvider>(context, listen: false).configModel!
-              .minimumOrderValue)}, you have ${PriceConverter.convertPrice(orderAmount)} in your cart, please add more item.');
+        //   showCustomSnackBar('Minimum order amount is ${PriceConverter.convertPrice(Provider.of<SplashProvider>(context, listen: false).configModel!
+        //       .minimumOrderValue)}, you have ${PriceConverter.convertPrice(orderAmount)} in your cart, please add more item.');
         } else {
            RouterHelper.getCheckoutRoute(
             totalWithoutDeliveryFee, 'cart', Provider.of<OrderProvider>(context, listen: false).orderType,

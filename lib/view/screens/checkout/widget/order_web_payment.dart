@@ -49,7 +49,7 @@ class _OrderWebPaymentState extends State<OrderWebPayment> {
     if(isSuccess) {
       RouterHelper.getOrderSuccessScreen(orderID, 'success');
     }else {
-      showCustomSnackBar(message);
+      // showCustomSnackBar(message);
     }
   }
 

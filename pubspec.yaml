@@ -109,12 +109,8 @@ flutter:
         - asset: assets/fonts/Rubik-Bold.ttf
           weight: 700
 
-    - family: Poppins
+    - family: Aeonik
       fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
-          weight: 400
-
-    - family: Roboto
-      fonts:
-        - asset: assets/fonts/Roboto-Regular.ttf
-          weight: 400
+        - asset: assets/fonts/AeonikTRIAL-Regular.otf
+          weight: 900
+        - asset: assets/fonts/AeonikTRIAL-Bold.otf      

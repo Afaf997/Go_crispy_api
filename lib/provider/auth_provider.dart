@@ -67,7 +67,7 @@ class AuthProvider with ChangeNotifier {
     ApiResponse apiResponse = await authRepo!.registration(signUpModel);
 
     if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
-      showCustomSnackBar(getTranslated('registration_successful', Get.context!), isError: false);
+      // showCustomSnackBar(getTranslated('registration_successful', Get.context!), isError: false);
 
       Map map = apiResponse.response!.data;
       if(map.containsKey('temporary_token')) {
@@ -454,7 +454,7 @@ class AuthProvider with ChangeNotifier {
     _isLoading = false;
     if (response.response!.statusCode == 200) {
       Provider.of<SplashProvider>(Get.context!, listen: false).removeSharedData();
-      showCustomSnackBar(getTranslated('your_account_remove_successfully', Get.context!) );
+      // showCustomSnackBar(getTranslated('your_account_remove_successfully', Get.context!) );
       RouterHelper.getLoginRoute(action: RouteAction.pushReplacement);
     }else{
       Get.context?.pop();
@@ -564,10 +564,10 @@ class AuthProvider with ChangeNotifier {
         Get.context!.pop();
 
         if(e.code == 'invalid-phone-number') {
-          showCustomSnackBar(getTranslated('please_submit_a_valid_phone_number', Get.context!));
+          // showCustomSnackBar(getTranslated('please_submit_a_valid_phone_number', Get.context!));
 
         }else{
-          showCustomSnackBar(getTranslated('${e.message}'.replaceAll('_', ' ').toCapitalized(), Get.context!));
+          // showCustomSnackBar(getTranslated('${e.message}'.replaceAll('_', ' ').toCapitalized(), Get.context!));
         }
 
       },

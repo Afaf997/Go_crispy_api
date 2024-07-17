@@ -35,7 +35,7 @@ class _LanguageHoverWidgetState extends State<LanguageHoverWidget> {
                     HomeScreen.loadData(true);
 
                   }else {
-                    showCustomSnackBar(getTranslated('select_a_language', context));
+                    // showCustomSnackBar(getTranslated('select_a_language', context));
                   }
                 },
                 child: OnHover(

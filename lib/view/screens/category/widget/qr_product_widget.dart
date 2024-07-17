@@ -38,7 +38,7 @@ class _QrProductWidgetState extends State<QrProductWidget> {
       builder: (con) => CartBottomSheet(
         product: widget.product,
         callback: (CartModel cartModel) {
-          showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+          // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
         },
       ),
     ) : showDialog(context: context, builder: (con) => Dialog(
@@ -47,7 +47,7 @@ class _QrProductWidgetState extends State<QrProductWidget> {
         product: widget.product,
         fromSetMenu: false,
         callback: (CartModel cartModel) {
-          showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+          // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
         },
       ),
     ));

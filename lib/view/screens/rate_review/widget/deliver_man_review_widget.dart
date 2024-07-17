@@ -112,9 +112,9 @@ class _DeliveryManReviewWidgetState extends State<DeliveryManReviewWidget> {
                                   btnTxt: getTranslated(reviewProvider.isReviewSubmitted ? 'submitted' : 'submit', context),
                                   onTap: reviewProvider.isReviewSubmitted ? null : () {
                                     if (reviewProvider.deliveryManRating == 0) {
-                                      showCustomSnackBar('Give a rating');
+                                      // showCustomSnackBar('Give a rating');
                                     } else if (_controller.text.isEmpty) {
-                                      showCustomSnackBar('Write a review');
+                                      // showCustomSnackBar('Write a review');
                                     } else {
                                       FocusScopeNode currentFocus = FocusScope.of(context);
                                       if (!currentFocus.hasPrimaryFocus) {
@@ -128,10 +128,10 @@ class _DeliveryManReviewWidgetState extends State<DeliveryManReviewWidget> {
                                       );
                                       reviewProvider.submitDeliveryManReview(reviewBody).then((value) {
                                         if (value.isSuccess) {
-                                          showCustomSnackBar(value.message, isError: false);
+                                          // showCustomSnackBar(value.message, isError: false);
                                           _controller.text = '';
                                         } else {
-                                          showCustomSnackBar(value.message);
+                                          // showCustomSnackBar(value.message);
                                         }
                                       });
                                     }

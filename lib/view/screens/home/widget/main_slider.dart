@@ -71,7 +71,7 @@ class _MainSliderState extends State<MainSlider> {
                                 builder: (con) => CartBottomSheet(
                                   product: product,
                                   callback: (CartModel cartModel) {
-                                    showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+                                    // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
                                   },
                                 ),
                               ): showDialog(context: context, builder: (con) => Dialog(
@@ -79,7 +79,7 @@ class _MainSliderState extends State<MainSlider> {
                                 child: CartBottomSheet(
                                   product: product,
                                   callback: (CartModel cartModel) {
-                                    showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+                                    // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
                                   },
                                 ),
                               )

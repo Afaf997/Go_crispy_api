@@ -29,7 +29,7 @@ class WishListProvider extends ChangeNotifier {
     if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
       Map map = apiResponse.response!.data;
       String? message = map['message'];
-      showCustomSnackBar(message,isError: false);
+      // showCustomSnackBar(message,isError: false);
     } else {
       _wishList!.remove(product);
       _wishIdList.remove(product.id);
@@ -47,7 +47,7 @@ class WishListProvider extends ChangeNotifier {
     if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
       Map map = apiResponse.response!.data;
       String? message = map['message'];
-      showCustomSnackBar(message,isError: false);
+      // showCustomSnackBar(message,isError: false);
     } else {
       _wishList!.add(product);
       _wishIdList.add(product.id);

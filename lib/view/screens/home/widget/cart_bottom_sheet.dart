@@ -456,14 +456,14 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   for(int index=0; index<variationList.length; index++) {
                     if(!variationList[index].isMultiSelect! && variationList[index].isRequired!
                         && !productProvider.selectedVariations[index].contains(true)) {
-                      showCustomSnackBar('${getTranslated('choose_a_variation_from', context)} ${variationList[index].name}', isToast: true, isError: true);
+                      // showCustomSnackBar('${getTranslated('choose_a_variation_from', context)} ${variationList[index].name}', isToast: true, isError: true);
                       return;
                     }else if(variationList[index].isMultiSelect! && (variationList[index].isRequired!
                         || productProvider.selectedVariations[index].contains(true)) && variationList[index].min!
                         > productProvider.selectedVariationLength(productProvider.selectedVariations, index)) {
-                      showCustomSnackBar('${getTranslated('you_need_to_select_minimum', context)} ${variationList[index].min} '
-                          '${getTranslated('to_maximum', context)} ${variationList[index].max} ${getTranslated('options_from', context)
-                      } ${variationList[index].name} ${getTranslated('variation', context)}',isError: true, );
+                      // showCustomSnackBar('${getTranslated('you_need_to_select_minimum', context)} ${variationList[index].min} '
+                      //     '${getTranslated('to_maximum', context)} ${variationList[index].max} ${getTranslated('options_from', context)
+                      // } ${variationList[index].name} ${getTranslated('variation', context)}',isError: true, );
                       return;
                     }
                   }
@@ -646,7 +646,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
             )){
               productProvider.setQuantity(true);
             }else{
-              showCustomSnackBar(getTranslated('out_of_stock', context));
+              // showCustomSnackBar(getTranslated('out_of_stock', context));
             }
           },
           child: const Padding(

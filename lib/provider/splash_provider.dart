@@ -70,7 +70,7 @@ class SplashProvider extends ChangeNotifier {
     } else {
       isSuccess = false;
 
-      showCustomSnackBar(ApiChecker.getError(apiResponse).errors![0].message);
+      // showCustomSnackBar(ApiChecker.getError(apiResponse).errors![0].message);
     }
     return isSuccess;
   }

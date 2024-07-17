@@ -35,8 +35,8 @@ class CartProvider extends ChangeNotifier {
     }
     cartRepo!.addToCartList(_cartList);
     setCartUpdate(false);
-    showCustomSnackBar(getTranslated(index == -1 ?
-    'added_in_cart' : 'cart_updated', Get.context!), isToast: true, isError: false);
+    // showCustomSnackBar(getTranslated(index == -1 ?
+    // 'added_in_cart' : 'cart_updated', Get.context!), isToast: true, isError: false);
 
     notifyListeners();
   }

@@ -33,14 +33,16 @@ Future<void> _verifyOtp(String otp) async {
       final responseData = response.data;
 
       if (responseData['status_code'] == 0) {
-        showCustomSnackBar('OTP verified successfully', isError: false);
+        // showCustomSnackBar('OTP verified successfully', isError: false);
+        showCustomNotification(context, 'OTP verified successfully', isError: false);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ContactDetails(phoneNumber: widget.phoneNumber)));
       } else if (responseData['status_code'] == 1) {
         final token = responseData['token'];
       final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.remove('token');
         await prefs.setString('token', token);
-        showCustomSnackBar('Welcome back!', isError: false);
+        // showCustomSnackBar('Welcome back!', isError: false);
+        showCustomNotification(context, 'OTP verified successfully', isError: false);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const BranchListScreen(useNavigator:true ,)));
       } else {
         showCustomErrorDialog(context, 'Failed to verify OTP');
@@ -120,7 +122,7 @@ Future<void> _verifyOtp(String otp) async {
                   if (_otpCode != null) {
                     _verifyOtp(_otpCode!);
                   } else {
-                    showCustomSnackBar('Please enter the OTP');
+                     showCustomNotification(context, 'Please enter the Otp', isError: true);
                   }
                 },
               ),

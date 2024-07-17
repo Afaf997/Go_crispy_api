@@ -123,7 +123,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
 
                                     if(profileProvider.userInfoModel!.referCode != null && profileProvider.userInfoModel!.referCode  != ''){
                                       Clipboard.setData(ClipboardData(text: '${profileProvider.userInfoModel != null ? profileProvider.userInfoModel!.referCode : ''}'));
-                                      showCustomSnackBar(getTranslated('referral_code_copied', context), isError: false);
+                                      // showCustomSnackBar(getTranslated('referral_code_copied', context), isError: false);
                                     }
                                   },
                                   child: Container(

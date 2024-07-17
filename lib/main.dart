@@ -18,7 +18,6 @@ import 'package:flutter_restaurant/provider/banner_provider.dart';
 import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
-import 'package:flutter_restaurant/provider/chat_provider.dart';
 import 'package:flutter_restaurant/provider/coupon_provider.dart';
 import 'package:flutter_restaurant/provider/language_provider.dart';
 import 'package:flutter_restaurant/provider/localization_provider.dart';
@@ -39,6 +38,7 @@ import 'package:flutter_restaurant/provider/wishlist_provider.dart';
 import 'package:flutter_restaurant/theme/dark_theme.dart';
 import 'package:flutter_restaurant/theme/light_theme.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/view/base/third_party_chat_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -225,9 +225,16 @@ class _MyAppState extends State<MyApp> {
       builder: (context, splashProvider, child){
         return (kIsWeb && splashProvider.configModel == null) ? const SizedBox() : MaterialApp.router(
           routerConfig: RouterHelper.goRoutes,
+
           title: splashProvider.configModel != null ? splashProvider.configModel!.restaurantName ?? '' : AppConstants.appName,
           debugShowCheckedModeBanner: false,
-          theme: Provider.of<ThemeProvider>(context).darkTheme ? dark : light,
+           theme: ThemeData(
+        fontFamily: "Aeonik",
+        appBarTheme: const AppBarTheme(
+          surfaceTintColor: Colors.transparent,
+        ),
+         scaffoldBackgroundColor:ColorResources.kWhite,
+      ),
           locale: Provider.of<LocalizationProvider>(context).locale,
           localizationsDelegates: const [
             AppLocalization.delegate,

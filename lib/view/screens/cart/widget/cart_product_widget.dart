@@ -74,9 +74,9 @@ class CartProductWidget extends StatelessWidget {
                     cart: cart,
                     fromCart: true,
                     callback: (CartModel cartModel) {
-                      showCustomSnackBar(
-                          getTranslated('updated_in_cart', context),
-                          isError: false);
+                      // showCustomSnackBar(
+                      //     getTranslated('updated_in_cart', context),
+                      //     isError: false);
                     },
                   ),
                 )
@@ -90,9 +90,9 @@ class CartProductWidget extends StatelessWidget {
                       cart: cart,
                       fromCart: true,
                       callback: (CartModel cartModel) {
-                        showCustomSnackBar(
-                            getTranslated('updated_in_cart', context),
-                            isError: false);
+                        // showCustomSnackBar(
+                        //     getTranslated('updated_in_cart', context),
+                        //     isError: false);
                       },
                     ),
                   ));

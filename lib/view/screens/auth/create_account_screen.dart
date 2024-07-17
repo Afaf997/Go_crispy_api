@@ -253,23 +253,23 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
 
                                     if (firstName.isEmpty) {
-                                      showCustomSnackBar(getTranslated('enter_first_name', context));
+                                      // showCustomSnackBar(getTranslated('enter_first_name', context));
                                     }else if (lastName.isEmpty) {
-                                      showCustomSnackBar(getTranslated('enter_last_name', context));
+                                      // showCustomSnackBar(getTranslated('enter_last_name', context));
                                     }else if (number.isEmpty) {
-                                      showCustomSnackBar(getTranslated('enter_phone_number', context));
+                                      // showCustomSnackBar(getTranslated('enter_phone_number', context));
                                     }else if (password.isEmpty) {
-                                      showCustomSnackBar(getTranslated('enter_password', context));
+                                      // showCustomSnackBar(getTranslated('enter_password', context));
                                     }else if (password.length < 6) {
-                                      showCustomSnackBar(getTranslated('password_should_be', context));
+                                      // showCustomSnackBar(getTranslated('password_should_be', context));
                                     }else if (confirmPassword.isEmpty) {
-                                      showCustomSnackBar(getTranslated('enter_confirm_password', context));
+                                      // showCustomSnackBar(getTranslated('enter_confirm_password', context));
                                     }else if(password != confirmPassword) {
-                                      showCustomSnackBar(getTranslated('password_did_not_match', context));
+                                      // showCustomSnackBar(getTranslated('password_did_not_match', context));
                                     }else if (email.isEmpty) {
-                                      showCustomSnackBar(getTranslated('enter_email_address', context));
+                                      // showCustomSnackBar(getTranslated('enter_email_address', context));
                                     }else if (EmailChecker.isNotValid(email)) {
-                                      showCustomSnackBar(getTranslated('enter_valid_email', context));
+                                      // showCustomSnackBar(getTranslated('enter_valid_email', context));
                                     }else {
                                       SignUpModel signUpModel = SignUpModel(
                                         fName: firstName,
