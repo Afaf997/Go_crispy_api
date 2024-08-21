@@ -5,7 +5,7 @@ import 'package:flutter_restaurant/utill/images.dart';
 Widget buildLocateContainer(BuildContext context) {
   return GestureDetector(
     onTap: () {
-      GoRouter.of(context).go('/branch-list'); 
+      GoRouter.of(context).go('/branch-list');
     },
     child: Center(
       child: Image.asset(
@@ -14,4 +14,3 @@ Widget buildLocateContainer(BuildContext context) {
     ),
   );
 }
-

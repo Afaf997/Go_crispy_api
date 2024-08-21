@@ -25,36 +25,85 @@ class CouponProvider extends ChangeNotifier {
 
   Future<void> getCouponList() async {
     ApiResponse apiResponse = await couponRepo!.getCouponList(
-      guestId: Provider.of<AuthProvider>(Get.context!, listen: false).getGuestId(),
+      guestId:
+          Provider.of<AuthProvider>(Get.context!, listen: false).getGuestId(),
     );
-    if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
+    if (apiResponse.response != null &&
+        apiResponse.response!.statusCode == 200) {
       _couponList = [];
-      apiResponse.response!.data.forEach((category) => _couponList!.add(CouponModel.fromJson(category)));
+      apiResponse.response!.data.forEach(
+          (category) => _couponList!.add(CouponModel.fromJson(category)));
       notifyListeners();
     } else {
       ApiChecker.checkApi(apiResponse);
     }
   }
 
+  // Future<double?> applyCoupon(String coupon, double order) async {
+  //   _isLoading = true;
+  //   notifyListeners();
+  //   ApiResponse apiResponse = await couponRepo!.applyCoupon(coupon, guestId: Provider.of<AuthProvider>(Get.context!, listen: false).getGuestId(),);
+  //   if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
+  //     _coupon = CouponModel.fromJson(apiResponse.response!.data);
+  //     _code = _coupon!.code;
+  //     if (_coupon!.minPurchase != null && _coupon!.minPurchase! <= order) {
+  //       if(_coupon!.discountType == 'percent') {
+  //         if(_coupon!.maxDiscount != null && _coupon!.maxDiscount != 0) {
+  //           _discount = (_coupon!.discount! * order / 100) < _coupon!.maxDiscount! ? (_coupon!.discount! * order / 100) : _coupon!.maxDiscount;
+  //         }else {
+  //           _discount = _coupon!.discount! * order / 100;
+  //         }
+  //       }else {
+  //         if(_coupon!.maxDiscount != null){
+  //           _discount = _coupon!.discount;
+  //         }
+  //         _discount = _coupon!.discount;
+  //       }
+  //     } else {
+  //       _discount = 0.0;
+  //     }
+  //   } else {
+  //     _discount = 0.0;
+  //   }
+  //   _isLoading = false;
+  //   notifyListeners();
+  //   return _discount;
+  // }
+
+  //new coupon applying logic if the coupon type is amount and the coupon amount is greater than the order amount, the subtotal will be zero.
+
   Future<double?> applyCoupon(String coupon, double order) async {
     _isLoading = true;
     notifyListeners();
-    ApiResponse apiResponse = await couponRepo!.applyCoupon(coupon, guestId: Provider.of<AuthProvider>(Get.context!, listen: false).getGuestId(),);
-    if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
+
+    ApiResponse apiResponse = await couponRepo!.applyCoupon(
+      coupon,
+      guestId:
+          Provider.of<AuthProvider>(Get.context!, listen: false).getGuestId(),
+    );
+
+    if (apiResponse.response != null &&
+        apiResponse.response!.statusCode == 200) {
       _coupon = CouponModel.fromJson(apiResponse.response!.data);
       _code = _coupon!.code;
+
       if (_coupon!.minPurchase != null && _coupon!.minPurchase! <= order) {
-        if(_coupon!.discountType == 'percent') {
-          if(_coupon!.maxDiscount != null && _coupon!.maxDiscount != 0) {
-            _discount = (_coupon!.discount! * order / 100) < _coupon!.maxDiscount! ? (_coupon!.discount! * order / 100) : _coupon!.maxDiscount;
-          }else {
+        if (_coupon!.discountType == 'percent') {
+          if (_coupon!.maxDiscount != null && _coupon!.maxDiscount != 0) {
+            _discount =
+                (_coupon!.discount! * order / 100) < _coupon!.maxDiscount!
+                    ? (_coupon!.discount! * order / 100)
+                    : _coupon!.maxDiscount;
+          } else {
             _discount = _coupon!.discount! * order / 100;
           }
-        }else {
-          if(_coupon!.maxDiscount != null){
-            _discount = _coupon!.discount;
+        } else {
+          _discount = _coupon!.discount!;
+
+          // Ensure discount is not negative when discount type is 'amount'
+          if (_discount != null && _discount! > order) {
+            _discount = order;
           }
-          _discount = _coupon!.discount;
         }
       } else {
         _discount = 0.0;
@@ -62,8 +111,10 @@ class CouponProvider extends ChangeNotifier {
     } else {
       _discount = 0.0;
     }
+
     _isLoading = false;
     notifyListeners();
+
     return _discount;
   }
 
@@ -72,7 +123,7 @@ class CouponProvider extends ChangeNotifier {
     _isLoading = false;
     _discount = 0.0;
     _code = '';
-    if(notify) {
+    if (notify) {
       notifyListeners();
     }
   }

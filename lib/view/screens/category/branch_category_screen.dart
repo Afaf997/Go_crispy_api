@@ -24,32 +24,38 @@ class BranchCategoryScreen extends StatefulWidget {
   State<BranchCategoryScreen> createState() => _BranchCategoryScreenState();
 }
 
-class _BranchCategoryScreenState extends State<BranchCategoryScreen> with SingleTickerProviderStateMixin{
+class _BranchCategoryScreenState extends State<BranchCategoryScreen>
+    with SingleTickerProviderStateMixin {
   TabController? tabController;
   String type = 'all';
   final TextEditingController searchController = TextEditingController();
 
-
   @override
   void initState() {
     tabController = TabController(vsync: this, length: 3);
+    print("in init");
 
     super.initState();
 
     final branchProvider = Provider.of<BranchProvider>(context, listen: false);
-    if(widget.qrCodeModel != null &&  branchProvider.getBranchId() != widget.qrCodeModel?.branchId) {
+    if (widget.qrCodeModel != null &&
+        branchProvider.getBranchId() != widget.qrCodeModel?.branchId) {
       branchProvider.setBranch(widget.qrCodeModel!.branchId!);
 
-      Future.delayed(const Duration(milliseconds: 500)).then((value){
+      Future.delayed(const Duration(milliseconds: 500)).then((value) {
         // showCustomSnackBar(getTranslated('branch_successfully_selected', context), isError: false);
       });
     }
-    final CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
+    final CategoryProvider categoryProvider =
+        Provider.of<CategoryProvider>(context, listen: false);
 
-    categoryProvider.getCategoryList(true).then((value){
-      categoryProvider.getSubCategoryList('${categoryProvider.selectedSubCategoryId}', );
+    categoryProvider.getCategoryList(true).then((value) {
+      categoryProvider.getSubCategoryList(
+        '${categoryProvider.selectedSubCategoryId}',
+      );
     });
   }
+
   @override
   void dispose() {
     searchController.dispose();
@@ -69,17 +75,24 @@ class _BranchCategoryScreenState extends State<BranchCategoryScreen> with Single
           label: Stack(
             clipBehavior: Clip.none,
             children: [
-              Icon(Icons.shopping_cart, color: Theme.of(context).textTheme.bodyLarge!.color),
+              Icon(Icons.shopping_cart,
+                  color: Theme.of(context).textTheme.bodyLarge!.color),
               Positioned(
-                top: -10, right: -10,
+                top: -10,
+                right: -10,
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   alignment: Alignment.center,
-                  decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle, color: Colors.red),
                   child: Center(
                     child: Text(
-                      Provider.of<CartProvider>(context).cartList.length.toString(),
-                      style: rubikMedium.copyWith(color: Colors.white, fontSize: 8),
+                      Provider.of<CartProvider>(context)
+                          .cartList
+                          .length
+                          .toString(),
+                      style: rubikMedium.copyWith(
+                          color: Colors.white, fontSize: 8),
                     ),
                   ),
                 ),
@@ -88,87 +101,150 @@ class _BranchCategoryScreenState extends State<BranchCategoryScreen> with Single
           ),
         ),
         backgroundColor: Theme.of(context).cardColor,
-        appBar: CustomAppBar(title: getTranslated('menu', context), onBackPressed: (){
-          if(context.canPop()) {
-            context.pop();
-          }else{
-
-            RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
-          }
-        }),
-        body: Consumer<CategoryProvider>(
-          builder: (context, categoryProvider, _) {
-            return NestedScrollView(headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) => [
-              SliverToBoxAdapter(child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
-                child: SearchBar(
-                  controller: searchController,
-                  onChanged: (String? value){
-                    categoryProvider.getCategoryProductList('${categoryProvider.selectedSubCategoryId}', type: type, name: value);
-                  },
-                  elevation: MaterialStateProperty.all(0),
-                  leading: Icon(Icons.search,color: Theme.of(context).hintColor),  hintText: getTranslated('search_by_item_or_category', context),
-                  backgroundColor: MaterialStateProperty.all(
-                      Theme.of(context).canvasColor
-                  ),
-                  hintStyle: MaterialStateProperty.all(rubikRegular.copyWith(color: Theme.of(context).hintColor)),
-                ),
-              )),
-            ], body: Row(children: [
-              Expanded(flex: 1, child: Container(
-                color: Theme.of(context).primaryColor.withOpacity(0.05),
-                child: categoryProvider.categoryList == null ? const SizedBox() : ListView.builder(
-                  itemCount: categoryProvider.categoryList?.length,
-                  padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
-                  itemBuilder: (context, index) {
-                    String? name = '';
-                    categoryProvider.categoryList![index].name!.length > 15  ? name = '${categoryProvider.categoryList![index].name!.substring(0, 15)} ...' : name = categoryProvider.categoryList![index].name;
-                    return Container(
-                      margin: const EdgeInsets.only(right:  10),
-                      decoration: categoryProvider.selectedSubCategoryId == categoryProvider.categoryList![index].id.toString() ? BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
-                        color: Theme.of(context).primaryColor.withOpacity(0.3) ,
-
-                      ) : const BoxDecoration(),
-                      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall, horizontal: Dimensions.paddingSizeExtraSmall),
-                      child: InkWell(
-                        onTap: ()=> categoryProvider.getCategoryProductList('${categoryProvider.categoryList![index].id}', type: type),
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
-                          ClipOval(
-                            child: FadeInImage.assetNetwork(
-                              placeholder: Images.placeholderImage, width: 40, height: 40, fit: BoxFit.cover,
-                              image: Provider.of<SplashProvider>(context, listen: false).baseUrls != null
-                                  ? '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.categoryImageUrl}/${categoryProvider.categoryList![index].image}':'',
-                              imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholderImage, width: 40, height: 40, fit: BoxFit.cover),
-                              // width: 100, height: 100, fit: BoxFit.cover,
-                            ),
+        appBar: CustomAppBar(
+            title: getTranslated('menu', context),
+            onBackPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                RouterHelper.getMainRoute(
+                    action: RouteAction.pushNamedAndRemoveUntil);
+              }
+            }),
+        body:
+            Consumer<CategoryProvider>(builder: (context, categoryProvider, _) {
+          return NestedScrollView(
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) => [
+                        SliverToBoxAdapter(
+                            child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.paddingSizeLarge),
+                          child: SearchBar(
+                            controller: searchController,
+                            onChanged: (String? value) {
+                              categoryProvider.getCategoryProductList(
+                                  '${categoryProvider.selectedSubCategoryId}',
+                                  type: type,
+                                  name: value);
+                            },
+                            elevation: MaterialStateProperty.all(0),
+                            leading: Icon(Icons.search,
+                                color: Theme.of(context).hintColor),
+                            hintText: getTranslated(
+                                'search_by_item_or_category', context),
+                            backgroundColor: MaterialStateProperty.all(
+                                Theme.of(context).canvasColor),
+                            hintStyle: MaterialStateProperty.all(rubikRegular
+                                .copyWith(color: Theme.of(context).hintColor)),
                           ),
-                          const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-                          Text(name!, overflow: TextOverflow.ellipsis, maxLines: 2, style: rubikMedium.copyWith(
-                            fontSize: Dimensions.fontSizeSmall,
-                          )),
-                          const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                        ]),
-                      ),
-                    );
-                  },
-                ),
-              )),
-
-              Expanded(flex: 3, child: Padding(
-                padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                child: TabBarView(controller: tabController, children: const [
-                  QProductList(),
-                  QProductList(),
-                  QProductList(),
-                ]),
-              )),
-            ]));
-          }
-        ),
-
+                        )),
+                      ],
+              body: Row(children: [
+                Expanded(
+                    flex: 1,
+                    child: Container(
+                      color: Theme.of(context).primaryColor.withOpacity(0.05),
+                      child: categoryProvider.categoryList == null
+                          ? const SizedBox()
+                          : ListView.builder(
+                              itemCount: categoryProvider.categoryList?.length,
+                              padding: const EdgeInsets.only(
+                                  left: Dimensions.paddingSizeSmall),
+                              itemBuilder: (context, index) {
+                                String? name = '';
+                                categoryProvider
+                                            .categoryList![index].name!.length >
+                                        15
+                                    ? name =
+                                        '${categoryProvider.categoryList![index].name!.substring(0, 15)} ...'
+                                    : name = categoryProvider
+                                        .categoryList![index].name;
+                                return Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  decoration: categoryProvider
+                                              .selectedSubCategoryId ==
+                                          categoryProvider
+                                              .categoryList![index].id
+                                              .toString()
+                                      ? BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(10)),
+                                          color: Theme.of(context)
+                                              .primaryColor
+                                              .withOpacity(0.3),
+                                        )
+                                      : const BoxDecoration(),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: Dimensions.paddingSizeSmall,
+                                      horizontal:
+                                          Dimensions.paddingSizeExtraSmall),
+                                  child: InkWell(
+                                    onTap: () =>
+                                        categoryProvider.getCategoryProductList(
+                                            '${categoryProvider.categoryList![index].id}',
+                                            type: type),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          ClipOval(
+                                            child: FadeInImage.assetNetwork(
+                                              placeholder:
+                                                  Images.placeholderImage,
+                                              width: 40,
+                                              height: 40,
+                                              fit: BoxFit.cover,
+                                              image: Provider.of<SplashProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .baseUrls !=
+                                                      null
+                                                  ? '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.categoryImageUrl}/${categoryProvider.categoryList![index].image}'
+                                                  : '',
+                                              imageErrorBuilder: (c, o, s) =>
+                                                  Image.asset(
+                                                      Images.placeholderImage,
+                                                      width: 40,
+                                                      height: 40,
+                                                      fit: BoxFit.cover),
+                                              // width: 100, height: 100, fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                              height: Dimensions
+                                                  .paddingSizeExtraSmall),
+                                          Text(name!,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              style: rubikMedium.copyWith(
+                                                fontSize:
+                                                    Dimensions.fontSizeSmall,
+                                              )),
+                                          const SizedBox(
+                                              height: Dimensions
+                                                  .paddingSizeDefault),
+                                        ]),
+                                  ),
+                                );
+                              },
+                            ),
+                    )),
+                Expanded(
+                    flex: 3,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                      child: TabBarView(
+                          controller: tabController,
+                          children: const [
+                            QProductList(),
+                            QProductList(),
+                            QProductList(),
+                          ]),
+                    )),
+              ]));
+        }),
       ),
     );
   }
@@ -181,29 +257,32 @@ class QProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CategoryProvider>(
-      builder: (context, categoryProvider, _) {
-        return categoryProvider.categoryProductList == null ? const Center(child: CircularProgressIndicator()) : categoryProvider.categoryProductList!.isNotEmpty ?  GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: Dimensions.paddingSizeDefault,
-            mainAxisSpacing: Dimensions.paddingSizeDefault,
-            childAspectRatio: 0.8,
-          ),
-          itemCount: categoryProvider.categoryProductList?.length,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-          itemBuilder: (context, index) {
-            return QrProductWidget(product: categoryProvider.categoryProductList![index]);
-          },
-        ) : const NoDataScreen();
-      }
-    );
+    return Consumer<CategoryProvider>(builder: (context, categoryProvider, _) {
+      return categoryProvider.categoryProductList == null
+          ? const Center(child: CircularProgressIndicator())
+          : categoryProvider.categoryProductList!.isNotEmpty
+              ? GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: Dimensions.paddingSizeDefault,
+                    mainAxisSpacing: Dimensions.paddingSizeDefault,
+                    childAspectRatio: 0.8,
+                  ),
+                  itemCount: categoryProvider.categoryProductList?.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                  itemBuilder: (context, index) {
+                    return QrProductWidget(
+                        product: categoryProvider.categoryProductList![index]);
+                  },
+                )
+              : const NoDataScreen();
+    });
   }
 }
 
 class AliveKeeper extends StatefulWidget {
- final int index;
+  final int index;
 
   const AliveKeeper({
     required this.index,

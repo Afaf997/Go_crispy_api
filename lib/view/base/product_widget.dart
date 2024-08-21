@@ -46,7 +46,8 @@ class ProductWidget extends StatelessWidget {
                         builder: (con) => CartBottomSheet(
                           product: product,
                           callback: (CartModel cartModel) {
-                          showCustomNotification(context, 'enter_valid_email', type: NotificationType.error);
+                            showCustomNotification(context, 'enter_valid_email',
+                                type: NotificationType.error);
                           },
                         ),
                       )
@@ -60,7 +61,9 @@ class ProductWidget extends StatelessWidget {
                                   // showCustomSnackBar(
                                   //     getTranslated('added_to_cart', context),
                                   //     isError: false);
-                              showCustomNotification(context, 'added_to_cart', type: NotificationType.success);
+                                  showCustomNotification(
+                                      context, 'added_to_cart',
+                                      type: NotificationType.success);
                                 },
                               ),
                             ));
@@ -127,18 +130,19 @@ class ProductWidget extends StatelessWidget {
                         top: 100,
                         left: 4,
                         child: Container(
-                          width: 35,
-                          height: 35,
-                          padding: EdgeInsets.all(5),
+                          alignment: Alignment.center,
+                          width: 42,
+                          height: 42,
+                          padding: const EdgeInsets.all(3),
                           decoration: BoxDecoration(
                             color: ColorResources.kColorgreen,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
                             '${product.discount}%',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 12,
+                              fontSize: 11,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -187,7 +191,8 @@ class ProductWidget extends StatelessWidget {
                           ),
                         Row(
                           children: [
-                            if (product.rating != null && product.rating!.isNotEmpty)
+                            if (product.rating != null &&
+                                product.rating!.isNotEmpty)
                               Row(
                                 children: [
                                   const Icon(

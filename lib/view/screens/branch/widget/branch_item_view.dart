@@ -21,7 +21,8 @@ class BranchItemView extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Consumer<BranchProvider>(
       builder: (context, branchProvider, _) {
-        bool isSelected = branchProvider.selectedBranchId == branchesValue!.branches!.id;
+        bool isSelected =
+            branchProvider.selectedBranchId == branchesValue!.branches!.id;
         return GestureDetector(
           onTap: () {
             if (branchesValue!.branches!.status!) {
@@ -43,10 +44,13 @@ class BranchItemView extends StatelessWidget {
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
-                      color: isSelected ? ColorResources.kOrangeColor : Colors.transparent,
+                      color: isSelected
+                          ? ColorResources.kOrangeColor
+                          : Colors.transparent,
                       width: 2,
                     ),
-                    borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                    borderRadius:
+                        BorderRadius.circular(Dimensions.radiusDefault),
                   ),
                   child: Stack(
                     children: [
@@ -54,14 +58,17 @@ class BranchItemView extends StatelessWidget {
                         children: [
                           ClipRRect(
                             borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(Dimensions.radiusDefault),
-                              topLeft: Radius.circular(Dimensions.radiusDefault),
+                              topRight:
+                                  Radius.circular(Dimensions.radiusDefault),
+                              topLeft:
+                                  Radius.circular(Dimensions.radiusDefault),
                             ),
                             child: Stack(
                               children: [
                                 FadeInImage.assetNetwork(
                                   placeholder: Images.branchBanner,
-                                  image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.branchImageUrl}/${branchesValue!.branches!.coverImage}',
+                                  image:
+                                      '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.branchImageUrl}/${branchesValue!.branches!.coverImage}',
                                   fit: BoxFit.cover,
                                   width: Dimensions.webScreenWidth,
                                   height: 140.0, // Increased height
@@ -77,20 +84,26 @@ class BranchItemView extends StatelessWidget {
                           Expanded(
                             child: Container(
                               height: 250.0,
-                              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: Dimensions.paddingSizeSmall),
                               decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(Dimensions.radiusDefault),
-                                  bottomRight: Radius.circular(Dimensions.radiusDefault),
+                                  bottomLeft:
+                                      Radius.circular(Dimensions.radiusDefault),
+                                  bottomRight:
+                                      Radius.circular(Dimensions.radiusDefault),
                                 ),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(70, 5, 0, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(70, 5, 0, 0),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           branchesValue!.branches!.name!,
@@ -103,17 +116,25 @@ class BranchItemView extends StatelessWidget {
                                             Icon(
                                               Icons.location_on_outlined,
                                               size: 20,
-                                              color: Theme.of(context).primaryColor,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                             ),
                                             const SizedBox(width: 2),
                                             Text(
-                                              branchesValue!.branches!.address != null
-                                                  ? branchesValue!.branches!.address!.length > 25
+                                              branchesValue!
+                                                          .branches!.address !=
+                                                      null
+                                                  ? branchesValue!.branches!
+                                                              .address!.length >
+                                                          25
                                                       ? '${branchesValue!.branches!.address!.substring(0, 25)}...'
-                                                      : branchesValue!.branches!.address!
-                                                  : branchesValue!.branches!.name!,
+                                                      : branchesValue!
+                                                          .branches!.address!
+                                                  : branchesValue!
+                                                      .branches!.name!,
                                               style: rubikMedium.copyWith(
-                                                color: Theme.of(context).primaryColor,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
                                               ),
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
@@ -125,11 +146,14 @@ class BranchItemView extends StatelessWidget {
                                   ),
                                   if (branchesValue!.distance != -1)
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          branchesValue!.distance.toStringAsFixed(3),
+                                          branchesValue!.distance
+                                              .toStringAsFixed(3),
                                           style: rubikMedium.copyWith(
                                             fontSize: Dimensions.fontSizeLarge,
                                           ),
@@ -142,12 +166,15 @@ class BranchItemView extends StatelessWidget {
                                         ),
                                         SizedBox(height: 5),
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 40),
+                                          padding:
+                                              const EdgeInsets.only(left: 40),
                                           child: Text(
                                             getTranslated('away', context)!,
                                             style: rubikMedium.copyWith(
-                                              fontSize: Dimensions.fontSizeSmall,
-                                              color: Theme.of(context).disabledColor,
+                                              fontSize:
+                                                  Dimensions.fontSizeSmall,
+                                              color: Theme.of(context)
+                                                  .disabledColor,
                                             ),
                                           ),
                                         ),
@@ -165,23 +192,32 @@ class BranchItemView extends StatelessWidget {
                         top: 115,
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.radiusDefault),
                             border: Border.all(
                               color: ColorResources.kWhite,
                               width: 3,
                             ),
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.radiusDefault),
                             child: FadeInImage.assetNetwork(
                               placeholder: Images.placeholderImage,
-                              image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.branchImageUrl}/${branchesValue!.branches!.image}',
-                              height: size.width < 400 ? 60 : 75, // Increased height
-                              width: size.width < 400 ? 60 : 75, // Adjusted width for larger image
+                              image:
+                                  '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.branchImageUrl}/${branchesValue!.branches!.image}',
+                              height: size.width < 400
+                                  ? 60
+                                  : 75, // Increased height
+                              width: size.width < 400
+                                  ? 60
+                                  : 75, // Adjusted width for larger image
                               fit: BoxFit.cover,
                               imageErrorBuilder: (c, o, s) => Image.asset(
                                 Images.placeholderImage,
-                                width: size.width < 400 ? 50 : 65, // Adjusted width for larger image
+                                width: size.width < 400
+                                    ? 50
+                                    : 65, // Adjusted width for larger image
                               ),
                             ),
                           ),
@@ -193,27 +229,35 @@ class BranchItemView extends StatelessWidget {
               ),
               if (!branchesValue!.branches!.status!)
                 Container(
-                  margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
-                  padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
+                  margin: const EdgeInsets.symmetric(
+                      vertical: Dimensions.paddingSizeExtraSmall),
+                  padding:
+                      const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.4),
                     border: Border.all(
-                      color: isSelected ? ColorResources.kOrangeColor : Theme.of(context).primaryColor.withOpacity(0.1),
+                      color: isSelected
+                          ? ColorResources.kOrangeColor
+                          : Theme.of(context).primaryColor.withOpacity(0.1),
                       width: 2,
                     ),
-                    borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                    borderRadius:
+                        BorderRadius.circular(Dimensions.radiusDefault),
                   ),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Container(
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
+                      padding: const EdgeInsets.all(
+                          Dimensions.paddingSizeExtraSmall),
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
                         border: Border.all(
-                          color: Theme.of(context).primaryColor.withOpacity(0.1),
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.1),
                           width: 2,
                         ),
-                        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radiusDefault),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -224,7 +268,8 @@ class BranchItemView extends StatelessWidget {
                             color: Colors.white,
                             size: Dimensions.paddingSizeLarge,
                           ),
-                          const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                          const SizedBox(
+                              width: Dimensions.paddingSizeExtraSmall),
                           Text(
                             getTranslated('close_now', context)!,
                             style: rubikRegular.copyWith(

@@ -199,7 +199,7 @@
 //                         authProvider.firebaseOtpLogin(
 //                           phoneNumber: widget.emailAddress,
 //                           session: '${widget.session}',
-//                           otp: authProvider.verificationCode,
+//                           : authProvider.verificationCode,
 //                         );
 
 //                       }

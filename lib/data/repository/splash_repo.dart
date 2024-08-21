@@ -19,19 +19,21 @@ class SplashRepo {
   }
 
   Future<bool> initSharedData() {
-    if(!sharedPreferences!.containsKey(AppConstants.theme)) {
+    if (!sharedPreferences!.containsKey(AppConstants.theme)) {
       return sharedPreferences!.setBool(AppConstants.theme, false);
     }
-    if(!sharedPreferences!.containsKey(AppConstants.countryCode)) {
-      return sharedPreferences!.setString(AppConstants.countryCode, AppConstants.languages[0].countryCode!);
+    if (!sharedPreferences!.containsKey(AppConstants.countryCode)) {
+      return sharedPreferences!.setString(
+          AppConstants.countryCode, AppConstants.languages[0].countryCode!);
     }
-    if(!sharedPreferences!.containsKey(AppConstants.languageCode)) {
-      return sharedPreferences!.setString(AppConstants.languageCode, AppConstants.languages[0].languageCode!);
+    if (!sharedPreferences!.containsKey(AppConstants.languageCode)) {
+      return sharedPreferences!.setString(
+          AppConstants.languageCode, AppConstants.languages[0].languageCode!);
     }
-    if(!sharedPreferences!.containsKey(AppConstants.onBoardingSkip)) {
+    if (!sharedPreferences!.containsKey(AppConstants.onBoardingSkip)) {
       return sharedPreferences!.setBool(AppConstants.onBoardingSkip, true);
     }
-    if(!sharedPreferences!.containsKey(AppConstants.cartList)) {
+    if (!sharedPreferences!.containsKey(AppConstants.cartList)) {
       return sharedPreferences!.setStringList(AppConstants.cartList, []);
     }
     // if(!sharedPreferences.containsKey(AppConstants.cookiesManagement)) {
@@ -57,8 +59,10 @@ class SplashRepo {
 
   Future<void> setBranchId(int id) async {
     await sharedPreferences!.setInt(AppConstants.branch, id);
-    if(id != -1) {
-      await dioClient!.updateHeader(getToken: sharedPreferences!.getString(AppConstants.token));
+    print("setted");
+    if (id != -1) {
+      await dioClient!.updateHeader(
+          getToken: sharedPreferences!.getString(AppConstants.token));
     }
   }
 
@@ -70,5 +74,4 @@ class SplashRepo {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
-
 }

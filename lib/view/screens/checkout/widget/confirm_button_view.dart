@@ -33,6 +33,7 @@ class ConfirmButtonView extends StatelessWidget {
   final List<CartModel?> cartList;
   final String orderType;
   final String? couponCode;
+  final String? vehicleNumber;
   final TextEditingController noteController;
   final Function callBack;
 
@@ -44,18 +45,21 @@ class ConfirmButtonView extends StatelessWidget {
     required this.orderAmount,
     required this.orderType,
     this.couponCode,
+    this.vehicleNumber,
     required this.noteController,
     required this.callBack,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final BranchProvider branchProvider = Provider.of<BranchProvider>(context, listen: false);
-    final takeAway = orderType == 'take_away';
+    final BranchProvider branchProvider =
+        Provider.of<BranchProvider>(context, listen: false);
+    final takeAway = orderType == 'take_away' || orderType == "car_hop";
 
     return Consumer<OrderProvider>(
       builder: (context, orderProvider, _) {
-        final LocationProvider locationProvider = Provider.of<LocationProvider>(context, listen: false);
+        final LocationProvider locationProvider =
+            Provider.of<LocationProvider>(context, listen: false);
         return Container(
           width: 1170,
           alignment: Alignment.center,
@@ -65,67 +69,103 @@ class ConfirmButtonView extends StatelessWidget {
                   builder: (context) => CustomButton(
                     btnTxt: getTranslated('ok', context),
                     onTap: () {
-                      final AuthProvider authProvider = Provider.of<AuthProvider>(context, listen: false);
-                      final ConfigModel configModel = Provider.of<SplashProvider>(context, listen: false).configModel!;
-                      final ProfileProvider profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+                      final AuthProvider authProvider =
+                          Provider.of<AuthProvider>(context, listen: false);
+                      final ConfigModel configModel =
+                          Provider.of<SplashProvider>(context, listen: false)
+                              .configModel!;
+                      final ProfileProvider profileProvider =
+                          Provider.of<ProfileProvider>(context, listen: false);
 
-                      if (orderProvider.selectedPaymentMethod != null || orderProvider.selectedOfflineValue != null) {
+                      if (orderProvider.selectedPaymentMethod != null ||
+                          orderProvider.selectedOfflineValue != null) {
                         bool isAvailable = true;
                         DateTime scheduleStartDate = DateTime.now();
                         DateTime scheduleEndDate = DateTime.now();
-                        if (orderProvider.timeSlots == null || orderProvider.timeSlots!.isEmpty) {
+                        if (orderProvider.timeSlots == null ||
+                            orderProvider.timeSlots!.isEmpty) {
                           isAvailable = false;
                         } else {
-                          DateTime date = orderProvider.selectDateSlot == 0 ? DateTime.now() : DateTime.now().add(const Duration(days: 1));
-                          DateTime startTime = orderProvider.timeSlots![orderProvider.selectTimeSlot].startTime!;
-                          DateTime endTime = orderProvider.timeSlots![orderProvider.selectTimeSlot].endTime!;
-                          scheduleStartDate = DateTime(date.year, date.month, date.day, startTime.hour, startTime.minute + 1);
-                          scheduleEndDate = DateTime(date.year, date.month, date.day, endTime.hour, endTime.minute + 1);
+                          DateTime date = orderProvider.selectDateSlot == 0
+                              ? DateTime.now()
+                              : DateTime.now().add(const Duration(days: 1));
+                          DateTime startTime = orderProvider
+                              .timeSlots![orderProvider.selectTimeSlot]
+                              .startTime!;
+                          DateTime endTime = orderProvider
+                              .timeSlots![orderProvider.selectTimeSlot]
+                              .endTime!;
+                          scheduleStartDate = DateTime(date.year, date.month,
+                              date.day, startTime.hour, startTime.minute + 1);
+                          scheduleEndDate = DateTime(date.year, date.month,
+                              date.day, endTime.hour, endTime.minute + 1);
                           for (CartModel? cart in cartList) {
-                            if (!DateConverter.isAvailable(cart!.product!.availableTimeStarts!, cart.product!.availableTimeEnds!, context, time: scheduleStartDate) &&
-                                !DateConverter.isAvailable(cart.product!.availableTimeStarts!, cart.product!.availableTimeEnds!, context, time: scheduleEndDate)) {
+                            if (!DateConverter.isAvailable(
+                                    cart!.product!.availableTimeStarts!,
+                                    cart.product!.availableTimeEnds!,
+                                    context,
+                                    time: scheduleStartDate) &&
+                                !DateConverter.isAvailable(
+                                    cart.product!.availableTimeStarts!,
+                                    cart.product!.availableTimeEnds!,
+                                    context,
+                                    time: scheduleEndDate)) {
                               isAvailable = false;
                               break;
                             }
                           }
                         }
 
-                       if (orderAmount < configModel.minimumOrderValue!) {
-  showCustomNotification(
-    context,
-    getTranslated('minimum_order_amount_is', context)! + ' ${configModel.minimumOrderValue}',
-  );
-} else if (orderProvider.partialAmount != null &&
-    (orderProvider.selectedPaymentMethod == null ? (orderProvider.selectedOfflineValue == null) : orderProvider.selectedPaymentMethod == null)) {
-  showCustomNotification(
-    context,
-    getTranslated('add_a_payment_method', context,),
-     type:NotificationType.warning
-  );
-} else if (!takeAway && (locationProvider.addressList == null || locationProvider.addressList!.isEmpty || orderProvider.addressIndex < 0)) {
-  showCustomNotification(
-    context,
-    getTranslated('select_an_address', context),
-     type:NotificationType.warning
-  );
-} else if (orderProvider.timeSlots == null || orderProvider.timeSlots!.isEmpty) {
-  showCustomNotification(
-    context,
-    getTranslated('select_a_time', context),
-  );
-} else if (!isAvailable) {
-  showCustomNotification(
-    context,
-    getTranslated('one_or_more_products_are_not_available_for_this_selected_time', context),
-  );
-} else if (!takeAway && kmWiseCharge && orderProvider.distance == -1) {
-  showCustomNotification(
-    context,
-    getTranslated('delivery_fee_not_set_yet', context),
-  );
-} else {
+                        if (orderAmount < configModel.minimumOrderValue!) {
+                          showCustomNotification(
+                            context,
+                            getTranslated('minimum_order_amount_is', context)! +
+                                ' ${configModel.minimumOrderValue}',
+                          );
+                        } else if (orderProvider.partialAmount != null &&
+                            (orderProvider.selectedPaymentMethod == null
+                                ? (orderProvider.selectedOfflineValue == null)
+                                : orderProvider.selectedPaymentMethod ==
+                                    null)) {
+                          showCustomNotification(
+                              context,
+                              getTranslated(
+                                'add_a_payment_method',
+                                context,
+                              ),
+                              type: NotificationType.warning);
+                        } else if (!takeAway &&
+                            (locationProvider.addressList == null ||
+                                locationProvider.addressList!.isEmpty ||
+                                orderProvider.addressIndex < 0)) {
+                          showCustomNotification(context,
+                              getTranslated('select_an_address', context),
+                              type: NotificationType.warning);
+                        } else if (orderProvider.timeSlots == null ||
+                            orderProvider.timeSlots!.isEmpty) {
+                          showCustomNotification(
+                            context,
+                            getTranslated('select_a_time', context),
+                          );
+                        } else if (!isAvailable) {
+                          showCustomNotification(
+                            context,
+                            getTranslated(
+                                'one_or_more_products_are_not_available_for_this_selected_time',
+                                context),
+                          );
+                        } else if (!takeAway &&
+                            kmWiseCharge &&
+                            orderProvider.distance == -1) {
+                          showCustomNotification(
+                            context,
+                            getTranslated('delivery_fee_not_set_yet', context),
+                          );
+                        } else {
                           List<Cart> carts = [];
-                          for (int index = 0; index < cartList.length; index++) {
+                          for (int index = 0;
+                              index < cartList.length;
+                              index++) {
                             CartModel cart = cartList[index]!;
                             List<int?> addOnIdList = [];
                             List<int?> addOnQtyList = [];
@@ -136,17 +176,29 @@ class ConfirmButtonView extends StatelessWidget {
                               addOnQtyList.add(addOn.quantity);
                             }
 
-                            if (cart.product!.variations != null && cart.variations != null && cart.variations!.isNotEmpty) {
-                              for (int i = 0; i < cart.product!.variations!.length; i++) {
+                            if (cart.product!.variations != null &&
+                                cart.variations != null &&
+                                cart.variations!.isNotEmpty) {
+                              for (int i = 0;
+                                  i < cart.product!.variations!.length;
+                                  i++) {
                                 if (cart.variations![i].contains(true)) {
                                   variations.add(OrderVariation(
                                     name: cart.product!.variations![i].name,
                                     values: OrderVariationValue(label: []),
                                   ));
 
-                                  for (int j = 0; j < cart.product!.variations![i].variationValues!.length; j++) {
+                                  for (int j = 0;
+                                      j <
+                                          cart.product!.variations![i]
+                                              .variationValues!.length;
+                                      j++) {
                                     if (cart.variations![i][j]!) {
-                                      variations[variations.length - 1].values!.label!.add(cart.product!.variations![i].variationValues![j].level);
+                                      variations[variations.length - 1]
+                                          .values!
+                                          .label!
+                                          .add(cart.product!.variations![i]
+                                              .variationValues![j].level);
                                     }
                                   }
                                 }
@@ -168,42 +220,70 @@ class ConfirmButtonView extends StatelessWidget {
 
                           PlaceOrderBody placeOrderBody = PlaceOrderBody(
                             cart: carts,
-                            couponDiscountAmount: Provider.of<CouponProvider>(context, listen: false).discount,
+                            vehicleNumber:
+                                orderProvider.vehicleNumberController.text,
+                            couponDiscountAmount: Provider.of<CouponProvider>(
+                                    context,
+                                    listen: false)
+                                .discount,
                             couponDiscountTitle: couponCode,
                             deliveryAddressId: !takeAway
-                                ? Provider.of<LocationProvider>(context, listen: false).addressList![orderProvider.addressIndex].id
+                                ? Provider.of<LocationProvider>(context,
+                                        listen: false)
+                                    .addressList![orderProvider.addressIndex]
+                                    .id
                                 : 0,
-                            orderAmount: double.parse(orderAmount.toStringAsFixed(2)),
+                            orderAmount:
+                                double.parse(orderAmount.toStringAsFixed(2)),
                             orderNote: noteController.text,
                             orderType: orderType,
-                            paymentMethod: orderProvider.selectedOfflineValue != null ? 'offline_payment' : orderProvider.selectedPaymentMethod!.getWay!,
+                            paymentMethod: orderProvider.selectedOfflineValue !=
+                                    null
+                                ? 'offline_payment'
+                                : orderProvider.selectedPaymentMethod!.getWay!,
                             couponCode: couponCode,
                             distance: takeAway ? 0 : orderProvider.distance,
                             branchId: branchProvider.getBranch()?.id,
-                            deliveryDate: DateFormat('yyyy-MM-dd').format(scheduleStartDate),
-                            paymentInfo: orderProvider.selectedOfflineValue != null
-                                ? OfflinePaymentInfo(
-                                    methodFields: CheckOutHelper.getOfflineMethodJson(orderProvider.selectedOfflineMethod?.methodFields),
-                                    methodInformation: orderProvider.selectedOfflineValue,
-                                    paymentName: orderProvider.selectedOfflineMethod?.methodName,
-                                    paymentNote: orderProvider.selectedOfflineMethod?.paymentNote,
-                                  )
-                                : null,
-                            deliveryTime: (orderProvider.selectTimeSlot == 0 && orderProvider.selectDateSlot == 0)
+                            deliveryDate: DateFormat('yyyy-MM-dd')
+                                .format(scheduleStartDate),
+                            paymentInfo:
+                                orderProvider.selectedOfflineValue != null
+                                    ? OfflinePaymentInfo(
+                                        methodFields:
+                                            CheckOutHelper.getOfflineMethodJson(
+                                                orderProvider
+                                                    .selectedOfflineMethod
+                                                    ?.methodFields),
+                                        methodInformation:
+                                            orderProvider.selectedOfflineValue,
+                                        paymentName: orderProvider
+                                            .selectedOfflineMethod?.methodName,
+                                        paymentNote: orderProvider
+                                            .selectedOfflineMethod?.paymentNote,
+                                      )
+                                    : null,
+                            deliveryTime: (orderProvider.selectTimeSlot == 0 &&
+                                    orderProvider.selectDateSlot == 0)
                                 ? 'now'
                                 : DateFormat('HH:mm').format(scheduleStartDate),
-                            isPartial: orderProvider.partialAmount == null ? '0' : '1',
+                            isPartial:
+                                orderProvider.partialAmount == null ? '0' : '1',
                           );
 
-                          if (placeOrderBody.paymentMethod == 'wallet_payment' ||
-                              placeOrderBody.paymentMethod == 'cash_on_delivery' ||
-                              placeOrderBody.paymentMethod == 'offline_payment') {
+                          if (placeOrderBody.paymentMethod ==
+                                  'wallet_payment' ||
+                              placeOrderBody.paymentMethod ==
+                                  'cash_on_delivery' ||
+                              placeOrderBody.paymentMethod ==
+                                  'offline_payment') {
                             orderProvider.placeOrder(placeOrderBody, callBack);
                           } else {
                             String? hostname = html.window.location.hostname;
                             String protocol = html.window.location.protocol;
                             String port = html.window.location.port;
-                            final String placeOrder = convert.base64Url.encode(convert.utf8.encode(convert.jsonEncode(placeOrderBody.toJson())));
+                            final String placeOrder = convert.base64Url.encode(
+                                convert.utf8.encode(convert
+                                    .jsonEncode(placeOrderBody.toJson())));
 
                             String url =
                                 "customer_id=${authProvider.getGuestId() ?? profileProvider.userInfoModel!.id}&&is_guest=${authProvider.getGuestId() != null ? '1' : '0'}"
@@ -213,16 +293,22 @@ class ConfirmButtonView extends StatelessWidget {
                                 "customer_id=${authProvider.getGuestId() ?? profileProvider.userInfoModel!.id}&&is_guest=${authProvider.getGuestId() != null ? '1' : '0'}"
                                 "&&callback=$protocol//$hostname${kDebugMode ? ':$port' : ''}${RouterHelper.orderWebPayment}&&order_amount=${(orderAmount + (deliveryCharge ?? 0)).toStringAsFixed(2)}&&status=";
 
-                            String tokenUrl = convert.base64Encode(convert.utf8.encode(ResponsiveHelper.isWeb() ? (webUrl) : url));
+                            String tokenUrl = convert.base64Encode(convert.utf8
+                                .encode(
+                                    ResponsiveHelper.isWeb() ? (webUrl) : url));
                             String selectedUrl =
                                 '${AppConstants.baseUrl}/payment-mobile?token=$tokenUrl&&payment_method=${orderProvider.selectedPaymentMethod?.getWay}&&payment_platform=${kIsWeb ? 'web' : 'app'}&&is_partial=${orderProvider.partialAmount == null ? '0' : '1'}';
 
-                            orderProvider.clearPlaceOrder().then((_) => orderProvider.setPlaceOrder(placeOrder).then((value) {
+                            orderProvider.clearPlaceOrder().then((_) =>
+                                orderProvider
+                                    .setPlaceOrder(placeOrder)
+                                    .then((value) {
                                   if (kIsWeb) {
                                     html.window.open(selectedUrl, "_self");
                                   } else {
                                     context.pop();
-                                    RouterHelper.getPaymentRoute(selectedUrl, fromCheckout: true);
+                                    RouterHelper.getPaymentRoute(selectedUrl,
+                                        fromCheckout: true);
                                   }
                                 }));
                           }
@@ -234,7 +320,9 @@ class ConfirmButtonView extends StatelessWidget {
                   ),
                 )
               : Center(
-                  child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
+                  child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).primaryColor)),
                 ),
         );
       },

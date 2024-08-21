@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/main.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:flutter_restaurant/view/base/show_custom_error.dart';
 import 'package:flutter_restaurant/view/screens/auth/details.dart';
 import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
 import 'package:flutter_restaurant/view/screens/dashboard/dashboard_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
@@ -22,45 +24,64 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   String? _otpCode;
-Future<void> _verifyOtp(String otp) async {
-  try {
-    final Dio dio = Dio();
-    final response = await dio.post(
-      AppConstants.otp,
-      data: {'phone': widget.phoneNumber, 'otp': otp},
-    );
-    if (response.statusCode == 200) {
-      final responseData = response.data;
+  Future<void> _verifyOtp(String otp) async {
+    try {
+      final Dio dio = Dio();
+      final response = await dio.post(
+        AppConstants.otp,
+        data: {'phone': widget.phoneNumber, 'otp': otp},
+      );
+      if (response.statusCode == 200) {
+        final responseData = response.data;
 
-      if (responseData['status_code'] == 0) {
-        // showCustomSnackBar('OTP verified successfully', isError: false);
-        showCustomNotification(context, 'OTP verified successfully', type:NotificationType.success);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ContactDetails(phoneNumber: widget.phoneNumber)));
-      } else if (responseData['status_code'] == 1) {
-        final token = responseData['token'];
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.remove('token');
-        await prefs.setString('token', token);
-        // showCustomSnackBar('Welcome back!', isError: false);
-        showCustomNotification(context, 'OTP verified successfully',type:NotificationType.success);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const BranchListScreen(useNavigator:true ,)));
+        if (responseData['status_code'] == 0) {
+          // showCustomSnackBar('OTP verified successfully', isError: false);
+          showCustomNotification(context, 'OTP verified successfully',
+              type: NotificationType.success);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ContactDetails(phoneNumber: widget.phoneNumber)));
+        } else if (responseData['status_code'] == 1) {
+          final token = responseData['token'];
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.remove('token');
+          await prefs.setString('token', token);
+          // showCustomSnackBar('Welcome back!', isError: false);
+          showCustomNotification(context, 'OTP verified successfully',
+              type: NotificationType.success);
+
+          // WidgetsBinding.instance.addPostFrameCallback((_) {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context) => const BranchListScreen(
+          //             useNavigator: true,
+          //             isOtp: true,
+          //           )),
+          //   //  ModalRoute.withName('/')
+          // );
+          //  });
+
+          Get.context!.pushReplacement('/branch-list?isOtp=true');
+        } else {
+          showCustomErrorDialog(context, 'Failed to verify OTP');
+        }
       } else {
         showCustomErrorDialog(context, 'Failed to verify OTP');
       }
-    } else {
-      showCustomErrorDialog(context, 'Failed to verify OTP');
-    }
-  } catch (e) {
-    String errorMessage = 'An error occurred';
-    if (e is DioError) {
-      if (e.response != null && e.response?.data != null) {
-        errorMessage = e.response?.data['message'] ?? 'An error occurred';
+    } catch (e) {
+      String errorMessage = 'An error occurred';
+      if (e is DioError) {
+        if (e.response != null && e.response?.data != null) {
+          errorMessage = e.response?.data['message'] ?? 'An error occurred';
+        }
       }
+      print(e.toString());
+      showCustomErrorDialog(context, errorMessage);
     }
-    showCustomErrorDialog(context, errorMessage);
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -106,8 +127,10 @@ Future<void> _verifyOtp(String otp) async {
                 pinBoxRadius: screenWidth * 0.03,
                 pinTextStyle: TextStyle(fontSize: screenWidth * 0.05),
                 pinBoxColor: ColorResources.kGrayLogo,
-                defaultBorderColor: ColorResources.kGrayLogo, // Use brand guideline color
-                pinBoxDecoration: ProvidedPinBoxDecoration.defaultPinBoxDecoration,
+                defaultBorderColor:
+                    ColorResources.kGrayLogo, // Use brand guideline color
+                pinBoxDecoration:
+                    ProvidedPinBoxDecoration.defaultPinBoxDecoration,
                 onDone: (pin) {
                   setState(() {
                     _otpCode = pin;
@@ -122,7 +145,8 @@ Future<void> _verifyOtp(String otp) async {
                   if (_otpCode != null) {
                     _verifyOtp(_otpCode!);
                   } else {
-                     showCustomNotification(context, 'Please enter the Otp',type:NotificationType.error);
+                    showCustomNotification(context, 'Please enter the Otp',
+                        type: NotificationType.error);
                   }
                 },
               ),

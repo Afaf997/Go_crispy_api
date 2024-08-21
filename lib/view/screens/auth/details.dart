@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
+import 'package:flutter_restaurant/main.dart';
 import 'package:flutter_restaurant/view/base/show_custom_error.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
@@ -70,20 +72,28 @@ class _ContactDetailsState extends State<ContactDetails> {
         String token = response.data["token"];
         await _saveToken(token);
         // showCustomSnackBar('Registration successful',);
-        showCustomNotification(context, 'Registration successful',type: NotificationType.success );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BranchListScreen(useNavigator: true,)),
-        );
+        showCustomNotification(context, 'Registration successful',
+            type: NotificationType.success);
+        print("here1");
+        Get.context!.go('/branch-list?isOtp=true');
+        // await Navigator.pushAndRemoveUntil(
+        //     Get.context!,
+        //     MaterialPageRoute(
+        //         builder: (context) => const BranchListScreen(
+        //               useNavigator: true,
+        //               isOtp: true,
+        //             )),
+        //     ModalRoute.withName('/'));
       } else if (response.statusCode == 403) {
-        showCustomErrorDialog(context, 'The email is already used. Please use a different email.');
+        showCustomErrorDialog(context,
+            'The email is already used. Please use a different email.');
       } else {
         showCustomErrorDialog(context, 'Registration failed');
       }
     } catch (e) {
-  showCustomErrorDialog(context, 'An error occurred\nThe email is already used. Please use a different email.');
-}
-
+      showCustomErrorDialog(context,
+          'An error occurred\nThe email is already used. Please use a different email.');
+    }
   }
 
   Future<void> _saveToken(String token) async {
@@ -214,7 +224,9 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: const TextStyle(color: ColorResources.korgGrey, fontSize: 12), // Reduced hint text size
+        hintStyle: const TextStyle(
+            color: ColorResources.korgGrey,
+            fontSize: 12), // Reduced hint text size
         fillColor: ColorResources.kGrayLogo,
         filled: true,
         border: OutlineInputBorder(

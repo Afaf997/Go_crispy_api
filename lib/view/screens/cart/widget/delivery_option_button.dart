@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class DeliveryOptionButton extends StatelessWidget {
@@ -31,27 +32,38 @@ class DeliveryOptionButton extends StatelessWidget {
                 color: ColorResources.kDeliveryBox,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: isSelected ? ColorResources.kOrangeColor : Colors.transparent,
+                  color: isSelected
+                      ? ColorResources.kOrangeColor
+                      : Colors.transparent,
                   width: 1,
                 ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(
+                  // Image.asset(
+                  //   imagePath,
+                  //   width: 15, // Adjust width as needed
+                  //   height: 15, // Adjust height as needed
+                  //   color: isSelected ? ColorResources.kOrangeColor : ColorResources.ktextgrey, // Color when selected
+                  // ),
+                  SvgPicture.asset(
                     imagePath,
-                    width: 15, // Adjust width as needed
-                    height: 15, // Adjust height as needed
-                    color: isSelected ? ColorResources.kOrangeColor : ColorResources.ktextgrey, // Color when selected
+                    width: 15,
+                    height: 15,
+                    color: isSelected
+                        ? ColorResources.kOrangeColor
+                        : ColorResources.ktextgrey,
                   ),
-                  SizedBox(width: 1
-                  ),
+                  SizedBox(width: 1),
                   Flexible(
                     child: Text(
                       title!,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: isSelected ? ColorResources.kOrangeColor : ColorResources.ktextboarder,
+                        color: isSelected
+                            ? ColorResources.kOrangeColor
+                            : ColorResources.ktextboarder,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),

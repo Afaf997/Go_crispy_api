@@ -5,13 +5,16 @@ import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/utill/images.dart';
+import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
 import 'package:provider/provider.dart';
 
 class BranchButton extends StatelessWidget {
   final Color? color;
   final bool isRow;
   const BranchButton({
-    Key? key, this.isRow = true, this.color,
+    Key? key,
+    this.isRow = true,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -21,17 +24,32 @@ class BranchButton extends StatelessWidget {
         return splashProvider.isBranchSelectDisable()
             ? Consumer<BranchProvider>(
                 builder: (context, branchProvider, _) {
-                  if (branchProvider.getBranchId() == -1) return const SizedBox();
+                  if (branchProvider.getBranchId() == -1)
+                    return const SizedBox();
 
-                  List<Branches?> sortedBranches = List.from(branchProvider.branches);
+                  List<Branches?> sortedBranches =
+                      List.from(branchProvider.branches);
                   sortedBranches.sort((a, b) {
-                    if (a!.id == branchProvider.getBranchId()) return -1;
-                    if (b!.id == branchProvider.getBranchId()) return 1;
+                    //no sorting
+                    // if (a!.id == branchProvider.getBranchId()) return -1;
+                    // if (b!.id == branchProvider.getBranchId()) return 1;
                     return 0;
                   });
 
                   return InkWell(
-                    onTap: () => RouterHelper.getBranchListScreen(),
+                    onTap: () {
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        useSafeArea: true,
+                        context: context,
+                        builder: (context) {
+                          return const BranchListScreen(
+                            useNavigator: true,
+                            istakeAway: true,
+                          );
+                        },
+                      );
+                    },
                     child: isRow
                         ? SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
@@ -40,7 +58,8 @@ class BranchButton extends StatelessWidget {
                                   .map((branch) => buildCategoryItems(
                                         branch!.name ?? 'Unknown Branch',
                                         color ?? ColorResources.kOrangeColor,
-                                        branchProvider.getBranchId() == branch.id,
+                                        branchProvider.getBranchId() ==
+                                            branch.id,
                                       ))
                                   .toList(),
                             ),
@@ -72,7 +91,8 @@ class BranchButton extends StatelessWidget {
         margin: EdgeInsets.only(right: 8),
         decoration: BoxDecoration(
           color: ColorResources.kColorgrey,
-          border: Border.all(color: isSelected ? color : ColorResources.klgreyColor),
+          border: Border.all(
+              color: isSelected ? color : ColorResources.klgreyColor),
           borderRadius: BorderRadius.circular(15),
         ),
         child: Padding(
@@ -80,7 +100,7 @@ class BranchButton extends StatelessWidget {
           child: Row(
             children: [
               Image.asset(
-                Images.mapicon, 
+                Images.mapicon,
                 color: isSelected ? color : ColorResources.kblack,
               ),
               const SizedBox(width: 3),

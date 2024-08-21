@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
+import 'package:flutter_restaurant/main.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/auth/otp_screen.dart';
 import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
 import 'package:flutter_restaurant/view/screens/dashboard/dashboard_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -35,61 +37,69 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
 
-    final configModel = Provider.of<SplashProvider>(context, listen: false).configModel;
-    _countryCode = CountryCode.fromCountryCode(configModel!.countryCode!).dialCode;
+    final configModel =
+        Provider.of<SplashProvider>(context, listen: false).configModel;
+    _countryCode =
+        CountryCode.fromCountryCode(configModel!.countryCode!).dialCode;
   }
-Future<void> _verifyPhoneNumber(String phone) async {
-  setState(() {
-    _isLoading = true;
-  });
-  try {
-    final Dio dio = Dio();
-    final response = await dio.post(
-      AppConstants.phoneApi,
-      data: {'phone': phone},
-    );
 
-    if (response.statusCode == 200) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => OtpScreen(phoneNumber: phone)));
-    } else {
-      showCustomErrorDialog(context, 'Failed to verify phone number');
-    }
-  } catch (e) {
-    String errorMessage = 'An error occurred';
-    if (e is DioError) {
-      if (e.response != null && e.response?.data != null) {
-        final data = e.response?.data;
+  Future<void> _verifyPhoneNumber(String phone) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final Dio dio = Dio();
+      final response = await dio.post(
+        AppConstants.phoneApi,
+        data: {'phone': phone},
+      );
 
-        if (data['errors'] != null) {
-          final errors = data['errors'] as Map<String, dynamic>;
-          errors.forEach((field, messages) {
-            if (messages is List) {
-              for (var message in messages) {
-                errorMessage +='\n$message';
+      if (response.statusCode == 200) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OtpScreen(phoneNumber: phone)));
+      } else {
+        showCustomErrorDialog(context, 'Failed to verify phone number');
+      }
+    } catch (e) {
+      String errorMessage = 'An error occurred';
+      if (e is DioError) {
+        if (e.response != null && e.response?.data != null) {
+          final data = e.response?.data;
+
+          if (data['errors'] != null) {
+            final errors = data['errors'] as Map<String, dynamic>;
+            errors.forEach((field, messages) {
+              if (messages is List) {
+                for (var message in messages) {
+                  errorMessage += '\n$message';
+                }
               }
-            }
-          });
+            });
+          }
         }
       }
+      showCustomErrorDialog(context, errorMessage);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-    showCustomErrorDialog(context, errorMessage);
-  } finally {
-    setState(() {
-      _isLoading = false;
-    });
   }
-}
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    final configModel = Provider.of<SplashProvider>(context, listen: false).configModel!;
+    final configModel =
+        Provider.of<SplashProvider>(context, listen: false).configModel!;
     final socialStatus = configModel.socialLoginStatus;
 
     return Scaffold(
       backgroundColor: ColorResources.kWhite,
       appBar: ResponsiveHelper.isDesktop(context)
-          ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar())
+          ? const PreferredSize(
+              preferredSize: Size.fromHeight(100), child: WebAppBar())
           : null,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -97,15 +107,21 @@ Future<void> _verifyPhoneNumber(String phone) async {
           child: Padding(
             padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
             child: Center(
-              
               child: Container(
                 width: width > 700 ? 700 : width,
-                padding: width > 700 ? const EdgeInsets.all(Dimensions.paddingSizeDefault) : null,
+                padding: width > 700
+                    ? const EdgeInsets.all(Dimensions.paddingSizeDefault)
+                    : null,
                 decoration: width > 700
                     ? BoxDecoration(
                         color: Theme.of(context).canvasColor,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [BoxShadow(color: Theme.of(context).shadowColor, blurRadius: 5, spreadRadius: 1)],
+                        boxShadow: [
+                          BoxShadow(
+                              color: Theme.of(context).shadowColor,
+                              blurRadius: 5,
+                              spreadRadius: 1)
+                        ],
                       )
                     : null,
                 child: Form(
@@ -116,61 +132,63 @@ Future<void> _verifyPhoneNumber(String phone) async {
                       Center(
                         child: Text(
                           getTranslated('login_and_sign', context)!,
-                          style: const TextStyle(fontSize: 36, fontWeight: FontWeight.w900),
+                          style: const TextStyle(
+                              fontSize: 36, fontWeight: FontWeight.w900),
                           textAlign: TextAlign.center,
                         ),
                       ),
                       const SizedBox(height: 35),
 
                       // Phone Number input
-                  TextFormField(
-  controller: _phoneController,
-  decoration: InputDecoration(
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    filled: true,
-    fillColor: ColorResources.kGrayLogo,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(15),
-      borderSide: BorderSide.none,
-    ),
-    hintText: 'Enter your phone number',
-    hintStyle: const TextStyle(
-      fontSize: 13,
-      color: ColorResources.kTextgreyColor,
-    ),
-    prefixIcon: Padding(
-      padding: const EdgeInsets.only(left: 16, right: 8),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(
-            Images.qatar,
-            height: 24,
-            width: 24,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            _countryCode ?? '',
-            style: TextStyle(
-              fontSize: 16,
-              color: ColorResources.kTextgreyColor,
-            ),
-          ),
-        ],
-      ),
-    ),
-  ),
-  textAlign: TextAlign.left, // Changed from TextAlign.center to TextAlign.left
-  keyboardType: TextInputType.phone,
-  autovalidateMode: AutovalidateMode.onUserInteraction,
-  validator: (value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your mobile number';
-    }
-    return null;
-  },
-),
-
+                      TextFormField(
+                        controller: _phoneController,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          filled: true,
+                          fillColor: ColorResources.kGrayLogo,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: 'Enter your phone number',
+                          hintStyle: const TextStyle(
+                            fontSize: 13,
+                            color: ColorResources.kTextgreyColor,
+                          ),
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.only(left: 16, right: 8),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  Images.qatar,
+                                  height: 24,
+                                  width: 24,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  _countryCode ?? '',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: ColorResources.kTextgreyColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        textAlign: TextAlign
+                            .left, // Changed from TextAlign.center to TextAlign.left
+                        keyboardType: TextInputType.phone,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your mobile number';
+                          }
+                          return null;
+                        },
+                      ),
 
                       const SizedBox(height: 300),
 
@@ -180,14 +198,16 @@ Future<void> _verifyPhoneNumber(String phone) async {
                               backgroundColor: ColorResources.kOrangeColor,
                               onTap: () async {
                                 if (_formKeyLogin.currentState!.validate()) {
-                                  final String phoneNumber = '${_phoneController.text.trim()}';
+                                  final String phoneNumber =
+                                      '${_phoneController.text.trim()}';
                                   await _verifyPhoneNumber(phoneNumber);
                                 }
                               },
                             )
                           : Center(
                               child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Theme.of(context).primaryColor),
                               ),
                             ),
                       const SizedBox(height: 20),
@@ -196,18 +216,22 @@ Future<void> _verifyPhoneNumber(String phone) async {
                         width: double.infinity,
                         child: OutlinedButton(
                           onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen(pageIndex: 0,)));
+                            Get.context!.go('/branch-list?isOtp=true');
                           },
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            side: const BorderSide(color: Colors.black, width: 1),
+                            side:
+                                const BorderSide(color: Colors.black, width: 1),
                           ),
                           child: const Text(
                             'Continue as guest',
-                            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -230,7 +254,7 @@ Future<void> _verifyPhoneNumber(String phone) async {
                         ),
                       ),
 
-                      const SizedBox(height: 20), 
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),

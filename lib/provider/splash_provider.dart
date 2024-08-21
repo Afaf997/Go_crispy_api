@@ -25,45 +25,42 @@ class SplashProvider extends ChangeNotifier {
   bool _cookiesShow = true;
   List<OfflinePaymentModel?>? _offlinePaymentModelList;
 
-
-
-
   ConfigModel? get configModel => _configModel;
   BaseUrls? get baseUrls => _baseUrls;
   DateTime get currentTime => _currentTime;
   PolicyModel? get policyModel => _policyModel;
   bool get cookiesShow => _cookiesShow;
-  List<OfflinePaymentModel?>? get offlinePaymentModelList => _offlinePaymentModelList;
-
-
+  List<OfflinePaymentModel?>? get offlinePaymentModelList =>
+      _offlinePaymentModelList;
 
   Future<bool> initConfig(BuildContext context) async {
     ApiResponse apiResponse = await splashRepo!.getConfig();
     bool isSuccess;
-    if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
+    if (apiResponse.response != null &&
+        apiResponse.response!.statusCode == 200) {
       _configModel = ConfigModel.fromJson(apiResponse.response!.data);
       _baseUrls = ConfigModel.fromJson(apiResponse.response!.data).baseUrls;
       isSuccess = true;
 
-      if(context.mounted){
-        final AuthProvider authProvider = Provider.of<AuthProvider>(context, listen: false);
+      if (context.mounted) {
+        final AuthProvider authProvider =
+            Provider.of<AuthProvider>(context, listen: false);
 
-        if(authProvider.getGuestId() == null && !authProvider.isLoggedIn()){
+        if (authProvider.getGuestId() == null && !authProvider.isLoggedIn()) {
           authProvider.addGuest();
         }
       }
 
-
-
-      if(!kIsWeb && context.mounted) {
-        if(!Provider.of<AuthProvider>(context, listen: false).isLoggedIn()){
+      if (!kIsWeb && context.mounted) {
+        if (!Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
           await Provider.of<AuthProvider>(context, listen: false).updateToken();
         }
       }
 
-
-
-      if(_configModel != null && _configModel!.branches != null && !isBranchSelectDisable()){
+      if (_configModel != null &&
+          _configModel!.branches != null &&
+          !isBranchSelectDisable()) {
+        print("setting branch");
         await splashRepo?.setBranchId(_configModel!.branches![0]!.id!);
       }
       notifyListeners();
@@ -85,15 +82,18 @@ class SplashProvider extends ChangeNotifier {
 
   bool isRestaurantClosed(bool today) {
     DateTime date = DateTime.now();
-    if(!today) {
+    if (!today) {
       date = date.add(const Duration(days: 1));
     }
     int weekday = date.weekday;
-    if(weekday == 7) {
+    if (weekday == 7) {
       weekday = 0;
     }
-    for(int index = 0; index <  _configModel!.restaurantScheduleTime!.length; index++) {
-      if(weekday.toString() ==  _configModel!.restaurantScheduleTime![index].day) {
+    for (int index = 0;
+        index < _configModel!.restaurantScheduleTime!.length;
+        index++) {
+      if (weekday.toString() ==
+          _configModel!.restaurantScheduleTime![index].day) {
         return false;
       }
     }
@@ -101,15 +101,19 @@ class SplashProvider extends ChangeNotifier {
   }
 
   bool isRestaurantOpenNow(BuildContext context) {
-    if(isRestaurantClosed(true)) {
+    if (isRestaurantClosed(true)) {
       return false;
     }
     int weekday = DateTime.now().weekday;
-    if(weekday == 7) {
+    if (weekday == 7) {
       weekday = 0;
     }
-    for(int index = 0; index <  _configModel!.restaurantScheduleTime!.length; index++) {
-      if(weekday.toString() ==  _configModel!.restaurantScheduleTime![index].day && DateConverter.isAvailable(
+    for (int index = 0;
+        index < _configModel!.restaurantScheduleTime!.length;
+        index++) {
+      if (weekday.toString() ==
+              _configModel!.restaurantScheduleTime![index].day &&
+          DateConverter.isAvailable(
             _configModel!.restaurantScheduleTime![index].openingTime!,
             _configModel!.restaurantScheduleTime![index].closingTime!,
             context,
@@ -124,7 +128,8 @@ class SplashProvider extends ChangeNotifier {
     ApiResponse apiResponse = await splashRepo!.getPolicyPage();
     bool isSuccess;
 
-    if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
+    if (apiResponse.response != null &&
+        apiResponse.response!.statusCode == 200) {
       _policyModel = PolicyModel.fromJson(apiResponse.response!.data);
       isSuccess = true;
       notifyListeners();
@@ -137,53 +142,57 @@ class SplashProvider extends ChangeNotifier {
   }
 
   void cookiesStatusChange(String? data) {
-    if(data != null){
-      splashRepo!.sharedPreferences!.setString(AppConstants.cookiesManagement, data);
+    if (data != null) {
+      splashRepo!.sharedPreferences!
+          .setString(AppConstants.cookiesManagement, data);
     }
     _cookiesShow = false;
     notifyListeners();
   }
 
-  bool getAcceptCookiesStatus(String? data) => splashRepo!.sharedPreferences!.getString(AppConstants.cookiesManagement) != null
-      && splashRepo!.sharedPreferences!.getString(AppConstants.cookiesManagement) == data;
+  bool getAcceptCookiesStatus(String? data) =>
+      splashRepo!.sharedPreferences!
+              .getString(AppConstants.cookiesManagement) !=
+          null &&
+      splashRepo!.sharedPreferences!
+              .getString(AppConstants.cookiesManagement) ==
+          data;
 
-  int getActiveBranch(){
+  int getActiveBranch() {
     int branchActiveCount = 0;
-    for(int i = 0; i < _configModel!.branches!.length; i++){
-      if(_configModel!.branches![i]!.status ?? false) {
+    for (int i = 0; i < _configModel!.branches!.length; i++) {
+      if (_configModel!.branches![i]!.status ?? false) {
         branchActiveCount++;
-        if(branchActiveCount > 1){
+        if (branchActiveCount > 1) {
           break;
         }
       }
     }
-    if(branchActiveCount == 0){
-       splashRepo?.setBranchId(-1);
+    if (branchActiveCount == 0) {
+      splashRepo?.setBranchId(-1);
     }
     return branchActiveCount;
   }
 
-  bool isBranchSelectDisable()=> getActiveBranch() != 1;
+  bool isBranchSelectDisable() => getActiveBranch() != 1;
 
   Future<void> getOfflinePaymentMethod(bool isReload) async {
-    if(_offlinePaymentModelList == null || isReload){
+    if (_offlinePaymentModelList == null || isReload) {
       _offlinePaymentModelList = null;
     }
-    if(_offlinePaymentModelList == null){
+    if (_offlinePaymentModelList == null) {
       ApiResponse apiResponse = await splashRepo!.getOfflinePaymentMethod();
-      if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
+      if (apiResponse.response != null &&
+          apiResponse.response!.statusCode == 200) {
         _offlinePaymentModelList = [];
 
         apiResponse.response?.data.forEach((v) {
           _offlinePaymentModelList?.add(OfflinePaymentModel.fromJson(v));
         });
-
       } else {
         ApiChecker.checkApi(apiResponse);
       }
       notifyListeners();
     }
-
   }
-
 }

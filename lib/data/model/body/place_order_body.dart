@@ -1,5 +1,3 @@
-
-
 class PlaceOrderBody {
   List<Cart>? _cart;
   double? _couponDiscountAmount;
@@ -17,31 +15,34 @@ class PlaceOrderBody {
   String? _transactionReference;
   OfflinePaymentInfo? _paymentInfo;
   String? _isPartial;
+  String? _vehicleNumber;
 
-  PlaceOrderBody copyWith({String? paymentMethod, String? transactionReference}) {
+  PlaceOrderBody copyWith(
+      {String? paymentMethod, String? transactionReference}) {
     _paymentMethod = paymentMethod;
     _transactionReference = transactionReference;
     return this;
   }
 
-  PlaceOrderBody(
-      {required List<Cart> cart,
-        required double? couponDiscountAmount,
-        required String? couponDiscountTitle,
-        required String? couponCode,
-        required double orderAmount,
-        required int? deliveryAddressId,
-        required String? orderType,
-        required String paymentMethod,
-        required int? branchId,
-        required String deliveryTime,
-        required String deliveryDate,
-        required String orderNote,
-        required double distance,
-        required String isPartial,
-        String? transactionReference,
-        OfflinePaymentInfo? paymentInfo,
-      }) {
+  PlaceOrderBody({
+    required List<Cart> cart,
+    required double? couponDiscountAmount,
+    required String? couponDiscountTitle,
+    required String? couponCode,
+    required double orderAmount,
+    required int? deliveryAddressId,
+    required String? orderType,
+    required String paymentMethod,
+    required int? branchId,
+    required String deliveryTime,
+    required String deliveryDate,
+    required String orderNote,
+    required double distance,
+    required String isPartial,
+    String? transactionReference,
+    String? vehicleNumber,
+    OfflinePaymentInfo? paymentInfo,
+  }) {
     _cart = cart;
     _couponDiscountAmount = couponDiscountAmount;
     _couponDiscountTitle = couponDiscountTitle;
@@ -58,6 +59,7 @@ class PlaceOrderBody {
     _transactionReference = transactionReference;
     _paymentInfo = paymentInfo;
     _isPartial = isPartial;
+    _vehicleNumber = vehicleNumber;
   }
 
   List<Cart>? get cart => _cart;
@@ -96,11 +98,11 @@ class PlaceOrderBody {
     _deliveryDate = json['delivery_date'];
     _branchId = json['branch_id'];
     _distance = json['distance'];
-    if(json['payment_info'] != null){
+    _vehicleNumber = json['car_plateno'];
+    if (json['payment_info'] != null) {
       _paymentInfo = json['payment_info'];
     }
     _isPartial = json['is_partial'];
-
   }
 
   Map<String, dynamic> toJson() {
@@ -116,18 +118,18 @@ class PlaceOrderBody {
     data['payment_method'] = _paymentMethod;
     data['order_note'] = _orderNote;
     data['coupon_code'] = _couponCode;
+    data['car_plateno'] = _vehicleNumber;
     data['delivery_time'] = _deliveryTime;
     data['delivery_date'] = _deliveryDate;
     data['branch_id'] = _branchId;
     data['distance'] = _distance;
-    if(_transactionReference != null) {
+    if (_transactionReference != null) {
       data['transaction_reference'] = _transactionReference;
     }
-    if(_paymentInfo != null){
+    if (_paymentInfo != null) {
       data['payment_info'] = _paymentInfo?.toJson();
     }
     data['is_partial'] = _isPartial;
-
 
     return data;
   }
@@ -146,14 +148,14 @@ class Cart {
 
   Cart(
       String productId,
-        String price,
-        List<String> variant,
-        List<OrderVariation> variation,
-        double? discountAmount,
-        int? quantity,
-        double? taxAmount,
-        List<int?> addOnIds,
-        List<int?> addOnQtys) {
+      String price,
+      List<String> variant,
+      List<OrderVariation> variation,
+      double? discountAmount,
+      int? quantity,
+      double? taxAmount,
+      List<int?> addOnIds,
+      List<int?> addOnQtys) {
     _productId = productId;
     _price = price;
     _variant = variant;
@@ -178,7 +180,7 @@ class Cart {
   Cart.fromJson(Map<String, dynamic> json) {
     _productId = json['product_id'];
     _price = json['price'];
-    if(_variant != null) {
+    if (_variant != null) {
       _variant = json['variant'];
     }
 
@@ -220,8 +222,9 @@ class OrderVariation {
 
   OrderVariation.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    values =
-    json['values'] != null ? OrderVariationValue.fromJson(json['values']) : null;
+    values = json['values'] != null
+        ? OrderVariationValue.fromJson(json['values'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -233,6 +236,7 @@ class OrderVariation {
     return data;
   }
 }
+
 class OrderVariationValue {
   List<String?>? label;
 
@@ -249,7 +253,7 @@ class OrderVariationValue {
   }
 }
 
-class OfflinePaymentInfo{
+class OfflinePaymentInfo {
   final String? paymentName;
   final String? paymentNote;
   final List<Map<String, dynamic>?>? methodFields;
@@ -257,10 +261,9 @@ class OfflinePaymentInfo{
 
   OfflinePaymentInfo(
       {this.paymentName,
-        this.paymentNote,
-        this.methodFields,
-        this.methodInformation});
-
+      this.paymentNote,
+      this.methodFields,
+      this.methodInformation});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
