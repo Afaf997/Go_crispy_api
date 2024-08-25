@@ -138,12 +138,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                // Navigator.push(context, MaterialPageRoute(
-                                //   builder: (context) {
-                                //     return const BranchListScreen(
-                                //         useNavigator: true);
-                                //   },
-                                // ));
                                 GoRouter.of(context).go('/branch-list');
                               },
                               child: Row(
@@ -154,8 +148,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   Consumer<BranchProvider>(
                                     builder: (context, branchProvider, _) {
-                                      if (branchProvider.getBranchId() == -1)
-                                        return SizedBox();
+                                      if (branchProvider.getBranchId() == -1) {
+                                        return const SizedBox();
+                                      }
 
                                       List<Branches?> sortedBranches =
                                           List.from(branchProvider.branches);

@@ -63,7 +63,6 @@ class SplashRepo {
   await dioClient!.updateHeader(
       getToken: sharedPreferences!.getString(AppConstants.token));
 }
-
   Future<ApiResponse> getOfflinePaymentMethod() async {
     try {
       final response = await dioClient!.get(AppConstants.offlinePaymentMethod);

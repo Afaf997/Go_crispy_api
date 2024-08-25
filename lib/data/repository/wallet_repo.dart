@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class WalletRepo {
   final DioClient? dioClient;
   final SharedPreferences? sharedPreferences;
-
   WalletRepo({required this.dioClient, @required this.sharedPreferences,});
 
   Future<ApiResponse> getWalletTransactionList(String offset, String type) async {
