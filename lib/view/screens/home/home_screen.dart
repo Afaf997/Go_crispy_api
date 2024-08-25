@@ -13,7 +13,6 @@ import 'package:flutter_restaurant/provider/location_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
-import 'package:flutter_restaurant/provider/set_menu_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/provider/wishlist_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
@@ -21,21 +20,13 @@ import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
-import 'package:flutter_restaurant/view/base/branch_button_view.dart';
-import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/title_widget.dart';
-import 'package:flutter_restaurant/view/base/web_app_bar.dart';
-import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
 import 'package:flutter_restaurant/view/screens/home/web/widget/category_web_view.dart';
-import 'package:flutter_restaurant/view/screens/home/web/widget/set_menu_view_web.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/banner_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/category_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/locate_container.dart';
-import 'package:flutter_restaurant/view/screens/home/widget/main_slider.dart'
-    as slider;
+import 'package:flutter_restaurant/view/screens/home/widget/main_slider.dart'as slider;
 import 'package:flutter_restaurant/view/screens/home/widget/product_view.dart';
-import 'package:flutter_restaurant/view/screens/home/widget/set_menu_view.dart';
-import 'package:flutter_restaurant/view/screens/menu/widget/options_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -272,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               if (ResponsiveHelper.isDesktop(context))
                                 const CategoryViewWeb()
                               else
-                                CategoryView(),
+                                const CategoryView(),
                               if (ResponsiveHelper.isDesktop(context))
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -280,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     Padding(
                                       padding:
-                                          EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                         const EdgeInsets.fromLTRB(0, 20, 0, 20),
                                       child: Text(
                                           getTranslated(
                                               'best_selling', context),
@@ -292,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )
                               else
                                 Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
                                   child: TitleWidget(
                                       title: getTranslated(
                                           'best_selling', context),
@@ -309,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     Padding(
                                       padding:
-                                          EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                          const EdgeInsets.fromLTRB(10, 20, 10, 10),
                                       child: Text(
                                           getTranslated('latest_item', context),
                                           style: rubikRegular.copyWith(
@@ -320,12 +311,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )
                               else
                                 Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
                                   child: TitleWidget(
                                       title: getTranslated(
                                           'latest_item', context)),
                                 ),
-                              ProductView(
+                              const ProductView(
                                   productType: ProductType.latestProduct),
                               buildLocateContainer(context),
                             ],
@@ -347,7 +338,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (context, orderProvider, _) {
                           return orderProvider.isRestaurantCloseShow
                               ? Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding:const  EdgeInsets.symmetric(
                                       vertical:
                                           Dimensions.paddingSizeExtraSmall),
                                   alignment: Alignment.center,
@@ -359,11 +350,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal:
                                                 Dimensions.paddingSizeDefault),
                                         child: Text(
-                                          '${getTranslated('restaurant_is_close_now', context)}',
+                                          getTranslated('restaurant_is_close_now', context),
                                           style: rubikRegular.copyWith(
                                               fontSize: 12,
                                               color: Colors.white),
@@ -372,7 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       InkWell(
                                         onTap: () => orderProvider
                                             .changeStatus(false, notify: true),
-                                        child: Padding(
+                                        child: const Padding(
                                           padding: EdgeInsets.symmetric(
                                               horizontal:
                                                   Dimensions.paddingSizeSmall),
@@ -385,11 +376,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ),
                                 )
-                              : SizedBox();
+                              :const SizedBox();
                         },
                       ),
                     )
-                  : SizedBox();
+                  :const SizedBox();
             }),
           ],
         );

@@ -34,7 +34,7 @@ class _BannerViewState extends State<BannerView> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: 145,
-                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                  // margin: const EdgeInsets.symmetric(horizontal: 4.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                   ),
