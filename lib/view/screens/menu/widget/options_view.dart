@@ -271,66 +271,6 @@ class OptionsView extends StatelessWidget {
                                   fontSize: Dimensions.fontSizeLarge)),
                         ),
 
-                      // ListTile(
-                      //   onTap: () => RouterHelper.getAboutUsRoute(),
-                      //   leading: SizedBox(width:20,height: 20,child: Image.asset(Images.aboutUs,color: Theme.of(context).textTheme.bodyLarge!.color)),
-                      //   title: Text(getTranslated('about_us', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                      // ),
-
-                      // if(configModel.referEarnStatus! && authProvider.isLoggedIn()) Consumer<ProfileProvider>(
-                      //     builder: (context, profileProvider, _) {
-                      //       return profileProvider.userInfoModel != null && profileProvider.userInfoModel!.referCode != null ? ListTile(
-                      //         onTap: () => RouterHelper.getReferAndEarnRoute(),
-                      //         leading: Image.asset(Images.referralIcon, width: 20, height: 20, color: Theme.of(context).textTheme.bodyLarge!.color),
-                      //         title: Text(getTranslated('refer_and_earn', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                      //       ) : const SizedBox() ;
-                      //     }
-                      // ),
-
-                      // if(configModel.walletStatus!) ListTile(
-                      //   onTap: () => RouterHelper.getWalletRoute(true),
-                      //   leading: Image.asset(Images.wallet, width: 20, height: 20, color: Theme.of(context).textTheme.bodyLarge!.color),
-                      //   title: Text(getTranslated('wallet', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                      // ),
-
-                      // if(configModel.loyaltyPointStatus!) ListTile(
-                      //   onTap: () => RouterHelper.getLoyaltyScreen(),
-                      //   leading: Image.asset(Images.loyaltyIcon, width: 20, height: 20, color: Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.6)),
-                      //   title: Text(getTranslated('loyalty_point', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                      // ),
-
-                      // ListTile(
-                      //   leading: Image.asset(Images.version, width: 20, height: 20, color: Theme.of(context).textTheme.bodyLarge!.color),
-                      //   title: Text('${getTranslated('version', context)}', style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                      //   trailing: Text(Provider.of<SplashProvider>(context, listen: false).configModel!.softwareVersion ?? AppConstants.appVersion, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                      //   //
-                      // ),
-
-                      // authProvider.isLoggedIn() ? ListTile(
-                      //   onTap: () {
-                      //     showAnimatedDialog(context,
-                      //         Consumer<AuthProvider>(
-                      //             builder: (context, authProvider, _) {
-                      //               return WillPopScope(
-                      //                   onWillPop: () async => !authProvider.isLoading,
-                      //                   child: authProvider.isLoading ? const Center(child: CircularProgressIndicator()) : CustomDialog(
-                      //                     icon: Icons.question_mark_sharp,
-                      //                     title: getTranslated('are_you_sure_to_delete_account', context),
-                      //                     description: getTranslated('it_will_remove_your_all_information', context),
-                      //                     buttonTextTrue: getTranslated('yes', context),
-                      //                     buttonTextFalse: getTranslated('no', context),
-                      //                     onTapTrue: () => Provider.of<AuthProvider>(context, listen: false).deleteUser(),
-                      //                     onTapFalse: () => context.pop(),
-                      //                   )
-                      //               );
-                      //             }
-                      //         ),
-                      //         dismissible: false,
-                      //         isFlip: true);
-                      //   },
-                      //   leading: Icon(Icons.delete_outline, size: 20, color: Theme.of(context).textTheme.bodyLarge!.color),
-                      //   title: Text(getTranslated('delete_account', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                      // ) : const SizedBox(),
 
                       ListTile(
                         onTap: () async {

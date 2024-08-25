@@ -6,7 +6,6 @@ import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
-import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/title_widget.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/category_pop_up.dart';
 import 'package:provider/provider.dart';
@@ -111,7 +110,7 @@ class CategoryView extends StatelessWidget {
                               ),
                               child: Center(
                                 child: Text(
-                                  getTranslated('view_all', context) ?? 'View all',
+                                  getTranslated('view_all', context),
                                   style: const TextStyle(fontSize: 14, color: Colors.white),
                                 ),
                               ),

@@ -17,6 +17,7 @@ class SignOutConfirmationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor:ColorResources.kWhite ,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: SizedBox(
         width: 300,
@@ -29,6 +30,7 @@ class SignOutConfirmationDialog extends StatelessWidget {
               child: const Icon(
                 Icons.contact_support,
                 size: 50,
+                color:ColorResources.kWhite ,
               ),
             ),
             Padding(
