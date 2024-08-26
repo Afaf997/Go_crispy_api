@@ -138,7 +138,7 @@ class _WishListScreenState extends State<WishListScreen> {
                           )
                         : const NoDataScreen()
                     : Center(
-                        child:Image.asset(Images.gif,height:200,width: 200,));
+                        child:Image.asset(Images.gif,height:150,width: 150,));
               },
             )
           : const NotLoggedInScreen(),
