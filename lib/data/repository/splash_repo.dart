@@ -57,12 +57,15 @@ class SplashRepo {
 
   int getBranchId() => sharedPreferences!.getInt(AppConstants.branch) ?? -1;
 
- Future<void> setBranchId(int id) async {
-  int branchId = (id != -1 && id != 0) ? id : 1;  
-  await sharedPreferences!.setInt(AppConstants.branch, branchId);
-  await dioClient!.updateHeader(
-      getToken: sharedPreferences!.getString(AppConstants.token));
-}
+  Future<void> setBranchId(int id) async {
+    await sharedPreferences!.setInt(AppConstants.branch, id);
+    print("setted");
+    if (id != -1) {
+      await dioClient!.updateHeader(
+          getToken: sharedPreferences!.getString(AppConstants.token));
+    }
+  }
+
   Future<ApiResponse> getOfflinePaymentMethod() async {
     try {
       final response = await dioClient!.get(AppConstants.offlinePaymentMethod);

@@ -79,6 +79,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
       //Auto selecting  branch as the nearest branch.
       print(branchProvider.getBranchId());
       if (widget.isOtp != null && widget.isOtp == true) {
+        print("init");
         branchProvider.updateBranchId(_branchesValue.first.branches?.id ?? 1);
         //auto confirming nearest branch
         _setBranch(widget.useNavigator);
@@ -138,19 +139,19 @@ class _BranchListScreenState extends State<BranchListScreen> {
           //     : CustomAppBar(context: context, title: getTranslated('select_branch', context))) as PreferredSizeWidget?,
 
           body: widget.isOtp != null && widget.isOtp == true
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                  Center(
-                      child: Image.asset(
-                    Images.gif,
-                    height: 150,
-                    width: 150,
-                  )),
-                  const Text("Finding Nearest Branch..")
-                ])
+              ? Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                      Center(
+                          child: Image.asset(
+                        Images.gif,
+                        height: 150,
+                        width: 150,
+                      )),
+                      const Text("Finding Nearest Branch..")
+                    ]))
               : Center(
                   child: SizedBox(
                     width: Dimensions.webScreenWidth,
@@ -351,15 +352,12 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                                         ),
                                                       ),
                                                     )
-                                                  : Padding(
-                                                    padding: const EdgeInsets.only(top: 170),
-                                                    child: Center(
-                                                        child: Image.asset(
-                                                        Images.gif,
-                                                        height: 150,
-                                                        width: 150,
-                                                      )),
-                                                  ),
+                                                  : Center(
+                                                      child: Image.asset(
+                                                      Images.gif,
+                                                      height: 150,
+                                                      width: 150,
+                                                    )),
                                             ],
                                           ),
                                         ),
@@ -391,6 +389,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                                         .selectedBranchId !=
                                                     branchProvider
                                                         .getBranchId()) {
+                                                  print("hereee");
                                                   _setBranch(
                                                       widget.useNavigator,
                                                       istakeAway:
