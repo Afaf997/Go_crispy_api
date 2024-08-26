@@ -72,14 +72,14 @@ class OrderItem extends StatelessWidget {
                            ),
                         ],
                       ),
-                      SizedBox(height: 5,),
+                      const SizedBox(height: 5,),
                       Row(
                         children: [
                           Text('${getTranslated('Status', context)}:', style: rubikRegular.copyWith(fontSize: Dimensions.fontExtraSmall)),
                           Text(getTranslated('${orderItem.orderStatus}', context), style: rubikRegular.copyWith(fontSize: Dimensions.fontExtraSmall,color: ColorResources.kOrangeColor)),
                         ],
                       ),
-                      SizedBox(height: 10,),
+                      const SizedBox(height: 10,),
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: SizedBox(
