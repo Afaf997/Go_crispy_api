@@ -76,22 +76,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         profileProvider.userInfoModel!.email ?? '',
                         style: rubikRegular.copyWith(color: Colors.white),
                       ),
-                      const SizedBox(height: 10),
-
-                     const Text(
-                'QR 250',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-             const Text(
-                'Wallet amount',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                ),)
+                      const SizedBox(height: 10)
 
                       
                     ]),

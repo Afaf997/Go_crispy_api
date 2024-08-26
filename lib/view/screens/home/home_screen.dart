@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              getTranslated('current_location', context)!,
+                              getTranslated('Current Branch', context)!,
                               style: kLocationTextStyle.copyWith(
                                   color: ColorResources.kWhite),
                             ),

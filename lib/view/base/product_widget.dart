@@ -126,28 +126,29 @@ class ProductWidget extends StatelessWidget {
                     ),
                     if (product.discount != null &&
                         product.discountType == 'percent')
-                      Positioned(
-                        top: 100,
-                        left: 4,
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: 42,
-                          height: 42,
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            color: ColorResources.kColorgreen,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            '${product.discount}%',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
+                      if (product.discount! > 0)
+                        Positioned(
+                          top: 95,
+                          left: 6,
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 42,
+                            height: 42,
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              color: ColorResources.kColorgreen,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              '${product.discount}%',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
-                      ),
                     Positioned(
                       bottom: 10,
                       right: 10,
@@ -161,7 +162,7 @@ class ProductWidget extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    padding: const EdgeInsets.only(left: 8, top: 3,right: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

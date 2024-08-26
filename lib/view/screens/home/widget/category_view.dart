@@ -29,7 +29,7 @@ class CategoryView extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-              child: TitleWidget(title: getTranslated('menu', context)),
+              child: TitleWidget(title: getTranslated('category', context)),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 10, left: 10),

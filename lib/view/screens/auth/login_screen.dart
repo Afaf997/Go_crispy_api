@@ -204,10 +204,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                               },
                             )
-                          : Center(
+                          : const Center(
                               child: CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
-                                    Theme.of(context).primaryColor),
+                                    ColorResources.kOrangeColor),
                               ),
                             ),
                       const SizedBox(height: 20),

@@ -5,7 +5,6 @@ import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:flutter_restaurant/view/base/show_custom_error.dart';
 import 'package:flutter_restaurant/view/screens/auth/details.dart';
 import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
-import 'package:flutter_restaurant/view/screens/dashboard/dashboard_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:dio/dio.dart';
@@ -24,6 +23,8 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   String? _otpCode;
+  final TextEditingController _otpController = TextEditingController();
+
   Future<void> _verifyOtp(String otp) async {
     try {
       final Dio dio = Dio();
@@ -35,7 +36,6 @@ class _OtpScreenState extends State<OtpScreen> {
         final responseData = response.data;
 
         if (responseData['status_code'] == 0) {
-          // showCustomSnackBar('OTP verified successfully', isError: false);
           showCustomNotification(context, 'OTP verified successfully',
               type: NotificationType.success);
           Navigator.pushReplacement(
@@ -48,21 +48,8 @@ class _OtpScreenState extends State<OtpScreen> {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.remove('token');
           await prefs.setString('token', token);
-          // showCustomSnackBar('Welcome back!', isError: false);
           showCustomNotification(context, 'OTP verified successfully',
               type: NotificationType.success);
-
-          // WidgetsBinding.instance.addPostFrameCallback((_) {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //       builder: (context) => const BranchListScreen(
-          //             useNavigator: true,
-          //             isOtp: true,
-          //           )),
-          //   //  ModalRoute.withName('/')
-          // );
-          //  });
 
           Get.context!.pushReplacement('/branch-list?isOtp=true');
         } else {
@@ -81,6 +68,20 @@ class _OtpScreenState extends State<OtpScreen> {
       print(e.toString());
       showCustomErrorDialog(context, errorMessage);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Clear OTP when the controller text is empty
+    _otpController.addListener(() {
+      if (_otpController.text.isEmpty) {
+        setState(() {
+          _otpCode = null;
+        });
+      }
+    });
   }
 
   @override
@@ -119,6 +120,7 @@ class _OtpScreenState extends State<OtpScreen> {
               ),
               const SizedBox(height: 20),
               PinCodeTextField(
+                controller: _otpController,
                 maxLength: 4,
                 autofocus: true,
                 wrapAlignment: WrapAlignment.center,
@@ -127,8 +129,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 pinBoxRadius: screenWidth * 0.03,
                 pinTextStyle: TextStyle(fontSize: screenWidth * 0.05),
                 pinBoxColor: ColorResources.kGrayLogo,
-                defaultBorderColor:
-                    ColorResources.kGrayLogo, // Use brand guideline color
+                defaultBorderColor: ColorResources.kGrayLogo,
                 pinBoxDecoration:
                     ProvidedPinBoxDecoration.defaultPinBoxDecoration,
                 onDone: (pin) {
@@ -145,7 +146,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   if (_otpCode != null) {
                     _verifyOtp(_otpCode!);
                   } else {
-                    showCustomNotification(context, 'Please enter the Otp',
+                    showCustomNotification(context, 'Please enter the OTP',
                         type: NotificationType.error);
                   }
                 },

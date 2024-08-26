@@ -59,7 +59,7 @@ class BranchProvider extends ChangeNotifier {
           .firstWhere((branch) => branch!.id == branchId, orElse: () => null);
       if (branch == null) {
         splashRepo!.setBranchId(-1);
-        print("branch null");
+
       }
     }
     return branch;

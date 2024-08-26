@@ -8,9 +8,7 @@ import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/filter_button_widget.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
-import 'package:flutter_restaurant/view/base/product_shimmer.dart';
 import 'package:flutter_restaurant/view/base/product_widget.dart';
-import 'package:flutter_restaurant/view/screens/home/web/widget/product_web_card_shimmer.dart';
 import 'package:flutter_restaurant/view/screens/home/web/widget/product_widget_web.dart';
 import 'package:provider/provider.dart';
 
@@ -51,77 +49,66 @@ class _PopularItemScreenState extends State<PopularItemScreen> {
     });
     return Scaffold(
       backgroundColor: ColorResources.kWhite,
-      appBar: CustomAppBar(context: context, title: getTranslated('best_selling', context)),
+      appBar: CustomAppBar(context: context, title: getTranslated('best_selling', context),),
       body: Consumer<ProductProvider>(
           builder: (context, productProvider, child) {
-          return Column(
-            children: [
-              IgnorePointer(
-                ignoring: productProvider.popularProductList == null,
-                child: FilterButtonWidget(
-                  type: _type,
-                  items: Provider.of<ProductProvider>(context).productTypeList,
-                  onSelected: (selected) {
-                    _type = selected;
-                    productProvider.getPopularProductList(true,'1', type: _type, isUpdate: true);
-                  },
+          return Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: Column(
+              children: [
+                IgnorePointer(
+                  ignoring: productProvider.popularProductList == null,
+                  child: FilterButtonWidget(
+                    type: _type,
+                    items: Provider.of<ProductProvider>(context).productTypeList,
+                    onSelected: (selected) {
+                      _type = selected;
+                      productProvider.getPopularProductList(true,'1', type: _type, isUpdate: true);
+                    },
+                  ),
                 ),
-              ),
-              Expanded(
-                child: productProvider.popularProductList != null ?
-                productProvider.popularProductList!.isNotEmpty ? RefreshIndicator(
-                  onRefresh: () async {
-                    _type = 'all';
-                    await Provider.of<ProductProvider>(context, listen: false).getPopularProductList(true, '1');
-                  },
-                  backgroundColor: Theme.of(context).primaryColor,
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    child: Center(
-                      child: SizedBox(
-                        width: 1170,
-                        child: GridView.builder(
-                          gridDelegate: ResponsiveHelper.isDesktop(context)
-                              ? const SliverGridDelegateWithMaxCrossAxisExtent( maxCrossAxisExtent: 195, mainAxisExtent: 250) :
-                          SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisSpacing: 10,
-                                                      mainAxisSpacing: 3,
-                                                      childAspectRatio: 1.9,
-                            crossAxisCount: ResponsiveHelper.isTab(context) ? 2 : 1,
+                Expanded(
+                  child: productProvider.popularProductList != null ?
+                  productProvider.popularProductList!.isNotEmpty ? RefreshIndicator(
+                    onRefresh: () async {
+                      _type = 'all';
+                      await Provider.of<ProductProvider>(context, listen: false).getPopularProductList(true, '1');
+                    },
+                    backgroundColor: Theme.of(context).primaryColor,
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      child: Center(
+                        child: SizedBox(
+                          width: 1170,
+                          child: GridView.builder(
+                            gridDelegate: ResponsiveHelper.isDesktop(context)
+                                ? const SliverGridDelegateWithMaxCrossAxisExtent( maxCrossAxisExtent: 195, mainAxisExtent: 250) :
+                            SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisSpacing: 10,
+                                                        mainAxisSpacing: 3,
+                                                        childAspectRatio: 1.9,
+                              crossAxisCount: ResponsiveHelper.isTab(context) ? 2 : 1,
+                            ),
+                            itemCount: productProvider.popularProductList!.length,
+                            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ResponsiveHelper.isDesktop(context) ? Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: ProductWidgetWeb(product: productProvider.popularProductList![index]),
+                              ) : ProductWidget(product: productProvider.popularProductList![index]);
+                            },
                           ),
-                          itemCount: productProvider.popularProductList!.length,
-                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ResponsiveHelper.isDesktop(context) ? Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: ProductWidgetWeb(product: productProvider.popularProductList![index]),
-                            ) : ProductWidget(product: productProvider.popularProductList![index]);
-                          },
                         ),
                       ),
                     ),
-                  ),
-                ) :
-                const NoDataScreen() :
-                GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: 10,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5,
-                    childAspectRatio: ResponsiveHelper.isDesktop(context) ? 0.7: 4,
-                    crossAxisCount: ResponsiveHelper.isDesktop(context) ? 6 : ResponsiveHelper.isTab(context) ? 2 : 1,
-                  ),
-                  itemBuilder: (context, index) {
-                    return ResponsiveHelper.isDesktop(context)? Image.asset(Images.gif,width: 150,height: 150,):Image.asset(Images.gif,width: 150,height: 150,);
-                  },
+                  ) :
+                  const NoDataScreen() :
+                 Center(child: Image.asset(Images.gif,width: 150,height: 150,))
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         }
       ),

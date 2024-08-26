@@ -219,10 +219,10 @@ class _CategoryScreenState extends State<CategoryScreen>
     _addToCart(context, product);
   },
   child: Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.symmetric(vertical: 8,),
     child: Container(
           width: 348, // Width of the image
-          height: 106, 
+          height: 110, 
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: ColorResources.kallcontainer),
@@ -231,7 +231,7 @@ class _CategoryScreenState extends State<CategoryScreen>
         children: [
           Container(
             width: 129, // Width of the image
-            height: 106, // Height of the image
+            height: 110, // Height of the image
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               image: productImage != null
@@ -246,55 +246,68 @@ class _CategoryScreenState extends State<CategoryScreen>
             ),
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Spacer(),
+  child: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Title Text
+        Row(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18, // Increased font size for title
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 2, // Ensure title wraps onto two lines if needed
+              overflow: TextOverflow.ellipsis,
+            ),
+               const Spacer(),
                       WishButton(
                         product: product,
                         edgeInset: EdgeInsets.zero,
                         iconSize: 16,
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
-                      Text(
-                        ' $rating',
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    description,
-                    style: const TextStyle(fontSize: 8, color: ColorResources.kIncreasedColor),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    price,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: ColorResources.kredcolor,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
+          ],
+        ),
+        const SizedBox(height: 2), // Add some space between title and next row
+        
+        Row(
+          children: [
+            const Icon(Icons.star, color: ColorResources.kstarYellow, size: 12),
+            Text(
+              ' $rating',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
             ),
+          ],
+        ),
+        
+        // Description Text
+        Text(
+          description,
+          style: const TextStyle(
+            fontSize: 10, // Increased font size for description
+            color: ColorResources.kIncreasedColor,
           ),
+          maxLines: 2, // Ensure description wraps onto two lines if needed
+          overflow: TextOverflow.ellipsis,
+        ),
+        
+        // Price Text
+        Text(
+          price,
+          style: const TextStyle(
+            fontSize: 14,
+            color: ColorResources.kredcolor,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
+    ),
+  ),
+)
+
         ],
       ),
     ),
