@@ -17,14 +17,12 @@ import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
-import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/cart_product_widget.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/delivery_option_button.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
@@ -594,7 +592,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       ? DeliveryOptionButton(
                                                           value: 'car_hop',
                                                           title: getTranslated(
-                                                              'car_hop',
+                                                              'Car Hop',
                                                               context),
                                                           imagePath:
                                                               Images.carHopSvg,
@@ -636,7 +634,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 title: getTranslated(
                                                     'discount', context),
                                                 subTitle:
-                                                    '- ${PriceConverter.convertPrice(discount)}',
+                                                    '${PriceConverter.convertPrice(discount)}',
                                                 subTitleStyle: const TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500,

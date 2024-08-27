@@ -4,6 +4,7 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/location_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/utill/images.dart';
@@ -42,7 +43,7 @@ class _AddressScreenState extends State<AddressScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Theme.of(context).cardColor,
+      backgroundColor:ColorResources.kWhite,
       appBar: (ResponsiveHelper.isDesktop(context)
           ? const PreferredSize(
               preferredSize: Size.fromHeight(100),
@@ -61,7 +62,7 @@ class _AddressScreenState extends State<AddressScreen> {
               ),
               child: !ResponsiveHelper.isDesktop(context)
                   ? FloatingActionButton(
-                      backgroundColor: Theme.of(context).primaryColor,
+                      backgroundColor:ColorResources.kOrangeColor,
                       onPressed: () =>
                           RouterHelper.getAddAddressRoute('address', 'add', AddressModel()),
                       child: const Icon(Icons.add, color: Colors.white),

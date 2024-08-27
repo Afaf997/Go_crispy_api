@@ -110,12 +110,7 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
                       ? BoxDecoration(
                           color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Theme.of(context).shadowColor,
-                                blurRadius: 5,
-                                spreadRadius: 1)
-                          ],
+                         
                         )
                       : null,
                   width: Dimensions.webScreenWidth,

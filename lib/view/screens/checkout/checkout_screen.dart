@@ -8,8 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_restaurant/data/model/response/address_model.dart';
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 import 'package:flutter_restaurant/data/model/response/config_model.dart';
-import 'package:flutter_restaurant/data/repository/order_repo.dart';
-import 'package:flutter_restaurant/helper/date_converter.dart';
 import 'package:flutter_restaurant/helper/price_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
@@ -29,7 +27,6 @@ import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/custom_text_field.dart';
-import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/not_logged_in_screen.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/address/widget/permission_dialog.dart';
@@ -38,11 +35,9 @@ import 'package:flutter_restaurant/view/screens/checkout/widget/confirm_button_v
 import 'package:flutter_restaurant/view/screens/checkout/widget/delivery_fee_dialog.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/order_confirm.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/select_branch.dart';
-import 'package:flutter_restaurant/view/screens/checkout/widget/slot_widget.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-
 import 'widget/cost_summery_view.dart';
 import 'widget/partial_pay_view.dart';
 import 'widget/payment_section.dart';
@@ -50,19 +45,20 @@ import 'package:go_router/go_router.dart';
 
 class CheckoutScreen extends StatefulWidget {
   final double? amount;
+  double? deliveryCharge;
   final String? orderType;
   final List<CartModel>? cartList;
   final bool fromCart;
   final String? couponCode;
   final String? vehicleNumber;
-  const CheckoutScreen(
+   CheckoutScreen(
       {Key? key,
       required this.amount,
       required this.orderType,
       required this.fromCart,
       required this.cartList,
       required this.couponCode,
-      this.vehicleNumber})
+      this.vehicleNumber, this.deliveryCharge})
       : super(key: key);
 
   @override
@@ -193,7 +189,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           }
                         } else if (!takeAway && !kmWiseCharge) {
                           deliveryCharge = configModel.deliveryCharge;
-                        }
+                        }widget.deliveryCharge=deliveryCharge;
                         return Center(
                             child: Container(
                           // margin: EdgeInsets.symmetric(vertical: ResponsiveHelper.isDesktop(context) ? Dimensions.paddingSizeLarge : 0),
@@ -284,13 +280,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                               color: ColorResources
                                                                   .kOrangeColor,
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                                 width:
                                                                     4), // Adding some space between the icon and text
                                                             Text(
                                                               getTranslated(
                                                                   'add_new_address',
-                                                                  context)!,
+                                                                  context),
                                                               style: rubikMedium
                                                                   .copyWith(
                                                                 fontSize: Dimensions
@@ -306,39 +302,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                      height: 60,
-                                                      child: locationProvider
-                                                                  .addressList !=
-                                                              null
-                                                          ? locationProvider
-                                                                  .addressList!
-                                                                  .isNotEmpty
-                                                              ? ListView
-                                                                  .builder(
-                                                                  physics:
-                                                                      const BouncingScrollPhysics(),
-                                                                  scrollDirection:
-                                                                      Axis.horizontal,
-                                                                  padding: const EdgeInsets
-                                                                      .only(
-                                                                      left: Dimensions
-                                                                          .paddingSizeSmall),
-                                                                  itemCount:
-                                                                      locationProvider
-                                                                          .addressList!
-                                                                          .length,
-                                                                  itemBuilder:
-                                                                      (context,
-                                                                          index) {
-                                                                    bool isAvailable = currentBranch ==
-                                                                            null ||
-                                                                        (currentBranch!.latitude ==
-                                                                                null ||
-                                                                            currentBranch!.latitude!.isEmpty);
-                                                                    if (!isAvailable) {
-                                                                      double
-                                                                          distance =
+                                                    SizedBox(height: 60,child: locationProvider.addressList !=null? locationProvider.addressList!.isNotEmpty            ? ListView                .builder(                physics:                    const BouncingScrollPhysics(),                scrollDirection:                    Axis.horizontal,                padding: const EdgeInsets                    .only(                    left: Dimensions                        .paddingSizeSmall),                itemCount:                    locationProvider                        .addressList!
+                                                   .length,itemBuilder:(context,index) {bool isAvailable = currentBranch ==null ||(currentBranch!.latitude ==                              null ||                          currentBranch!.latitude!.isEmpty);                  if (!isAvailable) {                    double                        distance =
                                                                           Geolocator.distanceBetween(
                                                                                 double.parse(currentBranch!.latitude!),
                                                                                 double.parse(currentBranch!.longitude!),
@@ -347,17 +312,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                                               ) /
                                                                               1000;
 
-                                                                      isAvailable =
-                                                                          distance <
+                                                                      isAvailable =distance <
                                                                               currentBranch!.coverage!;
                                                                     }
                                                                     return Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .only(
-                                                                          right: Dimensions
-                                                                              .paddingSizeLarge,
-                                                                          top: Dimensions
-                                                                              .paddingSizeSmall),
+                                                                      padding: const EdgeInsets.only(right: Dimensions.paddingSizeLarge,top: Dimensions.paddingSizeSmall),
                                                                       child:
                                                                           InkWell(
                                                                         onTap:
@@ -672,6 +631,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       context, "Please select payment method",
                                       type: NotificationType.warning);
                                 } else {
+                                        print(deliveryCharge);
+                                        print("afaf");
                                   showDeliveryFeeDialog(
                                     context,
                                     deliveryCharge,
@@ -696,9 +657,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       "Please select address and payment method",
                                       type: NotificationType.warning);
                                 } else {
+                                  print(deliveryCharge);
+                                      print("afafee");
                                   showDeliveryFeeDialog(
                                     context,
-                                    deliveryCharge,
+                                    widget.deliveryCharge!,
                                     widget.amount!,
                                     confirmButtonView: ConfirmButtonView(
                                       noteController: _noteController,

@@ -297,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       padding:
                                           const EdgeInsets.fromLTRB(10, 20, 10, 10),
                                       child: Text(
-                                          getTranslated('latest_item', context),
+                                          getTranslated('Latest Products', context),
                                           style: rubikRegular.copyWith(
                                               fontSize: Dimensions
                                                   .fontSizeOverLarge)),
@@ -309,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
                                   child: TitleWidget(
                                       title: getTranslated(
-                                          'latest_item', context)),
+                                          'Latest Products', context)),
                                 ),
                               const ProductView(
                                   productType: ProductType.latestProduct),

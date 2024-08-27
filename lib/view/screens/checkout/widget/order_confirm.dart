@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/confirm_button_view.dart';
@@ -28,7 +27,7 @@ void showDeliveryFeeDialog(BuildContext context, double deliveryCharge, double s
                 style: TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 16),
-              Text('${subtotal.toStringAsFixed(2)} QR',
+              Text('${subtotal.toStringAsFixed(0)} QR',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -40,7 +39,7 @@ void showDeliveryFeeDialog(BuildContext context, double deliveryCharge, double s
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Subtotal'),
-                  Text('${subtotal.toStringAsFixed(2)} QR'),
+                  Text('${subtotal.toStringAsFixed(0)} QR'),
                 ],
               ),
               const SizedBox(height: 10),
@@ -48,7 +47,7 @@ void showDeliveryFeeDialog(BuildContext context, double deliveryCharge, double s
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Delivery fee'),
-                  Text('${deliveryCharge.toStringAsFixed(2)} QR'),
+                  Text('${deliveryCharge.toStringAsFixed(2)} QR'), // Show delivery fee here
                 ],
               ),
               const Divider(),

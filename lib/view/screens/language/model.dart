@@ -12,6 +12,7 @@ import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
+import 'package:flutter_restaurant/view/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter_restaurant/view/screens/menu/menu_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -108,8 +109,8 @@ class LanguagemodelScreen extends StatelessWidget {
         Provider.of<CategoryProvider>(context, listen: false).getCategoryList(true);
       } else {
         ResponsiveHelper.isMobile()
-            ? Navigator.push(context,MaterialPageRoute(builder:(context)=>const MenuScreen()))
-            : Navigator.push(context,MaterialPageRoute(builder:(context)=>const MenuScreen()));
+            ? Navigator.push(context,MaterialPageRoute(builder:(context)=>const DashboardScreen(pageIndex: 4,)))
+            : Navigator.push(context,MaterialPageRoute(builder:(context)=>const DashboardScreen(pageIndex: 4,)));
       }
         } 
   }

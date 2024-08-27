@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/on_hover.dart';
@@ -18,7 +19,7 @@ class AddButtonView extends StatelessWidget {
             hoverColor: Colors.transparent,
             child: Container(
               width: 110.0,
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(30.0)),
+              decoration: BoxDecoration(color:ColorResources.kOrangeColor, borderRadius: BorderRadius.circular(30.0)),
               padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall, vertical: Dimensions.paddingSizeExtraSmall),
               child: Row(
                 children: [

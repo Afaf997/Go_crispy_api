@@ -12,13 +12,11 @@ import 'package:flutter_restaurant/view/screens/cart/widget/item_view.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/js_util.dart';
 
-class CostSummeryView extends StatelessWidget {
-  final bool kmWiseCharge;
-  final bool takeAway;
+class CostPriceView extends StatelessWidget {
   final double? deliveryCharge;
   final double? subtotal;
-  const CostSummeryView({
-    Key? key, required this.kmWiseCharge, required this.takeAway,
+  const CostPriceView({
+    Key? key,
     this.deliveryCharge, this.subtotal,
 
   }) : super(key: key);
@@ -40,17 +38,10 @@ class CostSummeryView extends StatelessWidget {
           const SizedBox(height: Dimensions.paddingSizeLarge),
 
           ItemView(
-            title: getTranslated('subtotal', context,),
+            title: getTranslated('subtotal', context,)!,
             subTitle: PriceConverter.convertPrice(subtotal),
           ),
           const SizedBox(height: 10),
-
-         if(!takeAway) ItemView(
-            title: getTranslated('delivery_fee', context),
-            subTitle: (!takeAway || orderProvider.distance != -1) ?
-            ' ${PriceConverter.convertPrice( takeAway ? 0 : deliveryCharge)}'
-                : getTranslated('not_found', context),
-          ),
 
           const Padding(
             padding: EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
@@ -58,7 +49,7 @@ class CostSummeryView extends StatelessWidget {
           ),
 
          if(ResponsiveHelper.isDesktop(context)) ItemView(
-            title: getTranslated('total_amount', context),
+            title: getTranslated('total_amount', context)!,
             titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
             subTitle: PriceConverter.convertPrice(subtotal! + deliveryCharge!),
             subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),

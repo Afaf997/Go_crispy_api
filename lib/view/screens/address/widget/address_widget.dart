@@ -43,7 +43,7 @@ class AddressWidget extends StatelessWidget {
                           : addressModel.addressType!.toLowerCase() == "workplace"
                           ? Icons.work_outline
                           : Icons.list_alt_outlined,
-                      //color: Theme.of(context).textTheme.bodyLarge.color.withOpacity(.45),
+                    
                       size: 22,
                     ),
                     const SizedBox(width: Dimensions.paddingSizeDefault),
@@ -53,13 +53,12 @@ class AddressWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            addressModel.addressType!,
-                            style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(.65)),
+                            addressModel.addressType!
                           ),
                           Text(
                             addressModel.address!,
                             maxLines: 1, overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color),
+                          
                           ),
                         ],
                       ),
@@ -88,11 +87,11 @@ class AddressWidget extends StatelessWidget {
                       itemBuilder: (BuildContext c) => <PopupMenuEntry<String>>[
                         PopupMenuItem<String>(
                           value: 'edit',
-                          child: Text(getTranslated('edit', context)!, style: Theme.of(context).textTheme.displayMedium),
+                          child: Text(getTranslated('edit', context)!,),
                         ),
                         PopupMenuItem<String>(
                           value: 'delete',
-                          child: Text(getTranslated('delete', context)!, style: Theme.of(context).textTheme.displayMedium),
+                          child: Text(getTranslated('delete', context)!, ),
                         ),
                       ],
                     ),

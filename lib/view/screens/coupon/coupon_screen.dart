@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_restaurant/helper/date_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
@@ -13,7 +12,6 @@ import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
-import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/base/not_logged_in_screen.dart';
@@ -154,7 +152,7 @@ class _CouponScreenState extends State<CouponScreen> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Image.asset(Images.line, height: 100, width: 3, color: ColorResources.kWhite),
+                                                      // Image.asset(Images.line, height: 100, width: 3, color: ColorResources.kWhite),
                                                       SizedBox(width: screenWidth * 0.08), // Use MediaQuery to set the width
                                                       Expanded(
                                                         child: Column(

@@ -799,114 +799,128 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
             ),
           ),
           const SizedBox(width: 10),
-          Expanded(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Row(
-                      children: [
-                        Text(
-                          widget.product!.name!,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: rubikMedium.copyWith(
-                              fontSize: Dimensions.fontSizeLarge,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        Spacer(),
-                        if (ResponsiveHelper.isMobile())
-                          WishButton(
-                            product: widget.product,
-                            iconSize: 16,
-                          ),
-                      ],
+        Expanded(
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded( // Use Expanded to allow the Text to take available space
+            child: Row(
+              children: [
+                Expanded( // Wrap Text with Expanded to enable multi-line
+                  child: Text(
+                    widget.product!.name!,
+                    maxLines: 3, // Set to 2 lines
+                    overflow: TextOverflow.ellipsis,
+                    style: rubikMedium.copyWith(
+                      fontSize: Dimensions.fontSizeLarge,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                ],
-              ),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.star,
-                    color: ColorResources.kstarYellow,
-                    size: 10,
-                  ),
-                  Text(
-                    widget.product!.rating!.isNotEmpty
-                        ? double.parse(widget.product!.rating![0].average!)
-                            .toStringAsFixed(1)
-                        : '0.0',
-                    style: const TextStyle(
-                      fontSize: 9,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  widget.product!.productType != null
-                      ? VegTagView(product: widget.product!)
-                      : const SizedBox(),
-                ],
-              ),
-
-              // const SizedBox(height: 20),
-              Text(
-                widget.product!.description!,
-                maxLines: 4,
-                overflow: TextOverflow.ellipsis,
-                style: rubikMedium.copyWith(
-                    fontSize: Dimensions.fontExtraSmall,
-                    fontWeight: FontWeight.w400,
-                    color: ColorResources.kIncreasedColor),
-              ),
-
-              Row(mainAxisSize: MainAxisSize.min, children: [
-                Expanded(
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        FittedBox(
-                            child: CustomDirectionality(
-                                child: Text(
-                          PriceConverter.convertPrice(price,
-                              discount: widget.product!.discount,
-                              discountType: widget.product!.discountType),
-                          style: rubikMedium.copyWith(
-                              fontSize: Dimensions.fontSizeLarge,
-                              fontWeight: FontWeight.w700,
-                              overflow: TextOverflow.ellipsis,
-                              color: ColorResources.kOrangeColor),
-                          maxLines: 1,
-                        ))),
-                        const SizedBox(
-                          width: Dimensions.paddingSizeSmall,
-                        ),
-                        price > priceWithDiscount
-                            ? FittedBox(
-                                child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 5),
-                                    child: CustomDirectionality(
-                                        child: Text(
-                                      PriceConverter.convertPrice(price),
-                                      style: rubikMedium.copyWith(
-                                          color: Theme.of(context)
-                                              .hintColor
-                                              .withOpacity(0.7),
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                          overflow: TextOverflow.ellipsis),
-                                      maxLines: 1,
-                                    ))),
-                              )
-                            : const SizedBox(),
-                      ]),
                 ),
-              ]),
-              if (!ResponsiveHelper.isMobile()) _quantityView(context)
-            ]),
+                if (ResponsiveHelper.isMobile())
+                  WishButton(
+                    product: widget.product,
+                    iconSize: 16,
+                  ),
+              ],
+            ),
           ),
+        ],
+      ),
+      Row(
+        children: [
+          const Icon(
+            Icons.star,
+            color: ColorResources.kstarYellow,
+            size: 10,
+          ),
+          Text(
+            widget.product!.rating!.isNotEmpty
+                ? double.parse(widget.product!.rating![0].average!)
+                    .toStringAsFixed(1)
+                : '0.0',
+            style: const TextStyle(
+              fontSize: 9,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          widget.product!.productType != null
+              ? VegTagView(product: widget.product!)
+              : const SizedBox(),
+        ],
+      ),
+
+      // const SizedBox(height: 20),
+      Text(
+        widget.product!.description!,
+        maxLines: 4,
+        overflow: TextOverflow.ellipsis,
+        style: rubikMedium.copyWith(
+          fontSize: Dimensions.fontExtraSmall,
+          fontWeight: FontWeight.w400,
+          color: ColorResources.kIncreasedColor,
+        ),
+      ),
+
+      Row(mainAxisSize: MainAxisSize.min, children: [
+        Expanded(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FittedBox(
+                child: CustomDirectionality(
+                  child: Text(
+                    PriceConverter.convertPrice(
+                      price,
+                      discount: widget.product!.discount,
+                      discountType: widget.product!.discountType,
+                    ),
+                    style: rubikMedium.copyWith(
+                      fontSize: Dimensions.fontSizeLarge,
+                      fontWeight: FontWeight.w700,
+                      overflow: TextOverflow.ellipsis,
+                      color: ColorResources.kOrangeColor,
+                    ),
+                    maxLines: 1,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: Dimensions.paddingSizeSmall,
+              ),
+              price > priceWithDiscount
+                  ? FittedBox(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: CustomDirectionality(
+                          child: Text(
+                            PriceConverter.convertPrice(price),
+                            style: rubikMedium.copyWith(
+                              color: Theme.of(context)
+                                  .hintColor
+                                  .withOpacity(0.7),
+                              decoration: TextDecoration.lineThrough,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            maxLines: 1,
+                          ),
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
+            ],
+          ),
+        ),
+      ]),
+      if (!ResponsiveHelper.isMobile()) _quantityView(context),
+    ],
+  ),
+),
+
         ]);
   }
 
