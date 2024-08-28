@@ -27,7 +27,7 @@ void showDeliveryFeeDialog(BuildContext context, double deliveryCharge, double s
                 style: TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 16),
-              Text('${subtotal.toStringAsFixed(0)} QR',
+              Text('${subtotal.toStringAsFixed(0)}QR',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

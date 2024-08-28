@@ -472,7 +472,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
       print("tyhis is here");
       RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
     }
-    showCustomNotification(context, 'branch successfully selected',
+    showCustomNotification(context, 'branch_successfully_selected',
         type: NotificationType.success);
     // if (istakeAway!) {
     //   print("trueeeee");
