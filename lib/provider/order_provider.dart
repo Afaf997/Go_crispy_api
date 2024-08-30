@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/body/place_order_body.dart';
 import 'package:flutter_restaurant/data/model/response/base/api_response.dart';
@@ -19,6 +21,7 @@ import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -202,9 +205,9 @@ class OrderProvider extends ChangeNotifier {
     } else if (index != null && index == 1) {
       _selectedPaymentMethod = PaymentMethod(
         getWayTitle: getTranslated('wallet_payment', Get.context!),
-        getWay: 'wallet_payment',
-        type: 'wallet_payment',
-      );
+        getWay: 'skip_cash',
+        type: 'skip_cash',
+      ); 
     } else {
       _selectedPaymentMethod = null;
     }

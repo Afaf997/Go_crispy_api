@@ -10,6 +10,7 @@ import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/cancel_dialog.dart';
 import 'package:provider/provider.dart';
@@ -86,7 +87,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return WillPopScope(
       onWillPop: (() => _exitApp(context).then((value) => value!)),
       child: Scaffold(
-       // backgroundColor: Theme.of(context).primaryColor,
+       backgroundColor: ColorResources.kWhite,
         appBar: CustomAppBar(context: context, title: getTranslated('PAYMENT', context), onBackPressed: () => _exitApp(context)),
         body: Center(
           child: Stack(

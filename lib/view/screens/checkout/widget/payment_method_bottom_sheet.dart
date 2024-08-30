@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -329,6 +331,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                           index:
                                               orderProvider.paymentMethodIndex,
                                           method: orderProvider.paymentMethod);
+                                          
                                       context.pop();
                                     }
                                   },

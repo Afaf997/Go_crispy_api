@@ -17,6 +17,7 @@ import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
@@ -322,7 +323,7 @@ class ConfirmButtonView extends StatelessWidget {
               : Center(
                   child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).primaryColor)),
+                          ColorResources.kOrangeColor)),
                 ),
         );
       },

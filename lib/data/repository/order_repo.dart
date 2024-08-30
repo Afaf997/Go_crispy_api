@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_restaurant/data/datasource/remote/dio/dio_client.dart';
 import 'package:flutter_restaurant/data/datasource/remote/exception/api_error_handler.dart';
@@ -89,6 +91,7 @@ class OrderRepo {
         data.addAll({'guest_id' : guestId});
       }
       final response = await dioClient!.post(AppConstants.placeOrderUri, data: data);
+       log(response.data);
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -115,4 +118,4 @@ class OrderRepo {
     }
   }
 
-}
+} 

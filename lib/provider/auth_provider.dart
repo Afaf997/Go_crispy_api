@@ -1,8 +1,6 @@
 // ignore_for_file: empty_catches
-
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -14,20 +12,15 @@ import 'package:flutter_restaurant/data/model/response/social_login_model.dart';
 import 'package:flutter_restaurant/data/model/response/user_log_data.dart';
 import 'package:flutter_restaurant/data/repository/auth_repo.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
-import 'package:flutter_restaurant/localization/app_localization.dart';
 import 'package:flutter_restaurant/main.dart';
 import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
-import 'package:flutter_restaurant/view/screens/auth/login_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-
 import '../helper/api_checker.dart';
-import '../localization/language_constrants.dart';
-import '../view/base/custom_snackbar.dart';
 
 class AuthProvider with ChangeNotifier {
   final AuthRepo? authRepo;
