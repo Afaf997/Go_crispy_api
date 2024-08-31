@@ -216,44 +216,8 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                     ),
                                   )
                                 : const SizedBox(),
-                            SizedBox(
-                                width: configModel.cashOnDelivery!
-                                    ? Dimensions.paddingSizeLarge
-                                    : 0),
-                            configModel.walletStatus! &&
-                                    authProvider.isLoggedIn() &&
-                                    (orderProvider.partialAmount == null) &&
-                                    !isPartialPayment
-                                ? Expanded(
-                                    child: PaymentButtonNew(
-                                      icon: Images.walletPayment,
-                                      title: getTranslated(
-                                          'pay_via_wallet', context)!,
-                                      isSelected:
-                                          orderProvider.paymentMethodIndex == 1,
-                                      onTap: () {
-                                        if (canSelectWallet) {
-                                          context.pop();
-                                          showDialog(
-                                              context: context,
-                                              builder: (ctx) =>
-                                                  PartialPayDialog(
-                                                    isPartialPay: profileProvider
-                                                            .userInfoModel!
-                                                            .walletBalance! <
-                                                        widget.totalPrice,
-                                                    totalPrice:
-                                                        widget.totalPrice,
-                                                  ));
-                                        } else {
-                                          // showCustomSnackBar(getTranslated('your_wallet_have_not_sufficient_balance', context));
-                                        }
-                                      },
-                                    ),
-                                  )
-                                : const SizedBox(),
                           ]),
-                          const SizedBox(height: Dimensions.paddingSizeLarge),
+
 
                           Row(
                             children: [
