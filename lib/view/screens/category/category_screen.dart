@@ -251,16 +251,14 @@ class _CategoryScreenState extends State<CategoryScreen>
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Title Text
         Row(
           children: [
-            Text(
-              title,
+            Text(title,
               style: const TextStyle(
-                fontSize: 16, // Increased font size for title
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
-              maxLines: 2, // Ensure title wraps onto two lines if needed
+              maxLines: 2, 
               overflow: TextOverflow.ellipsis,
             ),
                const Spacer(),
