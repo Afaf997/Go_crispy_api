@@ -26,6 +26,7 @@ import 'package:flutter_restaurant/provider/news_letter_controller.dart';
 import 'package:flutter_restaurant/provider/notification_provider.dart';
 import 'package:flutter_restaurant/provider/onboarding_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
+import 'package:flutter_restaurant/provider/popup_provider.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/review_provider.dart';
@@ -42,6 +43,7 @@ import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/view/base/third_party_chat_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'di_container.dart' as di;
 import 'provider/time_provider.dart';
@@ -114,9 +116,11 @@ Future<void> main() async {
   //   debugPrint('error ===> $e');
   // }
   GoRouter.optionURLReflectsImperativeAPIs = true;
-
+  SharedPreferences pref =await SharedPreferences.getInstance();
+  await pref.setBool("start",true);
   runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider(create: (context) => di.sl<PopupProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<ThemeProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<SplashProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<LanguageProvider>()),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/config_model.dart';
 import 'package:flutter_restaurant/helper/product_type.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
 import 'package:flutter_restaurant/provider/location_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
+import 'package:flutter_restaurant/provider/popup_provider.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
@@ -29,6 +31,7 @@ import 'package:flutter_restaurant/view/screens/home/widget/main_slider.dart'as 
 import 'package:flutter_restaurant/view/screens/home/widget/product_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool fromAppBar;
@@ -81,13 +84,59 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      final locationProvider =
-          Provider.of<LocationProvider>(context, listen: false);
-      Provider.of<ProductProvider>(context, listen: false)
-          .getLatestProductList(true, '1');
-    });
+      Future.microtask(()async{
+         await Provider.of<PopupProvider>(context, listen: false).initPopupList(context);
+          SharedPreferences pref =await SharedPreferences.getInstance();
+         bool start =  pref.getBool("start") ?? false;
+         start?  _showPopupImage(): log("its false") ;
+         final locationProvider = Provider.of<LocationProvider>(context, listen: false);
+      Provider.of<ProductProvider>(context, listen: false).getLatestProductList(true, '1');
+      });
   }
+
+void _showPopupImage() async{
+  showDialog(
+    context: context,
+    builder: (context) {
+      return Consumer<PopupProvider>(
+        builder: (BuildContext context, PopupProvider provider, Widget? child) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20), // Apply border radius to the dialog
+            ),
+            child: Stack(
+              children: [
+                provider.popupList != null && provider.popupList!.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(20), // Apply border radius to the image
+                        child: Image.network(
+                          provider.popupList!.first.image ?? Images.placeholderImage,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : const SizedBox(), 
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: IconButton(
+                    icon: const Icon(Icons.close, color: Colors.black),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+  SharedPreferences pref =await SharedPreferences.getInstance();
+   await pref.setBool("start",false);
+}
+
+
 
   @override
   Widget build(BuildContext context) {
