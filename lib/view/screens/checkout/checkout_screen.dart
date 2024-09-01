@@ -674,8 +674,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       context, "Please select payment method",
                                       type: NotificationType.warning);
                                 } else {
-                                        print(deliveryCharge);
-                                        print("afaf");
+                                  print(deliveryCharge);
+                                  print("afaf");
                                   showDeliveryFeeDialog(
                                     context,
                                     deliveryCharge,
