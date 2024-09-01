@@ -271,47 +271,87 @@ class ConfirmButtonView extends StatelessWidget {
                                 orderProvider.partialAmount == null ? '0' : '1',
                           );
 
-                          if (placeOrderBody.paymentMethod ==
-                                  'wallet_payment' ||
-                              placeOrderBody.paymentMethod ==
-                                  'cash_on_delivery' ||
-                              placeOrderBody.paymentMethod ==
-                                  'offline_payment') {
-                            orderProvider.placeOrder(placeOrderBody, callBack);
-                          } else {
-                            String? hostname = html.window.location.hostname;
-                            String protocol = html.window.location.protocol;
-                            String port = html.window.location.port;
+                          if (
+                              // placeOrderBody.paymentMethod ==
+                              //       'wallet_payment' ||
+                              placeOrderBody.paymentMethod == 'cash_on_delivery'
+                              // placeOrderBody.paymentMethod ==
+                              //     'offline_payment'
+                              ) {
+                            final String placeOrder = convert.base64Url.encode(
+                                convert.utf8.encode(convert
+                                    .jsonEncode(placeOrderBody.toJson())));
+                            orderProvider
+                                .placeOrder(placeOrderBody, callBack)
+                                .then((value) {
+                              orderProvider.clearPlaceOrder().then((value) {
+                                print("cleared");
+                                orderProvider
+                                    .setPlaceOrder(placeOrder)
+                                    .then((value) {
+                                  print(
+                                      orderProvider.orderId + "orderrr idddd");
+                                  //navigate to
+                                  RouterHelper.getOrderSuccessScreen(
+                                      orderProvider.orderId, 'success');
+                                });
+                              });
+                            });
+                          } else if (placeOrderBody.paymentMethod ==
+                              'skip_cash') {
+                            print("test 0");
+                            print("skip cash");
                             final String placeOrder = convert.base64Url.encode(
                                 convert.utf8.encode(convert
                                     .jsonEncode(placeOrderBody.toJson())));
 
-                            String url =
-                                "customer_id=${authProvider.getGuestId() ?? profileProvider.userInfoModel!.id}&&is_guest=${authProvider.getGuestId() != null ? '1' : '0'}"
-                                "&&callback=${AppConstants.baseUrl}${RouterHelper.orderSuccessScreen}&&order_amount=${(orderAmount + (deliveryCharge ?? 0)).toStringAsFixed(2)}";
+                            orderProvider
+                                .placeOrder(placeOrderBody, callBack)
+                                .then((value) {
+                              print("test1");
+                              orderProvider.clearPlaceOrder().then((value) {
+                                print("test2");
+                                print(orderProvider.payUrl + "pay urllll");
+                                //context.pop();
+                                RouterHelper.getPaymentRoute(
+                                    orderProvider.payUrl,
+                                    fromCheckout: true);
+                              });
+                            });
 
-                            String webUrl =
-                                "customer_id=${authProvider.getGuestId() ?? profileProvider.userInfoModel!.id}&&is_guest=${authProvider.getGuestId() != null ? '1' : '0'}"
-                                "&&callback=$protocol//$hostname${kDebugMode ? ':$port' : ''}${RouterHelper.orderWebPayment}&&order_amount=${(orderAmount + (deliveryCharge ?? 0)).toStringAsFixed(2)}&&status=";
+                            // String? hostname = html.window.location.hostname;
+                            // String protocol = html.window.location.protocol;
+                            // String port = html.window.location.port;
+                            // final String placeOrder = convert.base64Url.encode(
+                            //     convert.utf8.encode(convert
+                            //         .jsonEncode(placeOrderBody.toJson())));
 
-                            String tokenUrl = convert.base64Encode(convert.utf8
-                                .encode(
-                                    ResponsiveHelper.isWeb() ? (webUrl) : url));
-                            String selectedUrl =
-                                '${AppConstants.baseUrl}/payment-mobile?token=$tokenUrl&&payment_method=${orderProvider.selectedPaymentMethod?.getWay}&&payment_platform=${kIsWeb ? 'web' : 'app'}&&is_partial=${orderProvider.partialAmount == null ? '0' : '1'}';
+                            // String url =
+                            //     "customer_id=${authProvider.getGuestId() ?? profileProvider.userInfoModel!.id}&&is_guest=${authProvider.getGuestId() != null ? '1' : '0'}"
+                            //     "&&callback=${AppConstants.baseUrl}${RouterHelper.orderSuccessScreen}&&order_amount=${(orderAmount + (deliveryCharge ?? 0)).toStringAsFixed(2)}";
 
-                            orderProvider.clearPlaceOrder().then((_) =>
-                                orderProvider
-                                    .setPlaceOrder(placeOrder)
-                                    .then((value) {
-                                  if (kIsWeb) {
-                                    html.window.open(selectedUrl, "_self");
-                                  } else {
-                                    context.pop();
-                                    RouterHelper.getPaymentRoute(selectedUrl,
-                                        fromCheckout: true);
-                                  }
-                                }));
+                            // String webUrl =
+                            //     "customer_id=${authProvider.getGuestId() ?? profileProvider.userInfoModel!.id}&&is_guest=${authProvider.getGuestId() != null ? '1' : '0'}"
+                            //     "&&callback=$protocol//$hostname${kDebugMode ? ':$port' : ''}${RouterHelper.orderWebPayment}&&order_amount=${(orderAmount + (deliveryCharge ?? 0)).toStringAsFixed(2)}&&status=";
+
+                            // String tokenUrl = convert.base64Encode(convert.utf8
+                            //     .encode(
+                            //         ResponsiveHelper.isWeb() ? (webUrl) : url));
+                            // String selectedUrl =
+                            //     '${AppConstants.baseUrl}/payment-mobile?token=$tokenUrl&&payment_method=${orderProvider.selectedPaymentMethod?.getWay}&&payment_platform=${kIsWeb ? 'web' : 'app'}&&is_partial=${orderProvider.partialAmount == null ? '0' : '1'}';
+
+                            // orderProvider.clearPlaceOrder().then((_) =>
+                            //     orderProvider
+                            //         .setPlaceOrder(placeOrder)
+                            //         .then((value) {
+                            //       if (kIsWeb) {
+                            //         html.window.open(selectedUrl, "_self");
+                            //       } else {
+                            //         context.pop();
+                            //         RouterHelper.getPaymentRoute(selectedUrl,
+                            //             fromCheckout: true);
+                            //       }
+                            //     }));
                           }
                         }
                       } else {

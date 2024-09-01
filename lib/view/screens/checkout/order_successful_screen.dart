@@ -18,7 +18,9 @@ import 'package:provider/provider.dart';
 class OrderSuccessfulScreen extends StatefulWidget {
   final String? orderID;
   final int status;
-  const OrderSuccessfulScreen({Key? key, required this.orderID, required this.status}) : super(key: key);
+  const OrderSuccessfulScreen(
+      {Key? key, required this.orderID, required this.status})
+      : super(key: key);
 
   @override
   State<OrderSuccessfulScreen> createState() => _OrderSuccessfulScreenState();
@@ -37,7 +39,8 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     if (_isReload && widget.status == 0) {
-      Provider.of<OrderProvider>(context, listen: false).trackOrder(widget.orderID, fromTracking: false);
+      Provider.of<OrderProvider>(context, listen: false)
+          .trackOrder(widget.orderID, fromTracking: false);
       _isReload = false;
     }
     return Scaffold(
@@ -48,9 +51,14 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
           bool success = true;
 
           if (orderProvider.trackModel != null &&
-              Provider.of<SplashProvider>(context, listen: false).configModel!.loyaltyPointItemPurchasePoint != null) {
+              Provider.of<SplashProvider>(context, listen: false)
+                      .configModel!
+                      .loyaltyPointItemPurchasePoint !=
+                  null) {
             total = ((orderProvider.trackModel!.orderAmount! / 100) *
-                Provider.of<SplashProvider>(context, listen: false).configModel!.loyaltyPointItemPurchasePoint!);
+                Provider.of<SplashProvider>(context, listen: false)
+                    .configModel!
+                    .loyaltyPointItemPurchasePoint!);
           }
 
           return orderProvider.isLoading
@@ -62,7 +70,11 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(Dimensions.paddingSizeDefault,180,Dimensions.paddingSizeDefault,10),
+                          padding: const EdgeInsets.fromLTRB(
+                              Dimensions.paddingSizeDefault,
+                              180,
+                              Dimensions.paddingSizeDefault,
+                              10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -85,7 +97,7 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              Text(
+                            widget.status != 2 ? Text(
                                 getTranslated(
                                   widget.status == 0
                                       ? 'Your order is confirmed'
@@ -95,74 +107,100 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
                                               ? 'order_failed'
                                               : 'payment_cancelled',
                                   context,
-                                )!,
+                                ),
                                 style: const TextStyle(
                                   color: ColorResources.kWhite,
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: Dimensions.paddingSizeSmall),
+                              ):const SizedBox(),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeSmall),
                               if (widget.status == 0)
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${getTranslated('order_id', context)}:',
-                                        style: const TextStyle(color: ColorResources.kWhite)),
-                                    const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                                    Text('${widget.orderID}', style: const TextStyle(color: ColorResources.kWhite)),
+                                    Text(
+                                        '${getTranslated('order_id', context)}:',
+                                        style: const TextStyle(
+                                            color: ColorResources.kWhite)),
+                                    const SizedBox(
+                                        width:
+                                            Dimensions.paddingSizeExtraSmall),
+                                    Text('${widget.orderID}',
+                                        style: const TextStyle(
+                                            color: ColorResources.kWhite)),
                                   ],
                                 ),
                               const SizedBox(height: 30),
                               (widget.status == 0 &&
-                                      Provider.of<AuthProvider>(context, listen: false).isLoggedIn() &&
+                                      Provider.of<AuthProvider>(context,
+                                              listen: false)
+                                          .isLoggedIn() &&
                                       success &&
-                                      Provider.of<SplashProvider>(context).configModel!.loyaltyPointStatus! &&
+                                      Provider.of<SplashProvider>(context)
+                                          .configModel!
+                                          .loyaltyPointStatus! &&
                                       total.floor() > 0)
                                   ? Column(
                                       children: [
                                         Image.asset(
-                                          Provider.of<ThemeProvider>(context, listen: false).darkTheme
+                                          Provider.of<ThemeProvider>(context,
+                                                      listen: false)
+                                                  .darkTheme
                                               ? Images.gifBoxDark
                                               : Images.gifBox,
                                           width: 150,
                                           height: 150,
                                         ),
                                         Text(
-                                          getTranslated('congratulations', context)!,
-                                          style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
+                                          getTranslated(
+                                              'congratulations', context)!,
+                                          style: rubikMedium.copyWith(
+                                              fontSize:
+                                                  Dimensions.fontSizeLarge),
                                         ),
-                                        const SizedBox(height: Dimensions.paddingSizeSmall),
+                                        const SizedBox(
+                                            height:
+                                                Dimensions.paddingSizeSmall),
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal:
+                                                  Dimensions.paddingSizeLarge),
                                           child: Text(
                                             '${getTranslated('you_have_earned', context)!} ${total.floor().toString()} ${getTranslated('points_it_will_add_to', context)!}',
                                             style: robotoRegular.copyWith(
-                                                fontSize: Dimensions.fontSizeLarge,
-                                                color: Theme.of(context).disabledColor),
+                                                fontSize:
+                                                    Dimensions.fontSizeLarge,
+                                                color: Theme.of(context)
+                                                    .disabledColor),
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
                                       ],
                                     )
                                   : const SizedBox.shrink(),
-                              const SizedBox(height:250),
+                              const SizedBox(height: 250),
                               SizedBox(
                                 width: ResponsiveHelper.isDesktop(context)
                                     ? 400
                                     : MediaQuery.of(context).size.width,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
+                                  padding: const EdgeInsets.all(
+                                      Dimensions.paddingSizeLarge),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       CustomButton(
                                         backgroundColor: ColorResources.kWhite,
                                         btnTxt: getTranslated(
                                           widget.status == 0 &&
-                                                  (orderProvider.trackModel?.orderType != 'take_away')
+                                                  (orderProvider.trackModel
+                                                          ?.orderType !=
+                                                      'take_away')
                                               ? 'track_order'
                                               : 'back_home',
                                           context,
@@ -170,11 +208,16 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
                                         textColor: ColorResources.kOrangeColor,
                                         onTap: () {
                                           if (widget.status == 0 &&
-                                              orderProvider.trackModel?.orderType != 'take_away') {
-                                            RouterHelper.getOrderTrackingRoute(int.tryParse('${widget.orderID}'));
+                                              orderProvider
+                                                      .trackModel?.orderType !=
+                                                  'take_away') {
+                                            RouterHelper.getOrderTrackingRoute(
+                                                int.tryParse(
+                                                    '${widget.orderID}'));
                                           } else {
                                             RouterHelper.getMainRoute(
-                                                action: RouteAction.pushNamedAndRemoveUntil);
+                                                action: RouteAction
+                                                    .pushNamedAndRemoveUntil);
                                           }
                                         },
                                       ),
@@ -186,7 +229,8 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
                                         textColor: ColorResources.kWhite,
                                         onTap: () {
                                           RouterHelper.getMainRoute(
-                                              action: RouteAction.pushNamedAndRemoveUntil);
+                                              action: RouteAction
+                                                  .pushNamedAndRemoveUntil);
                                         },
                                       ),
                                     ],
@@ -196,7 +240,8 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
                             ],
                           ),
                         ),
-                        if (ResponsiveHelper.isDesktop(context)) const FooterView(),
+                        if (ResponsiveHelper.isDesktop(context))
+                          const FooterView(),
                       ],
                     ),
                   ),
