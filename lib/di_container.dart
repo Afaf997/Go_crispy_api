@@ -8,6 +8,7 @@ import 'package:flutter_restaurant/data/repository/coupon_repo.dart';
 import 'package:flutter_restaurant/data/repository/location_repo.dart';
 import 'package:flutter_restaurant/data/repository/notification_repo.dart';
 import 'package:flutter_restaurant/data/repository/order_repo.dart';
+import 'package:flutter_restaurant/data/repository/popup_repo.dart';
 import 'package:flutter_restaurant/data/repository/product_repo.dart';
 import 'package:flutter_restaurant/data/repository/language_repo.dart';
 import 'package:flutter_restaurant/data/repository/onboarding_repo.dart';
@@ -29,6 +30,7 @@ import 'package:flutter_restaurant/provider/news_letter_controller.dart';
 import 'package:flutter_restaurant/provider/notification_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/location_provider.dart';
+import 'package:flutter_restaurant/provider/popup_provider.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/provider/language_provider.dart';
 import 'package:flutter_restaurant/provider/onboarding_provider.dart';
@@ -74,6 +76,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CouponRepo(dioClient: sl()));
   sl.registerLazySingleton(() => WishListRepo(dioClient: sl()));
   sl.registerLazySingleton(() => NewsLetterRepo(dioClient: sl()));
+  sl.registerLazySingleton(() => PopupRepo(dioClient: sl()));
   sl.registerLazySingleton(() => WalletRepo(dioClient: sl(), sharedPreferences: sl()));
 
   // Provider
@@ -101,6 +104,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => WalletProvider(walletRepo: sl()));
   sl.registerLazySingleton(() => BranchProvider(splashRepo: sl()));
   sl.registerFactory(() => ReviewProvider(productRepo: sl()));
+  sl.registerFactory(() => PopupProvider(popupRepo: sl()));
 
 
   // External

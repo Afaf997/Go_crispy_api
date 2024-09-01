@@ -11,6 +11,7 @@ import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
 import 'package:flutter_restaurant/provider/location_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
+import 'package:flutter_restaurant/provider/popup_provider.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
@@ -81,13 +82,56 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      final locationProvider =
-          Provider.of<LocationProvider>(context, listen: false);
-      Provider.of<ProductProvider>(context, listen: false)
-          .getLatestProductList(true, '1');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<PopupProvider>(context, listen: false).initPopupList(context); // Initialize the popup list
+      _showPopupImage(); 
+      final locationProvider = Provider.of<LocationProvider>(context, listen: false);
+      Provider.of<ProductProvider>(context, listen: false).getLatestProductList(true, '1');
     });
   }
+
+void _showPopupImage() {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return Consumer<PopupProvider>(
+        builder: (BuildContext context, PopupProvider provider, Widget? child) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20), // Apply border radius to the dialog
+            ),
+            child: Stack(
+              children: [
+                provider.popupList != null && provider.popupList!.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(20), // Apply border radius to the image
+                        child: Image.network(
+                          provider.popupList!.first.image ?? Images.placeholderImage,
+                          fit: BoxFit.cover,
+                          height: 350,
+                        ),
+                      )
+                    : const SizedBox(), 
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: IconButton(
+                    icon: const Icon(Icons.close, color: Colors.black),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
+
 
   @override
   Widget build(BuildContext context) {

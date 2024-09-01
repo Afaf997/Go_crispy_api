@@ -26,6 +26,7 @@ import 'package:flutter_restaurant/provider/news_letter_controller.dart';
 import 'package:flutter_restaurant/provider/notification_provider.dart';
 import 'package:flutter_restaurant/provider/onboarding_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
+import 'package:flutter_restaurant/provider/popup_provider.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/review_provider.dart';
@@ -117,6 +118,7 @@ Future<void> main() async {
 
   runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider(create: (context) => di.sl<PopupProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<ThemeProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<SplashProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<LanguageProvider>()),
