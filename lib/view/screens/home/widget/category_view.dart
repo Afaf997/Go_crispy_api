@@ -18,7 +18,7 @@ class CategoryView extends StatelessWidget {
     return Consumer<CategoryProvider>(
       builder: (context, category, child) {
         if (category.categoryList == null) {
-          return const Center(child: CircularProgressIndicator());
+          return const SizedBox();
         }
 
         if (category.categoryList!.isEmpty) {

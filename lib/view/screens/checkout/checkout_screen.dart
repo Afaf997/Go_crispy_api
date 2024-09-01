@@ -624,15 +624,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ),
                             onPressed: () {
                               if (widget.orderType == "take_away" ||
-                                  widget.orderType == "car_hop") {
+                                    widget.orderType == "car_hop") {
                                 if (orderProvider.selectedPaymentMethod ==
                                     null) {
                                   showCustomNotification(
                                       context, "Please select payment method",
                                       type: NotificationType.warning);
                                 } else {
-                                        print(deliveryCharge);
-                                        print("afaf");
                                   showDeliveryFeeDialog(
                                     context,
                                     deliveryCharge,

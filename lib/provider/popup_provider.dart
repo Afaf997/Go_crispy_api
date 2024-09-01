@@ -9,17 +9,24 @@ class PopupProvider extends ChangeNotifier {
   final PopupRepo popupRepo;
 
   PopupProvider({required this.popupRepo});
-
+   bool popuploading =false;
   List<PopupModel>? _popupList;
 
   List<PopupModel>? get popupList => _popupList; // Add a getter for popupList
 
   Future<void> initPopupList(BuildContext context) async {
+    popuploading=true;
+    notifyListeners();
     ApiResponse apiResponse = await popupRepo.getPopupList();
     if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
+
       _popupList = [];
       apiResponse.response!.data.forEach((notificatioModel) => _popupList!.add(PopupModel.fromJson(notificatioModel)));
-      notifyListeners(); // Notify listeners after updating the list
+      notifyListeners();
+      Future.delayed(Duration(seconds: 3),(){
+        popuploading=false; 
+        notifyListeners();
+      });
     } else {
       ApiChecker.checkApi(apiResponse);
     }

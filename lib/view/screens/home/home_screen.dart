@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/config_model.dart';
 import 'package:flutter_restaurant/helper/product_type.dart';
@@ -30,6 +31,7 @@ import 'package:flutter_restaurant/view/screens/home/widget/main_slider.dart'as 
 import 'package:flutter_restaurant/view/screens/home/widget/product_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool fromAppBar;
@@ -82,15 +84,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<PopupProvider>(context, listen: false).initPopupList(context); // Initialize the popup list
-      _showPopupImage(); 
-      final locationProvider = Provider.of<LocationProvider>(context, listen: false);
+      Future.microtask(()async{
+         await Provider.of<PopupProvider>(context, listen: false).initPopupList(context);
+          SharedPreferences pref =await SharedPreferences.getInstance();
+         bool start =  pref.getBool("start") ?? false;
+         start?  _showPopupImage(): log("its false") ;
+         final locationProvider = Provider.of<LocationProvider>(context, listen: false);
       Provider.of<ProductProvider>(context, listen: false).getLatestProductList(true, '1');
-    });
+      });
   }
 
-void _showPopupImage() {
+void _showPopupImage() async{
   showDialog(
     context: context,
     builder: (context) {
@@ -108,7 +112,6 @@ void _showPopupImage() {
                         child: Image.network(
                           provider.popupList!.first.image ?? Images.placeholderImage,
                           fit: BoxFit.cover,
-                          height: 350,
                         ),
                       )
                     : const SizedBox(), 
@@ -129,6 +132,8 @@ void _showPopupImage() {
       );
     },
   );
+  SharedPreferences pref =await SharedPreferences.getInstance();
+   await pref.setBool("start",false);
 }
 
 
