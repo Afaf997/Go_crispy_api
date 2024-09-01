@@ -3,7 +3,9 @@ import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/confirm_button_view.dart';
 
-void showDeliveryFeeDialog(BuildContext context, double deliveryCharge, double subtotal, {required ConfirmButtonView confirmButtonView}) {
+void showDeliveryFeeDialog(
+    BuildContext context, double deliveryCharge, double subtotal,
+    {required ConfirmButtonView confirmButtonView}) {
   final double total = deliveryCharge + subtotal;
 
   showDialog(
@@ -27,7 +29,8 @@ void showDeliveryFeeDialog(BuildContext context, double deliveryCharge, double s
                 style: TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 16),
-              Text('${subtotal.toStringAsFixed(0)}QR',
+              Text(
+                '${deliveryCharge.toStringAsFixed(0)}QR',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -47,7 +50,8 @@ void showDeliveryFeeDialog(BuildContext context, double deliveryCharge, double s
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Delivery fee'),
-                  Text('${deliveryCharge.toStringAsFixed(2)} QR'), // Show delivery fee here
+                  Text(
+                      '${deliveryCharge.toStringAsFixed(2)} QR'), // Show delivery fee here
                 ],
               ),
               const Divider(),
@@ -56,8 +60,7 @@ void showDeliveryFeeDialog(BuildContext context, double deliveryCharge, double s
                 children: [
                   const Text(
                     'Total',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   Text(
                     '${total.toStringAsFixed(2)} QR',

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -50,6 +51,8 @@ class OrderProvider extends ChangeNotifier {
   bool _isRestaurantCloseShow = true;
   PaymentMethod? _paymentMethod;
   PaymentMethod? _selectedPaymentMethod;
+  String payUrl = "";
+  String orderId = "";
   double? _partialAmount;
   OfflinePaymentModel? _selectedOfflineMethod;
   List<Map<String, String>>? _selectedOfflineValue;
@@ -204,10 +207,10 @@ class OrderProvider extends ChangeNotifier {
       );
     } else if (index != null && index == 1) {
       _selectedPaymentMethod = PaymentMethod(
-        getWayTitle: getTranslated('wallet_payment', Get.context!),
+        getWayTitle: "Skip Cash",
         getWay: 'skip_cash',
         type: 'skip_cash',
-      ); 
+      );
     } else {
       _selectedPaymentMethod = null;
     }
@@ -273,24 +276,80 @@ class OrderProvider extends ChangeNotifier {
 
   Future<void> placeOrder(PlaceOrderBody placeOrderBody, Function callback,
       {bool isUpdate = true}) async {
-    _isLoading = true;
-    if (isUpdate) {
-      notifyListeners();
-    }
-    ApiResponse apiResponse = await orderRepo!.placeOrder(
-      placeOrderBody,
-      guestId:
-          Provider.of<AuthProvider>(Get.context!, listen: false).getGuestId(),
-    );
-    _isLoading = false;
-    if (apiResponse.response != null &&
-        apiResponse.response!.statusCode == 200) {
-      String? message = apiResponse.response!.data['message'];
-      String orderID = apiResponse.response!.data['order_id'].toString();
-      callback(true, message, orderID, placeOrderBody.deliveryAddressId);
-    } else {
-      callback(
-          false, ApiChecker.getError(apiResponse).errors![0].message, '-1', -1);
+    print("test api 1");
+    try {
+      _isLoading = true;
+      if (isUpdate) {
+        notifyListeners();
+        print("test api 2");
+      }
+
+      ApiResponse apiResponse = await orderRepo!.placeOrder(
+        placeOrderBody,
+        guestId:
+            Provider.of<AuthProvider>(Get.context!, listen: false).getGuestId(),
+      );
+      print("test api 3");
+      _isLoading = false;
+
+      if (apiResponse.response != null &&
+          apiResponse.response!.statusCode == 200) {
+        // Handle the response data correctly
+        var responseData = apiResponse.response!.data;
+        print(responseData.toString() + " dataaa");
+
+        try {
+          // Ensure responseData is parsed into a Map<String, dynamic>
+          Map<String, dynamic> parsedJson;
+
+          if (responseData is String) {
+            // Check if the responseData contains a JSON part
+            List<String> parts = responseData.split('\n'); // Split by newline
+            String jsonPart =
+                parts.last.trim(); // Get the last part assuming it's JSON
+
+            // Parse the JSON part if it starts with '{' and ends with '}'
+            if (jsonPart.startsWith('{') && jsonPart.endsWith('}')) {
+              parsedJson = jsonDecode(jsonPart);
+            } else {
+              throw Exception('Invalid JSON format in the response');
+            }
+          } else if (responseData is Map<String, dynamic>) {
+            parsedJson = responseData; // Directly assign if already a Map
+          } else {
+            throw Exception('Unexpected response format');
+          }
+
+          // Extract the required fields with null checks
+          String? message = parsedJson['message'] as String?;
+          String? orderID =
+              parsedJson['order_id']?.toString(); // Convert to string if needed
+          String paymentUrl = parsedJson['url'] as String? ??
+              ''; // Set to empty string if not present
+
+          if (message != null && orderID != null) {
+            print('Message: $message');
+            print('Order ID: $orderID');
+            print('Payment URL: $paymentUrl');
+            payUrl = paymentUrl;
+            orderId = orderID;
+
+            // Callback with extracted values
+            callback(true, message, orderID, placeOrderBody.deliveryAddressId);
+          } else {
+            print('Error: Missing required fields in the response.');
+          }
+        } catch (jsonError) {
+          print('Error parsing JSON: $jsonError');
+        }
+      } else {
+        callback(false, ApiChecker.getError(apiResponse).errors![0].message,
+            '-1', -1);
+      }
+    } catch (e, s) {
+      print(e.toString());
+      print(s.toString());
+      print("Exception occurred while processing the response.");
     }
 
     notifyListeners();
