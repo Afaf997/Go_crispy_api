@@ -218,7 +218,6 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                 : const SizedBox(),
                           ]),
 
-
                           Row(
                             children: [
                               Expanded(
@@ -291,11 +290,14 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                                         widget.totalPrice));
                                       }
                                     } else {
+                                      print("this is here");
+                                      print(orderProvider.paymentMethod);
+                                      print(orderProvider.paymentMethodIndex);
                                       orderProvider.savePaymentMethod(
                                           index:
                                               orderProvider.paymentMethodIndex,
                                           method: orderProvider.paymentMethod);
-                                          
+
                                       context.pop();
                                     }
                                   },
