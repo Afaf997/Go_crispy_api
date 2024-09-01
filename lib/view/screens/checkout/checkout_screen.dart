@@ -230,7 +230,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       children: [
                                         Text(
                                             getTranslated(
-                                                'delivery_address_and_time',
+                                                'delivery address',
                                                 context)!,
                                             style: const TextStyle(
                                                 fontSize: 16,

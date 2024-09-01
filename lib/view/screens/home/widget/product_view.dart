@@ -4,6 +4,7 @@ import 'package:flutter_restaurant/helper/product_type.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/product_widget.dart';
@@ -96,11 +97,11 @@ class ProductView extends StatelessWidget {
                         : const EdgeInsets.all(0),
                     child: ResponsiveHelper.isDesktop(context)
                         ? prodProvider.isLoading
-                            ? Center(
+                            ? const Center(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                                  padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
                                   child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
+                                      valueColor: AlwaysStoppedAnimation<Color>(ColorResources.kOrangeColor)),
                                 ),
                               )
                             : (productProvider.latestOffset ==
@@ -127,11 +128,11 @@ class ProductView extends StatelessWidget {
                                     ),
                                   )
                         : prodProvider.isLoading
-                            ? Center(
+                            ? const Center(
                                 child: Padding(
-                                padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                                padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
                                 child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                                  valueColor: AlwaysStoppedAnimation<Color>(ColorResources.kOrangeColor),
                                 ),
                               ))
                             : const SizedBox.shrink(),
