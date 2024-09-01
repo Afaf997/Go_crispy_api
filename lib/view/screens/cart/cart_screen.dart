@@ -17,6 +17,7 @@ import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
+import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/screens/branch/branch_list_screen.dart';
@@ -481,6 +482,13 @@ class _CartScreenState extends State<CartScreen> {
                                                                   //    showCustomSnackBar('You got ${PriceConverter.convertPrice(discount)} discount', isError: false);
                                                                 } else {
                                                                   // showCustomSnackBar(getTranslated('invalid_code_or', context), isError: true);
+                                                                  showCustomNotification(
+                                                                      context,
+                                                                      getTranslated(
+                                                                          'invalid_code_or',
+                                                                          context),
+                                                                      type: NotificationType
+                                                                          .error);
                                                                 }
                                                               });
                                                             } else {
