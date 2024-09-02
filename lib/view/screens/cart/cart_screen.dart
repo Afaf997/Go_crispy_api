@@ -82,20 +82,21 @@ class _CartScreenState extends State<CartScreen> {
                   Expanded(
                     flex: 3,
                     child: Container(
-                        height: containerHeight,
-                        padding: EdgeInsets.all(horizontalPadding / 2),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: ColorResources.klgreyColor),
-                          borderRadius: BorderRadius.circular(15.0),
-                          color: ColorResources.kColorgrey,
+                      height: containerHeight,
+                      padding: EdgeInsets.all(horizontalPadding / 1),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: ColorResources.klgreyColor),
+                        borderRadius: BorderRadius.circular(15.0),
+                        color: ColorResources.kColorgrey,
+                      ),
+                      child: TextField(
+                        controller: orderProvider.vehicleNumberController,
+                        textAlign: TextAlign.start, // Horizontally center tex
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
                         ),
-                        child: Center(
-                          child: TextField(
-                            decoration:
-                                const InputDecoration(border: InputBorder.none),
-                            controller: orderProvider.vehicleNumberController,
-                          ),
-                        )),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -130,23 +131,19 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           Consumer<BranchProvider>(
                             builder: (context, branchProvider, _) {
-                              if (branchProvider.getBranchId() == -1)
+                              if (branchProvider.getBranchId() == -1) {
                                 return SizedBox();
+                              }
 
-                              List<Branches?> sortedBranches =
-                                  List.from(branchProvider.branches);
+                              List<Branches?> sortedBranches = List.from(branchProvider.branches);
                               sortedBranches.sort((a, b) {
-                                if (a!.id == branchProvider.getBranchId())
-                                  return -1;
-                                if (b!.id == branchProvider.getBranchId())
-                                  return 1;
+                                if (a!.id == branchProvider.getBranchId()) return -1;
+                                if (b!.id == branchProvider.getBranchId()) return 1;
                                 return 0;
                               });
 
                               return Text(
-                                sortedBranches.isNotEmpty
-                                    ? sortedBranches[0]!.name ?? ''
-                                    : '',
+                                sortedBranches.isNotEmpty ? sortedBranches[0]!.name ?? '' : '',
                                 style: const TextStyle(
                                   color: ColorResources.kblack,
                                   fontSize: 14.0,
@@ -158,20 +155,21 @@ class _CartScreenState extends State<CartScreen> {
                             },
                           ),
                           GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  useSafeArea: true,
-                                  builder: (context) {
-                                    return const BranchListScreen(
-                                      useNavigator: true,
-                                      istakeAway: true,
-                                    );
-                                  },
-                                );
-                              },
-                              child: Image.asset(Images.mapicon)),
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                builder: (context) {
+                                  return const BranchListScreen(
+                                    useNavigator: true,
+                                    istakeAway: true,
+                                  );
+                                },
+                              );
+                            },
+                            child: Image.asset(Images.mapicon),
+                          ),
                         ],
                       ),
                     ),
@@ -204,23 +202,19 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           Consumer<BranchProvider>(
                             builder: (context, branchProvider, _) {
-                              if (branchProvider.getBranchId() == -1)
+                              if (branchProvider.getBranchId() == -1) {
                                 return SizedBox();
+                              }
 
-                              List<Branches?> sortedBranches =
-                                  List.from(branchProvider.branches);
+                              List<Branches?> sortedBranches = List.from(branchProvider.branches);
                               sortedBranches.sort((a, b) {
-                                if (a!.id == branchProvider.getBranchId())
-                                  return -1;
-                                if (b!.id == branchProvider.getBranchId())
-                                  return 1;
+                                if (a!.id == branchProvider.getBranchId()) return -1;
+                                if (b!.id == branchProvider.getBranchId()) return 1;
                                 return 0;
                               });
 
                               return Text(
-                                sortedBranches.isNotEmpty
-                                    ? sortedBranches[0]!.name ?? ''
-                                    : '',
+                                sortedBranches.isNotEmpty ? sortedBranches[0]!.name ?? '' : '',
                                 style: const TextStyle(
                                   color: ColorResources.kblack,
                                   fontSize: 14.0,
@@ -232,21 +226,21 @@ class _CartScreenState extends State<CartScreen> {
                             },
                           ),
                           GestureDetector(
-                              onTap: () {
-                                // GoRouter.of(context).go('/branch-list');
-                                showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  useSafeArea: true,
-                                  context: context,
-                                  builder: (context) {
-                                    return const BranchListScreen(
-                                      useNavigator: true,
-                                      istakeAway: true,
-                                    );
-                                  },
-                                );
-                              },
-                              child: Image.asset(Images.mapicon)),
+                            onTap: () {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                context: context,
+                                builder: (context) {
+                                  return const BranchListScreen(
+                                    useNavigator: true,
+                                    istakeAway: true,
+                                  );
+                                },
+                              );
+                            },
+                            child: Image.asset(Images.mapicon),
+                          ),
                         ],
                       ),
                     ),
@@ -254,14 +248,14 @@ class _CartScreenState extends State<CartScreen> {
                 ],
               ),
             ),
-          ]
+          ],
         ],
       );
     } else {
-      return SizedBox
-          .shrink(); // Empty space if neither take away nor car hop is selected
+      return const SizedBox.shrink(); // Empty space if neither take away nor car hop is selected
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -419,128 +413,93 @@ class _CartScreenState extends State<CartScreen> {
                                                         availableList),
 
                                               // Coupon
-                                              Consumer<CouponProvider>(
-                                                builder:
-                                                    (context, coupon, child) {
-                                                  return IntrinsicHeight(
-                                                    child: Row(children: [
-                                                      Expanded(
-                                                          child: TextField(
-                                                        controller:
-                                                            _couponController,
-                                                        style: rubikRegular,
-                                                        decoration:
-                                                            InputDecoration(
-                                                          hintText: getTranslated(
-                                                              'enter_promo_code',
-                                                              context),
-                                                          hintStyle: rubikRegular.copyWith(
-                                                              color: ColorResources
-                                                                  .getHintColor(
-                                                                      context)),
-                                                          isDense: true,
-                                                          filled: true,
-                                                          enabled:
-                                                              coupon.discount ==
-                                                                  0,
-                                                          fillColor:
-                                                              ColorResources
-                                                                  .kColorgrey,
-                                                          border:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15.0),
-                                                            borderSide:
-                                                                BorderSide.none,
-                                                          ),
-                                                        ),
-                                                      )),
-                                                      const SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      InkWell(
-                                                        onTap: () {
-                                                          if (_couponController
-                                                                  .text
-                                                                  .isNotEmpty &&
-                                                              !coupon
-                                                                  .isLoading) {
-                                                            if (coupon
-                                                                    .discount! <
-                                                                1) {
-                                                              coupon
-                                                                  .applyCoupon(
-                                                                      _couponController
-                                                                          .text,
-                                                                      total)
-                                                                  .then(
-                                                                      (discount) {
-                                                                if (discount! >
-                                                                    0) {
-                                                                  //    showCustomSnackBar('You got ${PriceConverter.convertPrice(discount)} discount', isError: false);
-                                                                } else {
-                                                                  // showCustomSnackBar(getTranslated('invalid_code_or', context), isError: true);
-                                                                  showCustomNotification(
-                                                                      context,
-                                                                      getTranslated(
-                                                                          'invalid_code_or',
-                                                                          context),
-                                                                      type: NotificationType
-                                                                          .error);
-                                                                }
-                                                              });
-                                                            } else {
-                                                              coupon
-                                                                  .removeCouponData(
-                                                                      true);
-                                                            }
-                                                          } else if (_couponController
-                                                              .text.isEmpty) {
-                                                            // showCustomSnackBar(getTranslated('enter_a_Couponcode', context));
-                                                          }
-                                                        },
-                                                        child: Container(
-                                                          width: 100,
-                                                          alignment:
-                                                              Alignment.center,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Colors.black,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15.0),
-                                                          ),
-                                                          child: coupon
-                                                                      .discount! <=
-                                                                  0
-                                                              ? !coupon
-                                                                      .isLoading
-                                                                  ? Text(
-                                                                      getTranslated(
-                                                                          'apply',
-                                                                          context),
-                                                                      style: rubikMedium.copyWith(
-                                                                          color:
-                                                                              Colors.white),
-                                                                    )
-                                                                  : const CircularProgressIndicator(
-                                                                      valueColor: AlwaysStoppedAnimation<
-                                                                              Color>(
-                                                                          Colors
-                                                                              .white))
-                                                              : const Icon(
-                                                                  Icons.clear,
-                                                                  color: Colors
-                                                                      .white),
-                                                        ),
-                                                      ),
-                                                    ]),
-                                                  );
-                                                },
-                                              ),
+                                         Consumer<CouponProvider>(
+  builder: (context, coupon, child) {
+    return IntrinsicHeight(
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _couponController,
+              style: rubikRegular,
+              decoration: InputDecoration(
+                hintText: getTranslated('enter_promo_code', context),
+                hintStyle: rubikRegular.copyWith(
+                  color: ColorResources.getHintColor(context),
+                ),
+                isDense: true,
+                filled: true,
+                enabled: coupon.discount == 0,
+                fillColor: ColorResources.kColorgrey,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          InkWell(
+            onTap: () {
+              if (_couponController.text.isNotEmpty && !coupon.isLoading) {
+                if (coupon.discount! < 1) {
+                  coupon.applyCoupon(_couponController.text, total).then(
+                    (discount) {
+                      if (discount! > 0) {
+                        // Show success notification
+                        // showCustomNotification(
+                        //   context,
+                        //   'You got ${PriceConverter.convertPrice(discount)} discount!',
+                        //   type: NotificationType.success,
+                        // );
+                      } else {
+                        // Show error notification
+                        showCustomNotification(
+                          context,
+                          getTranslated('invalid_code_or', context),
+                          type: NotificationType.error,
+                        );
+                      }
+                    },
+                  );
+                } else {
+                  coupon.removeCouponData(true);
+                }
+              } else if (_couponController.text.isEmpty) {
+                showCustomNotification(
+                  context,
+                  'Enter a coupon code',
+                  type: NotificationType.warning,
+                );
+              }
+            },
+            child: Container(
+              width: 100,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: coupon.discount! <= 0
+                  ? !coupon.isLoading
+                      ? Text(
+                          getTranslated('apply', context),
+                          style: rubikMedium.copyWith(color: Colors.white),
+                        )
+                      : const CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white,
+                          ),
+                        )
+                  : const Icon(Icons.clear, color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  },
+),
+
 
                                               const SizedBox(
                                                   height: Dimensions
@@ -636,19 +595,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 subTitle:
                                                     '${PriceConverter.convertPrice(addOns)}',
                                               ),
-                                              const SizedBox(height: 10),
-
-                                              ItemView(
-                                                title: getTranslated(
-                                                    'discount', context),
-                                                subTitle:
-                                                    '${PriceConverter.convertPrice(discount)}',
-                                                subTitleStyle: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: ColorResources
-                                                        .kredcolor),
-                                              ),
+                                  
                                               const SizedBox(height: 10),
                                               ItemView(
                                                 title: getTranslated(

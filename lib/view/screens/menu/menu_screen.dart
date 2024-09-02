@@ -23,11 +23,6 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final SplashProvider splashProvider = Provider.of<SplashProvider>(context, listen: false);
 
@@ -101,41 +96,40 @@ class _MenuScreenState extends State<MenuScreen> {
                                           style: rubikRegular.copyWith(
                                               fontSize: Dimensions.fontSizeExtraLarge, color: Colors.white),
                                         ),
-                                  if (authProvider.isLoggedIn() && profileProvider.userInfoModel != null)
+                                  if (authProvider.isLoggedIn() && profileProvider.userInfoModel != null) ...[
                                     Text(
                                       profileProvider.userInfoModel!.email ?? '',
                                       style: rubikRegular.copyWith(color: Colors.white),
                                     ),
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Text(
-                                        "QR",
-                                        style: TextStyle(
-                                            fontSize: 32,
-                                            fontWeight: FontWeight.w700,
-                                            color: ColorResources.kWhite),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        '${profileProvider.userInfoModel?.walletBalance ?? ''}',
-                                        style: const TextStyle(
-                                            fontSize: 32,
-                                            fontWeight: FontWeight.w700,
-                                            color: ColorResources.kWhite),
-                                      ),
-                                      
-                                    ],
-                                  ),
-                                  const Text(
-                                        "Wallet Amount",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: ColorResources.kWhite),
-                                      ),
-                            
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        const Text(
+                                          "QR",
+                                          style: TextStyle(
+                                              fontSize: 32,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResources.kWhite),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          '${profileProvider.userInfoModel?.walletBalance ?? ''}',
+                                          style: const TextStyle(
+                                              fontSize: 32,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResources.kWhite),
+                                        ),
+                                      ],
+                                    ),
+                                    const Text(
+                                      "Wallet Amount",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: ColorResources.kWhite),
+                                    ),
+                                  ]
                                 ],
                               ),
                             ],

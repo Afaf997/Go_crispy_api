@@ -102,13 +102,13 @@ void _showPopupImage() async{
         builder: (BuildContext context, PopupProvider provider, Widget? child) {
           return Dialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20), // Apply border radius to the dialog
+              borderRadius: BorderRadius.circular(20), 
             ),
             child: Stack(
               children: [
                 provider.popupList != null && provider.popupList!.isNotEmpty
                     ? ClipRRect(
-                        borderRadius: BorderRadius.circular(20), // Apply border radius to the image
+                        borderRadius: BorderRadius.circular(20),
                         child: Image.network(
                           provider.popupList!.first.image ?? Images.placeholderImage,
                           fit: BoxFit.cover,

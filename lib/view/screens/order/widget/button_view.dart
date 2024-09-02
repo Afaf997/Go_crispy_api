@@ -35,7 +35,7 @@ class ButtonView extends StatelessWidget {
                       minimumSize: const Size(1, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
-                        side:const BorderSide(width: 2, color: ColorResources.kblack),
+                        side:const BorderSide(width: 1, color: ColorResources.borderColor),
                       ),
                     ),
                     onPressed: () {
@@ -59,6 +59,7 @@ class ButtonView extends StatelessWidget {
                       style: Theme.of(context).textTheme.displaySmall!.copyWith(
                         color: ColorResources.kblack,
                         fontSize: Dimensions.fontSizeLarge,
+                        
                       ),
                     ),
                   ),
@@ -74,7 +75,7 @@ class ButtonView extends StatelessWidget {
               margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                border: Border.all(width: 2, color: Theme.of(context).primaryColor),
+                border: Border.all(width: 1, color: Theme.of(context).primaryColor),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(

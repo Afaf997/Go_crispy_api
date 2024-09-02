@@ -85,7 +85,7 @@ class ConfirmButtonView extends StatelessWidget {
                         DateTime scheduleEndDate = DateTime.now();
                         if (orderProvider.timeSlots == null ||
                             orderProvider.timeSlots!.isEmpty) {
-                          isAvailable = false;
+                            isAvailable = false;
                         } else {
                           DateTime date = orderProvider.selectDateSlot == 0
                               ? DateTime.now()
@@ -146,11 +146,9 @@ class ConfirmButtonView extends StatelessWidget {
                             orderProvider.timeSlots!.isEmpty) {
                           showCustomNotification(
                             context,
-                            getTranslated('select_a_time', context),
-                          );
+                            getTranslated('select_a_time', context),);
                         } else if (!isAvailable) {
-                          showCustomNotification(
-                            context,
+                          showCustomNotification(context,
                             getTranslated(
                                 'one_or_more_products_are_not_available_for_this_selected_time',
                                 context),
