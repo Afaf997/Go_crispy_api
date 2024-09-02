@@ -4,13 +4,13 @@ import 'package:flutter_restaurant/utill/images.dart';
 
 class AppConstants {
 
-static const String otp ='https://interfuel.qa/go-crispy/api/v1/auth/confirm-otp' ;//by default1234 annu
-static const String registrationApi ='https://interfuel.qa/go-crispy/api/v1/auth/registration';
-static const String phoneApi ='https://interfuel.qa/go-crispy/api/v1/auth/sent-mobile-number';
+static const String otp ='https://project.artisans.qa/go-crispy/api/v1/auth/confirm-otp' ;//by default1234 annu
+static const String registrationApi ='https://project.artisans.qa/go-crispy/api/v1/auth/registration';
+static const String phoneApi ='https://project.artisans.qa/go-crispy/api/v1/auth/sent-mobile-number';
   static const String appName = 'Go_Crispy';
   static const String appVersion = '10.2';
   static const AppMode appMode = AppMode.release;
-  static const String baseUrl =  'https://interfuel.qa/go-crispy';
+  static const String baseUrl =  'https://project.artisans.qa/go-crispy';
   static const String categoryUri = '/api/v1/categories';
   static const String bannerUri = '/api/v1/banners';
    static const String popupUri ='/api/v1/popup';
