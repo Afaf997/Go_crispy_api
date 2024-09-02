@@ -6,6 +6,7 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/review_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
@@ -52,6 +53,7 @@ class _RateReviewScreenState extends State<RateReviewScreen> with TickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorResources.kWhite,
       appBar: (ResponsiveHelper.isDesktop(context) ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar()) : CustomAppBar(context: context, title: getTranslated('rate_review', context))) as PreferredSizeWidget?,
 
       body: Consumer<OrderProvider>(builder: (context, orderProvider, _) {
@@ -59,7 +61,7 @@ class _RateReviewScreenState extends State<RateReviewScreen> with TickerProvider
           Center(
             child: Container(
               width: Dimensions.webScreenWidth,
-              color: Theme.of(context).cardColor,
+              color:  ColorResources.kWhite,
               child: TabBar(
                 controller: _tabController,
                 labelColor: Theme.of(context).textTheme.bodyLarge!.color,

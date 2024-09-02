@@ -266,9 +266,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                       // showCustomSnackBar(getTranslated('enter_confirm_password', context));
                                     }else if(password != confirmPassword) {
                                       // showCustomSnackBar(getTranslated('password_did_not_match', context));
-                                    }
+                                    }else if (email.isEmpty) {
+                                      // showCustomSnackBar(getTranslated('enter_email_address', context));
+                                    }else if (EmailChecker.isNotValid(email)) {
                                       // showCustomSnackBar(getTranslated('enter_valid_email', context));
-else {
+                                    }else {
                                       SignUpModel signUpModel = SignUpModel(
                                         fName: firstName,
                                         lName: lastName,

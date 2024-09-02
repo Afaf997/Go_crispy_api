@@ -469,10 +469,9 @@ class _BranchListScreenState extends State<BranchListScreen> {
       print("here now");
       Navigator.pop(context);
     } else {
-      print("tyhis is here");
       RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
     }
-    showCustomNotification(context, 'branch_successfully_selected',
+    showCustomNotification(context, 'Branch Successfully Selected',
         type: NotificationType.success);
     // if (istakeAway!) {
     //   print("trueeeee");

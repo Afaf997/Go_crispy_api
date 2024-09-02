@@ -5,6 +5,7 @@ import 'package:flutter_restaurant/helper/date_converter.dart';
 import 'package:flutter_restaurant/helper/price_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
+import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/coupon_provider.dart';
@@ -412,8 +413,8 @@ class _CartScreenState extends State<CartScreen> {
                                                     availableList:
                                                         availableList),
 
-                                              // Coupon
-                                         Consumer<CouponProvider>(
+                            
+Consumer<CouponProvider>(
   builder: (context, coupon, child) {
     return IntrinsicHeight(
       child: Row(
@@ -441,36 +442,43 @@ class _CartScreenState extends State<CartScreen> {
           const SizedBox(width: 10),
           InkWell(
             onTap: () {
-              if (_couponController.text.isNotEmpty && !coupon.isLoading) {
-                if (coupon.discount! < 1) {
-                  coupon.applyCoupon(_couponController.text, total).then(
-                    (discount) {
-                      if (discount! > 0) {
-                        // Show success notification
-                        // showCustomNotification(
-                        //   context,
-                        //   'You got ${PriceConverter.convertPrice(discount)} discount!',
-                        //   type: NotificationType.success,
-                        // );
-                      } else {
-                        // Show error notification
-                        showCustomNotification(
-                          context,
-                          getTranslated('invalid_code_or', context),
-                          type: NotificationType.error,
-                        );
-                      }
-                    },
-                  );
-                } else {
-                  coupon.removeCouponData(true);
-                }
-              } else if (_couponController.text.isEmpty) {
+              if (!Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
                 showCustomNotification(
                   context,
-                  'Enter a coupon code',
+                  'Please log in to apply a coupon',
                   type: NotificationType.warning,
                 );
+              } else {
+                if (_couponController.text.isNotEmpty && !coupon.isLoading) {
+                  if (coupon.discount! < 1) {
+                    coupon.applyCoupon(_couponController.text, total).then(
+                      (discount) {
+                        if (discount! > 0) {
+                          // Show success notification
+                          showCustomNotification(
+                            context,
+                            'You got ${PriceConverter.convertPrice(discount)} discount!',
+                            type: NotificationType.success,
+                          );
+                        } else {
+                          showCustomNotification(
+                            context,
+                            getTranslated('invalid_code_or', context),
+                            type: NotificationType.error,
+                          );
+                        }
+                      },
+                    );
+                  } else {
+                    coupon.removeCouponData(true);
+                  }
+                } else if (_couponController.text.isEmpty) {
+                  showCustomNotification(
+                    context,
+                    'Enter a coupon code',
+                    type: NotificationType.warning,
+                  );
+                }
               }
             },
             child: Container(
@@ -593,9 +601,14 @@ class _CartScreenState extends State<CartScreen> {
                                                 title: getTranslated(
                                                     'addons', context),
                                                 subTitle:
-                                                    '${PriceConverter.convertPrice(addOns)}',
+                                                    PriceConverter.convertPrice(addOns),
+                                              ),         const SizedBox(height: 10),
+                                             ItemView(
+                                                title: getTranslated(
+                                                    'Discount ', context),
+                                                  subTitle: PriceConverter.convertPrice(discount),
+                                                  
                                               ),
-                                  
                                               const SizedBox(height: 10),
                                               ItemView(
                                                 title: getTranslated(

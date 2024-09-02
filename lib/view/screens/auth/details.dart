@@ -164,6 +164,11 @@ class _ContactDetailsState extends State<ContactDetails> {
                 hintText: 'Enter your email',
                 focusNode: _emailFocusNode,
                 keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';}
+                  return null;
+                },
               ),
               const SizedBox(height: 120.0),
               CustomButton(
