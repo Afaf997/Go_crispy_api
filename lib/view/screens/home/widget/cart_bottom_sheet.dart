@@ -32,6 +32,7 @@ class CartBottomSheet extends StatefulWidget {
   final CartModel? cart;
   final int? cartIndex;
   final bool fromCart;
+  
 
   const CartBottomSheet(
       {Key? key,

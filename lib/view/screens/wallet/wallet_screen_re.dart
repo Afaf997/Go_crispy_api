@@ -191,7 +191,7 @@ class _WalletScreenReState extends State<WalletScreenRe> {
                                                                 ? 'enters_point_amount' : walletProvider.selectedTabButtonIndex == 1
                                                                 ? 'point_earning_history' : 'point_converted_history', context,
 
-                                                          )),
+                                                          ), textStyle: TextStyle(),),
                                                         ),
                                                         walletProvider.transactionList != null ? walletProvider.transactionList!.isNotEmpty ? GridView.builder(
                                                           key: UniqueKey(),

@@ -29,7 +29,7 @@ class CategoryView extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-              child: TitleWidget(title: getTranslated('category', context)),
+              child: TitleWidget(title: getTranslated('category', context), textStyle:const TextStyle(fontSize: 20,fontWeight: FontWeight.w700),),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 10, left: 10),
@@ -37,14 +37,14 @@ class CategoryView extends StatelessWidget {
                 children: [
                   Expanded(
                     child: SizedBox(
-                      height: 100, // Adjusted to provide extra space for the text
+                      height: 120, // Adjusted to provide extra space for the text
                       child: ListView.builder(
                         itemCount: category.categoryList!.length,
                         physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           String name = category.categoryList![index].name != null && category.categoryList![index].name!.length > 15
-                              ? '${category.categoryList![index].name!.substring(0, 15)} ...'
+                              ? '${category.categoryList![index].name!.substring(0, 15)}...'
                               : category.categoryList![index].name ?? '';
 
                           return Padding(
@@ -52,6 +52,7 @@ class CategoryView extends StatelessWidget {
                             child: InkWell(
                               onTap: () => RouterHelper.getCategoryRoute(category.categoryList![index]),
                               child: Column(
+                                mainAxisSize: MainAxisSize.min, // Adjust to fit the content properly
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
@@ -68,15 +69,18 @@ class CategoryView extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(height: 5),
-                                  Text(
-                                    name,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 11.0,
-                                      fontWeight: FontWeight.w900,
+                                  SizedBox(
+                                    width: 80, // Set a fixed width for proper wrapping
+                                    child: Text(
+                                      name,
+                                      textAlign: TextAlign.center,
+                                      maxLines:3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
                                   ),
                                 ],

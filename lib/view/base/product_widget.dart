@@ -215,7 +215,7 @@ class ProductWidget extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 product.description!,
-                                style: const TextStyle(fontSize: 8),
+                                style: const TextStyle(fontSize: 9,fontWeight: FontWeight.w700,color: ColorResources.kIncreasedColor),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),

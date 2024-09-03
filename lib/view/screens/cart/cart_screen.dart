@@ -119,44 +119,8 @@ class _CartScreenState extends State<CartScreen> {
                   SizedBox(width: horizontalPadding),
                   Expanded(
                     flex: 3,
-                    child: Container(
-                      height: containerHeight,
-                      padding: EdgeInsets.all(horizontalPadding / 2),
-                      decoration: BoxDecoration(
-                        color: ColorResources.kColorgrey,
-                        border: Border.all(color: ColorResources.klgreyColor),
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Consumer<BranchProvider>(
-                            builder: (context, branchProvider, _) {
-                              if (branchProvider.getBranchId() == -1) {
-                                return SizedBox();
-                              }
-
-                              List<Branches?> sortedBranches = List.from(branchProvider.branches);
-                              sortedBranches.sort((a, b) {
-                                if (a!.id == branchProvider.getBranchId()) return -1;
-                                if (b!.id == branchProvider.getBranchId()) return 1;
-                                return 0;
-                              });
-
-                              return Text(
-                                sortedBranches.isNotEmpty ? sortedBranches[0]!.name ?? '' : '',
-                                style: const TextStyle(
-                                  color: ColorResources.kblack,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                              );
-                            },
-                          ),
-                          GestureDetector(
-                            onTap: () {
+                    child: GestureDetector(
+                        onTap: () {
                               showModalBottomSheet(
                                 context: context,
                                 isScrollControlled: true,
@@ -169,9 +133,48 @@ class _CartScreenState extends State<CartScreen> {
                                 },
                               );
                             },
-                            child: Image.asset(Images.mapicon),
-                          ),
-                        ],
+                      child: Container(
+                        height: containerHeight,
+                        padding: EdgeInsets.all(horizontalPadding / 2),
+                        decoration: BoxDecoration(
+                          color: ColorResources.kColorgrey,
+                          border: Border.all(color: ColorResources.klgreyColor),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Consumer<BranchProvider>(
+                              builder: (context, branchProvider, _) {
+                                if (branchProvider.getBranchId() == -1) {
+                                  return SizedBox();
+                                }
+                                          
+                                List<Branches?> sortedBranches = List.from(branchProvider.branches);
+                                sortedBranches.sort((a, b) {
+                                  if (a!.id == branchProvider.getBranchId()) return -1;
+                                  if (b!.id == branchProvider.getBranchId()) return 1;
+                                  return 0;
+                                });
+                                          
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    sortedBranches.isNotEmpty ? sortedBranches[0]!.name ?? '' : '',
+                                    style: const TextStyle(
+                                      color: ColorResources.kblack,
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                );
+                              },
+                            ),
+                            Image.asset(Images.mapicon),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -190,59 +193,62 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   const SizedBox(width: 20),
                   Expanded(
-                    child: Container(
-                      height: containerHeight,
-                      padding: EdgeInsets.all(horizontalPadding / 2),
-                      decoration: BoxDecoration(
-                        color: ColorResources.kColorgrey,
-                        border: Border.all(color: ColorResources.klgreyColor),
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Consumer<BranchProvider>(
-                            builder: (context, branchProvider, _) {
-                              if (branchProvider.getBranchId() == -1) {
-                                return SizedBox();
-                              }
-
-                              List<Branches?> sortedBranches = List.from(branchProvider.branches);
-                              sortedBranches.sort((a, b) {
-                                if (a!.id == branchProvider.getBranchId()) return -1;
-                                if (b!.id == branchProvider.getBranchId()) return 1;
-                                return 0;
-                              });
-
-                              return Text(
-                                sortedBranches.isNotEmpty ? sortedBranches[0]!.name ?? '' : '',
-                                style: const TextStyle(
-                                  color: ColorResources.kblack,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                              );
-                            },
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                isScrollControlled: true,
-                                useSafeArea: true,
-                                context: context,
-                                builder: (context) {
-                                  return const BranchListScreen(
-                                    useNavigator: true,
-                                    istakeAway: true,
-                                  );
-                                },
-                              );
-                            },
-                            child: Image.asset(Images.mapicon),
-                          ),
-                        ],
+                    child: GestureDetector(
+                           onTap: () {
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  useSafeArea: true,
+                                  context: context,
+                                  builder: (context) {
+                                    return const BranchListScreen(
+                                      useNavigator: true,
+                                      istakeAway: true,
+                                    );
+                                  },
+                                );
+                              },
+                      child: Container(
+                        height: containerHeight,
+                        padding: EdgeInsets.all(horizontalPadding / 2),
+                        decoration: BoxDecoration(
+                          color: ColorResources.kColorgrey,
+                          border: Border.all(color: ColorResources.klgreyColor),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Consumer<BranchProvider>(
+                              builder: (context, branchProvider, _) {
+                                if (branchProvider.getBranchId() == -1) {
+                                  return SizedBox();
+                                }
+                      
+                                List<Branches?> sortedBranches = List.from(branchProvider.branches);
+                                sortedBranches.sort((a, b) {
+                                  if (a!.id == branchProvider.getBranchId()) return -1;
+                                  if (b!.id == branchProvider.getBranchId()) return 1;
+                                  return 0;
+                                });
+                      
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: Text(
+                                    sortedBranches.isNotEmpty ? sortedBranches[0]!.name ?? '' : '',
+                                    style: const TextStyle(
+                                      color: ColorResources.kblack,
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                );
+                              },
+                            ),
+                            Image.asset(Images.mapicon),
+                          ],
+                        ),
                       ),
                     ),
                   ),

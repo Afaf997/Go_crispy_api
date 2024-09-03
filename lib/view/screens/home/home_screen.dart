@@ -102,13 +102,13 @@ void _showPopupImage() async{
         builder: (BuildContext context, PopupProvider provider, Widget? child) {
           return Dialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20), 
+              borderRadius: BorderRadius.circular(20), // Apply border radius to the dialog
             ),
             child: Stack(
               children: [
                 provider.popupList != null && provider.popupList!.isNotEmpty
                     ? ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20), // Apply border radius to the image
                         child: Image.network(
                           provider.popupList!.first.image ?? Images.placeholderImage,
                           fit: BoxFit.cover,
@@ -333,7 +333,7 @@ void _showPopupImage() async{
                                           'best_selling', context),
                                       onTap: () {
                                         RouterHelper.getPopularItemScreen();
-                                      }),
+                                      }, textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),),
                                 ),
                               const ProductView(
                                   productType: ProductType.popularProduct),
@@ -349,7 +349,7 @@ void _showPopupImage() async{
                                           getTranslated('Latest Products', context),
                                           style: rubikRegular.copyWith(
                                               fontSize: Dimensions
-                                                  .fontSizeOverLarge)),
+                                                  .fontSizeOverLarge,fontWeight: FontWeight.w700)),
                                     ),
                                   ],
                                 )
@@ -358,7 +358,8 @@ void _showPopupImage() async{
                                   padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
                                   child: TitleWidget(
                                       title: getTranslated(
-                                          'Latest Products', context)),
+                                          'Latest Products', context), 
+                                          textStyle:const TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),),
                                 ),
                               const ProductView(
                                   productType: ProductType.latestProduct),

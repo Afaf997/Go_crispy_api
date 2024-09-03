@@ -142,6 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Phone Number input
                       TextFormField(
                         controller: _phoneController,
+                        maxLength: 8,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
@@ -245,14 +246,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontSize: 12,
                         ),
                       ),
-                      const Text(
-                        'our terms and conditions',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
+                      InkWell(
+                        onTap: () {
+                          RouterHelper.getTermsRoute();
+                      },
+                      child: const Text(
+                          'our terms and conditions',
+                         style: TextStyle(
+                              color: Colors.black,
+                           fontSize: 12,
+                           decoration: TextDecoration.underline,
+                         ),
+                       ),),
+
+
+
 
                       const SizedBox(height: 20),
                     ],

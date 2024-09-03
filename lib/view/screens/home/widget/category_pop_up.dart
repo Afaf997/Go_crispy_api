@@ -27,7 +27,7 @@ class CategoryPopUp extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 20, 0, 10),
                   child:
-                      TitleWidget(title: getTranslated('all_categories', context)),
+                      TitleWidget(title: getTranslated('all_categories', context), textStyle:TextStyle(fontWeight: FontWeight.w700,fontSize: 20),),
                 ),
                 Expanded(
                   child: SizedBox(

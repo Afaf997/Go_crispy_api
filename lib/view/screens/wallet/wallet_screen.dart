@@ -175,7 +175,7 @@ class _WalletScreenState extends State<WalletScreen> {
                           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                             TitleWidget(title: getTranslated('withdraw_history' , context,
 
-                            )),
+                            ), textStyle: TextStyle(),),
 
                             PopupMenuButton<dynamic>(
                               offset: const Offset(-20, 20),

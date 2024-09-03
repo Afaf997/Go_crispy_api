@@ -136,6 +136,8 @@ class _OtpScreenState extends State<OtpScreen> {
                   setState(() {
                     _otpCode = pin;
                   });
+                  // Verify OTP immediately after entering
+                  _verifyOtp(pin);
                 },
               ),
               const SizedBox(height: 240),
