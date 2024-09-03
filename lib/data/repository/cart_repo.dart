@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
@@ -14,10 +15,12 @@ class CartRepo{
       carts = sharedPreferences!.getStringList(AppConstants.cartList);
     }
     List<CartModel> cartList = [];
+  
     for (var cart in carts!) {
+
       cartList.add(CartModel.fromJson(jsonDecode(cart)));
     }
-
+    log(cartList.toString());
     return cartList;
   }
 

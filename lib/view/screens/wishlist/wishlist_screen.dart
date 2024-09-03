@@ -37,7 +37,6 @@ class _WishListScreenState extends State<WishListScreen> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-
     return Scaffold(
       backgroundColor: ColorResources.kWhite,
       appBar: (ResponsiveHelper.isDesktop(context)
@@ -50,8 +49,8 @@ class _WishListScreenState extends State<WishListScreen> {
               title: getTranslated('my_favourite', context),
               isBackButtonExist: !ResponsiveHelper.isMobile(),
             )) as PreferredSizeWidget?,
-      body: _isLoggedIn
-          ? Consumer<WishListProvider>(
+      body: 
+           Consumer<WishListProvider>(
               builder: (context, wishlistProvider, child) {
                 return !wishlistProvider.isLoading
                     ? !wishlistProvider.isLoading &&
@@ -141,7 +140,6 @@ class _WishListScreenState extends State<WishListScreen> {
                         child:Image.asset(Images.gif,height:150,width: 150,));
               },
             )
-          : const NotLoggedInScreen(),
     );
   }
 }

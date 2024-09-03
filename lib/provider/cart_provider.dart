@@ -26,22 +26,43 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  void addToCart(CartModel cartModel, int? index) {
+ void addToCart(CartModel cartModel, int? index) {
+  // Check if the item already exists in the cart
+  final existingCartIndex = _cartList.indexWhere(
+    (item) => _generateProductKey(item!) == _generateProductKey(cartModel),
+  );
+
+  if (existingCartIndex != -1) {
+    final existingCartItem = _cartList[existingCartIndex];
+    existingCartItem?.quantity = (existingCartItem.quantity ?? 0) + (cartModel.quantity ?? 0);
+    _cartList[existingCartIndex] = existingCartItem;
+  } else {
     if (index != null && index != -1) {
       _cartList.replaceRange(index, index + 1, [cartModel]);
     } else {
       _cartList.add(cartModel);
     }
-    cartRepo!.addToCartList(_cartList);
-    setCartUpdate(false);
-
-    // showCustomNotification(getTranslated(index == -1 ?
-    // 'added_in_cart' : 'cart_updated', Get.context!), isToast: true, isError: false);
-
-    //show add to cart dialog.
-
-    notifyListeners();
   }
+
+  cartRepo!.addToCartList(_cartList);
+  setCartUpdate(false);
+
+  // Optionally show a notification or dialog
+  // showCustomNotification(
+  //   getTranslated(index == -1 ? 'added_in_cart' : 'cart_updated', Get.context!),
+  //   isToast: true,
+  //   isError: false,
+  // );
+
+  notifyListeners();
+}
+
+String _generateProductKey(CartModel cartModel) {
+  // Generate a unique key based on product id and variation (and any other relevant attributes)
+  final productId = cartModel.product?.id ?? 0;
+  final variation = cartModel.variation?.map((v) => v.min).join(',') ?? '';
+  return '$productId-$variation';
+}
 
   void setQuantity(
       {required bool isIncrement,

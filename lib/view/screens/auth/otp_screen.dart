@@ -36,8 +36,6 @@ class _OtpScreenState extends State<OtpScreen> {
         final responseData = response.data;
 
         if (responseData['status_code'] == 0) {
-          showCustomNotification(context, 'OTP verified successfully',
-              type: NotificationType.success);
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -48,8 +46,6 @@ class _OtpScreenState extends State<OtpScreen> {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.remove('token');
           await prefs.setString('token', token);
-          showCustomNotification(context, 'OTP verified successfully',
-              type: NotificationType.success);
 
           Get.context!.pushReplacement('/branch-list?isOtp=true');
         } else {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 import 'package:flutter_restaurant/data/model/response/config_model.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
 import 'package:flutter_restaurant/helper/date_converter.dart';
@@ -74,7 +75,7 @@ class _CartScreenState extends State<CartScreen> {
                     child: Text(
                       "Vehicle Number",
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -112,7 +113,7 @@ class _CartScreenState extends State<CartScreen> {
                       "Select Store",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 12,
+                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -189,7 +190,7 @@ class _CartScreenState extends State<CartScreen> {
                 children: [
                   const Text(
                     "Select Store",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   ),
                   const SizedBox(width: 20),
                   Expanded(
@@ -477,6 +478,11 @@ Consumer<CouponProvider>(
                     );
                   } else {
                     coupon.removeCouponData(true);
+                     showCustomNotification(
+                            context,
+                            'The coupon code has been removed ',
+                            type: NotificationType.success,
+                          );
                   }
                 } else if (_couponController.text.isEmpty) {
                   showCustomNotification(
@@ -565,11 +571,7 @@ Consumer<CouponProvider>(
                                                       : Container(),
 
                                                   // Car Hop
-                                                  Provider.of<SplashProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .configModel!
-                                                          .selfPickup!
+                                                  Provider.of<SplashProvider>( context,      listen: false).configModel!  .selfPickup!
                                                       ? DeliveryOptionButton(
                                                           value: 'car_hop',
                                                           title: getTranslated(
@@ -603,12 +605,7 @@ Consumer<CouponProvider>(
                                               ),
                                               const SizedBox(height: 10),
 
-                                              ItemView(
-                                                title: getTranslated(
-                                                    'addons', context),
-                                                subTitle:
-                                                    PriceConverter.convertPrice(addOns),
-                                              ),         const SizedBox(height: 10),
+        const SizedBox(height: 10),
                                              ItemView(
                                                 title: getTranslated(
                                                     'Discount ', context),
@@ -724,31 +721,58 @@ class CheckOutButtonView extends StatelessWidget {
         : const SizedBox();
   }
 }
-
 class CartListWidget extends StatelessWidget {
   final CartProvider cart;
   final List<List<AddOns>> addOns;
   final List<bool> availableList;
-  const CartListWidget(
-      {Key? key,
-      required this.cart,
-      required this.addOns,
-      required this.availableList})
-      : super(key: key);
+
+  const CartListWidget({
+    Key? key,
+    required this.cart,
+    required this.addOns,
+    required this.availableList,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Grouping products by unique attributes
+    final Map<String, CartModel> groupedCart = {};
+
+    for (int i = 0; i < cart.cartList.length; i++) {
+      final cartModel = cart.cartList[i];
+      final productKey = _generateProductKey(cartModel!);
+
+      if (groupedCart.containsKey(productKey)) {
+        // If the product is already in the map, aggregate the quantity
+        groupedCart[productKey]!.quantity = (groupedCart[productKey]!.quantity ?? 0) + (cartModel.quantity ?? 0);
+      } else {
+        // Otherwise, add the product to the map
+        groupedCart[productKey] = cartModel;
+      }
+    }
+
+    final groupedCartList = groupedCart.values.toList();
+
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: cart.cartList.length,
+      itemCount: groupedCartList.length,
       itemBuilder: (context, index) {
+        final cartModel = groupedCartList[index];
         return CartProductWidget(
-            cart: cart.cartList[index],
-            cartIndex: index,
-            addOns: addOns[index],
-            isAvailable: availableList[index]);
+          cart: cartModel,
+          cartIndex: index,
+          addOns: addOns[index],
+          isAvailable: availableList[index],
+        );
       },
     );
+  }
+
+  String _generateProductKey(CartModel cartModel) {
+    // Generate a unique key based on product id and variation (and any other relevant attributes)
+    final productId = cartModel.product?.id ?? 0;
+    final variation = cartModel.variation?.map((v) => v.min).join(',') ?? '';
+    return '$productId-$variation';
   }
 }

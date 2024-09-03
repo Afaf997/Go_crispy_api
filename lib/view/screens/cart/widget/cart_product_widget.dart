@@ -106,7 +106,6 @@ class CartProductWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: FadeInImage.assetNetwork(
                   placeholder: Images.placeholderImage,
-                  height: 116,
                   width: 139,
                   fit: BoxFit.cover,
                   image:

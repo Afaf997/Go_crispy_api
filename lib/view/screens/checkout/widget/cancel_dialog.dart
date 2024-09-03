@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -21,19 +22,19 @@ class CancelDialog extends StatelessWidget {
           Container(
             height: 70, width: 70,
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.2),
+              color:  ColorResources.kOrangeColor.withOpacity(0.2),
               shape: BoxShape.circle,
             ),
-            child: Icon(
+            child: const Icon(
               Icons.check_circle,
-              color: Theme.of(context).primaryColor, size: 50,
+              color:  ColorResources.kOrangeColor, size: 50,
             ),
           ),
           //SizedBox(height: Dimensions.paddingSizeLarge),
 
           // fromCheckout ? Text(
           //   getTranslated('order_placed_successfully', context),
-          //   style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).primaryColor),
+          //   style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge, color:  ColorResources.kOrangeColor,),
           // ) : SizedBox(),
           // SizedBox(height: fromCheckout ? Dimensions.paddingSizeSmall : 0),
 
@@ -45,10 +46,10 @@ class CancelDialog extends StatelessWidget {
           const SizedBox(height: 30),
 
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Icon(Icons.info, color: Theme.of(context).primaryColor),
+            Icon(Icons.info, color:  ColorResources.kOrangeColor,),
             Text(
               getTranslated('payment_failed', context)!,
-              style: rubikMedium.copyWith(color: Theme.of(context).primaryColor),
+              style: rubikMedium.copyWith(color:  ColorResources.kOrangeColor,),
             ),
           ]),
           const SizedBox(height: 10),
@@ -68,9 +69,9 @@ class CancelDialog extends StatelessWidget {
                   RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
                 },
                 style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: BorderSide(width: 2, color: Theme.of(context).primaryColor)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: BorderSide(width: 2, color:  ColorResources.kOrangeColor,)),
                 ),
-                child: Text(getTranslated('maybe_later', context)!, style: rubikBold.copyWith(color: Theme.of(context).primaryColor)),
+                child: Text(getTranslated('maybe_later', context)!, style: rubikBold.copyWith(color:  ColorResources.kOrangeColor,)),
               ),
             )),
            if(orderID != null) const SizedBox(width: 10),

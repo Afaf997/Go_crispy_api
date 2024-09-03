@@ -270,11 +270,9 @@ class ConfirmButtonView extends StatelessWidget {
                           );
 
                           if (
-                              // placeOrderBody.paymentMethod ==
-                              //       'wallet_payment' ||
+                              placeOrderBody.paymentMethod ==
+                                    'wallet_payment' ||
                               placeOrderBody.paymentMethod == 'cash_on_delivery'
-                              // placeOrderBody.paymentMethod ==
-                              //     'offline_payment'
                               ) {
                             final String placeOrder = convert.base64Url.encode(
                                 convert.utf8.encode(convert
@@ -297,8 +295,6 @@ class ConfirmButtonView extends StatelessWidget {
                             });
                           } else if (placeOrderBody.paymentMethod ==
                               'skip_cash') {
-                            print("test 0");
-                            print("skip cash");
                             final String placeOrder = convert.base64Url.encode(
                                 convert.utf8.encode(convert
                                     .jsonEncode(placeOrderBody.toJson())));

@@ -14,6 +14,7 @@ import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
+import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/custom_text_field.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
@@ -318,7 +319,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                             }
                           }
                           if (!isAvailable) {
-                            // showCustomSnackBar(getTranslated('service_is_not_available', context));
+                            showCustomNotification(context,getTranslated('service_is_not_available', context),type:NotificationType.error );
                           } else {
                             print("here3");
                             AddressModel addressModel = AddressModel(

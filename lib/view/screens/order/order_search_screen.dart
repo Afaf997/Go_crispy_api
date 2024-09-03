@@ -293,8 +293,8 @@ class PhoneNumberFieldView extends StatelessWidget {
         contentPadding: const EdgeInsets.all(8.0),
         filled: true,
         fillColor: ColorResources.kColorgrey,
-        focusedBorder: getBorder(ColorResources.klgreyColor),
-        enabledBorder: getBorder(ColorResources.klgreyColor),
+        focusedBorder: getBorder(ColorResources.kDeliveryBox),
+        enabledBorder: getBorder(ColorResources.kDeliveryBox),
         prefixIcon: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
@@ -309,7 +309,7 @@ class PhoneNumberFieldView extends StatelessWidget {
               Text(
                 '+974', // Display the country code
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 15,
                 ),
               ),
               const SizedBox(width: 8), // Space after '+974'

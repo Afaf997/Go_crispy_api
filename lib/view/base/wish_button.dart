@@ -4,7 +4,6 @@ import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/wishlist_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
-import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:provider/provider.dart';
 
 class WishButton extends StatelessWidget {
@@ -16,34 +15,28 @@ class WishButton extends StatelessWidget {
     Key? key,
     required this.product,
     this.edgeInset = EdgeInsets.zero,
-    this.iconSize = 24.0, // Default size is 24.0
+    this.iconSize = 24.0,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<WishListProvider>(
       builder: (context, wishList, child) {
+        bool isLoggedIn = Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
+
         return InkWell(
           onTap: () {
-            if (Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
-              List<int?> productIdList = [];
-              productIdList.add(product!.id);
-
-              if (wishList.wishIdList.contains(product!.id)) {
-                wishList.removeFromWishList(product!, context);
-              } else {
-                wishList.addToWishList(product!, context);
-              }
+            if (wishList.wishIdList.contains(product!.id)) {
+              wishList.removeFromWishList(product!, context, isLoggedIn);
             } else {
-              
-              showCustomNotification(context,getTranslated('now_you_are_in_guest_mode', context,),  type: NotificationType.warning);
+              wishList.addToWishList(product!, context, isLoggedIn);
             }
           },
           child: Padding(
             padding: edgeInset,
             child: Icon(
-              wishList.wishIdList.contains(product!.id) ? Icons.favorite : Icons.favorite,
-              size: iconSize, // Use the provided iconSize parameter
+              wishList.wishIdList.contains(product!.id) ? Icons.favorite : Icons.favorite_border,
+              size: iconSize,
               color: wishList.wishIdList.contains(product!.id) ? ColorResources.kredcolor : ColorResources.kfavouriteColor,
             ),
           ),

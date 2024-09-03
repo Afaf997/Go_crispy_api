@@ -10,6 +10,7 @@ import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -120,6 +121,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
             profileProvider.userInfoModel!.walletBalance! <= widget.totalPrice);
 
     return SingleChildScrollView(
+    
       child: Center(
           child: SizedBox(
               width: 550,
@@ -149,7 +151,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                   width: 550,
                   margin: const EdgeInsets.only(top: kIsWeb ? 0 : 30),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
+                    color:ColorResources.kWhite,
                     borderRadius: ResponsiveHelper.isMobile()
                         ? const BorderRadius.vertical(
                             top: Radius.circular(Dimensions.radiusExtraLarge))
@@ -216,13 +218,15 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                     ),
                                   )
                                 : const SizedBox(),
+                                
                           ]),
+                          
 
                           Row(
                             children: [
                               Expanded(
                                 child: PaymentButtonNew(
-                                  icon: Images.cart,
+                                  icon: Images.payment,
                                   // title: getTranslated('cash_on_delivery', context)!,
                                   title: "Pay Online",
                                   isSelected:
@@ -234,6 +238,27 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                               ),
                             ],
                           ),
+                           SizedBox(width: configModel.cashOnDelivery! ? Dimensions.paddingSizeLarge : 0),
+
+                    configModel.walletStatus! && authProvider.isLoggedIn() && (orderProvider.partialAmount == null) && !isPartialPayment ? Expanded(
+                      child: PaymentButtonNew(
+                        icon: Images.walletPayment,
+                        title: getTranslated('pay_via_wallet', context)!,
+                        isSelected: orderProvider.paymentMethodIndex == 1,
+                        onTap: () {
+                          if(canSelectWallet) {
+                            context.pop();
+                            showDialog(context: context, builder: (ctx)=> PartialPayDialog(
+                              isPartialPay: profileProvider.userInfoModel!.walletBalance! < widget.totalPrice,
+                              totalPrice: widget.totalPrice,
+                            ));
+                          }else{
+                            // showCustomSnackBar(getTranslated('your_wallet_have_not_sufficient_balance', context));
+                          }
+                        },
+                      ),
+                    ) : const SizedBox(),
+                          
 
                           //  if(paymentList.isNotEmpty) Row(children: [
                           //     Text(getTranslated('pay_via_online', context)!, style: rubikBold.copyWith(fontSize: Dimensions.fontSizeDefault)),
@@ -290,9 +315,6 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                                         widget.totalPrice));
                                       }
                                     } else {
-                                      print("this is here");
-                                      print(orderProvider.paymentMethod);
-                                      print(orderProvider.paymentMethodIndex);
                                       orderProvider.savePaymentMethod(
                                           index:
                                               orderProvider.paymentMethodIndex,

@@ -44,7 +44,7 @@ class _BranchCategoryScreenState extends State<BranchCategoryScreen>
 
       Future.delayed(const Duration(milliseconds: 500)).then((value) {
         
-        showCustomNotification(context,getTranslated('branch_successfully_selected', context), type: NotificationType.error);
+        // showCustomNotification(context,getTranslated('branch_successfully_selected', context), type: NotificationType.error);
       });
     }
     final CategoryProvider categoryProvider =

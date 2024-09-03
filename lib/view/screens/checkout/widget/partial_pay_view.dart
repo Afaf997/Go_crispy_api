@@ -6,6 +6,7 @@ import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -34,8 +35,8 @@ class PartialPayView extends StatelessWidget {
 
       return isPartialPayment ? Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor.withOpacity(0.01),
-          border: Border.all(color: Theme.of(context).primaryColor, width: 0.5),
+          color:  ColorResources.kOrangeColor.withOpacity(0.01),
+          border: Border.all(color:  ColorResources.kOrangeColor, width: 0.5),
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
           image: !ResponsiveHelper.isDesktop(context) ? DecorationImage(
             alignment: Alignment.bottomRight,
@@ -54,7 +55,7 @@ class PartialPayView extends StatelessWidget {
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
                 PriceConverter.convertPrice(profileProvider.userInfoModel!.walletBalance!),
-                style: rubikBold.copyWith(fontSize: Dimensions.fontSizeOverLarge, color: Theme.of(context).primaryColor),
+                style: rubikBold.copyWith(fontSize: Dimensions.fontSizeOverLarge, color:  ColorResources.kOrangeColor),
               ),
               const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
@@ -79,13 +80,13 @@ class PartialPayView extends StatelessWidget {
 
               Text(
                 getTranslated('applied', context)!,
-                style: rubikRegular.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeLarge),
+                style: rubikRegular.copyWith(color:  ColorResources.kOrangeColor, fontSize: Dimensions.fontSizeLarge),
               )
             ]) : Text(
               getTranslated('do_you_want_to_use_now', context)!,
-              style: rubikRegular.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeLarge),
+              style: rubikRegular.copyWith(color:  ColorResources.kOrangeColor, fontSize: Dimensions.fontSizeLarge),
             ),
-
+           
             InkWell(
               onTap: (){
                 if(orderProvider.partialAmount != null || isSelected){
@@ -100,8 +101,8 @@ class PartialPayView extends StatelessWidget {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: orderProvider.partialAmount != null || isSelected ? Theme.of(context).cardColor : Theme.of(context).primaryColor,
-                  border: Border.all(color: orderProvider.partialAmount != null || isSelected ? Colors.red : Theme.of(context).primaryColor, width: 0.5),
+                  color: orderProvider.partialAmount != null || isSelected ? Theme.of(context).cardColor :  ColorResources.kOrangeColor,
+                  border: Border.all(color: orderProvider.partialAmount != null || isSelected ? Colors.red :  ColorResources.kOrangeColor, width: 0.5),
                   borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall, horizontal: Dimensions.paddingSizeLarge),

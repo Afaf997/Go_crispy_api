@@ -5,6 +5,7 @@ import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
@@ -40,12 +41,12 @@ class DeliveryFeeDialog extends StatelessWidget {
               Container(
                 height: 70, width: 70,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withOpacity(0.2),
+                  color:  ColorResources.kOrangeColor.withOpacity(0.2),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
+                child:const Icon(
                   Icons.delivery_dining,
-                  color: Theme.of(context).primaryColor, size: 50,
+                  color:  ColorResources.kOrangeColor, size: 50,
                 ),
               ),
               const SizedBox(height: Dimensions.paddingSizeLarge),
@@ -86,7 +87,7 @@ class DeliveryFeeDialog extends StatelessWidget {
                    titleStyle:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
            
                     subTitleStyle:const TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
-                  // style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).primaryColor),
+                  // style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color:  ColorResources.kOrangeColor),
                 ),
 
               ]),

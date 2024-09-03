@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_restaurant/data/model/response/config_model.dart';
-import 'package:flutter_restaurant/helper/price_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
-import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
-import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
-import 'package:flutter_restaurant/view/base/custom_image.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/payment_method_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +22,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
   void openDialog(BuildContext context) {
     if (!ResponsiveHelper.isMobile()) {
       showDialog(
+        barrierColor: ColorResources.kWhite,
         context: context,
         builder: (con) => PaymentMethodBottomSheet(totalPrice: widget.total),
       );
@@ -66,29 +62,29 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                   border: Border.all(color: ColorResources.klgreyColor),
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Row(
-                  children: [
-                    Image.asset(Images.cardTick),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        showPayment
-                            ? orderProvider.selectedOfflineMethod != null
-                                ? '${getTranslated('pay_offline', context)} (${orderProvider.selectedOfflineMethod?.methodName})'
-                                : orderProvider.selectedPaymentMethod?.getWayTitle ?? 'Add Payment Method'
-                            : 'Add Payment Method',
-                        style:const  TextStyle(
-                          color: ColorResources.kblack,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14
+                child: InkWell(
+                  onTap: () => openDialog(context),
+                  child: Row(
+                    children: [
+                      Image.asset(Images.cardTick),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          showPayment
+                              ? orderProvider.selectedOfflineMethod != null
+                                  ? '${getTranslated('pay_offline', context)} (${orderProvider.selectedOfflineMethod?.methodName})'
+                                  : orderProvider.selectedPaymentMethod?.getWayTitle ?? 'Add Payment Method'
+                              : 'Add Payment Method',
+                          style:const  TextStyle(
+                            color: ColorResources.kblack,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14
+                          ),
                         ),
                       ),
-                    ),
-                    InkWell(
-                      onTap: () => openDialog(context),
-                      child: Icon(Icons.arrow_drop_down),
-                    ),
-                  ],
+                     const Icon(Icons.arrow_drop_down),
+                    ],
+                  ),
                 ),
               ),
             ],

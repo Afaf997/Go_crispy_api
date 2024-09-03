@@ -3,6 +3,7 @@ import 'package:flutter_restaurant/helper/price_converter.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -57,7 +58,7 @@ class PartialPayDialog extends StatelessWidget {
           Text(
             getTranslated(isPartialPay ? 'want_to_pay_partially_with_wallet' : 'want_to_pay_via_wallet', context)!,
 
-            style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).primaryColor), textAlign: TextAlign.center,
+            style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge, color:  ColorResources.kOrangeColor), textAlign: TextAlign.center,
           ),
           const SizedBox(height: Dimensions.paddingSizeDefault),
 
@@ -66,7 +67,7 @@ class PartialPayDialog extends StatelessWidget {
 
           Text(
             PriceConverter.convertPrice(profileProvider.userInfoModel?.walletBalance),
-            style: rubikBold.copyWith(fontSize: Dimensions.fontSizeOverLarge, color: Theme.of(context).primaryColor),
+            style: rubikBold.copyWith(fontSize: Dimensions.fontSizeOverLarge, color:  ColorResources.kOrangeColor),
           ),
 
           Padding(

@@ -73,7 +73,6 @@ class _BranchListScreenState extends State<BranchListScreen> {
         _currentLocationLatLng = latLong;
       }
       _branchesValue = branchProvider.branchSort(_currentLocationLatLng);
-      //Auto selecting  branch as the nearest branch.
       print(branchProvider.getBranchId());
       if (widget.isOtp != null && widget.isOtp == true) {
         print("init");
@@ -468,8 +467,8 @@ class _BranchListScreenState extends State<BranchListScreen> {
     } else {
       RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
     }
-    showCustomNotification(context, 'Branch Successfully Selected',
-        type: NotificationType.success);
+    // showCustomNotification(context, 'Branch Successfully Selected',
+    //     type: NotificationType.success);
     // if (istakeAway!) {
     //   print("trueeeee");
     //   Navigator.pop(context);

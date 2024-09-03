@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,7 @@ class PaymentButtonNew extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                  border: Border.all(color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withOpacity(0.1))
+                  border: Border.all(color: isSelected ?  ColorResources.kOrangeColor : Theme.of(context).disabledColor.withOpacity(0.1))
               ),
               padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeLarge),
               child: Row(children: [
@@ -48,7 +49,7 @@ class PaymentButtonNew extends StatelessWidget {
             if(isSelected) Positioned(top: -7, right: -7, child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Theme.of(context).primaryColor,
+                color:  ColorResources.kOrangeColor,
               ),
               padding: const EdgeInsets.all(2),
               child: const Icon(Icons.check, color: Colors.white, size: 18),

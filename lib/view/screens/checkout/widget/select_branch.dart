@@ -71,7 +71,7 @@ class BranchButton extends StatelessWidget {
                             children: sortedBranches
                                 .map((branch) => buildCategoryItems(
                                       branch!.name ?? 'Unknown Branch',
-                                      Theme.of(context).primaryColor,
+                                         ColorResources.kOrangeColor,
                                       branchProvider.getBranchId() == branch.id,
                                     ))
                                 .toList(),

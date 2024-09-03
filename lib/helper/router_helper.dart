@@ -29,8 +29,6 @@ import 'package:flutter_restaurant/view/screens/checkout/widget/order_web_paymen
 import 'package:flutter_restaurant/view/screens/coupon/coupon_screen.dart';
 import 'package:flutter_restaurant/view/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter_restaurant/view/screens/forgot_password/create_new_password_screen.dart';
-import 'package:flutter_restaurant/view/screens/forgot_password/forgot_password_screen.dart';
-import 'package:flutter_restaurant/view/screens/forgot_password/verification_screen.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/image_screen.dart';
 import 'package:flutter_restaurant/view/screens/html/html_viewer_screen.dart';
 import 'package:flutter_restaurant/view/screens/language/choose_language_screen.dart';
