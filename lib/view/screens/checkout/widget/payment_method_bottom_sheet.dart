@@ -244,7 +244,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                       child: PaymentButtonNew(
                         icon: Images.walletPayment,
                         title: getTranslated('pay_via_wallet', context)!,
-                        isSelected: orderProvider.paymentMethodIndex == 1,
+                        isSelected: orderProvider.paymentMethodIndex == 2,
                         onTap: () {
                           if(canSelectWallet) {
                             context.pop();
@@ -258,34 +258,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                         },
                       ),
                     ) : const SizedBox(),
-                          
-
-                          //  if(paymentList.isNotEmpty) Row(children: [
-                          //     Text(getTranslated('pay_via_online', context)!, style: rubikBold.copyWith(fontSize: Dimensions.fontSizeDefault)),
-                          //     const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-
-                          //     Text('(${getTranslated('faster_and_secure_way_to_pay_bill', context)})', style: robotoRegular.copyWith(
-                          //       fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor,
-                          //     )),
-
-                          //   ]),
-                          //   const SizedBox(height: Dimensions.paddingSizeLarge),
-
-                          // Expanded(
-                          //     child: PaymentMethodView(
-                          //         paymentList: paymentList,
-                          //         onTap: (index) {
-                          //           if (notHideOffline &&
-                          //               paymentList[index].type == 'offline') {
-                          //             orderProvider.changePaymentMethod(
-                          //                 digitalMethod: paymentList[index]);
-                          //           } else if (!notHideDigital) {
-                          //             // showCustomSnackBar('${getTranslated('you_can_not_use', context)} ${getTranslated('digital_payment', context)} ${getTranslated('in_partial_payment', context)}');
-                          //           } else {
-                          //             orderProvider.changePaymentMethod(
-                          //                 digitalMethod: paymentList[index]);
-                          //           }
-                          //         })),
+               
                           const SizedBox(height: Dimensions.paddingSizeSmall),
 
                           SafeArea(

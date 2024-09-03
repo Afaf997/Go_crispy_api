@@ -106,6 +106,7 @@ class CartProductWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: FadeInImage.assetNetwork(
                   placeholder: Images.placeholderImage,
+                  height: 117,
                   width: 139,
                   fit: BoxFit.cover,
                   image:
@@ -134,22 +135,22 @@ class CartProductWidget extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 5),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.star,
-                            color: ColorResources.kstarYellow,
-                            size: 10,
-                          ),
-                          const SizedBox(width: 3),
-                          Text(
-                            cart!.product!.rating != null && cart!.product!.rating!.isNotEmpty
-                                ? _getRatingStars(double.parse(cart!.product!.rating![0].average!))
-                                : '0',
-                            style: const TextStyle(fontSize: 12, color: Colors.grey),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     const Icon(
+                      //       Icons.star,
+                      //       color: ColorResources.kstarYellow,
+                      //       size: 10,
+                      //     ),
+                      //     const SizedBox(width: 3),
+                      //     Text(
+                      //       cart!.product!.rating != null && cart!.product!.rating!.isNotEmpty
+                      //           ? _getRatingStars(double.parse(cart!.product!.rating![0].average!))
+                      //           : '0',
+                      //       style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      //     ),
+                      //   ],
+                      // ),
                       const SizedBox(height: 5),
                       Text(
                         cart!.product!.description!,

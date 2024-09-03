@@ -55,7 +55,7 @@ class DeliveryOptionButton extends StatelessWidget {
                         ? ColorResources.kOrangeColor
                         : ColorResources.ktextgrey,
                   ),
-                  SizedBox(width: 1),
+                 const SizedBox(width: 8),
                   Flexible(
                     child: Text(
                       title!,

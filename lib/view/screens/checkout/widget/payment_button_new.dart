@@ -47,7 +47,7 @@ class PaymentButtonNew extends StatelessWidget {
             ),
 
             if(isSelected) Positioned(top: -7, right: -7, child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color:  ColorResources.kOrangeColor,
               ),

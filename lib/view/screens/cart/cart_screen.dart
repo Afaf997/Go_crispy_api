@@ -338,7 +338,7 @@ class _CartScreenState extends State<CartScreen> {
 
             double orderAmount = itemPrice + addOns;
 
-            // bool kmWiseCharge = Provider.of<SplashProvider>(context, listen: false).configModel!.deliveryManagement!.status == 1;
+            bool kmWiseCharge = Provider.of<SplashProvider>(context, listen: false).configModel!.deliveryManagement!.status == 1;
 
             return cart.cartList.isNotEmpty
                 ? Column(
@@ -420,106 +420,103 @@ class _CartScreenState extends State<CartScreen> {
                                                     availableList:
                                                         availableList),
 
-                            
 Consumer<CouponProvider>(
   builder: (context, coupon, child) {
-    return IntrinsicHeight(
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _couponController,
-              style: rubikRegular,
-              decoration: InputDecoration(
-                hintText: getTranslated('enter_promo_code', context),
-                hintStyle: rubikRegular.copyWith(
-                  color: ColorResources.getHintColor(context),
-                ),
-                isDense: true,
-                filled: true,
-                enabled: coupon.discount == 0,
-                fillColor: ColorResources.kColorgrey,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                  borderSide: BorderSide.none,
+    return Column(
+      children: [
+        IntrinsicHeight(
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _couponController,
+                  style: rubikRegular,
+                  decoration: InputDecoration(
+                    hintText: getTranslated('enter_promo_code', context),
+                    hintStyle: rubikRegular.copyWith(
+                      color: ColorResources.getHintColor(context),
+                    ),
+                    isDense: true,
+                    filled: true,
+                    enabled: coupon.discount == 0,
+                    fillColor: ColorResources.kColorgrey,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          InkWell(
-            onTap: () {
-              if (!Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
-                showCustomNotification(
-                  context,
-                  'Please log in to apply a coupon',
-                  type: NotificationType.warning,
-                );
-              } else {
-                if (_couponController.text.isNotEmpty && !coupon.isLoading) {
-                  if (coupon.discount! < 1) {
-                    coupon.applyCoupon(_couponController.text, total).then(
-                      (discount) {
-                        if (discount! > 0) {
-                          // Show success notification
-                          showCustomNotification(
-                            context,
-                            'You got ${PriceConverter.convertPrice(discount)} discount!',
-                            type: NotificationType.success,
-                          );
-                        } else {
-                          showCustomNotification(
-                            context,
-                            getTranslated('invalid_code_or', context),
-                            type: NotificationType.error,
-                          );
-                        }
-                      },
+              const SizedBox(width: 10),
+              InkWell(
+                onTap: () {
+                  if (!Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
+                    showCustomNotification(
+                      context,
+                      'Please log in to apply a coupon',
+                      type: NotificationType.warning,
                     );
                   } else {
-                    coupon.removeCouponData(true);
-                     showCustomNotification(
-                            context,
-                            'The coupon code has been removed ',
-                            type: NotificationType.success,
-                          );
+                    if (_couponController.text.isNotEmpty && !coupon.isLoading) {
+                      if (coupon.discount! < 1) {
+                        coupon.applyCoupon(_couponController.text, total).then(
+                          (discount) {
+                            if (discount! > 0) {
+                              showCustomNotification(
+                                context,
+                                'You got ${PriceConverter.convertPrice(discount)} discount!',
+                                type: NotificationType.success,
+                              );
+                            } else {
+                              showCustomNotification(
+                                context,
+                                getTranslated('invalid_code_or', context),
+                                type: NotificationType.error,
+                              );
+                            }
+                          },
+                        );
+                      } else {
+                        coupon.removeCouponData(true);
+                        showCustomNotification(
+                          context,
+                          'The coupon code has been removed',
+                          type: NotificationType.success,
+                        );
+                      }
+                    } else if (_couponController.text.isEmpty) {
+                      showCustomNotification(
+                        context,
+                        'Enter a coupon code',
+                        type: NotificationType.warning,
+                      );
+                    }
                   }
-                } else if (_couponController.text.isEmpty) {
-                  showCustomNotification(
-                    context,
-                    'Enter a coupon code',
-                    type: NotificationType.warning,
-                  );
-                }
-              }
-            },
-            child: Container(
-              width: 100,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(15.0),
+                },
+                child: Container(
+                  width: 100,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: coupon.discount! <= 0
+                      ? !coupon.isLoading
+                          ? Text(
+                              getTranslated('apply', context),
+                              style: rubikMedium.copyWith(color: Colors.white),
+                            )
+                          : const CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.white,
+                              ),
+                            )
+                      : const Icon(Icons.clear, color: Colors.white),
+                ),
               ),
-              child: coupon.discount! <= 0
-                  ? !coupon.isLoading
-                      ? Text(
-                          getTranslated('apply', context),
-                          style: rubikMedium.copyWith(color: Colors.white),
-                        )
-                      : const CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white,
-                          ),
-                        )
-                  : const Icon(Icons.clear, color: Colors.white),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
-  },
-),
-
+        ),
 
                                               const SizedBox(
                                                   height: Dimensions
@@ -603,15 +600,11 @@ Consumer<CouponProvider>(
                                                     PriceConverter.convertPrice(
                                                         itemPrice),
                                               ),
-                                              const SizedBox(height: 10),
 
-        const SizedBox(height: 10),
-                                             ItemView(
-                                                title: getTranslated(
-                                                    'Discount ', context),
-                                                  subTitle: PriceConverter.convertPrice(discount),
-                                                  
-                                              ),
+                                          const SizedBox(height: 10),
+                                                 ItemView(
+                                                  title: getTranslated('Discount ', context),subTitle: coupon.discount! > 0     ? PriceConverter.convertPrice(coupon.discount!)   
+                                                    : PriceConverter.convertPrice(0.0)),
                                               const SizedBox(height: 10),
                                               ItemView(
                                                 title: getTranslated(
@@ -653,6 +646,7 @@ Consumer<CouponProvider>(
                                                   totalWithoutDeliveryFee:
                                                       totalWithoutDeliveryFee,
                                                 ),
+                                                ]);})
                                             ]),
                                       )),
                                     ],
