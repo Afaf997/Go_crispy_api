@@ -218,27 +218,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                     ),
                                   )
                                 : const SizedBox(),
-                                
-                          ]),
-                          
-
-                          Row(
-                            children: [
-                              Expanded(
-                                child: PaymentButtonNew(
-                                  icon: Images.payment,
-                                  // title: getTranslated('cash_on_delivery', context)!,
-                                  title: "Pay Online",
-                                  isSelected:
-                                      orderProvider.paymentMethodIndex == 1,
-                                  onTap: () {
-                                    orderProvider.setPaymentIndex(1);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                           SizedBox(width: configModel.cashOnDelivery! ? Dimensions.paddingSizeLarge : 0),
+                                                    SizedBox(width: configModel.cashOnDelivery! ? Dimensions.paddingSizeLarge : 0),
 
                     configModel.walletStatus! && authProvider.isLoggedIn() && (orderProvider.partialAmount == null) && !isPartialPayment ? Expanded(
                       child: PaymentButtonNew(
@@ -258,6 +238,27 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                         },
                       ),
                     ) : const SizedBox(),
+                                
+                          ]),
+                          
+
+                          Row(
+                            children: [
+                              Expanded(
+                                child: PaymentButtonNew(
+                                  icon: Images.payment,
+
+                                  title: "Pay Online",
+                                  isSelected:
+                                      orderProvider.paymentMethodIndex == 1,
+                                  onTap: () {
+                                    orderProvider.setPaymentIndex(1);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+       
                
                           const SizedBox(height: Dimensions.paddingSizeSmall),
 
