@@ -4,6 +4,7 @@ import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 import 'package:flutter_restaurant/data/model/response/category_model.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
+import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/banner_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
+import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/cart_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -69,7 +71,9 @@ class _MainSliderState extends State<MainSlider> {
                                 builder: (con) => CartBottomSheet(
                                   product: product,
                                   callback: (CartModel cartModel) {
-                                    // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+                                    showCustomNotification(context,
+                                      getTranslated('added_to_cart', context),
+                                     type: NotificationType.success);
                                   },
                                 ),
                               ): showDialog(context: context, builder: (con) => Dialog(
@@ -77,7 +81,9 @@ class _MainSliderState extends State<MainSlider> {
                                 child: CartBottomSheet(
                                   product: product,
                                   callback: (CartModel cartModel) {
-                                    // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+                                    showCustomNotification(context,
+                                      getTranslated('added_to_cart', context),
+                                     type: NotificationType.success);
                                   },
                                 ),
                               )

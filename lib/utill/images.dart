@@ -53,7 +53,7 @@ class Images {
   static const String google = 'assets/image/google.png';
   static const String facebook = 'assets/image/facebook.png';
   static const String referBanner = 'assets/image/refer_banner.png';
-  static const String branchBanner = 'assets/image/branch_banner.png';
+  // static const String branchBanner = 'assets/image/branch_banner.png';
   static const String earningImage = 'assets/image/earning.png';
   static const String convertedImage = 'assets/image/converted.png';
   static const String branchIcon = 'assets/image/branch_icon.png';

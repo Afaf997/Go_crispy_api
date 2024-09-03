@@ -66,16 +66,15 @@ class BranchItemView extends StatelessWidget {
                             child: Stack(
                               children: [
                                 FadeInImage.assetNetwork(
-                                  placeholder: Images.branchBanner,
+                                  placeholder: Images.gif,
                                   image:
                                       '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.branchImageUrl}/${branchesValue!.branches!.coverImage}',
                                   fit: BoxFit.cover,
                                   width: Dimensions.webScreenWidth,
                                   height: 140.0, // Increased height
                                   imageErrorBuilder: (c, o, s) => Image.asset(
-                                    Images.branchBanner,
+                                    Images.gif,
                                     width: Dimensions.webScreenWidth,
-                                    height: 100.0,
                                   ),
                                 ),
                               ],

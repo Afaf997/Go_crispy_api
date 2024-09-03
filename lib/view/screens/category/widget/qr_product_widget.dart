@@ -38,7 +38,9 @@ class _QrProductWidgetState extends State<QrProductWidget> {
       builder: (con) => CartBottomSheet(
         product: widget.product,
         callback: (CartModel cartModel) {
-          // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+          showCustomNotification(context,
+                                      getTranslated('added_to_cart', context),
+                                     type: NotificationType.success);
         },
       ),
     ) : showDialog(context: context, builder: (con) => Dialog(
@@ -47,7 +49,9 @@ class _QrProductWidgetState extends State<QrProductWidget> {
         product: widget.product,
         fromSetMenu: false,
         callback: (CartModel cartModel) {
-          // showCustomSnackBar(getTranslated('added_to_cart', context), isError: false);
+          showCustomNotification(context,
+                                      getTranslated('added_to_cart', context),
+                                     type: NotificationType.success);
         },
       ),
     ));
@@ -86,12 +90,6 @@ class _QrProductWidgetState extends State<QrProductWidget> {
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(5),
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).shadowColor,
-                    offset: const Offset(0, 3.75), blurRadius: 9.29,
-                  )
-                ],
               ),
               child: Column(
                   children: [

@@ -701,8 +701,9 @@ class CheckOutButtonView extends StatelessWidget {
                       Provider.of<SplashProvider>(context, listen: false)
                           .configModel!
                           .minimumOrderValue!) {
-                    //   showCustomSnackBar('Minimum order amount is ${PriceConverter.convertPrice(Provider.of<SplashProvider>(context, listen: false).configModel!
-                    //       .minimumOrderValue)}, you have ${PriceConverter.convertPrice(orderAmount)} in your cart, please add more item.');
+                     
+                      showCustomNotification(context,'Minimum order amount is ${PriceConverter.convertPrice(Provider.of<SplashProvider>(context, listen: false).configModel!
+                          .minimumOrderValue)}, you have ${PriceConverter.convertPrice(orderAmount)} in your cart, please add more item.');
                   } else {
                     RouterHelper.getCheckoutRoute(
                         totalWithoutDeliveryFee,

@@ -11,6 +11,7 @@ import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
+import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/cart_bottom_sheet.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/marque_text.dart';
 import 'package:provider/provider.dart';
@@ -70,9 +71,9 @@ class CartProductWidget extends StatelessWidget {
                     cart: cart,
                     fromCart: true,
                     callback: (CartModel cartModel) {
-                      // showCustomSnackBar(
-                      //     getTranslated('updated_in_cart', context),
-                      //     isError: false);
+                      showCustomNotification(context,
+                          getTranslated('updated_in_cart', context),
+                         type: NotificationType.error);
                     },
                   ),
                 )
@@ -86,9 +87,9 @@ class CartProductWidget extends StatelessWidget {
                       cart: cart,
                       fromCart: true,
                       callback: (CartModel cartModel) {
-                        // showCustomSnackBar(
-                        //     getTranslated('updated_in_cart', context),
-                        //     isError: false);
+                         showCustomNotification(context,
+                          getTranslated('updated_in_cart', context),
+                         type: NotificationType.error);
                       },
                     ),
                   ));

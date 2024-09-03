@@ -4,9 +4,8 @@ import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/wishlist_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
+import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:provider/provider.dart';
-
-import 'custom_snackbar.dart';
 
 class WishButton extends StatelessWidget {
   final Product? product;
@@ -36,7 +35,8 @@ class WishButton extends StatelessWidget {
                 wishList.addToWishList(product!, context);
               }
             } else {
-              // showCustomSnackBar(getTranslated('now_you_are_in_guest_mode', context));
+              
+              showCustomNotification(context,getTranslated('now_you_are_in_guest_mode', context,),  type: NotificationType.warning);
             }
           },
           child: Padding(

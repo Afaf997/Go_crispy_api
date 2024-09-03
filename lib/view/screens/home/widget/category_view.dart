@@ -111,7 +111,7 @@ class CategoryView extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   getTranslated('view_all', context),
-                                  style: const TextStyle(fontSize: 14, color: Colors.white),
+                                  style: const TextStyle(fontSize: 14, color: Colors.red),
                                 ),
                               ),
                             ),

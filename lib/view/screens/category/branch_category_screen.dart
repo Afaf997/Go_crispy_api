@@ -43,7 +43,8 @@ class _BranchCategoryScreenState extends State<BranchCategoryScreen>
       branchProvider.setBranch(widget.qrCodeModel!.branchId!);
 
       Future.delayed(const Duration(milliseconds: 500)).then((value) {
-        // showCustomSnackBar(getTranslated('branch_successfully_selected', context), isError: false);
+        
+        showCustomNotification(context,getTranslated('branch_successfully_selected', context), type: NotificationType.error);
       });
     }
     final CategoryProvider categoryProvider =

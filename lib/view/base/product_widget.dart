@@ -58,9 +58,9 @@ class ProductWidget extends StatelessWidget {
                               child: CartBottomSheet(
                                 product: product,
                                 callback: (CartModel cartModel) {
-                                  // showCustomSnackBar(
-                                  //     getTranslated('added_to_cart', context),
-                                  //     isError: false);
+                                  showCustomNotification(context,
+                                      getTranslated('added_to_cart', context),
+                                     type: NotificationType.success);
                                   showCustomNotification(
                                       context, 'added_to_cart',
                                       type: NotificationType.success);

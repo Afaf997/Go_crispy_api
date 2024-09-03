@@ -226,9 +226,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                                                           child: Text(
                                                         ' (${getTranslated(variationList[index].isRequired! ? 'required' : 'optional', context)}) ',
                                                         style: rubikMedium.copyWith(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor,
+                                                            color: ColorResources.kOrangeColor,
                                                             fontSize: Dimensions
                                                                 .fontSizeSmall),
                                                       )),
@@ -292,8 +290,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                                                                               .selectedVariations[
                                                                           index][i],
                                                                       activeColor:
-                                                                          Theme.of(context)
-                                                                              .primaryColor,
+                                                                          ColorResources.kOrangeColor,
                                                                       shape: RoundedRectangleBorder(
                                                                           borderRadius:
                                                                               BorderRadius.circular(Dimensions.radiusSmall)),
@@ -337,8 +334,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                                                                         );
                                                                       },
                                                                       activeColor:
-                                                                          Theme.of(context)
-                                                                              .primaryColor,
+                                                                             ColorResources.kOrangeColor,
                                                                       toggleable:
                                                                           false,
                                                                       visualDensity: const VisualDensity(
@@ -433,7 +429,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                                         PriceConverter.convertPrice(
                                             priceWithAddonsVariation),
                                         style: rubikBold.copyWith(
-                                          color: Theme.of(context).primaryColor,
+                                            color: ColorResources.kOrangeColor,
                                           fontSize: Dimensions.fontSizeLarge,
                                         )),
                                   ),
@@ -518,7 +514,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                             productProvider.addOnActiveList[index] ? 2 : 20),
                     decoration: BoxDecoration(
                       color: productProvider.addOnActiveList[index]
-                          ? Theme.of(context).primaryColor
+                          ?  ColorResources.kOrangeColor
                           : Theme.of(context)
                               .colorScheme
                               .background
@@ -547,7 +543,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                             Text(widget.product!.addOns![index].name!,
-                                maxLines: 2,
+                                maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
                                 style: rubikMedium.copyWith(
@@ -642,98 +638,121 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
     ]);
   }
 
-  Widget _cartButton(bool isAvailable, BuildContext context,
-      CartModel cartModel, List<Variation>? variationList) {
-    return Column(
-      children: [
-        isAvailable
-            ? const SizedBox()
-            : Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                margin:
-                    const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: ColorResources.kOrangeColor,
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      getTranslated('not_available_now', context)!,
-                      style: rubikMedium.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: Dimensions.fontSizeLarge,
-                      ),
-                    ),
-                    Text(
-                      '${getTranslated('available_will_be', context)} ${DateConverter.convertTimeToTime(widget.product!.availableTimeStarts!, context)} '
-                      '- ${DateConverter.convertTimeToTime(widget.product!.availableTimeEnds!, context)}',
-                      style: rubikRegular,
-                    ),
-                  ],
-                ),
+  Widget _cartButton(
+    bool isAvailable, BuildContext context, CartModel cartModel, List<Variation>? variationList) {
+  return Column(
+    children: [
+      // Show 'Not Available' message if the product is unavailable
+      isAvailable
+          ? const SizedBox()
+          : Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+              margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: ColorResources.kOrangeColor,
               ),
+              child: Column(
+                children: [
+                  Text(
+                    getTranslated('not_available_now', context)!,
+                    style: rubikMedium.copyWith(
+                            color: ColorResources.kOrangeColor,
+                      fontSize: Dimensions.fontSizeLarge,
+                    ),
+                  ),
+                  Text(
+                    '${getTranslated('available_will_be', context)} ${DateConverter.convertTimeToTime(widget.product!.availableTimeStarts!, context)} '
+                    '- ${DateConverter.convertTimeToTime(widget.product!.availableTimeEnds!, context)}',
+                    style: rubikRegular,
+                  ),
+                ],
+              ),
+            ),
 
-        // Only show the add to cart button if the product is available
-        if (isAvailable)
-          Consumer<ProductProvider>(
-            builder: (context, productProvider, _) {
-              final CartProvider cartProvider =
-                  Provider.of<CartProvider>(context, listen: false);
-              int quantity =
-                  cartProvider.getCartProductQuantityCount(widget.product!);
+      // Show the 'Add to Cart' or 'Update in Cart' button if the product is available
+      if (isAvailable)
+        Consumer<ProductProvider>(
+          builder: (context, productProvider, _) {
+            final CartProvider cartProvider =
+                Provider.of<CartProvider>(context, listen: false);
+            int quantity =
+                cartProvider.getCartProductQuantityCount(widget.product!);
 
-              return CustomButton(
-                btnTxt: getTranslated(
-                    widget.cart != null ? 'update_in_cart' : 'add_to_cart',
-                    context),
-                backgroundColor: ColorResources.kOrangeColor,
-                onTap: widget.cart == null &&
-                        !productProvider.checkStock(widget.product!,
-                            quantity: quantity)
-                    ? null
-                    : () {
-                        if (variationList != null) {
-                          for (int index = 0;
-                              index < variationList.length;
-                              index++) {
-                            if (!variationList[index].isMultiSelect! &&
-                                variationList[index].isRequired! &&
-                                !productProvider.selectedVariations[index]
-                                    .contains(true)) {
-                              // showCustomSnackBar('${getTranslated('choose_a_variation_from', context)} ${variationList[index].name}', isToast: true, isError: true);
-                              return;
-                            } else if (variationList[index].isMultiSelect! &&
-                                (variationList[index].isRequired! ||
-                                    productProvider.selectedVariations[index]
-                                        .contains(true)) &&
-                                variationList[index].min! >
-                                    productProvider.selectedVariationLength(
-                                        productProvider.selectedVariations,
-                                        index)) {
-                              // showCustomSnackBar('${getTranslated('you_need_to_select_minimum', context)} ${variationList[index].min} '
-                              //     '${getTranslated('to_maximum', context)} ${variationList[index].max} ${getTranslated('options_from', context)
-                              // } ${variationList[index].name} ${getTranslated('variation', context)}',isError: true, );
-                              return;
-                            }
+            return CustomButton(
+              btnTxt: getTranslated(
+                  widget.cart != null ? 'update_in_cart' : 'add_to_cart',
+                  context),
+              backgroundColor: ColorResources.kOrangeColor,
+              onTap: widget.cart == null &&
+                      !productProvider.checkStock(widget.product!, quantity: quantity)
+                  ? null
+                  : () {
+                      // Check variations if applicable
+                      if (variationList != null) {
+                        for (int index = 0; index < variationList.length; index++) {
+                          if (!variationList[index].isMultiSelect! &&
+                              variationList[index].isRequired! &&
+                              !productProvider.selectedVariations[index].contains(true)) {
+                            showCustomNotification(
+                              context,
+                              '${getTranslated('choose_a_variation_from', context)} ${variationList[index].name}',
+                              type: NotificationType.error,
+                            );
+                            return;
+                          } else if (variationList[index].isMultiSelect! &&
+                              (variationList[index].isRequired! ||
+                                  productProvider.selectedVariations[index]
+                                      .contains(true)) &&
+                              variationList[index].min! >
+                                  productProvider.selectedVariationLength(
+                                      productProvider.selectedVariations, index)) {
+                            showCustomNotification(
+                              context,
+                              '${getTranslated('you_need_to_select_minimum', context)} ${variationList[index].min} '
+                              '${getTranslated('to_maximum', context)} ${variationList[index].max} ${getTranslated('options_from', context)} ${variationList[index].name} ${getTranslated('variation', context)}',
+                              type: NotificationType.error,
+                            );
+                            return;
                           }
                         }
+                      }
 
-                        context.pop();
-                        Provider.of<CartProvider>(context, listen: false)
-                            .addToCart(
-                                cartModel,
-                                widget.cart != null
-                                    ? widget.cartIndex
-                                    : productProvider.cartIndex);
-                      },
-              );
-            },
-          ),
-      ],
-    );
-  }
+                      context.pop();
+
+                      // Add to cart or update cart logic
+                      if (widget.cart != null) {
+                        // If updating an existing item in the cart
+                        Provider.of<CartProvider>(context, listen: false).addToCart(
+                          cartModel,
+                          widget.cartIndex,
+                        );
+
+                        // Show notification for updating the cart
+                        showCustomNotification(
+                          context,
+                          getTranslated('already_added_in_cart', context),
+                          type: NotificationType.error,
+                        );
+                      } else {
+                        Provider.of<CartProvider>(context, listen: false).addToCart(
+                          cartModel,
+                          productProvider.cartIndex,
+                        );
+                        showCustomNotification(
+                          context,
+                          getTranslated('added_to_cart', context),
+                          type: NotificationType.success,
+                        );
+                      }
+                    },
+            );
+          },
+        ),
+    ],
+  );
+}
 
   Widget _productView(
     BuildContext context,
@@ -957,7 +976,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
             )) {
               productProvider.setQuantity(true);
             } else {
-              // showCustomSnackBar(getTranslated('out_of_stock', context));
+              showCustomNotification(context,getTranslated('out_of_stock', context),type: NotificationType.error);
             }
           },
           child: const Padding(

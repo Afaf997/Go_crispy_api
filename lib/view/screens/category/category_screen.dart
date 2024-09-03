@@ -324,7 +324,7 @@ class _CategoryScreenState extends State<CategoryScreen>
       builder: (con) => CartBottomSheet(
         product: product,
         callback: (CartModel cartModel) {
-          // showCustomSnackBar('Added to cart', isError: false);
+          showCustomNotification(context,'Added to cart',type: NotificationType.success);
         },
       ),
     );

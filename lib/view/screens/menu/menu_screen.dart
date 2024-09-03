@@ -23,6 +23,11 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final SplashProvider splashProvider = Provider.of<SplashProvider>(context, listen: false);
 
@@ -96,12 +101,15 @@ class _MenuScreenState extends State<MenuScreen> {
                                           style: rubikRegular.copyWith(
                                               fontSize: Dimensions.fontSizeExtraLarge, color: Colors.white),
                                         ),
-                                  if (authProvider.isLoggedIn() && profileProvider.userInfoModel != null) ...[
+                                  if (authProvider.isLoggedIn() && profileProvider.userInfoModel != null)
                                     Text(
                                       profileProvider.userInfoModel!.email ?? '',
                                       style: rubikRegular.copyWith(color: Colors.white),
                                     ),
-                                    const SizedBox(height: 10),
+                                  const SizedBox(height: 10),
+
+                                  // Show QR and wallet amount texts only if logged in
+                                  if (authProvider.isLoggedIn() && profileProvider.userInfoModel != null) ...[
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -129,7 +137,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                           fontWeight: FontWeight.w500,
                                           color: ColorResources.kWhite),
                                     ),
-                                  ]
+                                  ],
                                 ],
                               ),
                             ],
