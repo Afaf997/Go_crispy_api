@@ -84,6 +84,8 @@ class Images {
   static const deliverySvg = "assets/image/box.svg";
   static const takeAwaySvg = "assets/image/shop.svg";
   static const carHopSvg = "assets/image/car.svg";
+  static const welcome= "assets/image/welcom_screen.jpg";
+  static const splash= "assets/image/splash.png";
 
   static const String orderAnimation = 'assets/json/order_animation.json';
 

@@ -92,7 +92,7 @@ class _BannerViewState extends State<BannerView> {
                                 return child;
                               } else {
                                 return SizedBox(
-                                  height: 165,
+                                  height: 145,
                                   
                                   width: double.infinity,
                                   child: Center(

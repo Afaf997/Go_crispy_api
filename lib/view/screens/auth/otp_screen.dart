@@ -136,19 +136,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   _verifyOtp(pin);
                 },
               ),
-              const SizedBox(height: 240),
-              CustomButton(
-                btnTxt: 'Continue',
-                backgroundColor: ColorResources.kOrangeColor,
-                onTap: () {
-                  if (_otpCode != null) {
-                    _verifyOtp(_otpCode!);
-                  } else {
-                    showCustomNotification(context, 'Please enter the OTP',
-                        type: NotificationType.error);
-                  }
-                },
-              ),
+
             ],
           ),
         ),
