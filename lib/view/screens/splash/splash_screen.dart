@@ -14,6 +14,7 @@ import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/images.dart';
+import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,18 +36,18 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     bool firstTime = true;
     _onConnectivityChanged = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      if (!firstTime) {
+      if(!firstTime) {
         bool isNotConnected = result != ConnectivityResult.wifi && result != ConnectivityResult.mobile;
         isNotConnected ? const SizedBox() : _globalKey.currentState?.hideCurrentSnackBar();
         _globalKey.currentState?.showSnackBar(SnackBar(
           backgroundColor: isNotConnected ? Colors.red : Colors.green,
           duration: Duration(seconds: isNotConnected ? 6000 : 3),
           content: Text(
-            isNotConnected ? getTranslated('no_internet_connection', _globalKey.currentContext!) : getTranslated('connected', _globalKey.currentContext!),
+            isNotConnected ? getTranslated('no_internet_connection', _globalKey.currentContext!): getTranslated('connected', _globalKey.currentContext!),
             textAlign: TextAlign.center,
           ),
         ));
-        if (!isNotConnected) {
+        if(!isNotConnected) {
           _route();
         }
       }
@@ -117,11 +118,21 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: ColorResources.kOrangeColor,
       body: Center(
         child: Consumer<SplashProvider>(builder: (context, splash, child) {
-          return Image.asset(
-            Images.splash, // The single splash image
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.cover, // Ensure the image covers the entire screen
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ResponsiveHelper.isWeb()
+                  ? FadeInImage.assetNetwork(
+                      placeholder: Images.placeholderRectangle,
+                      height: 165,
+                      image: splash.baseUrls != null
+                          ? '${splash.baseUrls!.restaurantImageUrl}/${splash.configModel!.restaurantLogo}'
+                          : '',
+                      imageErrorBuilder: (c, o, s) =>
+                          Image.asset(Images.placeholderRectangle, height: 165),
+                    )
+                  : Image.asset(Images.logo, height: 150),
+            ],
           );
         }),
       ),
