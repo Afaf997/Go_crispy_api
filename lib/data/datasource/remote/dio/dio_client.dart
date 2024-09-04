@@ -81,7 +81,6 @@ class DioClient {
   }) async {
     try {
       debugPrint('apiCall ==> url=> $uri \nparams---> $queryParameters\nheader=> ${dio!.options.headers}');
-
       var response = await dio!.post(
         uri,
         data: data,

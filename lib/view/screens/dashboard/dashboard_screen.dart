@@ -120,7 +120,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.fromLTRB(0,10,0,22),
       decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [

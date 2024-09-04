@@ -15,7 +15,7 @@ class WishButton extends StatelessWidget {
     Key? key,
     required this.product,
     this.edgeInset = EdgeInsets.zero,
-    this.iconSize = 24.0,
+    this.iconSize = 18.0,
   }) : super(key: key);
 
   @override

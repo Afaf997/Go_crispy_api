@@ -33,14 +33,14 @@ class _BannerViewState extends State<BannerView> {
               return Center(
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 145,
+                  height: 165,
                   // margin: const EdgeInsets.symmetric(horizontal: 4.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: Center(
                     child: SizedBox(
-                      height: 145,
+                      height: 165,
                       width: double.infinity,
                       child: Image.asset(Images.gif),
                     ),
@@ -85,14 +85,14 @@ class _BannerViewState extends State<BannerView> {
                           child: Image.network(
                             imageUrl,
                             fit: BoxFit.cover,
-                            height: 145,
+                            height: 165,
                             width: double.infinity,
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) {
                                 return child;
                               } else {
                                 return SizedBox(
-                                  height: 145,
+                                  height: 165,
                                   
                                   width: double.infinity,
                                   child: Center(
@@ -107,7 +107,7 @@ class _BannerViewState extends State<BannerView> {
                     );
                   },
                   options: CarouselOptions(
-                    height: 145,
+                    height: 170,
                     viewportFraction: 1.0,
                     initialPage: 0,
                     enableInfiniteScroll: true,

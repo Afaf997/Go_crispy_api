@@ -99,8 +99,6 @@ class OrderRepo {
       }
       final response =
           await dioClient!.post(AppConstants.placeOrderUri, data: data);
-      log(response.toString());
-      print(response.data.toString() + "ressss");
       return ApiResponse.withSuccess(response);
     } catch (e) {
       print(e.toString());

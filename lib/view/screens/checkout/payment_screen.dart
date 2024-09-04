@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -71,7 +72,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       },
     );
     browser.pullToRefreshController = pullToRefreshController;
-
+     log(selectedUrl);
     await browser.openUrlRequest(
       urlRequest: URLRequest(url: Uri.parse(selectedUrl)),
       options: InAppBrowserClassOptions(

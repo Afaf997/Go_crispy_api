@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
@@ -36,7 +37,6 @@ class _CouponScreenState extends State<CouponScreen> {
       Provider.of<CouponProvider>(context, listen: false).getCouponList();
     }
   }
-
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
@@ -107,7 +107,7 @@ class _CouponScreenState extends State<CouponScreen> {
                                             child: InkWell(
                                               onTap: () {
                                                 Clipboard.setData(ClipboardData(text: couponProvider.couponList![index].code ?? ''));
-                                                // showCustomSnackBar(getTranslated('coupon_code_copied', context), isError: false);
+                                                showCustomNotification(context,getTranslated('coupon_code_copied', context),type:NotificationType.success);
                                               },
                                               child: Stack(
                                                 alignment: Alignment.center,
