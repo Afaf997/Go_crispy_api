@@ -12,21 +12,21 @@ class OnBoardingScreen extends StatelessWidget {
     var screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.black, // Ensure background is black to blend with image if needed
+      backgroundColor:ColorResources.kOrangeColor, 
       body: Stack(
         fit: StackFit.expand,
         children: [
           GestureDetector(
             onTap: () {
-              RouterHelper.getLoginRoute(); // Navigate to the login route when the image is tapped
+              RouterHelper.getLoginRoute(); 
             },
             child: Image.asset(
               Images.splash,
-              fit: BoxFit.cover, // Cover the whole screen
+              fit: BoxFit.cover, 
             ),
           ),
           Positioned(
-            bottom: screenHeight * 0.05, // Adjust this value to position the button above the bottom
+            bottom: screenHeight * 0.05,
             left: screenWidth * 0.04,
             right: screenWidth * 0.04,
             child: CustomButton(
@@ -34,7 +34,7 @@ class OnBoardingScreen extends StatelessWidget {
               backgroundColor: Colors.black,
               textColor: Colors.white,
               onTap: () {
-                RouterHelper.getLoginRoute(); // Navigate to the login route when the button is tapped
+                RouterHelper.getLoginRoute();
               },
             ),
           ),

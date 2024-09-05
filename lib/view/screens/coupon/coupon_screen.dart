@@ -14,8 +14,6 @@ import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
-import 'package:flutter_restaurant/view/base/no_data_screen.dart';
-import 'package:flutter_restaurant/view/base/not_logged_in_screen.dart';
 import 'dart:math' as math;
 
 class CouponScreen extends StatefulWidget {
@@ -26,16 +24,15 @@ class CouponScreen extends StatefulWidget {
 }
 
 class _CouponScreenState extends State<CouponScreen> {
-  late bool _isLoggedIn;
 
   @override
   void initState() {
     super.initState();
-    _isLoggedIn = Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
+    // _isLoggedIn = Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
     final splashProvider = Provider.of<SplashProvider>(context, listen: false);
-    if (_isLoggedIn || splashProvider.configModel!.isGuestCheckout!) {
-      Provider.of<CouponProvider>(context, listen: false).getCouponList();
-    }
+    // if (_isLoggedIn || splashProvider.configModel!.isGuestCheckout!) {
+      // Provider.of<CouponProvider>(context, listen: false).getCouponList();
+    // }
   }
   @override
   Widget build(BuildContext context) {
@@ -53,10 +50,7 @@ class _CouponScreenState extends State<CouponScreen> {
       appBar: ResponsiveHelper.isDesktop(context)
           ? const PreferredSize(preferredSize: Size.fromHeight(100), child: WebAppBar())
           : CustomAppBar(context: context, title: getTranslated('coupon', context)) as PreferredSizeWidget?,
-      body: (splashProvider.configModel!.isGuestCheckout! || _isLoggedIn)
-          ? couponProvider.couponList != null
-              ? couponProvider.couponList!.isNotEmpty
-                  ? RefreshIndicator(
+      body:RefreshIndicator(
                       onRefresh: () async {
                         await couponProvider.getCouponList();
                       },
@@ -218,9 +212,6 @@ class _CouponScreenState extends State<CouponScreen> {
                         ),
                       ),
                     )
-                  : const NoDataScreen()
-              : Center( child:Image.asset(Images.gif,height:200,width: 200,))
-          : const NotLoggedInScreen(),
     );
   }
 }

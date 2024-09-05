@@ -16,15 +16,16 @@ class DeleteConfirmationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: ColorResources.kWhite,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: SizedBox(
         width: 300,
         child: Column(mainAxisSize: MainAxisSize.min, children: [
 
           const SizedBox(height: 20),
-          CircleAvatar(
+         const CircleAvatar(
             radius: 30,
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: ColorResources.kOrangeColor,
             child: const Icon(Icons.contact_support, size: 50),
           ),
 
@@ -41,9 +42,9 @@ class DeleteConfirmationDialog extends StatelessWidget {
 
             Expanded(child: InkWell(
               onTap: () {
-                showDialog(context: context, barrierDismissible: false, builder: (context) => Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                showDialog(context: context, barrierDismissible: false, builder: (context) =>const Center(
+                  child:  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(ColorResources.kOrangeColor),
                   ),
                 ));
                 Provider.of<LocationProvider>(context, listen: false).deleteUserAddressByID(addressModel.id, index, (bool isSuccessful, String message) {
@@ -56,7 +57,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
                 padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10))),
-                child: Text(getTranslated('yes', context)!, style: rubikBold.copyWith(color: Theme.of(context).primaryColor)),
+                child: Text(getTranslated('yes', context)!, style: rubikBold.copyWith(color: ColorResources.kOrangeColor,)),
               ),
             )),
 
@@ -65,8 +66,8 @@ class DeleteConfirmationDialog extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                decoration:const BoxDecoration(
+                  color: ColorResources.kOrangeColor,
                   borderRadius: const BorderRadius.only(bottomRight: Radius.circular(10)),
                 ),
                 child: Text(getTranslated('no', context)!, style: rubikBold.copyWith(color: Colors.white)),

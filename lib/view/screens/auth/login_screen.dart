@@ -1,6 +1,7 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
@@ -139,57 +140,62 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 35),
 
-                      // Phone Number input
-                      TextFormField(
-                        controller: _phoneController,
-                        maxLength: 8,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          filled: true,
-                          fillColor: ColorResources.kGrayLogo,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: 'Enter your phone number',
-                          hintStyle: const TextStyle(
-                            fontSize: 13,
-                            color: ColorResources.kTextgreyColor,
-                          ),
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.only(left: 16, right: 8),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Image.asset(
-                                  Images.qatar,
-                                  height: 24,
-                                  width: 24,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  _countryCode ?? '',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: ColorResources.kTextgreyColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        textAlign: TextAlign
-                            .left, // Changed from TextAlign.center to TextAlign.left
-                        keyboardType: TextInputType.phone,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your mobile number';
-                          }
-                          return null;
-                        },
-                      ),
+
+TextFormField(
+  controller: _phoneController,
+  maxLength: 8, // This is the limit
+  inputFormatters: [
+    LengthLimitingTextInputFormatter(8), // Enforces the 8 character limit
+    FilteringTextInputFormatter.digitsOnly, // Only allows digits
+  ],
+  decoration: InputDecoration(
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    filled: true,
+    fillColor: ColorResources.kGrayLogo,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(15),
+      borderSide: BorderSide.none,
+    ),
+    hintText: 'Enter your phone number',
+    hintStyle: const TextStyle(
+      fontSize: 13,
+      color: ColorResources.kTextgreyColor,
+    ),
+    prefixIcon: Padding(
+      padding: const EdgeInsets.only(left: 16, right: 8),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            Images.qatar,
+            height: 24,
+            width: 24,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            _countryCode ?? '',
+            style: TextStyle(
+              fontSize: 16,
+              color: ColorResources.kTextgreyColor,
+            ),
+          ),
+        ],
+      ),
+    ),
+    counterText: "", // Hides the default character counter
+  ),
+  keyboardType: TextInputType.phone,
+  autovalidateMode: AutovalidateMode.onUserInteraction,
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your mobile number';
+    } else if (value.length != 8) {
+      return 'Phone number must be 8 digits';
+    }
+    return null;
+  },
+),
+
 
                       const SizedBox(height: 300),
 

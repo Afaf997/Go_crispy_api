@@ -78,7 +78,7 @@ class _AddressScreenState extends State<AddressScreen> {
                     await Provider.of<LocationProvider>(context, listen: false)
                         .initAddressList();
                   },
-                  backgroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: ColorResources.kOrangeColor,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [

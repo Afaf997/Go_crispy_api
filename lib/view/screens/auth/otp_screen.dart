@@ -114,7 +114,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 'Please enter it here to verify your number',
                 style: TextStyle(fontSize: 12),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 150),
               PinCodeTextField(
                 controller: _otpController,
                 maxLength: 4,
