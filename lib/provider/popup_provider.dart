@@ -11,8 +11,7 @@ class PopupProvider extends ChangeNotifier {
   PopupProvider({required this.popupRepo});
    bool popuploading =false;
   List<PopupModel>? _popupList;
-
-  List<PopupModel>? get popupList => _popupList; // Add a getter for popupList
+  List<PopupModel>? get popupList => _popupList;
 
   Future<void> initPopupList(BuildContext context) async {
     popuploading=true;
@@ -23,7 +22,7 @@ class PopupProvider extends ChangeNotifier {
       _popupList = [];
       apiResponse.response!.data.forEach((notificatioModel) => _popupList!.add(PopupModel.fromJson(notificatioModel)));
       notifyListeners();
-      Future.delayed(Duration(seconds: 3),(){
+      Future.delayed(const Duration(seconds: 3),(){
         popuploading=false; 
         notifyListeners();
       });

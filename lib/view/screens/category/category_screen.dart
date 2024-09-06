@@ -87,7 +87,7 @@ class _CategoryScreenState extends State<CategoryScreen>
         ),
         centerTitle: true,
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(50),
+          preferredSize:const Size.fromHeight(50),
           child: Consumer<CategoryProvider>(
             builder: (context, category, child) {
               if (category.isLoading || category.categoryList == null) {
