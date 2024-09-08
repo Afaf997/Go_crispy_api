@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 import 'package:flutter_restaurant/data/model/response/category_model.dart';
@@ -34,96 +34,96 @@ class _MainSliderState extends State<MainSlider> {
         return banner.bannerList != null ? banner.bannerList!.isNotEmpty ? Center(
           child: Column(
             children: [
-              CarouselSlider.builder(
-                itemCount: banner.bannerList!.length,
-                options: CarouselOptions(
-                    height: 300,
-                    aspectRatio: 2.0,
-                    enlargeCenterPage: true,
-                    viewportFraction: 1,
-                    autoPlay: true,
-                    autoPlayAnimationDuration: const Duration(seconds: 1),
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _current = index;
-                      });
-                    }
-                ),
-                itemBuilder: (ctx, index, realIdx) {
-                  return Consumer<CartProvider>(
-                      builder: (context, cartProvider, child) {
-                      return InkWell(
-                        onTap: () {
-                          if(banner.bannerList![index].productId != null) {
-                            Product? product;
-                            for(Product prod in banner.productList) {
-                              if(prod.id == banner.bannerList![index].productId) {
-                                product = prod;
+              // CarouselSlider.builder(
+              //   itemCount: banner.bannerList!.length,
+              //   options: CarouselOptions(
+              //       height: 300,
+              //       aspectRatio: 2.0,
+              //       enlargeCenterPage: true,
+              //       viewportFraction: 1,
+              //       autoPlay: true,
+              //       autoPlayAnimationDuration: const Duration(seconds: 1),
+              //       onPageChanged: (index, reason) {
+              //         setState(() {
+              //           _current = index;
+              //         });
+              //       }
+              //   ),
+              //   itemBuilder: (ctx, index, realIdx) {
+              //     return Consumer<CartProvider>(
+              //         builder: (context, cartProvider, child) {
+              //         return InkWell(
+              //           onTap: () {
+              //             if(banner.bannerList![index].productId != null) {
+              //               Product? product;
+              //               for(Product prod in banner.productList) {
+              //                 if(prod.id == banner.bannerList![index].productId) {
+              //                   product = prod;
 
-                                break;
-                              }
-                            }
-                            if(product != null) {
-                              ResponsiveHelper.isMobile() ? showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (con) => CartBottomSheet(
-                                  product: product,
-                                  callback: (CartModel cartModel) {
-                                    showCustomNotification(context,
-                                      getTranslated('added_to_cart', context),
-                                     type: NotificationType.success);
-                                  },
-                                ),
-                              ): showDialog(context: context, builder: (con) => Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: CartBottomSheet(
-                                  product: product,
-                                  callback: (CartModel cartModel) {
-                                    showCustomNotification(context,
-                                      getTranslated('added_to_cart', context),
-                                     type: NotificationType.success);
-                                  },
-                                ),
-                              )
+              //                   break;
+              //                 }
+              //               }
+              //               if(product != null) {
+              //                 ResponsiveHelper.isMobile() ? showModalBottomSheet(
+              //                   context: context,
+              //                   isScrollControlled: true,
+              //                   backgroundColor: Colors.transparent,
+              //                   builder: (con) => CartBottomSheet(
+              //                     product: product,
+              //                     callback: (CartModel cartModel) {
+              //                       showCustomNotification(context,
+              //                         getTranslated('added_to_cart', context),
+              //                        type: NotificationType.success);
+              //                     },
+              //                   ),
+              //                 ): showDialog(context: context, builder: (con) => Dialog(
+              //                   backgroundColor: Colors.transparent,
+              //                   child: CartBottomSheet(
+              //                     product: product,
+              //                     callback: (CartModel cartModel) {
+              //                       showCustomNotification(context,
+              //                         getTranslated('added_to_cart', context),
+              //                        type: NotificationType.success);
+              //                     },
+              //                   ),
+              //                 )
 
-                              );
+              //                 );
 
-                            }
+              //               }
 
-                          }else if(banner.bannerList![index].categoryId != null) {
-                            CategoryModel? category;
-                            for(CategoryModel categoryModel in Provider.of<CategoryProvider>(context, listen: false).categoryList!) {
-                              if(categoryModel.id == banner.bannerList![index].categoryId) {
-                                category = categoryModel;
-                                break;
-                              }
-                            }
+              //             }else if(banner.bannerList![index].categoryId != null) {
+              //               CategoryModel? category;
+              //               for(CategoryModel categoryModel in Provider.of<CategoryProvider>(context, listen: false).categoryList!) {
+              //                 if(categoryModel.id == banner.bannerList![index].categoryId) {
+              //                   category = categoryModel;
+              //                   break;
+              //                 }
+              //               }
 
-                            if(category != null) {
-                               RouterHelper.getCategoryRoute(category);
-                            }
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(Dimensions.paddingSizeExtraSmall),
-                          ),
-                          child:  ClipRRect(
-                            borderRadius: BorderRadius.circular(Dimensions.paddingSizeExtraSmall),
-                            child: FadeInImage.assetNetwork(
-                              placeholder: Images.placeholderBanner, width: size.width, height: size.height, fit: BoxFit.cover,
-                              image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.bannerImageUrl}/${ banner.bannerList![index].image}',
-                              imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholderBanner, width: size.width, height: size.height, fit: BoxFit.cover),
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                  );
-                },
-              ),
+              //               if(category != null) {
+              //                  RouterHelper.getCategoryRoute(category);
+              //               }
+              //             }
+              //           },
+              //           child: Container(
+              //             decoration: BoxDecoration(
+              //               borderRadius: BorderRadius.circular(Dimensions.paddingSizeExtraSmall),
+              //             ),
+              //             child:  ClipRRect(
+              //               borderRadius: BorderRadius.circular(Dimensions.paddingSizeExtraSmall),
+              //               child: FadeInImage.assetNetwork(
+              //                 placeholder: Images.placeholderBanner, width: size.width, height: size.height, fit: BoxFit.cover,
+              //                 image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.bannerImageUrl}/${ banner.bannerList![index].image}',
+              //                 imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholderBanner, width: size.width, height: size.height, fit: BoxFit.cover),
+              //               ),
+              //             ),
+              //           ),
+              //         );
+              //       }
+              //     );
+              //   },
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
 

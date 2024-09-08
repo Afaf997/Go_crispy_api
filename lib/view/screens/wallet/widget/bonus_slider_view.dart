@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/wallet_bonus_model.dart';
 import 'package:flutter_restaurant/helper/date_converter.dart';
@@ -29,23 +29,23 @@ class _BonusSliderViewState extends State<BonusSliderView> {
 
     return isAddFundActive ? Consumer<WalletProvider>(builder: (context, walletProvider, _) {
       return Column(mainAxisSize: MainAxisSize.min, children: [
-        CarouselSlider.builder(
-          itemCount: walletProvider.walletBonusList?.length,
-          options: CarouselOptions(
-              aspectRatio: ResponsiveHelper.isMobile() ?  2.9 : 3.5,
-              // enlargeCenterPage: true,
-              viewportFraction: 1,
-              autoPlay: true,
-              autoPlayAnimationDuration: const Duration(seconds: 1),
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _current = index;
-                });
-              }),
-          itemBuilder: (ctx, index, realIdx) => BonusItemView(
-            walletBonusModel: walletProvider.walletBonusList![index],
-          ),
-        ),
+        // CarouselSlider.builder(
+        //   itemCount: walletProvider.walletBonusList?.length,
+        //   options: CarouselOptions(
+        //       aspectRatio: ResponsiveHelper.isMobile() ?  2.9 : 3.5,
+        //       // enlargeCenterPage: true,
+        //       viewportFraction: 1,
+        //       autoPlay: true,
+        //       autoPlayAnimationDuration: const Duration(seconds: 1),
+        //       onPageChanged: (index, reason) {
+        //         setState(() {
+        //           _current = index;
+        //         });
+        //       }),
+        //   itemBuilder: (ctx, index, realIdx) => BonusItemView(
+        //     walletBonusModel: walletProvider.walletBonusList![index],
+        //   ),
+        // ),
 
         Row(mainAxisAlignment: MainAxisAlignment.center, children: walletProvider.walletBonusList!.map((b) {
           int index = walletProvider.walletBonusList!.indexOf(b);

@@ -302,8 +302,8 @@ void _showPopupImage() async{
                                       top: Dimensions.paddingSizeDefault),
                                   child: slider.MainSlider(),
                                 ),
-                              if (!ResponsiveHelper.isDesktop(context))
-                                const BannerView(),
+                              // if (!ResponsiveHelper.isDesktop(context))
+                              //   const BannerView(),
                               if (ResponsiveHelper.isDesktop(context))
                                 const CategoryViewWeb()
                               else
