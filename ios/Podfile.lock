@@ -359,7 +359,7 @@ SPEC CHECKSUMS:
   flutter_facebook_auth: 42016bec1574eabf69bc2fe4311e8cd55813d352
   flutter_inappwebview: 3d32228f1304635e7c028b0d4252937730bbc6cf
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
-  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
+  flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086
   flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
   FMDB: 728731dd336af3936ce00f91d9d8495f5718a0e6
   geocoding_ios: a389ea40f6f548de6e63006a2e31bf66ff80769a

@@ -83,59 +83,65 @@ class ProductWidgetContainer extends StatelessWidget {
                             ),
                     ),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                product.name ?? '',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const Spacer(),
-                              WishButton(
-                                product: product,
-                                edgeInset: EdgeInsets.zero,
-                                iconSize: 20,
-                              ),
-                            ],
-                          ),
-                          if (product.rating != null && product.rating!.isNotEmpty)
-                            Row(
-                              children: [
-                                const Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
-                                Text(
-                                  ' ${product.rating![0].average}',
-                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          Text(
-                            product.description ?? '',
-                            style: const TextStyle(fontSize: 8, color: ColorResources.kIncreasedColor),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            PriceConverter.convertPrice(
-                              PriceConverter.convertWithDiscount(product.price, product.discount, product.discountType),
-                            ),
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: ColorResources.kredcolor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                 Expanded(
+  child: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            // Wrapping the Text widget with Expanded to ensure it uses the available space correctly
+            Expanded(
+              child: Text(
+                product.name ?? '',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(width: 4), // Spacing between Text and WishButton
+            WishButton(
+              product: product,
+              edgeInset: EdgeInsets.zero,
+              iconSize: 20,
+            ),
+          ],
+        ),
+        if (product.rating != null && product.rating!.isNotEmpty)
+          Row(
+            children: [
+              const Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
+              Text(
+                ' ${product.rating![0].average}',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              ),
+            ],
+          ),
+        Text(
+          product.description ?? '',
+          style: const TextStyle(fontSize: 8, color: ColorResources.kIncreasedColor),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        Text(
+          PriceConverter.convertPrice(
+            PriceConverter.convertWithDiscount(product.price, product.discount, product.discountType),
+          ),
+          style: const TextStyle(
+            fontSize: 14,
+            color: ColorResources.kredcolor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+  ),
+),
+
                 ],
               ),
             ),
