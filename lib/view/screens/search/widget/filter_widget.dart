@@ -64,7 +64,6 @@ class FilterWidget extends StatelessWidget {
                 onChanged: (int? value) {
                   if (value != null) {
                     searchProvider.setFilterIndex(value);
-                    searchProvider.sortByPrice(value);
                   }
                 },
                 activeColor: ColorResources.kOrangeColor,
@@ -76,14 +75,12 @@ class FilterWidget extends StatelessWidget {
                 onChanged: (int? value) {
                   if (value != null) {
                     searchProvider.setFilterIndex(value);
-                    searchProvider.sortByPrice(value);
                   }
                 },
                 activeColor: ColorResources.kOrangeColor,
               ),
               const SizedBox(height: 20),
 
-              // Category filter section
               Text(
                 getTranslated('category', context)!,
                 style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),

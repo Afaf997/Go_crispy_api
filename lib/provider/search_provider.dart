@@ -157,17 +157,6 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void sortByPrice(int order) {
-  if (_searchProductList == null) return;
-  
-  _searchProductList!.sort((a, b) {
-    final aPrice = a.price ?? 0;
-    final bPrice = b.price ?? 0;
-    return order == 2
-        ? aPrice.compareTo(bPrice) // Low to High
-        : bPrice.compareTo(aPrice); // High to Low
-  });
-  notifyListeners();
-}
+
 
 }
