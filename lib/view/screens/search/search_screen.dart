@@ -249,56 +249,70 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                     ),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                title,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const Spacer(),
-                              WishButton(
-                                product: product,
-                                edgeInset: EdgeInsets.zero,
-                                iconSize: 20,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
-                              Text(
-                                ' $rating',
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            description,
-                            style: const TextStyle(fontSize: 8, color: ColorResources.kIncreasedColor),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            price,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: ColorResources.kredcolor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+               Expanded(
+  child: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween, // Ensures title and WishButton are spaced apart
+          children: [
+            Flexible( // Use Flexible to handle title length
+              child: Text(
+                title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            WishButton(
+              product: product,
+              edgeInset: EdgeInsets.zero,
+              iconSize: 20,
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            const Icon(Icons.star, color: ColorResources.kstarYellow, size: 16),
+            Text(
+              ' $rating',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold, 
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          description,
+          style: const TextStyle(
+            fontSize: 8, 
+            color: ColorResources.kIncreasedColor,
+          ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          price,
+          style: const TextStyle(
+            fontSize: 14,
+            color: ColorResources.kredcolor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+  ),
+),
+
                 ],
               ),
             ),

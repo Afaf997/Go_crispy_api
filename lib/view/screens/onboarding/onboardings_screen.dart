@@ -12,19 +12,21 @@ class OnBoardingScreen extends StatelessWidget {
     var screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor:ColorResources.kOrangeColor, 
+      backgroundColor: ColorResources.kOrangeColor,
       body: Stack(
-        fit: StackFit.expand,
         children: [
-          GestureDetector(
-            onTap: () {
-              RouterHelper.getLoginRoute(); 
-            },
-            child: Image.asset(
-              Images.splash,
-              fit: BoxFit.cover, 
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: () {
+                RouterHelper.getLoginRoute(); 
+              },
+              child: Image.asset(
+                Images.splash,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
+          // Button
           Positioned(
             bottom: screenHeight * 0.05,
             left: screenWidth * 0.04,

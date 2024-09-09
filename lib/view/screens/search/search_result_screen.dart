@@ -93,6 +93,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                       prices.sort();
                                       double? maxValue = prices.isNotEmpty ? prices[prices.length - 1] : 1000;
                                       return Dialog(
+                                        backgroundColor: ColorResources.kWhite,
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                         child: SizedBox(width: 550, child: FilterWidget(maxValue: maxValue)),
                                       );
@@ -135,26 +136,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                             '${searchProvider.searchProductList!.length} ${getTranslated('product_found', context)}',
                           
                           ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                List<double?> prices = [];
-                                for (var product in searchProvider.filterProductList!) {
-                                  prices.add(product.price);
-                                }
-                                prices.sort();
-                                double? maxValue = prices.isNotEmpty ? prices.last : 1000;
-                                return Dialog(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                                  child: SizedBox(width: 550, child: FilterWidget(maxValue: maxValue)),
-                                );
-                              },
-                            );
-                          },
-                          child: Image.asset(Images.filter),
                         ),
                       ],
                     ),

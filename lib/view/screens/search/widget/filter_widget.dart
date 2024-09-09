@@ -7,10 +7,8 @@ import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
-import 'package:flutter_restaurant/view/screens/home/widget/category_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
 class FilterWidget extends StatelessWidget {
   final double? maxValue;
   const FilterWidget({Key? key, required this.maxValue}) : super(key: key);
@@ -20,13 +18,13 @@ class FilterWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
       child: Consumer<SearchProvider>(
-        builder: (context, searchProvider, child) =>
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        builder: (context, searchProvider, child) => SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header row with close and reset buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -41,70 +39,54 @@ class FilterWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.displaySmall!.copyWith(
                         fontSize: Dimensions.fontSizeLarge,
+                        fontWeight: FontWeight.w600,
                         color: ColorResources.getGreyBunkerColor(context),
                       ),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      searchProvider.setRating(-1);
-                      Provider.of<CategoryProvider>(context, listen: false).updateSelectCategory(-1);
-                      searchProvider.setLowerAndUpperValue(0, 0);
-                    },
-                    child: Text(
-                      getTranslated('reset', context)!,
-                      style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Theme.of(context).primaryColor),
-                    ),
-                  )
+                  Text(
+                    getTranslated('reset', context)!,
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: ColorResources.kOrangeColor),
+                  ),
                 ],
               ),
 
+              // Price filter section
               Text(
                 getTranslated('price', context)!,
-                style: Theme.of(context).textTheme.displaySmall,
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
-
-              // price range
-              RangeSlider(
-                values: RangeValues(searchProvider.lowerValue, searchProvider.upperValue),
-                max: maxValue!,
-                min: 0,
-                activeColor: Theme.of(context).primaryColor,
-                labels: RangeLabels(searchProvider.lowerValue.toString(), searchProvider.upperValue.toString()),
-                onChanged: (RangeValues rangeValues) {
-                  searchProvider.setLowerAndUpperValue(rangeValues.start, rangeValues.end);
+              const SizedBox(height: 10),
+              RadioListTile<int>(
+                title: Text(getTranslated('low to high', context)!),
+                value: 2,
+                groupValue: searchProvider.filterIndex, // Make sure this is bound to filterIndex
+                onChanged: (int? value) {
+                  if (value != null) {
+                    searchProvider.setFilterIndex(value);
+                    searchProvider.sortByPrice(value);
+                  }
                 },
+                activeColor: ColorResources.kOrangeColor,
               ),
-
-
-
-              Text(
-                getTranslated('rating', context)!,
-                style: Theme.of(context).textTheme.displaySmall,
+              RadioListTile<int>(
+                title: Text(getTranslated('high to low', context)!),
+                value: 1,
+                groupValue: searchProvider.filterIndex, // Make sure this is bound to filterIndex
+                onChanged: (int? value) {
+                  if (value != null) {
+                    searchProvider.setFilterIndex(value);
+                    searchProvider.sortByPrice(value);
+                  }
+                },
+                activeColor: ColorResources.kOrangeColor,
               ),
+              const SizedBox(height: 20),
 
-              SizedBox(
-                height: 30,
-                child: ListView.builder(
-                  itemCount: 5,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      child: Icon(
-                        searchProvider.rating < (index + 1) ? Icons.star_border : Icons.star,
-                        size: 20,
-                        color: searchProvider.rating < (index + 1) ? Theme.of(context).hintColor.withOpacity(0.7) : Theme.of(context).primaryColor,
-                      ),
-                      onTap: () => searchProvider.setRating(index + 1),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 15),
+              // Category filter section
               Text(
                 getTranslated('category', context)!,
-                style: Theme.of(context).textTheme.displaySmall,
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 13),
 
@@ -112,43 +94,49 @@ class FilterWidget extends StatelessWidget {
                 builder: (context, category, child) {
                   return category.categoryList != null
                       ? GridView.builder(
-                      
-                        itemCount: category.categoryList!.length,
-                        padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: ResponsiveHelper.isDesktop(context)?4:3,
-                            childAspectRatio: 3.0, crossAxisSpacing: 10, mainAxisSpacing: 12),
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              category.updateSelectCategory(index);
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-                              decoration: BoxDecoration(
+                          itemCount: category.categoryList!.length,
+                          padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
+                          physics: const BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: ResponsiveHelper.isDesktop(context) ? 4 : 3,
+                              childAspectRatio: 3.0,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 12),
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                category.updateSelectCategory(index);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
+                                decoration: BoxDecoration(
                                   border: Border.all(
                                       color: category.selectCategory == index
                                           ? ColorResources.klgreyColor
-                                          : ColorResources.klgreyColor
-                                          ),
+                                          : ColorResources.klgreyColor),
                                   borderRadius: BorderRadius.circular(7.0),
-                                  color: category.selectCategory == index ? Theme.of(context).primaryColor : ColorResources.kColorgrey),
-                              child: Text(
-                                category.categoryList![index].name!,
-                                textAlign: TextAlign.center,
-                                style: rubikMedium.copyWith(
-                                    fontSize: ResponsiveHelper.isDesktop(context)?Dimensions.fontSizeDefault: Dimensions.fontSizeExtraSmall,
-                                    color: category.selectCategory == index ? Colors.white : ColorResources.getHintColor(context)),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                                  color: category.selectCategory == index
+                                      ? ColorResources.kOrangeColor
+                                      : ColorResources.kColorgrey),
+                                child: Text(
+                                  category.categoryList![index].name!,
+                                  textAlign: TextAlign.center,
+                                  style: rubikMedium.copyWith(
+                                    fontSize: ResponsiveHelper.isDesktop(context)
+                                        ? Dimensions.fontSizeDefault
+                                        : Dimensions.fontSizeExtraSmall,
+                                    color: category.selectCategory == index
+                                        ? Colors.white
+                                        : ColorResources.getHintColor(context)),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      )
+                            );
+                          },
+                        )
                       : const CircularProgressIndicator();
                 },
               ),
@@ -157,16 +145,17 @@ class FilterWidget extends StatelessWidget {
               CustomButton(
                 btnTxt: getTranslated('apply', context),
                 onTap: () {
-                  searchProvider.sortSearchList(Provider.of<CategoryProvider>(context, listen: false).selectCategory,
+                  searchProvider.sortSearchList(
+                    Provider.of<CategoryProvider>(context, listen: false).selectCategory,
                     Provider.of<CategoryProvider>(context, listen: false).categoryList,
                   );
 
                   context.pop();
                 },
-              )
-          ],
+              ),
+            ],
+          ),
         ),
-            ),
       ),
     );
   }

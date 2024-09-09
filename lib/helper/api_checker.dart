@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/base/api_response.dart';
 import 'package:flutter_restaurant/data/model/response/base/error_response.dart';
-import 'package:flutter_restaurant/localization/app_localization.dart';
 import 'package:flutter_restaurant/main.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';

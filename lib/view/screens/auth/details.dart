@@ -161,7 +161,7 @@ class _ContactDetailsState extends State<ContactDetails> {
               const SizedBox(height: 15.0),
               CustomTextField(
                 controller: _emailController,
-                hintText: 'Enter your email',
+                hintText: 'Email(optional)',
                 focusNode: _emailFocusNode,
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
