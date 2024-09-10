@@ -130,8 +130,8 @@ class _MenuScreenState extends State<MenuScreen> {
                                         ),
                                       ],
                                     ),
-                                    const Text(
-                                      "Wallet Amount",
+                                     Text(
+                                       getTranslated('wallet_amount', context)!,
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,

@@ -25,17 +25,17 @@ class SearchProvider with ChangeNotifier {
 
   List<String> get historyList => _historyList;
   TextEditingController _searchController = TextEditingController();
-  TextEditingController  get searchController=> _searchController;
+  TextEditingController get searchController => _searchController;
   int _searchLength = 0;
   int get searchLength => _searchLength;
   bool get isSearch => _isSearch;
 
-  searchDone(){
+  void searchDone() {
     _isSearch = !_isSearch;
     notifyListeners();
   }
 
-  getSearchText(String searchText){
+  void getSearchText(String searchText) {
     _searchController = TextEditingController(text: searchText);
     _searchLength = searchText.length;
     notifyListeners();
@@ -53,12 +53,14 @@ class SearchProvider with ChangeNotifier {
   }
 
   void sortSearchList(int categoryIndex, List<CategoryModel>? categoryList) {
-    _searchProductList= [];
+    _searchProductList = [];
     _searchProductList!.addAll(_filterProductList!);
-    if(_upperValue > 0) {
-      _searchProductList!.removeWhere((product) => product.price! <= _lowerValue || product.price! >= _upperValue);
+
+    if (_upperValue > 0) {
+      _searchProductList!.removeWhere((product) =>
+          product.price! <= _lowerValue || product.price! >= _upperValue);
     }
-    if(categoryIndex != -1) {
+    if (categoryIndex != -1) {
       int? categoryID = categoryList![categoryIndex].id;
       _searchProductList!.removeWhere((product) {
         List<String?> ids = [];
@@ -68,9 +70,19 @@ class SearchProvider with ChangeNotifier {
         return !ids.contains(categoryID.toString());
       });
     }
-    if(_rating != -1) {
-      _searchProductList!.removeWhere((product) => product.rating == null || product.rating!.isEmpty || double.parse(product.rating![0].average!) < _rating);
+    if (_rating != -1) {
+      _searchProductList!.removeWhere((product) =>
+          product.rating == null || product.rating!.isEmpty ||
+          double.parse(product.rating![0].average!) < _rating);
     }
+
+    // Sort the list based on filterIndex
+    if (_filterIndex == 1) {
+      _searchProductList!.sort((a, b) => b.price!.compareTo(a.price!)); // High to Low
+    } else if (_filterIndex == 2) {
+      _searchProductList!.sort((a, b) => a.price!.compareTo(b.price!)); // Low to High
+    }
+
     notifyListeners();
   }
 
@@ -89,14 +101,14 @@ class SearchProvider with ChangeNotifier {
 
   void setSearchText(String text) {
     _searchText = text;
-    // notifyListeners();
+    notifyListeners();
   }
 
   void cleanSearchProduct() {
     _searchProductList = [];
     _isClear = true;
     _searchText = '';
-   // notifyListeners();
+    notifyListeners();
   }
 
   void searchProduct(String query, BuildContext context, {String type = 'all', bool isUpdate = false}) async {
@@ -107,12 +119,17 @@ class SearchProvider with ChangeNotifier {
     _rating = -1;
     _upperValue = 0;
     _lowerValue = 0;
-    if(isUpdate) {
+
+    if (isUpdate) {
       notifyListeners();
     }
 
-    ApiResponse apiResponse = await searchRepo!.getSearchProductList(query,
-      Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode, type);
+    ApiResponse apiResponse = await searchRepo!.getSearchProductList(
+      query,
+      Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode,
+      type
+    );
+
     if (apiResponse.response != null && apiResponse.response!.statusCode == 200) {
       if (query.isEmpty) {
         _searchProductList = [];
@@ -122,7 +139,6 @@ class SearchProvider with ChangeNotifier {
         _filterProductList = [];
         _filterProductList!.addAll(ProductModel.fromJson(apiResponse.response!.data).products!);
       }
-      //notifyListeners();
     } else {
       ApiChecker.checkApi(apiResponse);
     }
@@ -138,7 +154,7 @@ class SearchProvider with ChangeNotifier {
     if (!_historyList.contains(searchAddress)) {
       _historyList.add(searchAddress);
       searchRepo!.saveSearchAddress(searchAddress);
-      // notifyListeners();
+      notifyListeners();
     }
   }
 
@@ -156,7 +172,4 @@ class SearchProvider with ChangeNotifier {
     _rating = rate;
     notifyListeners();
   }
-
-
-
 }

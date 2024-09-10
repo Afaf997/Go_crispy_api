@@ -73,8 +73,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                           showPayment
                               ? orderProvider.selectedOfflineMethod != null
                                   ? '${getTranslated('pay_offline', context)} (${orderProvider.selectedOfflineMethod?.methodName})'
-                                  : orderProvider.selectedPaymentMethod?.getWayTitle ?? 'Add Payment Method'
-                              : 'Add Payment Method',
+                                  : orderProvider.selectedPaymentMethod?.getWayTitle ?? getTranslated('add_payment_method', context)
+                              : getTranslated('add_payment_method', context),
                           style:const  TextStyle(
                             color: ColorResources.kblack,
                             fontWeight: FontWeight.w500,

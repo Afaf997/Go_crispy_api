@@ -248,7 +248,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                 child: PaymentButtonNew(
                                   icon: Images.payment,
 
-                                  title: "Pay Online",
+                                  title: getTranslated('pay_online', context)!,
                                   isSelected:
                                       orderProvider.paymentMethodIndex == 1,
                                   onTap: () {

@@ -346,7 +346,7 @@ void _showPopupImage() async{
                                       padding:
                                           const EdgeInsets.fromLTRB(10, 20, 10, 10),
                                       child: Text(
-                                          getTranslated('Latest Products', context),
+                                          getTranslated('latest_item', context),
                                           style: rubikRegular.copyWith(
                                               fontSize: Dimensions
                                                   .fontSizeOverLarge,fontWeight: FontWeight.w700)),
@@ -358,7 +358,7 @@ void _showPopupImage() async{
                                   padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
                                   child: TitleWidget(
                                       title: getTranslated(
-                                          'Latest Products', context), 
+                                          'latest_item', context), 
                                           textStyle:const TextStyle(fontSize: 20,fontWeight: FontWeight.w700,),),
                                 ),
                               const ProductView(

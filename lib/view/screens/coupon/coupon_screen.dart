@@ -76,7 +76,8 @@ class _CouponScreenState extends State<CouponScreen> {
                                             )
                                           : null,
                                       child: ListView.builder(
-                                        itemCount: couponProvider.couponList!.length,
+                                       itemCount: couponProvider.couponList?.length ?? 0,
+
                                         shrinkWrap: true,
                                         physics: const NeverScrollableScrollPhysics(),
                                         padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),

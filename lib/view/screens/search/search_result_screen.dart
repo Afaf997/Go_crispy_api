@@ -112,8 +112,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                               child: Container(
                                 width: 18,
                                 height: 18,
-                                decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).primaryColor),
-                                child: Icon(
+                                decoration:const BoxDecoration(shape: BoxShape.circle, color:ColorResources.kOrangeColor),
+                                child:const Icon(
                                   Icons.close,
                                   color: Colors.white,
                                   size: 10,

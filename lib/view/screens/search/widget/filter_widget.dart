@@ -9,6 +9,7 @@ import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
 class FilterWidget extends StatelessWidget {
   final double? maxValue;
   const FilterWidget({Key? key, required this.maxValue}) : super(key: key);
@@ -56,11 +57,13 @@ class FilterWidget extends StatelessWidget {
                 getTranslated('price', context)!,
                 style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               RadioListTile<int>(
-                title: Text(getTranslated('low to high', context)!),
+                title: Text(getTranslated('low to high', context)!,
+                style: const TextStyle(fontSize: 14,),
+                ),
                 value: 2,
-                groupValue: searchProvider.filterIndex, // Make sure this is bound to filterIndex
+                groupValue: searchProvider.filterIndex,
                 onChanged: (int? value) {
                   if (value != null) {
                     searchProvider.setFilterIndex(value);
@@ -69,9 +72,11 @@ class FilterWidget extends StatelessWidget {
                 activeColor: ColorResources.kOrangeColor,
               ),
               RadioListTile<int>(
-                title: Text(getTranslated('high to low', context)!),
+                title: Text(getTranslated('high to low', context)!,
+                style: const TextStyle(fontSize: 14,),
+                ),
                 value: 1,
-                groupValue: searchProvider.filterIndex, // Make sure this is bound to filterIndex
+                groupValue: searchProvider.filterIndex,
                 onChanged: (int? value) {
                   if (value != null) {
                     searchProvider.setFilterIndex(value);
@@ -79,8 +84,35 @@ class FilterWidget extends StatelessWidget {
                 },
                 activeColor: ColorResources.kOrangeColor,
               ),
-              const SizedBox(height: 20),
 
+              const SizedBox(height: 20),
+                Text(
+                getTranslated('rating', context)!,
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+                   const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: SizedBox(
+                  height: 30,
+                  child: ListView.builder(
+                    itemCount: 5,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        child: Icon(
+                          searchProvider.rating < (index + 1) ? Icons.star_border : Icons.star,
+                          size: 20,
+                          color: searchProvider.rating < (index + 1) ? Theme.of(context).hintColor.withOpacity(0.7) :ColorResources.kOrangeColor
+                        ),
+                        onTap: () => searchProvider.setRating(index + 1),
+                      );
+                    },
+                  ),
+                ),
+              ),
+                 const SizedBox(height: 15),
               Text(
                 getTranslated('category', context)!,
                 style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),

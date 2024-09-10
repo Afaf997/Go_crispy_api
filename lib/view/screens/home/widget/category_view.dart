@@ -68,9 +68,9 @@ class CategoryView extends StatelessWidget {
                                           Image.asset(Images.placeholderImage, width: 78, height: 78, fit: BoxFit.cover),
                                     ),
                                   ),
-                                  const SizedBox(height: 5),
+                                  const SizedBox(height: 4),
                                   SizedBox(
-                                    width: 80, // Set a fixed width for proper wrapping
+                                    width: 80, 
                                     child: Text(
                                       name,
                                       textAlign: TextAlign.center,

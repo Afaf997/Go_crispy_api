@@ -11,9 +11,17 @@ import 'package:flutter_restaurant/view/base/filter_button_widget.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/base/wish_button.dart';
+import 'package:flutter_restaurant/view/screens/cart/cart_screen.dart';
+import 'package:flutter_restaurant/view/screens/dashboard/dashboard_screen.dart';
+import 'package:flutter_restaurant/view/screens/home/home_screen.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/cart_bottom_sheet.dart';
+import 'package:flutter_restaurant/view/screens/menu/menu_screen.dart';
+import 'package:flutter_restaurant/view/screens/order/order_screen.dart';
+import 'package:flutter_restaurant/view/screens/wishlist/wishlist_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
+import 'package:flutter/material.dart';
+
 
 class CategoryScreen extends StatefulWidget {
   final String categoryId;
@@ -31,48 +39,10 @@ class CategoryScreen extends StatefulWidget {
   State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
-class _CategoryScreenState extends State<CategoryScreen>
-    with TickerProviderStateMixin {
-  late TabController _tabController;
-  int _tabIndex = 0;
-  String _type = 'all';
-  late int _selectedIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(
-      length: 0,
-      vsync: this,
-    );
-
-    _selectedIndex = int.parse(widget.categoryId);
-
-    _loadData();
-  }
-
-  void _loadData() async {
-    final categoryProvider =
-        Provider.of<CategoryProvider>(context, listen: false);
-    categoryProvider.getSubCategoryList(widget.categoryId);
-
-    categoryProvider.getCategoryProductList(widget.categoryId, type: _type);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  void _onCategorySelected(int index, CategoryProvider category) {
-    setState(() {
-      _selectedIndex = index + 1;
-    });
-
-    Provider.of<CategoryProvider>(context, listen: false)
-        .getCategoryProductList(category.categoryList![index].id!.toString(), type: _type);
-  }
+class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStateMixin {
+  int _currentNavIndex = 0;
+  int _selectedIndex = 0;
+  String? _type;
 
   @override
   Widget build(BuildContext context) {
@@ -87,12 +57,11 @@ class _CategoryScreenState extends State<CategoryScreen>
         ),
         centerTitle: true,
         bottom: PreferredSize(
-          preferredSize:const Size.fromHeight(50),
+          preferredSize: const Size.fromHeight(50),
           child: Consumer<CategoryProvider>(
             builder: (context, category, child) {
               if (category.isLoading || category.categoryList == null) {
-                return const Center(
-                );
+                return const Center();
               } else {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,7 +126,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       FilterButtonWidget(
-                        type: _type,
+                        type: _type ?? '',
                         items: Provider.of<ProductProvider>(context).productTypeList,
                         onSelected: (selected) {
                           setState(() {
@@ -167,7 +136,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                               .getCategoryProductList(
                                 Provider.of<CategoryProvider>(context, listen: false)
                                     .selectedSubCategoryId,
-                                type: _type,
+                                type: _type ?? '',
                               );
                         },
                       ),
@@ -193,6 +162,10 @@ class _CategoryScreenState extends State<CategoryScreen>
           }
         },
       ),
+      bottomNavigationBar: CustomBottomNavBar(
+        selectedIndex: _currentNavIndex,
+        onItemTapped: _onNavItemTapped,
+      ),
     );
   }
 
@@ -200,7 +173,7 @@ class _CategoryScreenState extends State<CategoryScreen>
     return ListView.builder(
       shrinkWrap: true,
       itemCount: category.categoryProductList!.length,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
       itemBuilder: (context, index) {
         final product = category.categoryProductList![index];
@@ -214,107 +187,128 @@ class _CategoryScreenState extends State<CategoryScreen>
             ? double.parse(product.rating![0].average ?? '0')
             : 0.0;
 
-       return InkWell(
-  onTap: () {
-    _addToCart(context, product);
-  },
-  child: Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8,),
-    child: Container(
-          width: 348, // Width of the image
-          height: 110, 
-            decoration: BoxDecoration(
+        return InkWell(
+          onTap: () {
+            _addToCart(context, product);
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Container(
+              width: 348,
+              height: 110,
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: ColorResources.kallcontainer),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 129, // Width of the image
-            height: 110, // Height of the image
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: productImage != null
-                  ? DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(productImage),
-                    )
-                  : const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(Images.placeholderImage),
-                    ),
-            ),
-          ),
-          Expanded(
-  child: Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+                color: ColorResources.kallcontainer,
               ),
-              maxLines: 2, 
-              overflow: TextOverflow.ellipsis,
-            ),
-               const Spacer(),
-                      WishButton(
-                        product: product,
-                        edgeInset: EdgeInsets.zero,
-                        iconSize: 16,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 129,
+                    height: 110,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: productImage != null
+                          ? DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(productImage),
+                            )
+                          : const DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage(Images.placeholderImage),
+                            ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                title,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const Spacer(),
+                              WishButton(
+                                product: product,
+                                edgeInset: EdgeInsets.zero,
+                                iconSize: 16,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          Row(
+                            children: [
+                              const Icon(Icons.star, color: ColorResources.kstarYellow, size: 12),
+                              Text(
+                                ' $rating',
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            description,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: ColorResources.kIncreasedColor,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            price,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: ColorResources.kredcolor,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
                       ),
-          ],
-        ),
-        const SizedBox(height: 2), // Add some space between title and next row
-        
-        Row(
-          children: [
-            const Icon(Icons.star, color: ColorResources.kstarYellow, size: 12),
-            Text(
-              ' $rating',
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-        
-        // Description Text
-        Text(
-          description,
-          style: const TextStyle(
-            fontSize: 10, // Increased font size for description
-            color: ColorResources.kIncreasedColor,
           ),
-          maxLines: 2, // Ensure description wraps onto two lines if needed
-          overflow: TextOverflow.ellipsis,
-        ),
-        
-        // Price Text
-        Text(
-          price,
-          style: const TextStyle(
-            fontSize: 14,
-            color: ColorResources.kredcolor,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ],
-    ),
-  ),
-)
-
-        ],
-      ),
-    ),
-  ),
-);
-
+        );
       },
     );
   }
+
+  void _onCategorySelected(int index, CategoryProvider categoryProvider) {
+    setState(() {
+      _selectedIndex = index + 1;
+      categoryProvider.setSelectedSubCategoryId(categoryProvider.categoryList![index].id.toString());
+    });
+    categoryProvider.getCategoryProductList(categoryProvider.selectedSubCategoryId);
+  }
+
+  void _onNavItemTapped(int index) {
+    setState(() {
+      _currentNavIndex = index;
+    });
+    if (index == 0) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardScreen(pageIndex: 0,)));
+    } else if (index == 1) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen(pageIndex: 1,)));
+    } else if (index == 2) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen(pageIndex: 2,)));
+    } else if (index == 3) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen(pageIndex: 3,)));
+    } else if (index == 4) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen(pageIndex: 4,)));
+    }
+  }
+
 
   void _addToCart(BuildContext context, product) {
     showModalBottomSheet(

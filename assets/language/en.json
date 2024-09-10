@@ -320,7 +320,7 @@
   "min": "min",
   "sec": "Sec",
   "to": "to",
-  "latest_item": "Top Deals",
+  "latest_item": "Latest Products",
   "your_food_delivery": "Your Food delivery will be arrive with in",
   "be_prepared_your_food": "Be prepared your food is arrive any moment now",
   "your_account_remove_successfully": "Your account remove successfully",
@@ -476,7 +476,7 @@
   "pay_via_online": "Pay via Online",
   "your_wallet_have_not_sufficient_balance": "Your wallet have not sufficient balance",
   "select": "Select",
-  "add_payment_method": "Add  Payment Method",
+  "add_payment_method": "Select Payment Method",
   "applied": "Applied",
   "do_you_want_to_use_now": "Do you want to use now?",
   "remaining_wallet_balance": "Remaining wallet balance",
@@ -542,5 +542,7 @@
   "enter_valid_order_id": "Enter valid order ID",
   "delivery_address_and_time":"Delivery Address & Time",
   "login_and_sign":"Login or create an account",
-  "total":"Total"
+  "total":"Total",
+  "car_hop":"Car Hop",
+  "pay_online":"Pay Online"
 }

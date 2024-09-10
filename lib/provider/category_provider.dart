@@ -102,4 +102,12 @@ class CategoryProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+
+  // Method to set the selected subcategory ID
+  void setSelectedSubCategoryId(String subCategoryId) {
+    _selectedSubCategoryId = subCategoryId;
+    notifyListeners(); // Notify listeners to rebuild widgets depending on this value
+  }
+
 }

@@ -27,7 +27,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   late List<Widget> _screens;
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
 
-
   @override
   void initState() {
     super.initState();

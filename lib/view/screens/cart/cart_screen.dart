@@ -572,7 +572,7 @@ Consumer<CouponProvider>(
                                                       ? DeliveryOptionButton(
                                                           value: 'car_hop',
                                                           title: getTranslated(
-                                                              'Car Hop',
+                                                              'car_hop',
                                                               context),
                                                           imagePath:
                                                               Images.carHopSvg,
@@ -603,7 +603,7 @@ Consumer<CouponProvider>(
 
                                           const SizedBox(height: 10),
                                                  ItemView(
-                                                  title: getTranslated('Discount ', context),subTitle: coupon.discount! > 0     ? PriceConverter.convertPrice(coupon.discount!)   
+                                                  title: getTranslated('discount', context),subTitle: coupon.discount! > 0     ? PriceConverter.convertPrice(coupon.discount!)   
                                                     : PriceConverter.convertPrice(0.0)),
                                               const SizedBox(height: 10),
                                               ItemView(
