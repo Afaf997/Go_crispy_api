@@ -6,6 +6,7 @@ import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/main.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/branch_provider.dart';
+import 'package:flutter_restaurant/provider/coupon_provider.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/provider/theme_provider.dart';
@@ -29,6 +30,7 @@ class OptionsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final couponProvider = Provider.of<CouponProvider>(context);
     final policyModel =
         Provider.of<SplashProvider>(context, listen: false).policyModel;
     final configModel =
@@ -116,7 +118,10 @@ class OptionsView extends StatelessWidget {
                       //   title: Text(getTranslated('message', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
                       // ),
                       ListTile(
-                        onTap: () => RouterHelper.getCouponRoute(),
+                        onTap: (){
+                          couponProvider.getCouponList();
+                          RouterHelper.getCouponRoute();
+                        },
                         leading: Image.asset(
                           Images.walleticon,
                           width: 20,

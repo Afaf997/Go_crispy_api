@@ -13,8 +13,10 @@ import 'package:provider/provider.dart';
 class CategoryView extends StatelessWidget {
   const CategoryView({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
+    final CategoryProvider categoryProvider =Provider.of<CategoryProvider>(context);
     return Consumer<CategoryProvider>(
       builder: (context, category, child) {
         if (category.categoryList == null) {
@@ -50,7 +52,10 @@ class CategoryView extends StatelessWidget {
                           return Padding(
                             padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
                             child: InkWell(
-                              onTap: () => RouterHelper.getCategoryRoute(category.categoryList![index]),
+                              onTap: (){
+                                categoryProvider.getCategoryProductList(category.categoryList![index].id.toString());
+                                 RouterHelper.getCategoryRoute(category.categoryList![index]);
+                              } ,
                               child: Column(
                                 mainAxisSize: MainAxisSize.min, // Adjust to fit the content properly
                                 children: [

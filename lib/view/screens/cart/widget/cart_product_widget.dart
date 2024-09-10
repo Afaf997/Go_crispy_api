@@ -6,6 +6,7 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/coupon_provider.dart';
+import 'package:flutter_restaurant/provider/language_provider.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
@@ -46,6 +47,7 @@ class CartProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  final LanguageProvider languageProvider =Provider.of<LanguageProvider>(context);
     return InkWell(
       onTap: () {
         ResponsiveHelper.isMobile()
@@ -139,12 +141,19 @@ class CartProductWidget extends StatelessWidget {
                 ],
               ),
             ),
+            
             Container(
-              decoration: const BoxDecoration(
+              decoration:  BoxDecoration(
                 color: ColorResources.kblack,
-                borderRadius: BorderRadius.only(
+                // ignore: unnecessary_null_comparison
+                borderRadius:languageProvider.selectIndex == 0 ?  const BorderRadius.only(
+
                   topRight: Radius.circular(10.0),
                   bottomRight: Radius.circular(10.0),
+                ) : BorderRadius.only(
+
+                topLeft: Radius.circular(10.0),
+                  bottomLeft: Radius.circular(10.0),
                 ),
               ),
               child: Column(

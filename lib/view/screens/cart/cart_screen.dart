@@ -10,6 +10,7 @@ import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/coupon_provider.dart';
+import 'package:flutter_restaurant/provider/language_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
@@ -53,6 +54,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget _buildAdditionalUI(BuildContext context) {
+
     final OrderProvider orderProvider = Provider.of<OrderProvider>(context);
     final bool isTakeAway = orderProvider.orderType == 'take_away';
     final bool isCarHop = orderProvider.orderType == 'car_hop';

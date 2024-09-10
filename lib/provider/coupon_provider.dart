@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/base/api_response.dart';
 import 'package:flutter_restaurant/data/model/response/coupon_model.dart';
@@ -27,6 +29,7 @@ class CouponProvider extends ChangeNotifier {
     ApiResponse apiResponse = await couponRepo!.getCouponList(
       guestId:
           Provider.of<AuthProvider>(Get.context!, listen: false).getGuestId(),
+        
     );
     if (apiResponse.response != null &&
         apiResponse.response!.statusCode == 200) {

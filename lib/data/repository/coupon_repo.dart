@@ -1,3 +1,7 @@
+
+
+import 'dart:developer';
+
 import 'package:flutter_restaurant/data/datasource/remote/dio/dio_client.dart';
 import 'package:flutter_restaurant/data/datasource/remote/exception/api_error_handler.dart';
 import 'package:flutter_restaurant/data/model/response/base/api_response.dart';
@@ -8,8 +12,11 @@ class CouponRepo {
   CouponRepo({required this.dioClient});
 
   Future<ApiResponse> getCouponList({String? guestId}) async {
+
     try {
+      log("guestId ${guestId}");
       final response = await dioClient!.get(guestId != null ? '${AppConstants.couponUri}?guest_id=$guestId' : AppConstants.couponUri);
+      log("coupen ${response.data}");
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -19,6 +26,7 @@ class CouponRepo {
   Future<ApiResponse> applyCoupon(String couponCode, {String? guestId}) async {
     try {
       final response = await dioClient!.get('${AppConstants.couponApplyUri}$couponCode${guestId != null ? '&&guest_id=$guestId' : ''}');
+        log("coupen ${response.data}");
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
