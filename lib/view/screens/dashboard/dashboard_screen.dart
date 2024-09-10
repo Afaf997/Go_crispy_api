@@ -16,9 +16,7 @@ import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   final int pageIndex;
-  
   const DashboardScreen({Key? key, required this.pageIndex}) : super(key: key);
-
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
@@ -28,6 +26,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int _pageIndex = 0;
   late List<Widget> _screens;
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
+
 
   @override
   void initState() {
@@ -59,7 +58,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       NetworkInfo.checkConnectivity(_scaffoldKey);
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
