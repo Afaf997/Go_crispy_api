@@ -544,5 +544,7 @@
   "login_and_sign":"Login or create an account",
   "total":"Total",
   "car_hop":"Car Hop",
-  "pay_online":"Pay Online"
+  "pay_online":"Pay Online",
+  "get_started":"Get Started",
+  "continue_guest":"Continue as guest"
 }

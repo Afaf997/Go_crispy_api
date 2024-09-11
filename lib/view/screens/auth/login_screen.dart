@@ -233,9 +233,10 @@ TextFormField(
                             side:
                                 const BorderSide(color: Colors.black, width: 1),
                           ),
-                          child: const Text(
-                            'Continue as guest',
-                            style: TextStyle(
+                          child:  Text(
+                            getTranslated('continue_guest', context),
+                          
+                            style:const TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold),

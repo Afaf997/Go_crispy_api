@@ -32,7 +32,7 @@ class OnBoardingScreen extends StatelessWidget {
             left: screenWidth * 0.04,
             right: screenWidth * 0.04,
             child: CustomButton(
-              btnTxt: getTranslated('Get Started', context)!,
+              btnTxt: getTranslated('get_started', context)!,
               backgroundColor: Colors.black,
               textColor: Colors.white,
               onTap: () {

@@ -76,14 +76,6 @@ class _ContactDetailsState extends State<ContactDetails> {
             type: NotificationType.success);
         print("here1");
         Get.context!.go('/branch-list?isOtp=true');
-        // await Navigator.pushAndRemoveUntil(
-        //     Get.context!,
-        //     MaterialPageRoute(
-        //         builder: (context) => const BranchListScreen(
-        //               useNavigator: true,
-        //               isOtp: true,
-        //             )),
-        //     ModalRoute.withName('/'));
       } else if (response.statusCode == 403) {
         showCustomErrorDialog(context,
             'The email is already used. Please use a different email.');
