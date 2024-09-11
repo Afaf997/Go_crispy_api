@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
+import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/main.dart';
 import 'package:flutter_restaurant/view/base/show_custom_error.dart';
 import 'package:go_router/go_router.dart';
@@ -110,10 +111,11 @@ class _ContactDetailsState extends State<ContactDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Center(
+               Center(
                 child: Text(
-                  "Enter your details",
-                  style: TextStyle(
+                    getTranslated('enter_details', context),
+                
+                  style:const TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
                   ),
@@ -121,7 +123,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                 ),
               ),
               const SizedBox(height: 20.0),
-              const ReusableLabelText(text: 'First Name'),
+               ReusableLabelText(text:getTranslated('first_name', context),),
               const SizedBox(height: 15.0),
               CustomTextField(
                 controller: _firstNameController,
@@ -135,7 +137,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                 },
               ),
               const SizedBox(height: 20.0),
-              const ReusableLabelText(text: 'Last Name'),
+               ReusableLabelText(text:getTranslated('last_name', context),),
               const SizedBox(height: 15.0),
               CustomTextField(
                 controller: _lastNameController,
@@ -149,7 +151,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                 },
               ),
               const SizedBox(height: 20.0),
-              const ReusableLabelText(text: 'Email'),
+               ReusableLabelText(text:getTranslated('email', context),),
               const SizedBox(height: 15.0),
               CustomTextField(
                 controller: _emailController,
@@ -167,7 +169,7 @@ class _ContactDetailsState extends State<ContactDetails> {
               ),
               const SizedBox(height: 120.0),
               CustomButton(
-                btnTxt: 'Continue',
+                btnTxt: getTranslated('continue', context),
                 backgroundColor: ColorResources.kOrangeColor,
                 onTap: _registerUser,
               ),

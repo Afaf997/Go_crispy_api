@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/main.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
@@ -92,52 +93,54 @@ class _OtpScreenState extends State<OtpScreen> {
         toolbarHeight: 100,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
-          child: Column(
-            children: [
-              const Text(
-                "Verify your mobile number",
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  height: 0.99,
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+            child: Column(
+              children: [
+                 Text(
+                    getTranslated('verify_phone', context),
+                  style:const TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    height: 0.99,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'We have sent you a 4 digit code.',
-                style: TextStyle(fontSize: 12),
-              ),
-              const Text(
-                'Please enter it here to verify your number',
-                style: TextStyle(fontSize: 12),
-              ),
-              const SizedBox(height: 150),
-              PinCodeTextField(
-                controller: _otpController,
-                maxLength: 4,
-                autofocus: true,
-                wrapAlignment: WrapAlignment.center,
-                pinBoxWidth: 61,
-                pinBoxHeight: 56,
-                pinBoxRadius: screenWidth * 0.03,
-                pinTextStyle: TextStyle(fontSize: screenWidth * 0.05),
-                pinBoxColor: ColorResources.kGrayLogo,
-                defaultBorderColor: ColorResources.kGrayLogo,
-                pinBoxDecoration:
-                    ProvidedPinBoxDecoration.defaultPinBoxDecoration,
-                onDone: (pin) {
-                  setState(() {
-                    _otpCode = pin;
-                  });
-                  // Verify OTP immediately after entering
-                  _verifyOtp(pin);
-                },
-              ),
-
-            ],
+                const SizedBox(height: 20),
+                const Text(
+                  'We have sent you a 4 digit code',
+                  style: TextStyle(fontSize: 12),
+                ),
+                const Text(
+                  'Please enter it here to verify your number',
+                  style: TextStyle(fontSize: 12),
+                ),
+                const SizedBox(height: 150),
+                PinCodeTextField(
+                  controller: _otpController,
+                  maxLength: 4,
+                  autofocus: true,
+                  wrapAlignment: WrapAlignment.center,
+                  pinBoxWidth: 61,
+                  pinBoxHeight: 56,
+                  pinBoxRadius: screenWidth * 0.03,
+                  pinTextStyle: TextStyle(fontSize: screenWidth * 0.05),
+                  pinBoxColor: ColorResources.kGrayLogo,
+                  defaultBorderColor: ColorResources.kGrayLogo,
+                  pinBoxDecoration:
+                      ProvidedPinBoxDecoration.defaultPinBoxDecoration,
+                  onDone: (pin) {
+                    setState(() {
+                      _otpCode = pin;
+                    });
+                    // Verify OTP immediately after entering
+                    _verifyOtp(pin);
+                  },
+                ),
+          
+              ],
+            ),
           ),
         ),
       ),
