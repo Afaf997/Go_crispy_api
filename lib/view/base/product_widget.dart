@@ -72,7 +72,7 @@ class ProductWidget extends StatelessWidget {
         child: Center(
           child: Container(
             width: 354,
-            height: 191,
+            height: 203,
             decoration: BoxDecoration(
               color: ColorResources.kmaincontainergrey,
               borderRadius: BorderRadius.circular(10),

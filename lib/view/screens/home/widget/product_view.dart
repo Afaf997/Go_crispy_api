@@ -51,7 +51,7 @@ class ProductView extends StatelessWidget {
 
         return productType == ProductType.popularProduct
             ? SizedBox(
-                height: 130,
+                height: 135,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   physics: const BouncingScrollPhysics(),
@@ -70,7 +70,7 @@ class ProductView extends StatelessWidget {
                   GridView.builder(
                     gridDelegate: ResponsiveHelper.isDesktop(context)
                         ? const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 195, mainAxisExtent: 250)
+                            maxCrossAxisExtent: 203, mainAxisExtent: 250)
                         : SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 16,

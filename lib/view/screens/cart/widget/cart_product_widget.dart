@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
-import 'package:flutter_restaurant/helper/price_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/coupon_provider.dart';
-import 'package:flutter_restaurant/provider/language_provider.dart';
-import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
@@ -46,10 +43,14 @@ class CartProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LanguageProvider languageProvider = Provider.of<LanguageProvider>(context);
-    
-    // Calculate the total price based on the quantity
-    double totalPrice = cart!.product!.price! * cart!.quantity!;
+    final product = cart!.product!;
+
+    // Calculate the total price and discount
+    double originalPrice = product.price!;
+    double discount = product.discount ?? 0;
+    double discountedPrice = originalPrice - (originalPrice * discount / 100);
+    double totalPrice = discountedPrice * cart!.quantity!;
+    double totalOriginalPrice = originalPrice * cart!.quantity!;
 
     return InkWell(
       onTap: () {
@@ -59,7 +60,7 @@ class CartProductWidget extends StatelessWidget {
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
                 builder: (con) => CartBottomSheet(
-                  product: cart!.product,
+                  product: product,
                   cartIndex: cartIndex,
                   cart: cart,
                   fromCart: true,
@@ -75,7 +76,7 @@ class CartProductWidget extends StatelessWidget {
                 builder: (con) => Dialog(
                   backgroundColor: Colors.transparent,
                   child: CartBottomSheet(
-                    product: cart!.product,
+                    product: product,
                     cartIndex: cartIndex,
                     cart: cart,
                     fromCart: true,
@@ -104,7 +105,7 @@ class CartProductWidget extends StatelessWidget {
                 width: 139,
                 fit: BoxFit.cover,
                 image:
-                    '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.productImageUrl}/${cart!.product!.image}',
+                    '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.productImageUrl}/${product.image}',
                 imageErrorBuilder: (context, error, stackTrace) => Image.asset(
                   Images.placeholderImage,
                   width: 139,
@@ -119,7 +120,7 @@ class CartProductWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    cart!.product!.name!,
+                    product.name!,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -129,24 +130,28 @@ class CartProductWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    cart!.product!.description!,
+                    product.description!,
                     maxLines: 2,
-                    style: const TextStyle(fontSize: 8, color: Colors.grey),
+                    style: const TextStyle(fontSize: 9, color: Colors.grey),
                   ),
                   const SizedBox(height: 10),
-                  // Display the total price (price * quantity)
+                  // Show original or discounted price based on discount
                   Text(
-                    '${totalPrice.toStringAsFixed(2)} QR',
-                    style: const TextStyle(
+                    discount > 0
+                        ? '${totalOriginalPrice.toStringAsFixed(2)} QR'
+                        : '${totalPrice.toStringAsFixed(2)} QR', // Show original amount if no discount
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: ColorResources.kredcolor,
+                      color: discount > 0
+                          ? ColorResources.kredcolor // Red color if there's a discount
+                          : ColorResources.kredcolor , // Black color if no discount
                     ),
                   ),
+                  const SizedBox(width: 8),
                 ],
               ),
             ),
-            
             Container(
               decoration: BoxDecoration(
                 color: ColorResources.kblack,
@@ -160,18 +165,19 @@ class CartProductWidget extends StatelessWidget {
                       size: 14,
                     ),
                     onPressed: () {
-                      // Decrement logic
                       if (cart!.quantity! > 1) {
-                        Provider.of<CartProvider>(context, listen: false).setQuantity(
+                        Provider.of<CartProvider>(context, listen: false)
+                            .setQuantity(
                           isIncrement: false,
                           fromProductView: false,
                           cart: cart,
                           productIndex: null,
                         );
                       } else {
-                        // Remove the item if quantity reaches 0
-                        Provider.of<CartProvider>(context, listen: false).removeFromCart(cartIndex);
-                        Provider.of<CouponProvider>(context, listen: false).removeCouponData(true);
+                        Provider.of<CartProvider>(context, listen: false)
+                            .removeFromCart(cartIndex);
+                        Provider.of<CouponProvider>(context, listen: false)
+                            .removeCouponData(true);
                       }
                     },
                   ),
@@ -189,7 +195,8 @@ class CartProductWidget extends StatelessWidget {
                       size: 14,
                     ),
                     onPressed: () {
-                      Provider.of<CartProvider>(context, listen: false).setQuantity(
+                      Provider.of<CartProvider>(context, listen: false)
+                          .setQuantity(
                         isIncrement: true,
                         fromProductView: false,
                         cart: cart,

@@ -298,6 +298,7 @@ class _CartScreenState extends State<CartScreen> {
             List<bool> availableList = [];
             double itemPrice = 0;
             double discount = 0;
+           double itemdiscount = 0;
             double tax = 0;
             double addOns = 0;
             for (var cartModel in cart.cartList) {
@@ -324,6 +325,8 @@ class _CartScreenState extends State<CartScreen> {
                         cartModel.addOnIds![index].quantity!);
               }
               itemPrice = itemPrice + (cartModel.price! * cartModel.quantity!);
+
+
               discount =
                   discount + (cartModel.discountAmount! * cartModel.quantity!);
 
@@ -339,6 +342,12 @@ class _CartScreenState extends State<CartScreen> {
                 Provider.of<CouponProvider>(context).discount!;
 
             double orderAmount = itemPrice + addOns;
+
+double totalOriginalPrice = subTotal + deliveryCharge!;
+double totalPrice = totalWithoutDeliveryFee + deliveryCharge!;
+double otherDiscount = totalOriginalPrice - totalPrice; 
+             
+
 
             bool kmWiseCharge = Provider.of<SplashProvider>(context, listen: false).configModel!.deliveryManagement!.status == 1;
 
@@ -604,9 +613,32 @@ Consumer<CouponProvider>(
                                               ),
 
                                           const SizedBox(height: 10),
-                                                 ItemView(
-                                                  title: getTranslated('discount', context),subTitle: coupon.discount! > 0     ? PriceConverter.convertPrice(coupon.discount!)   
-                                                    : PriceConverter.convertPrice(0.0)),
+
+ItemView(
+  title: getTranslated('discount', context),
+  subTitle: (coupon.discount! > 0 || otherDiscount > 0)
+      ? PriceConverter.convertPrice(
+          coupon.discount! > 0 ? coupon.discount! : otherDiscount,
+        )
+      : PriceConverter.convertPrice(0), // Show 0 when there is no discount
+  subTitleStyle: TextStyle(
+    color: (coupon.discount! > 0 || otherDiscount > 0) ? Colors.red : Colors.black, // Red color for discount
+  ),
+),
+
+const SizedBox(height: 10),
+
+// Conditional rendering for "Amount After Discount"
+if (coupon.discount! > 0 || otherDiscount > 0)
+  ItemView(
+    title: getTranslated('Amount After Discount', context),
+    subTitle: PriceConverter.convertPrice(totalWithoutDeliveryFee),
+  ),
+
+
+                                                //  ItemView(
+                                                //   title: getTranslated('discount', context),subTitle: coupon.discount! > 0     ? PriceConverter.convertPrice(coupon.discount!)   
+                                                //     : PriceConverter.convertPrice(0.0)),
                                               const SizedBox(height: 10),
                                               ItemView(
                                                 title: getTranslated(
