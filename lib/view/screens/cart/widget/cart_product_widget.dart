@@ -146,16 +146,7 @@ class CartProductWidget extends StatelessWidget {
               decoration:  BoxDecoration(
                 color: ColorResources.kblack,
                 // ignore: unnecessary_null_comparison
-                borderRadius:languageProvider.selectIndex == 0 ?  const BorderRadius.only(
-
-                  topRight: Radius.circular(10.0),
-                  bottomRight: Radius.circular(10.0),
-                ) : BorderRadius.only(
-
-                topLeft: Radius.circular(10.0),
-                  bottomLeft: Radius.circular(10.0),
                 ),
-              ),
               child: Column(
                 children: [
                   IconButton(

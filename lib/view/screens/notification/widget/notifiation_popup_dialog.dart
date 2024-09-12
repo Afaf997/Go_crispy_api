@@ -1,4 +1,4 @@
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/helper/notification_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
@@ -30,8 +30,8 @@ class _NewRequestDialogState extends State<NotificationPopUpDialog> {
   }
 
   void _startAlarm() async {
-    AudioCache audio = AudioCache();
-    audio.play('notification.wav');
+    // AudioCache audio = AudioCache();
+    // audio.play('notification.wav');
   }
 
   @override

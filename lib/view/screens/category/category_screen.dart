@@ -11,16 +11,10 @@ import 'package:flutter_restaurant/view/base/filter_button_widget.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
 import 'package:flutter_restaurant/view/base/wish_button.dart';
-import 'package:flutter_restaurant/view/screens/cart/cart_screen.dart';
 import 'package:flutter_restaurant/view/screens/dashboard/dashboard_screen.dart';
-import 'package:flutter_restaurant/view/screens/home/home_screen.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/cart_bottom_sheet.dart';
-import 'package:flutter_restaurant/view/screens/menu/menu_screen.dart';
-import 'package:flutter_restaurant/view/screens/order/order_screen.dart';
-import 'package:flutter_restaurant/view/screens/wishlist/wishlist_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
-import 'package:flutter/material.dart';
 
 
 class CategoryScreen extends StatefulWidget {
@@ -183,6 +177,7 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
         final title = product.name ?? 'Unknown';
         final description = product.description ?? 'No description available';
         final price = product.price?.toString() ?? 'N/A';
+        final discount = product.discount?.toString() ?? 'N/A';
         final rating = product.rating != null && product.rating!.isNotEmpty
             ? double.parse(product.rating![0].average ?? '0')
             : 0.0;
@@ -219,62 +214,77 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                             ),
                     ),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                title,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const Spacer(),
-                              WishButton(
-                                product: product,
-                                edgeInset: EdgeInsets.zero,
-                                iconSize: 16,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 2),
-                          Row(
-                            children: [
-                              const Icon(Icons.star, color: ColorResources.kstarYellow, size: 12),
-                              Text(
-                                ' $rating',
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            description,
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: ColorResources.kIncreasedColor,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            price,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: ColorResources.kredcolor,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+               Expanded(
+  child: Padding(
+    padding: const EdgeInsets.all(6.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Flexible(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const Spacer(),
+            WishButton(
+              product: product,
+              edgeInset: EdgeInsets.zero,
+              iconSize: 16,
+            ),
+          ],
+        ),
+        const SizedBox(height: 2),
+        Row(
+          children: [
+            const Icon(Icons.star, color: ColorResources.kstarYellow, size: 12),
+            Text(
+              ' $rating',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            ),
+          ],
+        ),
+        Text(
+          description,
+          style: const TextStyle(
+            fontSize: 10,
+            color: ColorResources.kIncreasedColor,
+          ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        Row(
+          children: [
+            Text(
+              price,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+           const SizedBox(width: 20,),
+            Text(
+              discount,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: ColorResources.kredcolor
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  ),
+),
+
                 ],
               ),
             ),
