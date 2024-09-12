@@ -547,5 +547,7 @@
   "pay_online":"Pay Online",
   "get_started":"Get Started",
   "continue_guest":"Continue as guest",
-  "enter_details":"Enter Your Details"
+  "enter_details":"Enter Your Details",
+  "continue_terms_condition":"By clicking 'continue' you agree with",
+  "terms_condition_text":"our terms and condition"
 }

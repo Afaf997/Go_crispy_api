@@ -246,9 +246,9 @@ TextFormField(
 
                       const SizedBox(height: 20),
 
-                      const Text(
-                        'By clicking "continue" you agree with',
-                        style: TextStyle(
+                       Text(
+                         getTranslated('continue_terms_condition', context),
+                        style:const TextStyle(
                           color: ColorResources.korgGrey,
                           fontSize: 12,
                         ),
@@ -257,9 +257,10 @@ TextFormField(
                         onTap: () {
                           RouterHelper.getTermsRoute();
                       },
-                      child: const Text(
-                          'our terms and conditions',
-                         style: TextStyle(
+                      child:  Text(
+                          getTranslated('terms_condition_text', context),
+                        
+                         style:const TextStyle(
                               color: Colors.black,
                            fontSize: 12,
                            decoration: TextDecoration.underline,

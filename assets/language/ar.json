@@ -548,5 +548,7 @@
   "pay_online":"الدفع عبر الإنترنت",
   "get_started":"ابدأ",
   "continue_guest":"استمر كضيف",
-  "enter_details":"أدخل التفاصيل الخاصة بك"
+  "enter_details":"أدخل التفاصيل الخاصة بك",
+  "continue_terms_condition":"عند الضغط علي اكمل انت",
+  "terms_condition_text":"انت توافق علي الشروط والأحكام"
 }
