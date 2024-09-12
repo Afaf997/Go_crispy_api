@@ -85,34 +85,9 @@ class FilterWidget extends StatelessWidget {
                 activeColor: ColorResources.kOrangeColor,
               ),
 
-              const SizedBox(height: 20),
-                Text(
-                getTranslated('rating', context)!,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              ),
+            
                    const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: SizedBox(
-                  height: 30,
-                  child: ListView.builder(
-                    itemCount: 5,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        child: Icon(
-                          searchProvider.rating < (index + 1) ? Icons.star_border : Icons.star,
-                          size: 20,
-                          color: searchProvider.rating < (index + 1) ? Theme.of(context).hintColor.withOpacity(0.7) :ColorResources.kOrangeColor
-                        ),
-                        onTap: () => searchProvider.setRating(index + 1),
-                      );
-                    },
-                  ),
-                ),
-              ),
-                 const SizedBox(height: 15),
+          
               Text(
                 getTranslated('category', context)!,
                 style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
