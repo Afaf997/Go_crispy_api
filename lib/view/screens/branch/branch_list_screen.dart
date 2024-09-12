@@ -145,7 +145,8 @@ class _BranchListScreenState extends State<BranchListScreen> {
                         Images.gif,
                         height: 150,
                         width: 150,
-                      )),
+                      )
+                      ),
                       const Text("Finding Nearest Branch..")
                     ]))
               : Center(
@@ -348,12 +349,15 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                                         ),
                                                       ),
                                                     )
-                                                  : Center(
-                                                      child: Image.asset(
-                                                      Images.gif,
-                                                      height: 150,
-                                                      width: 150,
-                                                    )),
+                                                  : Padding(
+                                                    padding: const EdgeInsets.only(top:220.0),
+                                                    child: Center(
+                                                        child: Image.asset(
+                                                        Images.gif,
+                                                        height: 150,
+                                                        width: 150,
+                                                      )),
+                                                  ),
                                             ],
                                           ),
                                         ),

@@ -14,7 +14,6 @@ import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/cart_bottom_sheet.dart';
-import 'package:flutter_restaurant/view/screens/home/widget/marque_text.dart';
 import 'package:provider/provider.dart';
 
 class CartProductWidget extends StatelessWidget {
@@ -47,7 +46,11 @@ class CartProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final LanguageProvider languageProvider =Provider.of<LanguageProvider>(context);
+    final LanguageProvider languageProvider = Provider.of<LanguageProvider>(context);
+    
+    // Calculate the total price based on the quantity
+    double totalPrice = cart!.product!.price! * cart!.quantity!;
+
     return InkWell(
       onTap: () {
         ResponsiveHelper.isMobile()
@@ -127,11 +130,13 @@ class CartProductWidget extends StatelessWidget {
                   const SizedBox(height: 5),
                   Text(
                     cart!.product!.description!,
+                    maxLines: 2,
                     style: const TextStyle(fontSize: 8, color: Colors.grey),
                   ),
                   const SizedBox(height: 10),
+                  // Display the total price (price * quantity)
                   Text(
-                    '${cart!.product!.price} QR',
+                    '${totalPrice.toStringAsFixed(2)} QR',
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -143,10 +148,9 @@ class CartProductWidget extends StatelessWidget {
             ),
             
             Container(
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                 color: ColorResources.kblack,
-                // ignore: unnecessary_null_comparison
-                ),
+              ),
               child: Column(
                 children: [
                   IconButton(
