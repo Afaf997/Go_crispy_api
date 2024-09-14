@@ -1,7 +1,7 @@
 // ignore_for_file: empty_catches
 import 'dart:async';
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_restaurant/data/model/response/base/api_response.dart';
@@ -568,39 +568,39 @@ class AuthProvider with ChangeNotifier {
     _isPhoneNumberVerificationButtonLoading = true;
     notifyListeners();
 
-    FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      verificationCompleted: (PhoneAuthCredential credential) {},
-      verificationFailed: (FirebaseAuthException e) {
-        _isPhoneNumberVerificationButtonLoading = false;
-        notifyListeners();
+    // FirebaseAuth.instance.verifyPhoneNumber(
+    //   phoneNumber: phoneNumber,
+    //   verificationCompleted: (PhoneAuthCredential credential) {},
+    //   verificationFailed: (FirebaseAuthException e) {
+    //     _isPhoneNumberVerificationButtonLoading = false;
+    //     notifyListeners();
 
-        Get.context!.pop();
+    //     Get.context!.pop();
 
-        if (e.code == 'invalid-phone-number') {
-          // showCustomSnackBar(getTranslated('please_submit_a_valid_phone_number', Get.context!));
-        } else {
-          // showCustomSnackBar(getTranslated('${e.message}'.replaceAll('_', ' ').toCapitalized(), Get.context!));
-        }
-      },
-      codeSent: (String vId, int? resendToken) {
-        _isPhoneNumberVerificationButtonLoading = false;
-        notifyListeners();
+    //     if (e.code == 'invalid-phone-number') {
+    //       // showCustomSnackBar(getTranslated('please_submit_a_valid_phone_number', Get.context!));
+    //     } else {
+    //       // showCustomSnackBar(getTranslated('${e.message}'.replaceAll('_', ' ').toCapitalized(), Get.context!));
+    //     }
+    //   },
+    //   codeSent: (String vId, int? resendToken) {
+    //     _isPhoneNumberVerificationButtonLoading = false;
+    //     notifyListeners();
 
-        bool isReplaceRoute =
-            GoRouter.of(Get.context!).routeInformationProvider.value.uri.path ==
-                RouterHelper.verify;
+    //     bool isReplaceRoute =
+    //         GoRouter.of(Get.context!).routeInformationProvider.value.uri.path ==
+    //             RouterHelper.verify;
 
-        RouterHelper.getVerifyRoute(
-          isForgetPassword ? 'forget-password' : 'sign-up',
-          phoneNumber,
-          session: vId,
-          action:
-              isReplaceRoute ? RouteAction.pushReplacement : RouteAction.push,
-        );
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
+    //     RouterHelper.getVerifyRoute(
+    //       isForgetPassword ? 'forget-password' : 'sign-up',
+    //       phoneNumber,
+    //       session: vId,
+    //       action:
+    //           isReplaceRoute ? RouteAction.pushReplacement : RouteAction.push,
+    //     );
+    //   },
+    //   codeAutoRetrievalTimeout: (String verificationId) {},
+    // );
   }
 
   Future<void> firebaseOtpLogin(

@@ -5,8 +5,8 @@ import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:get_it/get_it.dart';
 
 class AppLocalization {
+  
   AppLocalization(this.locale);
-
   final Locale locale;
 
   static AppLocalization? of(BuildContext context) {

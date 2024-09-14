@@ -100,6 +100,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                     }
                   }
                 }
+                //  double? language = widget.product!.;
                 double? discount = widget.product!.discount;
                 String? discountType = widget.product!.discountType;
                 double priceWithDiscount = PriceConverter.convertWithDiscount(

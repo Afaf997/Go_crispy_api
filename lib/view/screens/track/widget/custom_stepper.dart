@@ -15,31 +15,35 @@ class CustomStepper extends StatelessWidget {
   final double height;
   final String? statusImage;
   final Widget? trailing;
-  const CustomStepper({Key? key,
-    required this.title, required this.isActive,
-    this.child, this.haveTopBar = true, this.height = 30,
-    this.statusImage = Images.order, this.subTitle,
-    required this.isComplete, this.trailing,
+  final Color? iconColor; // Added icon color parameter
+
+  const CustomStepper({
+    Key? key,
+    required this.title,
+    required this.isActive,
+    this.child,
+    this.haveTopBar = true,
+    this.height = 30,
+    this.statusImage = Images.order,
+    this.subTitle,
+    required this.isComplete,
+    this.trailing,
+    this.iconColor, // Added icon color
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
-      if(haveTopBar) Stack(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 35),
-            height: height,
-            
-          ),
-
-          child == null ? const SizedBox() : child!,
-        ],
-      ),
-
-
-
+      if (haveTopBar)
+        Stack(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 35),
+              height: height,
+            ),
+            child == null ? const SizedBox() : child!,
+          ],
+        ),
       ListTile(
         contentPadding: EdgeInsets.zero,
         leading: Container(
@@ -55,39 +59,24 @@ class CustomStepper extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
             child: Image.asset(
-              statusImage!, width: 30,
+              statusImage!,
+              width: 30,
+              color: isComplete ? ColorResources.kOrangeColor :  ColorResources.korgGrey, // Icon color is dynamic now
             ),
           ),
         ),
-        title: Text(title!, style: rubikRegular.copyWith(
-          fontSize: 14,
-          color: isComplete ? Theme.of(context).primaryColor : Theme.of(context).disabledColor,
-        )
-        ,),
-        subtitle: subTitle != null ? Text(subTitle!, style: rubikRegular.copyWith(color: Theme.of(context).disabledColor)) : const SizedBox(),
+        title: Text(
+          title!,
+          style: rubikRegular.copyWith(
+            fontSize: 14,
+            color: isComplete ? ColorResources.kOrangeColor : ColorResources.korgGrey,
+          ),
+        ),
+        subtitle: subTitle != null
+            ? Text(subTitle!, style:const TextStyle(fontSize: 12, color: ColorResources.korgGrey))
+            : const SizedBox(),
+            
       ),
-
     ]);
   }
 }
-
-
-// class DashedLineVerticalPainter extends CustomPainter {
-//   final bool? isActive;
-//   DashedLineVerticalPainter({this.isActive = false});
-
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     double dashHeight = 6, dashSpace = 3, startY = 0;
-//     final paint = Paint()
-//       ..color = isActive! ?  Theme.of(Get.context!).primaryColor : Theme.of(Get.context!).disabledColor
-//       ..strokeWidth = size.width;
-//     while (startY < size.height) {
-//       canvas.drawLine(Offset(0, startY), Offset(0, startY + dashHeight), paint);
-//       startY += dashHeight + dashSpace;
-//     }
-//   }
-
-//   @override
-//   bool shouldRepaint(CustomPainter oldDelegate) => false;
-// }

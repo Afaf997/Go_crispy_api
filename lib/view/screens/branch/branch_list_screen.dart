@@ -394,25 +394,6 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                                       widget.useNavigator,
                                                       istakeAway:
                                                           widget.istakeAway);
-
-                                                  //clearing cart when changing branch if we have food in cart is removed.
-                                                  // showAnimatedDialog(
-                                                  //   context,
-                                                  //   CustomDialog(
-                                                  //     buttonTextTrue: getTranslated('yes', context),
-                                                  //     buttonTextFalse: getTranslated('no', context),
-                                                  //     description: '',
-                                                  //     icon: Icons.question_mark,
-                                                  //     title: getTranslated('you_have_some_food', context),
-                                                  //     onTapTrue: () {
-                                                  //     //  cartProvider.clearCartList();
-                                                  //       _setBranch(widget.useNavigator); // Use the parameter here
-                                                  //     },
-                                                  //     onTapFalse: () => context.pop(),
-                                                  //   ),
-                                                  //   dismissible: false,
-                                                  //   isFlip: true,
-                                                  // );
                                                 } else {
                                                   print("here2");
                                                   if (branchProvider
@@ -471,13 +452,6 @@ class _BranchListScreenState extends State<BranchListScreen> {
     } else {
       RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
     }
-    // showCustomNotification(context, 'Branch Successfully Selected',
-    //     type: NotificationType.success);
-    // if (istakeAway!) {
-    //   print("trueeeee");
-    //   Navigator.pop(context);
-    // }
-    // showCustomSnackBar(getTranslated('branch_successfully_selected', context), isError: false);
   }
 
   void _setMarkers(int selectedIndex, {bool fromBranchSelect = false}) async {

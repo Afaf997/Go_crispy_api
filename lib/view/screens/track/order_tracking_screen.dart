@@ -12,7 +12,6 @@ import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/order_status.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
-import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/track/widget/custom_stepper.dart';
@@ -70,7 +69,6 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
       ) as PreferredSizeWidget,
 
       body: CustomScrollView(slivers: [
-
         SliverToBoxAdapter(child: Consumer<OrderProvider>(builder: (context, orderProvider, _) {
           String? status;
           if(orderProvider.trackModel != null) {
@@ -80,7 +78,6 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
             margin: ResponsiveHelper.isDesktop(context) ? EdgeInsets.symmetric(horizontal: (width - Dimensions.webScreenWidth) / 2) : null,
             decoration: ResponsiveHelper.isDesktop(context) ? BoxDecoration(
               color: Theme.of(context).canvasColor, borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              // boxShadow: [BoxShadow(color: Theme.of(context).shadowColor, blurRadius: 5, spreadRadius: 1)],
             ) : null,
             child: Column(children: [
               Container(
@@ -123,6 +120,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                         haveTopBar: false,
                         statusImage: Images.icon1,
                         subTitle: '${DateConverter.estimatedDate(DateConverter.convertStringToDatetime(orderProvider.trackModel!.createdAt!))} ${DateConverter.estimatedDate(DateConverter.convertStringToDatetime(orderProvider.trackModel!.createdAt!))}',
+                        iconColor: status == OrderStatus.pending ? ColorResources.kOrangeColor : Colors.grey, // Icon color changes
                       ),
 
                       CustomStepper(
@@ -134,7 +132,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                             || status == OrderStatus.delivered,
                         isActive: status == OrderStatus.confirmed,
                         statusImage: Images.icon2,
-                        
+                        iconColor: status == OrderStatus.confirmed ? ColorResources.kOrangeColor : Colors.grey, // Change color based on status
                       ),
 
                       CustomStepper(
@@ -145,6 +143,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                             ||status == OrderStatus.delivered,
                         isActive: status == OrderStatus.cooking,
                         statusImage: Images.icon3,
+                       iconColor: status == OrderStatus.pending ? ColorResources.kOrangeColor: Colors.grey,
                       ),
 
                       CustomStepper(
@@ -155,6 +154,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                         statusImage: Images.icon4,
                         isActive: status == OrderStatus.processing,
                         subTitle: getTranslated('your_delivery_man_is_coming', context),
+                        iconColor: status == OrderStatus.processing ? ColorResources.kOrangeColor : Colors.grey,
                       ),
 
                       Consumer<LocationProvider>(builder: (context, locationProvider, _) {
@@ -177,10 +177,6 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                               Uri uri = Uri.parse('tel:${orderProvider.trackModel?.deliveryMan?.phone}');
                               if (await canLaunchUrl(uri)) {
                                 await launchUrl(uri);
-                              } else {
-                                if(context.mounted){
-                                  // showCustomSnackBar(getTranslated('phone_number_not_found', context));
-                                }
                               }
                             },
                             child: const Icon(Icons.phone_in_talk),
@@ -190,15 +186,16 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                             orderID: '${orderProvider.trackModel?.id}',
                             addressModel: address,
                           ) : const SizedBox(),
+                          iconColor: status == OrderStatus.outForDelivery ? Colors.purple : Colors.grey,
                         );
                       }),
-
 
                       CustomStepper(
                         title: getTranslated('order_delivered', context),
                         isComplete: status == OrderStatus.delivered,
                         isActive: status == OrderStatus.delivered,
                         statusImage: Images.icon6,
+                        iconColor: status == OrderStatus.delivered ? Colors.green : Colors.grey,
                       ),
                     ]),
                   ]) : widget.orderID == null ?  Column(children: [
@@ -207,33 +204,32 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                     const SizedBox(height: Dimensions.paddingSizeDefault),
 
                     Text(getTranslated('enter_your_order_id', context)!, style: rubikRegular.copyWith(
-                      color: Theme.of(context).disabledColor,
-                    ), maxLines: 2,  textAlign: TextAlign.center),
-                    const SizedBox(height: 100),
-
-                  ]) : const Center(child: Padding(
-                    padding: EdgeInsets.all(50.0),
-                    child: CircularProgressIndicator(),
-                  )),
+                      color: Theme.of(context).disabledColor.withOpacity(0.5),
+                      fontSize: Dimensions.fontSizeExtraLarge,
+                    )),
+                  ]) : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      
+                      Center( child: Image.asset(
+                                                  Images.gif, // Replace with your GIF asset path
+                                                  width: 150, // Adjust the size as needed
+                                                  height: 150,
+                                                ),
+                      ),
+                    ],
+                  ),
                 ]),
               ),
 
+              if(orderProvider.trackModel != null) Consumer<LocationProvider>(
+                  builder: (context, locationProvider, _) => FooterView()
+              ),
             ]),
           );
         })),
-
-        if(ResponsiveHelper.isDesktop(context)) const SliverFillRemaining(
-          hasScrollBody: false,
-          child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-            SizedBox(height: Dimensions.paddingSizeLarge),
-
-            FooterView(),
-          ]),
-        ),
       ]),
-
     );
   }
-
-
 }
