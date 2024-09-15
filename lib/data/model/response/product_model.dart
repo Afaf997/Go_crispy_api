@@ -322,15 +322,7 @@ class BranchProduct {
 
       });
     }
-     if (json['variationsar'] != null) {
-      variationsar = [];
-      json['variationsar'].forEach((v) {
-        if(!v.containsKey('price')){
-          variationsar!.add(Variation.fromJson(v));
-        }
-
-      });
-    }
+    
     discount = json['discount'].toDouble();
     discountType = json['discount_type'];
     stockType = json['stock_type'];
@@ -347,7 +339,7 @@ class BranchProduct {
     data['branch_id'] = branchId;
     data['is_available'] = isAvailable;
     data['variations'] = variations;
-       data['variationsar'] = variationsar;
+    data['variationsar'] = variationsar;
     data['price'] = price;
     data['discount'] = discount;
     data['discount_type'] = discountType;

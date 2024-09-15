@@ -19,11 +19,9 @@ import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/branch/widget/bracnh_cart_view.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-
 import 'widget/branch_close_view.dart';
 import 'widget/branch_item_view.dart';
 
@@ -47,15 +45,13 @@ class _BranchListScreenState extends State<BranchListScreen> {
   LatLng? _currentLocationLatLng;
   AutoScrollController? scrollController;
 
+
   @override
   void initState() {
-    print("in init");
     final branchProvider = Provider.of<BranchProvider>(context, listen: false);
     branchProvider.updateTabIndex(0, isUpdate: false);
     // If need to previous selection
-    print("first here");
     if (branchProvider.getBranchId() == -1) {
-      print("here1");
       branchProvider.updateBranchId(null, isUpdate: false);
     }
     //  else {
@@ -64,18 +60,15 @@ class _BranchListScreenState extends State<BranchListScreen> {
     //       isUpdate: false);
     // }
     print("location");
-
     Provider.of<LocationProvider>(context, listen: false)
         .getCurrentLatLong()
         .then((latLong) {
       if (latLong != null) {
-        print("in lat");
         _currentLocationLatLng = latLong;
       }
       _branchesValue = branchProvider.branchSort(_currentLocationLatLng);
       print(branchProvider.getBranchId());
       if (widget.isOtp != null && widget.isOtp == true) {
-        print("init");
         branchProvider.updateBranchId(_branchesValue.first.branches?.id ?? 1);
         //auto confirming nearest branch
         _setBranch(widget.useNavigator);
@@ -293,10 +286,8 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                                             ),
                                                           ),
                                                           Padding(
-                                                            padding: const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal:
-                                                                    Dimensions
+                                                            padding: const EdgeInsets .symmetric(
+                                                                horizontal: Dimensions
                                                                         .paddingSizeExtraSmall),
                                                             child: Text(
                                                               getTranslated(
@@ -327,10 +318,7 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                                           mainAxisSpacing: 5,
                                                           childAspectRatio: 1.8,
                                                           crossAxisCount: ResponsiveHelper
-                                                                  .isDesktop(
-                                                                      context)
-                                                              ? 3
-                                                              : MediaQuery.of(context)
+                                                                  .isDesktop( context)? 3: MediaQuery.of(context)
                                                                           .size
                                                                           .width >
                                                                       780

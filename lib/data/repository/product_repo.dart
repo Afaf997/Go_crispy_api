@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_restaurant/data/datasource/remote/dio/dio_client.dart';
 import 'package:flutter_restaurant/data/datasource/remote/exception/api_error_handler.dart';
 import 'package:flutter_restaurant/data/model/body/review_body_model.dart';
@@ -13,7 +15,9 @@ class ProductRepo {
     try {
       final response = await dioClient!.get(
         '${AppConstants.latestProductUri}?limit=12&&offset=$offset',
+      
       );
+         log("en language: ${response.data[0]}");
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));

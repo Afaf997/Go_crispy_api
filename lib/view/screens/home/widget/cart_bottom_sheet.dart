@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
@@ -91,11 +93,18 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   price = widget.product!.branchProduct!.price;
                 } else {
                   variationList =languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
-                  
+                  // variationarList=languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
+           
+// Check if Arabic data is being fetched correctly
+
                   variationarList=widget.product!.variationsar;
                   price = widget.product!.price;
                 }
-
+                   log("Product title: ${widget.product!.id}"); 
+                   log("Arabic language: ${widget.product!.variationsar}");
+                   log("en language: ${widget.product!.variations}");
+                   log("branch ${widget.product!.branchProduct!.variationsar}");
+                   log("branch ${widget.product!.branchProduct!.variations}");
                 double variationPrice = 0;
                 for (int index = 0; index < variationList!.length; index++) {
                   for (int i = 0;
