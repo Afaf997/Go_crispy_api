@@ -48,6 +48,7 @@ class Product {
   String? _image;
   double? _price;
   List<Variation>? _variations;
+  List<Variation>? _variationsar;
   List<AddOns>? _addOns;
   double? _tax;
   String? _availableTimeStarts;
@@ -73,6 +74,7 @@ class Product {
         String? image,
         double? price,
         List<Variation>? variations,
+        List<Variation>? variationsar,
         List<AddOns>? addOns,
         double? tax,
         String? availableTimeStarts,
@@ -97,6 +99,7 @@ class Product {
     _image = image;
     _price = price;
     _variations = variations;
+    _variationsar = variationsar;
     _addOns = addOns;
     _tax = tax;
     _availableTimeStarts = availableTimeStarts;
@@ -122,6 +125,7 @@ class Product {
   String? get image => _image;
   double? get price => _price;
   List<Variation>? get variations => _variations;
+  List<Variation>? get variationsar => _variationsar;
   List<AddOns>? get addOns => _addOns;
   double? get tax => _tax;
   String? get availableTimeStarts => _availableTimeStarts;
@@ -152,6 +156,15 @@ class Product {
       json['variations'].forEach((v) {
         if(!v.containsKey('price')){
           _variations!.add(Variation.fromJson(v));
+        }
+
+      });
+    }
+     if (json['variationsar'] != null) {
+      _variationsar = [];
+      json['variationsar'].forEach((v) {
+        if(!v.containsKey('price')){
+          _variationsar!.add(Variation.fromJson(v));
         }
 
       });
@@ -221,6 +234,17 @@ class Product {
     if (_variations != null) {
       data['variations'] = _variations!.map((v) => v.toJson()).toList();
     }
+     if (_variationsar != null) {
+      data['variationsar'] = _variationsar!.map((v) => v.toJson()).toList();
+    }
+
+     if (_variationsar != null) {
+      data['variationsar'] = _variationsar!.map((v) => v.toJson()).toList();
+    }
+     if (_variationsar != null) {
+      data['variationsarar'] = _variationsar!.map((v) => v.toJson()).toList();
+    }
+
 
 
     if (_addOns != null) {
@@ -259,6 +283,8 @@ class BranchProduct {
   double? price;
   bool? isAvailable;
   List<Variation>? variations;
+  List<Variation>? variationsar;
+  
   double? discount;
   String? discountType;
   int? stock;
@@ -272,6 +298,7 @@ class BranchProduct {
         this.branchId,
         this.isAvailable,
         this.variations,
+        this.variationsar,
         this.price,
         this.discount,
         this.discountType,
@@ -295,6 +322,15 @@ class BranchProduct {
 
       });
     }
+     if (json['variationsar'] != null) {
+      variationsar = [];
+      json['variationsar'].forEach((v) {
+        if(!v.containsKey('price')){
+          variationsar!.add(Variation.fromJson(v));
+        }
+
+      });
+    }
     discount = json['discount'].toDouble();
     discountType = json['discount_type'];
     stockType = json['stock_type'];
@@ -311,6 +347,7 @@ class BranchProduct {
     data['branch_id'] = branchId;
     data['is_available'] = isAvailable;
     data['variations'] = variations;
+       data['variationsar'] = variationsar;
     data['price'] = price;
     data['discount'] = discount;
     data['discount_type'] = discountType;

@@ -6,6 +6,7 @@ import 'package:flutter_restaurant/helper/price_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
+import 'package:flutter_restaurant/provider/language_provider.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/provider/theme_provider.dart';
@@ -58,6 +59,8 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    LanguageProvider languageProvider =Provider.of<LanguageProvider>(context,listen: false);
+
     return Consumer<CartProvider>(builder: (context, cartProvider, child) {
       return Stack(
         children: [
@@ -78,14 +81,18 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
             child: Consumer<ProductProvider>(
               builder: (context, productProvider, child) {
                 List<Variation>? variationList;
+                 List<Variation>? variationarList;
                 double? price;
 
                 if (widget.product!.branchProduct != null &&
                     widget.product!.branchProduct!.isAvailable!) {
                   variationList = widget.product!.branchProduct!.variations;
+                  variationarList=widget.product!.branchProduct!.variationsar;
                   price = widget.product!.branchProduct!.price;
                 } else {
-                  variationList = widget.product!.variations;
+                  variationList =languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
+                  
+                  variationarList=widget.product!.variationsar;
                   price = widget.product!.price;
                 }
 
@@ -100,6 +107,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                     }
                   }
                 }
+                
                 //  double? language = widget.product!.;
                 double? discount = widget.product!.discount;
                 String? discountType = widget.product!.discountType;
@@ -218,7 +226,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                                                             .center,
                                                     children: [
                                                       Text(
-                                                          variationList![index]
+                                                     variationList![index]
                                                                   .name ??
                                                               '',
                                                           style: rubikMedium.copyWith(

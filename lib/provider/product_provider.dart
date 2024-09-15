@@ -6,10 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/base/api_response.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
 import 'package:flutter_restaurant/data/repository/product_repo.dart';
-import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/main.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
-import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:provider/provider.dart';
 
 class ProductProvider extends ChangeNotifier {
