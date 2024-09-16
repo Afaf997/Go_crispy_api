@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/config_model.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
@@ -23,6 +25,7 @@ class BranchCartView extends StatelessWidget {
         builder: (context, branchProvider, _) {
           return GestureDetector(onTap: branchModel!.branches!.status! ?  () {
             branchProvider.updateBranchId(branchModel!.branches!.id);
+            log(branchModel!.branches!.id.toString());
             onTap!();
           } : null, child: Container(
             width: 320,

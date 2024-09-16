@@ -88,16 +88,15 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                     widget.product!.branchProduct!.isAvailable!) {
                     variationList =languageProvider.selectIndex == 0 ? widget.product!.branchProduct?.variations : widget.product!.branchProduct?.variationsar;
                   variationarList=widget.product!.branchProduct!.variationsar;
-                  log("loggg"+variationarList.toString());
+                  // log("loggg"+variationarList.toString());
                   price = widget.product!.branchProduct!.price;
-                                log(languageProvider.selectIndex.toString());
-                                log( "widget"+  widget.product!.variationsar![0].name.toString());
+                                // log(languageProvider.selectIndex.toString());
+                                // log( "widget"+  widget.product!.variationsar![0].name.toString());
                                 
                 } 
                 else {
-                  variationList =languageProvider.selectIndex == 0 || languageProvider.selectIndex == -1 ? widget.product!.variations : widget.product!.variationsar;
+                  variationList =languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
                   // variationarList=languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
-
 
                   variationarList=widget.product!.variationsar;
                   price = widget.product!.price;
@@ -113,17 +112,25 @@ if (variationList != null && variationList.isNotEmpty) {
         );
       }
       
-      for (int i = 0; i < variationList[index].variationValues!.length; i++) {
-        // Ensure selectedVariations[index] exists and has correct length           
+      for (int i = 0; i < variationList[index].variationValues!.length; i++) {         
         if (productProvider.selectedVariations[index].length <= i) {
             productProvider.selectedVariations[index].add(false);
            }
         
-        // Check if the variation is selected
         if (productProvider.selectedVariations[index][i]!) {
           variationPrice += variationList[index].variationValues![i].optionPrice!;
         }
       }
+      //   for (int index = 0; index < variationList!.length; index++) {
+      //             for (int i = 0;
+      //                 i < variationList[index].variationValues!.length;
+      //                 i++) {
+      //               if (productProvider.selectedVariations[index][i]!) {
+      //                 variationPrice +=
+      //                     variationList[index].variationValues![i].optionPrice!;
+      //               }
+      //             }
+      //           }
     } else {
       debugPrint('Variation values for index $index are empty or null');
     }
