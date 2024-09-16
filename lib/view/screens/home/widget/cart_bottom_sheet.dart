@@ -83,27 +83,31 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
             child: Consumer<ProductProvider>(
               builder: (context, productProvider, child) {
                 List<Variation>? variationList;
-                 List<Variation>? variationarList;
+                List<Variation>? variationarList;
                 double? price;
 
                 if (widget.product!.branchProduct != null &&
                     widget.product!.branchProduct!.isAvailable!) {
-                  variationList = widget.product!.branchProduct!.variations;
+                    variationList =languageProvider.selectIndex == 0 ? widget.product!.branchProduct?.variations : widget.product!.branchProduct?.variationsar;
                   variationarList=widget.product!.branchProduct!.variationsar;
+                  log("loggg"+variationarList.toString());
                   price = widget.product!.branchProduct!.price;
-                } else {
+                                log(languageProvider.selectIndex.toString());
+                                log( "widget"+  widget.product!.variationsar![0].name.toString());
+                                
+                } 
+                else {
                   variationList =languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
                   // variationarList=languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
-           
-// Check if Arabic data is being fetched correctly
+
 
                   variationarList=widget.product!.variationsar;
                   price = widget.product!.price;
                 }
                    log("Product title: ${widget.product!.id}"); 
                    log("Arabic language: ${widget.product!.variationsar}");
-                   log("en language: ${widget.product!.variations}");
-                   log("branch ${widget.product!.branchProduct!.variationsar}");
+                   log("en language: ${widget.product!.variations?.length.toString()}");
+                   log("branch ar${widget.product!.branchProduct!.variationsar?.length.toString()}");
                    log("branch ${widget.product!.branchProduct!.variations}");
                 double variationPrice = 0;
                 for (int index = 0; index < variationList!.length; index++) {

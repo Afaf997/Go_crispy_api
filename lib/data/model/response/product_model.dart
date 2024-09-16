@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class ProductModel {
   int? _totalSize;
   String? _limit;
@@ -163,11 +165,16 @@ class Product {
      if (json['variationsar'] != null) {
       _variationsar = [];
       json['variationsar'].forEach((v) {
-        if(!v.containsKey('price')){
+              log(v.toString());
+        // if(!v.containsKey('price')){
           _variationsar!.add(Variation.fromJson(v));
-        }
+        // }
+      
 
       });
+    }
+    else{
+      log("mewww");
     }
     if (json['add_ons'] != null) {
       _addOns = [];
@@ -319,6 +326,15 @@ class BranchProduct {
         if(!v.containsKey('price')){
           variations!.add(Variation.fromJson(v));
         }
+
+      });
+    }
+     if (json['variationsar'] != null) {
+      variationsar = [];
+      json['variationsar'].forEach((v) {
+        // if(!v.containsKey('price')){
+          variationsar!.add(Variation.fromJson(v));
+        // }
 
       });
     }
