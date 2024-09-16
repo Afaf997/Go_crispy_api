@@ -21,8 +21,6 @@ import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:flutter_restaurant/view/base/custom_directionality.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/custom_zoom_widget.dart';
-import 'package:flutter_restaurant/view/base/rating_bar.dart';
-import 'package:flutter_restaurant/view/base/read_more_text.dart';
 import 'package:flutter_restaurant/view/base/stock_tag_view.dart';
 import 'package:flutter_restaurant/view/base/wish_button.dart';
 import 'package:provider/provider.dart';
@@ -104,22 +102,42 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   variationarList=widget.product!.variationsar;
                   price = widget.product!.price;
                 }
-                   log("Product title: ${widget.product!.id}"); 
-                   log("Arabic language: ${widget.product!.variationsar}");
-                   log("en language: ${widget.product!.variations?.length.toString()}");
-                   log("branch ar${widget.product!.branchProduct!.variationsar?.length.toString()}");
-                   log("branch ${widget.product!.branchProduct!.variations}");
                 double variationPrice = 0;
-                for (int index = 0; index < variationList!.length; index++) {
-                  for (int i = 0;
-                      i < variationList[index].variationValues!.length;
-                      i++) {
-                    if (productProvider.selectedVariations[index][i]!) {
-                      variationPrice +=
-                          variationList[index].variationValues![i].optionPrice!;
-                    }
-                  }
-                }
+               // Ensure variationList is not null and has items
+if (variationList != null && variationList.isNotEmpty) {
+  for (int index = 0; index < variationList.length; index++) {
+    // Ensure variationValues is not null and has items
+    if (variationList[index].variationValues != null && variationList[index].variationValues!.isNotEmpty) {
+      
+      // Ensure productProvider.selectedVariations is initialized properly
+      if (productProvider.selectedVariations.length <= index) {
+        // Initialize selectedVariations for this index if not already done
+        productProvider.selectedVariations.add(
+          List<bool>.filled(variationList[index].variationValues!.length, false)
+        );
+      }
+      
+      // Loop through the variation values
+      for (int i = 0; i < variationList[index].variationValues!.length; i++) {
+        // Ensure selectedVariations[index] exists and has correct length
+        if (productProvider.selectedVariations[index].length <= i) {
+          // Initialize the missing entries for this variation
+          productProvider.selectedVariations[index].add(false);
+        }
+        
+        // Check if the variation is selected
+        if (productProvider.selectedVariations[index][i]!) {
+          variationPrice += variationList[index].variationValues![i].optionPrice!;
+        }
+      }
+    } else {
+      debugPrint('Variation values for index $index are empty or null');
+    }
+  }
+} else {
+  debugPrint('Variation list is empty or null');
+}
+
                 
                 //  double? language = widget.product!.;
                 double? discount = widget.product!.discount;
@@ -219,10 +237,11 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                                         product: widget.product!),
 
                                 ///Variations
-                                variationList.isNotEmpty
+                                variationList!.isNotEmpty
                                     ? ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: variationList.length,
+                                        
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         padding: EdgeInsets.zero,
@@ -239,6 +258,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                                                             .center,
                                                     children: [
                                                       Text(
+                                                        
                                                      variationList![index]
                                                                   .name ??
                                                               '',
