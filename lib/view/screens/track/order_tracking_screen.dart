@@ -223,9 +223,9 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 ]),
               ),
 
-              if(orderProvider.trackModel != null) Consumer<LocationProvider>(
-                  builder: (context, locationProvider, _) => FooterView()
-              ),
+              // if(orderProvider.trackModel != null) Consumer<LocationProvider>(
+              //     builder: (context, locationProvider, _) => FooterView()
+              // ),
             ]),
           );
         })),
