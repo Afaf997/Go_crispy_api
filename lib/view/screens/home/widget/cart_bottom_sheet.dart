@@ -95,7 +95,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                                 
                 } 
                 else {
-                  variationList =languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
+                  variationList =languageProvider.selectIndex == 0 || languageProvider.selectIndex == -1 ? widget.product!.variations : widget.product!.variationsar;
                   // variationarList=languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
 
 
@@ -103,27 +103,21 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   price = widget.product!.price;
                 }
                 double variationPrice = 0;
-               // Ensure variationList is not null and has items
+
 if (variationList != null && variationList.isNotEmpty) {
   for (int index = 0; index < variationList.length; index++) {
-    // Ensure variationValues is not null and has items
     if (variationList[index].variationValues != null && variationList[index].variationValues!.isNotEmpty) {
-      
-      // Ensure productProvider.selectedVariations is initialized properly
       if (productProvider.selectedVariations.length <= index) {
-        // Initialize selectedVariations for this index if not already done
         productProvider.selectedVariations.add(
           List<bool>.filled(variationList[index].variationValues!.length, false)
         );
       }
       
-      // Loop through the variation values
       for (int i = 0; i < variationList[index].variationValues!.length; i++) {
-        // Ensure selectedVariations[index] exists and has correct length
+        // Ensure selectedVariations[index] exists and has correct length           
         if (productProvider.selectedVariations[index].length <= i) {
-          // Initialize the missing entries for this variation
-          productProvider.selectedVariations[index].add(false);
-        }
+            productProvider.selectedVariations[index].add(false);
+           }
         
         // Check if the variation is selected
         if (productProvider.selectedVariations[index][i]!) {
