@@ -171,13 +171,13 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                           iconColor: status == OrderStatus.cooking ? ColorResources.kOrangeColor : Colors.grey,
                                         ),
                                         CustomStepper(
-                                          title: getTranslated('ready_for_delivery', context),
+                                          title: getTranslated(orderProvider.trackModel?.orderType == "delivery" ?'ready_for_delivery' :'Your order is ready', context),
                                           isComplete: status == OrderStatus.processing ||
                                                       status == OrderStatus.outForDelivery ||
                                                       status == OrderStatus.delivered,
                                           statusImage: Images.icon4,
                                           isActive: status == OrderStatus.processing,
-                                          subTitle: getTranslated('your_delivery_man_is_coming', context),
+                                          subTitle: getTranslated(orderProvider.trackModel?.orderType == "delivery" ?'your_delivery_man_is_coming' : 'Please collect your order', context),
                                           iconColor: status == OrderStatus.processing ? ColorResources.kOrangeColor : Colors.grey,
                                         ),
                                         Consumer<LocationProvider>(builder: (context, locationProvider, _) {
@@ -189,39 +189,45 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                               }
                                             }
                                           }
-                                          return CustomStepper(
-                                            title: getTranslated('order_is_on_the_way', context),
-                                            isComplete: status == OrderStatus.outForDelivery || status == OrderStatus.delivered,
-                                            statusImage: Images.icon5,
-                                            height: orderProvider.trackModel?.deliveryMan == null ? 30 : 130,
-                                            isActive: status == OrderStatus.outForDelivery,
-                                            trailing: orderProvider.trackModel?.deliveryMan?.phone != null
-                                                ? InkWell(
-                                                    onTap: () async {
-                                                      Uri uri = Uri.parse('tel:${orderProvider.trackModel?.deliveryMan?.phone}');
-                                                      if (await canLaunchUrl(uri)) {
-                                                        await launchUrl(uri);
-                                                      }
-                                                    },
-                                                    child: const Icon(Icons.phone_in_talk),
-                                                  )
-                                                : const SizedBox(),
-                                            child: orderProvider.deliveryManModel != null
-                                                ? TrackingMapWidget(
-                                                    deliveryManModel: orderProvider.deliveryManModel,
-                                                    orderID: '${orderProvider.trackModel?.id}',
-                                                    addressModel: address,
-                                                  )
-                                                : const SizedBox(),
-                                            iconColor: status == OrderStatus.outForDelivery ? Colors.purple : Colors.grey,
+                                          return Visibility(
+                                            visible: orderProvider.trackModel?.orderType == "delivery" ,
+                                            child: CustomStepper(
+                                              title: getTranslated('order_is_on_the_way', context),
+                                              isComplete: status == OrderStatus.outForDelivery || status == OrderStatus.delivered,
+                                              statusImage: Images.icon5,
+                                              height: orderProvider.trackModel?.deliveryMan == null ? 30 : 130,
+                                              isActive: status == OrderStatus.outForDelivery,
+                                              trailing: orderProvider.trackModel?.deliveryMan?.phone != null
+                                                  ? InkWell(
+                                                      onTap: () async {
+                                                        Uri uri = Uri.parse('tel:${orderProvider.trackModel?.deliveryMan?.phone}');
+                                                        if (await canLaunchUrl(uri)) {
+                                                          await launchUrl(uri);
+                                                        }
+                                                      },
+                                                      child: const Icon(Icons.phone_in_talk),
+                                                    )
+                                                  : const SizedBox(),
+                                              child: orderProvider.deliveryManModel != null
+                                                  ? TrackingMapWidget(
+                                                      deliveryManModel: orderProvider.deliveryManModel,
+                                                      orderID: '${orderProvider.trackModel?.id}',
+                                                      addressModel: address,
+                                                    )
+                                                  : const SizedBox(),
+                                              iconColor: status == OrderStatus.outForDelivery ? Colors.purple : Colors.grey,
+                                            ),
                                           );
                                         }),
-                                        CustomStepper(
-                                          title: getTranslated('order_delivered', context),
-                                          isComplete: status == OrderStatus.delivered,
-                                          isActive: status == OrderStatus.delivered,
-                                          statusImage: Images.icon6,
-                                          iconColor: status == OrderStatus.delivered ? Colors.green : Colors.grey,
+                                        Visibility(
+                                          visible: orderProvider.trackModel?.orderType == "delivery" ,
+                                          child: CustomStepper(
+                                            title: getTranslated('order_delivered', context),
+                                            isComplete: status == OrderStatus.delivered,
+                                            isActive: status == OrderStatus.delivered,
+                                            statusImage: Images.icon6,
+                                            iconColor: status == OrderStatus.delivered ? Colors.green : Colors.grey,
+                                          ),
                                         ),
                                         const SizedBox(height: Dimensions.paddingSizeLarge),
                                       ],

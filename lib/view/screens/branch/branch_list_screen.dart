@@ -54,11 +54,6 @@ class _BranchListScreenState extends State<BranchListScreen> {
     if (branchProvider.getBranchId() == -1) {
       branchProvider.updateBranchId(null, isUpdate: false);
     }
-    //  else {
-    //   print("here2");
-    //   branchProvider.updateBranchId(branchProvider.getBranchId(),
-    //       isUpdate: false);
-    // }
     print("location");
     Provider.of<LocationProvider>(context, listen: false)
         .getCurrentLatLong()
@@ -396,9 +391,6 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                                       widget.useNavigator,
                                                       istakeAway:
                                                           widget.istakeAway);
-
-                                                  print("this is here");
-
                                                   // Use the parameter here
                                                 }
                                               } else {
