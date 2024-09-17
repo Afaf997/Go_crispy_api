@@ -180,7 +180,7 @@ class RouterHelper {
   static String getRateReviewRoute({required orderId, String? phoneNumber}) =>
       _navigateRoute(
           '$rateScreen?id=$orderId&phone=${Uri.encodeComponent('$phoneNumber')}');
-  static String getOrderTrackingRoute(int? id, {String? phoneNumber}) =>
+  static String getOrderTrackingRoute(int? id,{String? phoneNumber}) =>
       _navigateRoute(
           '$orderTrackingScreen?id=$id&phone=${Uri.encodeComponent('$phoneNumber')}');
   static String getProfileRoute() => _navigateRoute(profileScreen);

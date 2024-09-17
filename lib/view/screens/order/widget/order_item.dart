@@ -67,7 +67,7 @@ class OrderItem extends StatelessWidget {
                                         '(${getTranslated(orderItem.orderType, context)})',
                                         style:const TextStyle(color: ColorResources.ktextboarder,fontSize:11)
                                       )
-                                    : const SizedBox(),
+                                    :const SizedBox(),
                              ],
                            ),
                         ],
@@ -113,7 +113,7 @@ class OrderItem extends StatelessWidget {
         fontSize: 12,
         btnTxt: getTranslated('track_order', context),
         onTap: () async {
-          RouterHelper.getOrderTrackingRoute(orderItem.id);
+          RouterHelper.getOrderTrackingRoute(orderItem.id,);
         },
                 )
               : const SizedBox.shrink(),

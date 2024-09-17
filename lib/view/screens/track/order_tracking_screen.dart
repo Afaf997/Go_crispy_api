@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/address_model.dart';
+import 'package:flutter_restaurant/data/model/response/order_model.dart';
 import 'package:flutter_restaurant/helper/date_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
@@ -24,7 +25,8 @@ import 'widget/timer_view.dart';
 class OrderTrackingScreen extends StatefulWidget {
   final String? orderID;
   final String? phoneNumber;
-  const OrderTrackingScreen({Key? key, this.orderID, this.phoneNumber}) : super(key: key);
+  final OrderModel? orderModel;
+  const OrderTrackingScreen({Key? key, this.orderID, this.phoneNumber, this.orderModel}) : super(key: key);
 
   @override
   State<OrderTrackingScreen> createState() => _OrderTrackingScreenState();
@@ -32,28 +34,39 @@ class OrderTrackingScreen extends StatefulWidget {
 
 class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
 
-  @override
-  void initState() {
+  Future<void> _refreshOrder() async {
     final OrderProvider orderProvider = Provider.of<OrderProvider>(context, listen: false);
     final TimerProvider timerProvider = Provider.of<TimerProvider>(context, listen: false);
-    final LocationProvider locationProvider = Provider.of<LocationProvider>(context, listen: false);
 
+    if (widget.orderID != null) {
+      await orderProvider.trackOrder(widget.orderID, fromTracking: true, phoneNumber: widget.phoneNumber);
+      if (orderProvider.trackModel != null) {
+        timerProvider.countDownTimer(orderProvider.trackModel!, context);
+        if (orderProvider.trackModel?.deliveryMan != null) {
+          orderProvider.getDeliveryManData(widget.orderID);
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final OrderProvider orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    final LocationProvider locationProvider = Provider.of<LocationProvider>(context, listen: false);
     if(widget.orderID != null){
       locationProvider.initAddressList();
-
       orderProvider.trackOrder(widget.orderID, fromTracking: true, phoneNumber: widget.phoneNumber).whenComplete(() {
         if(orderProvider.trackModel != null){
-          timerProvider.countDownTimer(orderProvider.trackModel!, context);
+          Provider.of<TimerProvider>(context, listen: false).countDownTimer(orderProvider.trackModel!, context);
           if(orderProvider.trackModel?.deliveryMan != null ){
             orderProvider.getDeliveryManData(widget.orderID);
           }
         }
       });
-    }else{
+    } else {
       orderProvider.clearPrevData();
     }
-    
-    super.initState();
   }
   
   @override
@@ -68,168 +81,165 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
         centerTitle: true,
       ) as PreferredSizeWidget,
 
-      body: CustomScrollView(slivers: [
-        SliverToBoxAdapter(child: Consumer<OrderProvider>(builder: (context, orderProvider, _) {
-          String? status;
-          if(orderProvider.trackModel != null) {
-            status = orderProvider.trackModel?.orderStatus;
-          }
-          return Container(
-            margin: ResponsiveHelper.isDesktop(context) ? EdgeInsets.symmetric(horizontal: (width - Dimensions.webScreenWidth) / 2) : null,
-            decoration: ResponsiveHelper.isDesktop(context) ? BoxDecoration(
-              color: Theme.of(context).canvasColor, borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-            ) : null,
-            child: Column(children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                child: Column(children: [
-
-                  if(widget.orderID != null)
-                  if(status == OrderStatus.pending
-                        || status == OrderStatus.confirmed
-                        || status == OrderStatus.cooking
-                        || status == OrderStatus.processing
-                        || status == OrderStatus.outForDelivery
-                    ) const Column(children: [
-                      SizedBox(height: Dimensions.paddingSizeDefault),
-                      TimerView(),
-                    ]),
-                  const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                  orderProvider.trackModel != null ? Column(children: [
-                    const SizedBox(height: Dimensions.paddingSizeDefault),
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                      Text('${getTranslated('your_order', context)}', style: rubikMedium),
-
-                      Text(' #${orderProvider.trackModel?.id}', style: rubikMedium.copyWith(
-                        fontSize: Dimensions.fontSizeLarge,
-                      )),
-                    ]),
-                    const SizedBox(height: Dimensions.paddingSizeLarge),
-
-                    Column(children: [
-                      CustomStepper(
-                        title: getTranslated('order_placed', context),
-                        isComplete: status == OrderStatus.pending
-                            || status == OrderStatus.confirmed
-                            || status == OrderStatus.cooking
-                            || status == OrderStatus.processing
-                            || status == OrderStatus.outForDelivery
-                            || status == OrderStatus.delivered,
-                        isActive: status == OrderStatus.pending,
-                        haveTopBar: false,
-                        statusImage: Images.icon1,
-                        subTitle: '${DateConverter.estimatedDate(DateConverter.convertStringToDatetime(orderProvider.trackModel!.createdAt!))} ${DateConverter.estimatedDate(DateConverter.convertStringToDatetime(orderProvider.trackModel!.createdAt!))}',
-                        iconColor: status == OrderStatus.pending ? ColorResources.kOrangeColor : Colors.grey, // Icon color changes
+      body: RefreshIndicator(
+        onRefresh: _refreshOrder,  // The method to be called when refreshing
+        child: CustomScrollView(slivers: [
+          SliverToBoxAdapter(
+            child: Consumer<OrderProvider>(builder: (context, orderProvider, _) {
+              String? status;
+              if(orderProvider.trackModel != null) {
+                status = orderProvider.trackModel?.orderStatus;
+              }
+              return Container(
+                margin: ResponsiveHelper.isDesktop(context)
+                    ? EdgeInsets.symmetric(horizontal: (width - Dimensions.webScreenWidth) / 2)
+                    : null,
+                decoration: ResponsiveHelper.isDesktop(context)
+                    ? BoxDecoration(
+                        color: Theme.of(context).canvasColor,
+                        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                      )
+                    : null,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                      child: Column(
+                        children: [
+                          if(widget.orderID != null)
+                          if(status == OrderStatus.pending ||
+                             status == OrderStatus.confirmed ||
+                             status == OrderStatus.cooking ||
+                             status == OrderStatus.processing ||
+                             status == OrderStatus.outForDelivery)
+                            const Column(
+                              children: [
+                                SizedBox(height: Dimensions.paddingSizeDefault),
+                                TimerView(),
+                              ],
+                            ),
+                          const SizedBox(height: Dimensions.paddingSizeDefault),
+                          orderProvider.trackModel != null
+                              ? Column(
+                                  children: [
+                                    const SizedBox(height: Dimensions.paddingSizeDefault),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Text('${getTranslated('your_order', context)}', style: rubikMedium),
+                                        Text(' #${orderProvider.trackModel?.id}', style: rubikMedium.copyWith(
+                                          fontSize: Dimensions.fontSizeLarge,
+                                        )),
+                                      ],
+                                    ),
+                                    const SizedBox(height: Dimensions.paddingSizeLarge),
+                                    Column(
+                                      children: [
+                                        CustomStepper(
+                                          title: getTranslated('order_placed', context),
+                                          isComplete: status == OrderStatus.pending ||
+                                                      status == OrderStatus.confirmed ||
+                                                      status == OrderStatus.cooking ||
+                                                      status == OrderStatus.processing ||
+                                                      status == OrderStatus.outForDelivery ||
+                                                      status == OrderStatus.delivered,
+                                          isActive: status == OrderStatus.pending,
+                                          haveTopBar: false,
+                                          statusImage: Images.icon1,
+                                          subTitle: '${DateConverter.estimatedDate(DateConverter.convertStringToDatetime(orderProvider.trackModel!.createdAt!))} ${DateConverter.estimatedDate(DateConverter.convertStringToDatetime(orderProvider.trackModel!.createdAt!))}',
+                                          iconColor: status == OrderStatus.pending ? ColorResources.kOrangeColor : Colors.grey,
+                                        ),
+                                        CustomStepper(
+                                          title: getTranslated('confirmed', context),
+                                          isComplete: status == OrderStatus.confirmed ||
+                                                      status == OrderStatus.cooking ||
+                                                      status == OrderStatus.processing ||
+                                                      status == OrderStatus.outForDelivery ||
+                                                      status == OrderStatus.delivered,
+                                          isActive: status == OrderStatus.confirmed,
+                                          statusImage: Images.icon2,
+                                          iconColor: status == OrderStatus.confirmed ? ColorResources.kOrangeColor : Colors.grey,
+                                        ),
+                                        CustomStepper(
+                                          title: getTranslated('cooking', context),
+                                          isComplete: status == OrderStatus.cooking ||
+                                                      status == OrderStatus.processing ||
+                                                      status == OrderStatus.outForDelivery ||
+                                                      status == OrderStatus.delivered,
+                                          isActive: status == OrderStatus.cooking,
+                                          statusImage: Images.icon3,
+                                          iconColor: status == OrderStatus.cooking ? ColorResources.kOrangeColor : Colors.grey,
+                                        ),
+                                        CustomStepper(
+                                          title: getTranslated('ready_for_delivery', context),
+                                          isComplete: status == OrderStatus.processing ||
+                                                      status == OrderStatus.outForDelivery ||
+                                                      status == OrderStatus.delivered,
+                                          statusImage: Images.icon4,
+                                          isActive: status == OrderStatus.processing,
+                                          subTitle: getTranslated('your_delivery_man_is_coming', context),
+                                          iconColor: status == OrderStatus.processing ? ColorResources.kOrangeColor : Colors.grey,
+                                        ),
+                                        Consumer<LocationProvider>(builder: (context, locationProvider, _) {
+                                          AddressModel? address;
+                                          if(locationProvider.addressList != null){
+                                            for(int i = 0 ; i< locationProvider.addressList!.length; i++) {
+                                              if(locationProvider.addressList![i].id == orderProvider.trackModel!.deliveryAddressId) {
+                                                address = locationProvider.addressList![i];
+                                              }
+                                            }
+                                          }
+                                          return CustomStepper(
+                                            title: getTranslated('order_is_on_the_way', context),
+                                            isComplete: status == OrderStatus.outForDelivery || status == OrderStatus.delivered,
+                                            statusImage: Images.icon5,
+                                            height: orderProvider.trackModel?.deliveryMan == null ? 30 : 130,
+                                            isActive: status == OrderStatus.outForDelivery,
+                                            trailing: orderProvider.trackModel?.deliveryMan?.phone != null
+                                                ? InkWell(
+                                                    onTap: () async {
+                                                      Uri uri = Uri.parse('tel:${orderProvider.trackModel?.deliveryMan?.phone}');
+                                                      if (await canLaunchUrl(uri)) {
+                                                        await launchUrl(uri);
+                                                      }
+                                                    },
+                                                    child: const Icon(Icons.phone_in_talk),
+                                                  )
+                                                : const SizedBox(),
+                                            child: orderProvider.deliveryManModel != null
+                                                ? TrackingMapWidget(
+                                                    deliveryManModel: orderProvider.deliveryManModel,
+                                                    orderID: '${orderProvider.trackModel?.id}',
+                                                    addressModel: address,
+                                                  )
+                                                : const SizedBox(),
+                                            iconColor: status == OrderStatus.outForDelivery ? Colors.purple : Colors.grey,
+                                          );
+                                        }),
+                                        CustomStepper(
+                                          title: getTranslated('order_delivered', context),
+                                          isComplete: status == OrderStatus.delivered,
+                                          isActive: status == OrderStatus.delivered,
+                                          statusImage: Images.icon6,
+                                          iconColor: status == OrderStatus.delivered ? Colors.green : Colors.grey,
+                                        ),
+                                        const SizedBox(height: Dimensions.paddingSizeLarge),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox(),
+                        ],
                       ),
-
-                      CustomStepper(
-                        title: getTranslated('confirmed', context),
-                        isComplete: status == OrderStatus.confirmed
-                            || status == OrderStatus.cooking
-                            || status == OrderStatus.processing
-                            || status == OrderStatus.outForDelivery
-                            || status == OrderStatus.delivered,
-                        isActive: status == OrderStatus.confirmed,
-                        statusImage: Images.icon2,
-                        iconColor: status == OrderStatus.confirmed ? ColorResources.kOrangeColor : Colors.grey, // Change color based on status
-                      ),
-
-                      CustomStepper(
-                        title: getTranslated('cooking', context),
-                        isComplete: status == OrderStatus.cooking
-                            || status == OrderStatus.processing
-                            || status == OrderStatus.outForDelivery
-                            ||status == OrderStatus.delivered,
-                        isActive: status == OrderStatus.cooking,
-                        statusImage: Images.icon3,
-                       iconColor: status == OrderStatus.pending ? ColorResources.kOrangeColor: Colors.grey,
-                      ),
-
-                      CustomStepper(
-                        title: getTranslated('preparing_for_delivery', context),
-                        isComplete: status == OrderStatus.processing
-                            || status == OrderStatus.outForDelivery
-                            ||status == OrderStatus.delivered,
-                        statusImage: Images.icon4,
-                        isActive: status == OrderStatus.processing,
-                        subTitle: getTranslated('your_delivery_man_is_coming', context),
-                        iconColor: status == OrderStatus.processing ? ColorResources.kOrangeColor : Colors.grey,
-                      ),
-
-                      Consumer<LocationProvider>(builder: (context, locationProvider, _) {
-                        AddressModel? address;
-                        if(locationProvider.addressList != null){
-                          for(int i = 0 ; i< locationProvider.addressList!.length; i++) {
-                            if(locationProvider.addressList![i].id == orderProvider.trackModel!.deliveryAddressId) {
-                              address = locationProvider.addressList![i];
-                            }
-                          }
-                        }
-                        return CustomStepper(
-                          title: getTranslated('order_is_on_the_way', context),
-                          isComplete: status == OrderStatus.outForDelivery || status == OrderStatus.delivered,
-                          statusImage: Images.icon5,
-                          height: orderProvider.trackModel?.deliveryMan == null ? 30 : 130,
-                          isActive: status == OrderStatus.outForDelivery,
-                          trailing: orderProvider.trackModel?.deliveryMan?.phone != null ? InkWell(
-                            onTap: () async {
-                              Uri uri = Uri.parse('tel:${orderProvider.trackModel?.deliveryMan?.phone}');
-                              if (await canLaunchUrl(uri)) {
-                                await launchUrl(uri);
-                              }
-                            },
-                            child: const Icon(Icons.phone_in_talk),
-                          ) : const SizedBox(),
-                          child: orderProvider.deliveryManModel != null ? TrackingMapWidget(
-                            deliveryManModel: orderProvider.deliveryManModel,
-                            orderID: '${orderProvider.trackModel?.id}',
-                            addressModel: address,
-                          ) : const SizedBox(),
-                          iconColor: status == OrderStatus.outForDelivery ? Colors.purple : Colors.grey,
-                        );
-                      }),
-
-                      CustomStepper(
-                        title: getTranslated('order_delivered', context),
-                        isComplete: status == OrderStatus.delivered,
-                        isActive: status == OrderStatus.delivered,
-                        statusImage: Images.icon6,
-                        iconColor: status == OrderStatus.delivered ? Colors.green : Colors.grey,
-                      ),
-                    ]),
-                  ]) : widget.orderID == null ?  Column(children: [
-                    const SizedBox(height: Dimensions.paddingSizeLarge),
-                    Image.asset(Images.outForDelivery, color: Theme.of(context).disabledColor.withOpacity(0.5), width:  70),
-                    const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                    Text(getTranslated('enter_your_order_id', context)!, style: rubikRegular.copyWith(
-                      color: Theme.of(context).disabledColor.withOpacity(0.5),
-                      fontSize: Dimensions.fontSizeExtraLarge,
-                    )),
-                  ]) : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      
-                      Center( child: Image.asset(
-                                                  Images.gif, // Replace with your GIF asset path
-                                                  width: 150, // Adjust the size as needed
-                                                  height: 150,
-                                                ),
-                      ),
-                    ],
-                  ),
-                ]),
-              ),
-
-              // if(orderProvider.trackModel != null) Consumer<LocationProvider>(
-              //     builder: (context, locationProvider, _) => FooterView()
-              // ),
-            ]),
-          );
-        })),
-      ]),
+                    ),
+                    if(ResponsiveHelper.isDesktop(context)) const FooterView(),
+                  ],
+                ),
+              );
+            }),
+          ),
+        ]),
+      ),
     );
   }
 }

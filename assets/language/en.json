@@ -509,7 +509,7 @@
   "referrer": "Referrer",
   "enter_your_order_id": "Enter your order ID & phone number to get delivery updates",
   "enter_order_id": "Enter order id",
-  "cooking": "Cooking",
+  "cooking": "Preparing",
   "preparing_for_delivery": "Preparing for delivery",
   "your_delivery_man_is_coming": "Your Delivery man is coming",
   "order_is_on_the_way": "Order is on the way",
@@ -549,5 +549,6 @@
   "continue_guest":"Continue as guest",
   "enter_details":"Enter Your Details",
   "continue_terms_condition":"By clicking 'continue' you agree with",
-  "terms_condition_text":"our terms and condition"
+  "terms_condition_text":"our terms and condition",
+  "ready_for_delivery":"Ready for delivery"
 }

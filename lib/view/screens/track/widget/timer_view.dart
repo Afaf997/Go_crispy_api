@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/data/model/response/order_model.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
+import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/time_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
@@ -8,7 +12,9 @@ import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:provider/provider.dart';
 
 class TimerView extends StatefulWidget {
-  const TimerView({Key? key}) : super(key: key);
+  final OrderModel? orderItem;
+  
+  const TimerView({Key? key, this.orderItem}) : super(key: key);
 
   @override
   State<TimerView> createState() => _TimerViewState();
@@ -17,79 +23,90 @@ class TimerView extends StatefulWidget {
 class _TimerViewState extends State<TimerView> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimerProvider>(
-        builder: (context, orderTimer, child) {
-          int? days, hours, minutes, seconds;
-          if (orderTimer.duration != null) {
-            days = orderTimer.duration!.inDays;
-            hours = orderTimer.duration!.inHours - days * 24;
-            minutes = orderTimer.duration!.inMinutes - (24 * days * 60) - (hours * 60);
-            seconds = orderTimer.duration!.inSeconds - (24 * days * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
-          }
-          return Column( children: [
-            Image.asset(Images.deliveryman, height: 78,width: 78,),
+    return Consumer2<TimerProvider,OrderProvider>(
+      builder: (context, orderTimer, orderProvider,child) {
+        int? days, hours, minutes, seconds;
 
+        if (orderTimer.duration != null) {
+          days = orderTimer.duration!.inDays;
+          hours = orderTimer.duration!.inHours - days * 24;
+          minutes = orderTimer.duration!.inMinutes - (24 * days * 60) - (hours * 60);
+          seconds = orderTimer.duration!.inSeconds - (24 * days * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
+        }
+
+
+        return Column(
+          children: [
+            Image.asset(
+              Images.deliveryman,
+              height: 78,
+              width: 78,
+            ),
             Text(
-              minutes! < 5 ? getTranslated('be_prepared_your_food', context)! : getTranslated('your_food_delivery', context)!,
-              style:const TextStyle(fontSize: 10,fontWeight: FontWeight.w400,color: ColorResources.kIncreasedColor),
+              // isSpecialOrderType
+                           orderProvider.trackModel?.orderType == "delivery" 
+                  ? getTranslated('be_prepared_your_food', context)
+                  : getTranslated('Order will be ready within', context),
+              style: const TextStyle(
+                  fontSize: 10, fontWeight: FontWeight.w400, color: ColorResources.kIncreasedColor),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: Dimensions.paddingSizeSmall),
-
-            days! > 0 || hours! > 0 ?
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                if(days > 0) TimerBox(time: days, text: getTranslated('day', context), isBorder: true),
-                if(days > 0) const SizedBox(width: 5),
-
-                if(days > 0) Text(':', style: TextStyle(color: Theme.of(context).primaryColor)),
-                if(days > 0) const SizedBox(width: 5),
-
-                TimerBox(time: hours, text: getTranslated('hour', context), isBorder: true),
-                const SizedBox(width: 5),
-
-                Text(':', style: TextStyle(color: Theme.of(context).primaryColor)),
-                const SizedBox(width: 5),
-
-                TimerBox(time: minutes, text: getTranslated('min', context), isBorder: true),
-                const SizedBox(width: 5),
-
-                Text(':', style: TextStyle(color: Theme.of(context).primaryColor)),
-                const SizedBox(width: 5),
-                TimerBox(time: seconds,text: getTranslated('sec', context), isBorder: true,),
-
-                const SizedBox(width: 5),
-              ]),
-            ) :
-
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text(
-                '${minutes < 5 ? 0 : minutes - 5}-${minutes < 5 ? 5 : minutes}',
-                style:const TextStyle(fontSize: 20,fontWeight: FontWeight.w700,color: ColorResources.kOrangeColor),
-              ),
-              const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-
-              Text(getTranslated('min', context)!, style:const TextStyle(fontSize: 20,fontWeight: FontWeight.w700,color: ColorResources.kOrangeColor),),
-
-            ],),
-
-
-          ],);
-
-        }
+            (days != null && (days > 0 || hours! > 0))
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (days > 0)
+                          TimerBox(time: days, text: getTranslated('day', context), isBorder: true),
+                        if (days > 0) const SizedBox(width: 5),
+                        if (days > 0)
+                          Text(':', style: TextStyle(color: Theme.of(context).primaryColor)),
+                        if (days > 0) const SizedBox(width: 5),
+                        TimerBox(time: hours, text: getTranslated('hour', context), isBorder: true),
+                        const SizedBox(width: 5),
+                        Text(':', style: TextStyle(color: Theme.of(context).primaryColor)),
+                        const SizedBox(width: 5),
+                        TimerBox(time: minutes, text: getTranslated('min', context), isBorder: true),
+                        const SizedBox(width: 5),
+                        Text(':', style: TextStyle(color: Theme.of(context).primaryColor)),
+                        const SizedBox(width: 5),
+                        TimerBox(time: seconds, text: getTranslated('sec', context), isBorder: true),
+                        const SizedBox(width: 5),
+                      ],
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${minutes != null && minutes < 5 ? 0 : minutes! - 5}-${minutes != null && minutes < 5 ? 5 : minutes}',
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w700, color: ColorResources.kOrangeColor),
+                      ),
+                      const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                      Text(
+                        getTranslated('min', context)!,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w700, color: ColorResources.kOrangeColor),
+                      ),
+                    ],
+                  ),
+          ],
+        );
+      },
     );
   }
 }
-
 
 class TimerBox extends StatelessWidget {
   final int? time;
   final bool isBorder;
   final String? text;
 
-  const TimerBox({Key? key,  this.time, this.isBorder = false, this.text}) : super(key: key);
+  const TimerBox({Key? key, this.time, this.isBorder = false, this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,21 +119,27 @@ class TimerBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(3),
       ),
       child: Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(time! < 10 ? '0$time' : time.toString(),
+            Text(
+              time != null && time! < 10 ? '0$time' : time.toString(),
               style: rubikMedium.copyWith(
                 color: isBorder ? Theme.of(context).primaryColor : Theme.of(context).highlightColor,
                 fontSize: Dimensions.fontSizeLarge,
               ),
             ),
-            Text(text!, style: rubikRegular.copyWith(color: isBorder ?
-            Theme.of(context).primaryColor : Theme.of(context).highlightColor,
-              fontSize: Dimensions.fontSizeSmall,)),
+            Text(
+              text ?? '',
+              style: rubikRegular.copyWith(
+                color: isBorder ? Theme.of(context).primaryColor : Theme.of(context).highlightColor,
+                fontSize: Dimensions.fontSizeSmall,
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
-

@@ -510,7 +510,7 @@
   "referrer": "المرجع",
   "enter_your_order_id": "أدخل معرف الطلب ورقم الهاتف للحصول على تحديثات التسليم",
   "enter_order_id": "أدخل معرف الطلب",
-  "cooking": "طبخ",
+  "cooking": "تحضير",
   "preparing_for_delivery": "التحضير للتسليم",
   "your_delivery_man_is_coming": "رجل التوصيل الخاص بك قادم",
   "order_is_on_the_way": "النظام في الطريق",
@@ -550,5 +550,6 @@
   "continue_guest":"استمر كضيف",
   "enter_details":"أدخل التفاصيل الخاصة بك",
   "continue_terms_condition":"عند الضغط علي اكمل انت",
-  "terms_condition_text":"انت توافق علي الشروط والأحكام"
+  "terms_condition_text":"انت توافق علي الشروط والأحكام",
+  "ready_for_delivery":"جاهزة للتسليم"
 }

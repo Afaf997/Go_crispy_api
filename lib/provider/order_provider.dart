@@ -103,6 +103,7 @@ class OrderProvider extends ChangeNotifier {
       _runningOrderList = [];
       _historyOrderList = [];
       apiResponse.response!.data.forEach((order) {
+        log(order.toString(),name: "order respons");
         OrderModel orderModel = OrderModel.fromJson(order);
         if (orderModel.orderStatus == 'pending' ||
             orderModel.orderStatus == 'processing' ||
@@ -252,17 +253,23 @@ class OrderProvider extends ChangeNotifier {
       if (phoneNumber != null) {
         apiResponse =
             await orderRepo!.trackOrderWithPhoneNumber(orderID, phoneNumber);
-      } else {
+            
+      } 
+      else {
+        
         apiResponse = await orderRepo!.trackOrder(
           orderID,
           guestId: Provider.of<AuthProvider>(Get.context!, listen: false)
               .getGuestId(),
+              
         );
+        // log(apiResponse.response.toString(),name: "track order");
       }
 
       if (apiResponse.response != null &&
           apiResponse.response!.statusCode == 200) {
         _trackModel = OrderModel.fromJson(apiResponse.response!.data);
+        log(_trackModel!.orderType.toString(),name: "order typeee");
         _responseModel =
             ResponseModel(true, apiResponse.response!.data.toString());
       } else {

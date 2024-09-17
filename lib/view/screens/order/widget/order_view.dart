@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/order_model.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
@@ -59,7 +61,11 @@ class OrderView extends StatelessWidget {
                             itemCount: orderList.length,
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemBuilder: (context, index) => OrderItem(orderProvider: order, isRunning: isRunning, orderItem: orderList![index]),
+                            itemBuilder: (context, index) {
+                          //  log( orderList![index].orderType.toString(), name: "orderrrr");
+                              return OrderItem(orderProvider: order, isRunning: isRunning, orderItem: orderList![index]);
+
+                            },
                           ),
                     ),
                   ),
