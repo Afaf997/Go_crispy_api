@@ -172,7 +172,8 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                         ),
                                         CustomStepper(
                                           title: getTranslated(orderProvider.trackModel?.orderType == "delivery" ?'ready_for_delivery' :'Your order is ready', context),
-                                          isComplete: status == OrderStatus.processing ||
+                                          isComplete:
+                                           status == OrderStatus.delivered ||
                                                       status == OrderStatus.outForDelivery ||
                                                       status == OrderStatus.delivered,
                                           statusImage: Images.icon4,

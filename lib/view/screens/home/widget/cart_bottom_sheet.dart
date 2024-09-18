@@ -90,12 +90,14 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                   variationarList=widget.product!.branchProduct!.variationsar;
                   // log("loggg"+variationarList.toString());
                   price = widget.product!.branchProduct!.price;
+                  log('if');
                                 // log(languageProvider.selectIndex.toString());
                                 // log( "widget"+  widget.product!.variationsar![0].name.toString());
                                 
                 } 
                 else {
                   variationList =languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
+                  log("sfa");
                   // variationarList=languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
 
                   variationarList=widget.product!.variationsar;
@@ -112,25 +114,25 @@ if (variationList != null && variationList.isNotEmpty) {
         );
       }
       
-      for (int i = 0; i < variationList[index].variationValues!.length; i++) {         
-        if (productProvider.selectedVariations[index].length <= i) {
-            productProvider.selectedVariations[index].add(false);
-           }
+      // for (int i = 0; i < variationList[index].variationValues!.length; i++) {         
+      //   if (productProvider.selectedVariations[index].length <= i) {
+      //       productProvider.selectedVariations[index].add(false);
+      //      }
         
-        if (productProvider.selectedVariations[index][i]!) {
-          variationPrice += variationList[index].variationValues![i].optionPrice!;
-        }
-      }
-      //   for (int index = 0; index < variationList!.length; index++) {
-      //             for (int i = 0;
-      //                 i < variationList[index].variationValues!.length;
-      //                 i++) {
-      //               if (productProvider.selectedVariations[index][i]!) {
-      //                 variationPrice +=
-      //                     variationList[index].variationValues![i].optionPrice!;
-      //               }
-      //             }
-      //           }
+      //   if (productProvider.selectedVariations[index][i]!) {
+      //     variationPrice += variationList[index].variationValues![i].optionPrice!;
+      //   }
+      // }
+        for (int index = 0; index < variationList!.length; index++) {
+                  for (int i = 0;
+                      i < variationList[index].variationValues!.length;
+                      i++) {
+                    if (productProvider.selectedVariations[index][i]!) {
+                      variationPrice +=
+                          variationList[index].variationValues![i].optionPrice!;
+                    }
+                  }
+                }
     } else {
       debugPrint('Variation values for index $index are empty or null');
     }
