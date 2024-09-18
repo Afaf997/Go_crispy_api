@@ -208,6 +208,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                                       child: const Icon(Icons.phone_in_talk),
                                                     )
                                                   : const SizedBox(),
+                                              iconColor: status == OrderStatus.outForDelivery ? Colors.purple : Colors.grey,
                                               child: orderProvider.deliveryManModel != null
                                                   ? TrackingMapWidget(
                                                       deliveryManModel: orderProvider.deliveryManModel,
@@ -215,7 +216,6 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                                       addressModel: address,
                                                     )
                                                   : const SizedBox(),
-                                              iconColor: status == OrderStatus.outForDelivery ? Colors.purple : Colors.grey,
                                             ),
                                           );
                                         }),

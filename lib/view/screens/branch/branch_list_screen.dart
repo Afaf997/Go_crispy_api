@@ -305,33 +305,28 @@ class _BranchListScreenState extends State<BranchListScreen> {
                                                       .paddingSizeDefault),
                                               _branchesValue.isNotEmpty
                                                   ? Flexible(
-                                                      child: GridView.builder(
-                                                        gridDelegate:
-                                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                                          mainAxisExtent: 230,
-                                                          crossAxisSpacing: 5,
-                                                          mainAxisSpacing: 5,
-                                                          childAspectRatio: 1.8,
-                                                          crossAxisCount: ResponsiveHelper
-                                                                  .isDesktop( context)? 3: MediaQuery.of(context)
-                                                                          .size
-                                                                          .width >
-                                                                      780
-                                                                  ? 2
-                                                                  : 1,
-                                                        ),
-                                                        itemCount:
-                                                            _branchesValue
-                                                                .length,
-                                                        itemBuilder:
-                                                            (context, index) =>
-                                                                BranchItemView(
-                                                          branchesValue:
-                                                              _branchesValue[
-                                                                  index],
-                                                        ),
-                                                      ),
-                                                    )
+  child: GridView.builder(
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      mainAxisExtent: 230,
+      crossAxisSpacing: 5,
+      mainAxisSpacing: 5,
+      childAspectRatio: 1.8,
+      crossAxisCount: ResponsiveHelper.isDesktop(context)
+          ? 3
+          : MediaQuery.of(context).size.width > 780
+              ? 2
+              : 1,
+    ),
+    itemCount: _branchesValue.where((branch) => branch.branches?.id != 1).length, // Filter branches with id != 1
+    itemBuilder: (context, index) {
+      // Filtered list to exclude branches with id == 1
+      List<BranchValue> filteredBranches = _branchesValue.where((branch) => branch.branches?.id != 1).toList();
+
+      return BranchItemView(branchesValue: filteredBranches[index]);
+    },
+  ),
+)
+
                                                   : Padding(
                                                     padding: const EdgeInsets.only(top:220.0),
                                                     child: Center(
