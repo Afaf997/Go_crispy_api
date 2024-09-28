@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/helper/network_info.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
@@ -57,6 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       NetworkInfo.checkConnectivity(_scaffoldKey);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -70,9 +72,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       },
       child: Scaffold(
         key: _scaffoldKey,
-        floatingActionButton: !ResponsiveHelper.isDesktop(context) && _pageIndex == 0
-            ? const ThirdPartyChatWidget()
-            : null,
+        floatingActionButton:
+            !ResponsiveHelper.isDesktop(context) && _pageIndex == 0
+                ? const ThirdPartyChatWidget()
+                : null,
         bottomNavigationBar: !ResponsiveHelper.isDesktop(context)
             ? CustomBottomNavBar(
                 selectedIndex: _pageIndex,
@@ -112,7 +115,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(0,10,0,22),
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 22),
       decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -186,7 +189,8 @@ class CustomBottomNavBar extends StatelessWidget {
         children: [
           isSelected
               ? Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     color: ColorResources.kOrangeColor,
                     borderRadius: BorderRadius.circular(30),

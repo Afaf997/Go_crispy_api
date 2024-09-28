@@ -1,11 +1,16 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:app_links/app_links.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_restaurant/firebase_options.dart';
+import 'package:flutter_restaurant/helper/notification_helper.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/localization/app_localization.dart';
@@ -48,6 +53,13 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 late AndroidNotificationChannel channel;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
+  print(message.data);
+}
 
 Future<void> main() async {
   if (ResponsiveHelper.isMobilePhone()) {
@@ -80,6 +92,31 @@ Future<void> main() async {
   //     version: "v13.0",
   //   );
   // }
+
+// ...
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  FirebaseMessaging.instance.requestPermission();
+
+  log(fcmToken.toString());
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // FirebaseMessaging.onMessageOpenedApp.listen((event) {
+  //   print("navigating");
+  // });
+
+  // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //   print('Got a message whilst in the foreground!');
+  //   print('Message data: ${message.data}');
+
+  //   if (message.notification != null) {
+  //     print('Message also contained a notification: ${message.notification}');
+  //   }
+  // });
+
   await di.init();
   String? path;
 
@@ -100,18 +137,18 @@ Future<void> main() async {
   //       ? int.parse(remoteMessage.notification!.titleLocKey!)
   //       : null;
   // }
-  //   await NotificationHelper.initialize(flutterLocalNotificationsPlugin);
+  await NotificationHelper.initialize(flutterLocalNotificationsPlugin);
   //   FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
-  //   await flutterLocalNotificationsPlugin
-  //       .resolvePlatformSpecificImplementation<
-  //           AndroidFlutterLocalNotificationsPlugin>()
-  //       ?.createNotificationChannel(channel);
+  // await flutterLocalNotificationsPlugin
+  //     .resolvePlatformSpecificImplementation<
+  //         AndroidFlutterLocalNotificationsPlugin>()
+  //     ?.createNotificationChannel(channel);
   // } catch (e) {
   //   debugPrint('error ===> $e');
   // }
   GoRouter.optionURLReflectsImperativeAPIs = true;
-  SharedPreferences pref =await SharedPreferences.getInstance();
-  await pref.setBool("start",true);
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  await pref.setBool("start", true);
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => di.sl<PopupProvider>()),

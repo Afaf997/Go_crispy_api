@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_restaurant/data/model/response/language_model.dart';
-import 'package:flutter_restaurant/data/repository/language_repo.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
-import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
 import 'package:flutter_restaurant/provider/language_provider.dart';
 import 'package:flutter_restaurant/provider/localization_provider.dart';
@@ -16,12 +13,18 @@ import 'package:provider/provider.dart';
 class ChooseLanguageScreen extends StatelessWidget {
   final bool fromMenu;
 
-  const ChooseLanguageScreen({Key? key, this.fromMenu = false}) : super(key: key);
+  const ChooseLanguageScreen({Key? key, this.fromMenu = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    Provider.of<LanguageProvider>(context, listen: false).initializeAllLanguages(context);
+
+    // Ensure the language list is initialized and set English as default
+    Provider.of<LanguageProvider>(context, listen: false)
+        .initializeAllLanguages(context);
+    Provider.of<LanguageProvider>(context, listen: false)
+        .setSelectIndex(0); // Set English as default (index 0)
 
     return Scaffold(
       backgroundColor: ColorResources.kOrangeColor,
@@ -61,7 +64,8 @@ class ChooseLanguageScreen extends StatelessWidget {
     );
   }
 
-  Widget buildLanguageRow(BuildContext context, String title, String value, LanguageProvider languageProvider) {
+  Widget buildLanguageRow(BuildContext context, String title, String value,
+      LanguageProvider languageProvider) {
     return InkWell(
       onTap: () {
         languageProvider.setSelectIndex(value == 'en' ? 0 : 1);
@@ -80,7 +84,7 @@ class ChooseLanguageScreen extends StatelessWidget {
           children: [
             Text(
               title,
-              style:const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
             Consumer<LanguageProvider>(
               builder: (context, languageProvider, _) => Container(
@@ -95,10 +99,11 @@ class ChooseLanguageScreen extends StatelessWidget {
                     width: 10,
                     height: 10,
                     decoration: BoxDecoration(
-                       border: Border.all(color: Colors.grey),
-                      color: languageProvider.selectIndex == (value == 'en' ? 0 : 1)
-                      ? ColorResources.kOrangeColor
-                      : Colors.white,
+                      border: Border.all(color: Colors.grey),
+                      color: languageProvider.selectIndex ==
+                              (value == 'en' ? 0 : 1)
+                          ? ColorResources.kOrangeColor
+                          : Colors.white,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -112,19 +117,25 @@ class ChooseLanguageScreen extends StatelessWidget {
   }
 
   void handleLanguageSelection(BuildContext context) {
-    final languageProvider = Provider.of<LanguageProvider>(context, listen: false);
-    final localizationProvider = Provider.of<LocalizationProvider>(context, listen: false);
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
+    final localizationProvider =
+        Provider.of<LocalizationProvider>(context, listen: false);
 
-    if (languageProvider.languages.isNotEmpty && languageProvider.selectIndex != -1) {
+    if (languageProvider.languages.isNotEmpty &&
+        languageProvider.selectIndex != -1) {
       if (fromMenu) {
-        Provider.of<ProductProvider>(context, listen: false).getLatestProductList(true, '1');
-        Provider.of<CategoryProvider>(context, listen: false).getCategoryList(true);
+        Provider.of<ProductProvider>(context, listen: false)
+            .getLatestProductList(true, '1');
+        Provider.of<CategoryProvider>(context, listen: false)
+            .getCategoryList(true);
       } else {
         ResponsiveHelper.isMobile()
-            ? RouterHelper.getOnBoardingRoute(action: RouteAction.pushNamedAndRemoveUntil)
-            : RouterHelper.getMainRoute(action: RouteAction.pushNamedAndRemoveUntil);
+            ? RouterHelper.getOnBoardingRoute(
+                action: RouteAction.pushNamedAndRemoveUntil)
+            : RouterHelper.getMainRoute(
+                action: RouteAction.pushNamedAndRemoveUntil);
       }
-        } 
+    }
   }
 }
-

@@ -1,16 +1,1 @@
-{
-  "hosting": {
-    "public": "build/web",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
-}
+{"hosting":{"public":"build/web","ignore":["firebase.json","**/.*","**/node_modules/**"],"rewrites":[{"source":"**","destination":"/index.html"}]},"flutter":{"platforms":{"android":{"default":{"projectId":"gocrispy-b5cfd","appId":"1:134067255517:android:84d0a467c07d3a073ec334","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"gocrispy-b5cfd","configurations":{"android":"1:134067255517:android:84d0a467c07d3a073ec334","ios":"1:134067255517:ios:4ccfdee1a3d49a5b3ec334"}}}}}}

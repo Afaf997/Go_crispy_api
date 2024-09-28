@@ -33,7 +33,6 @@ class CartBottomSheet extends StatefulWidget {
   final CartModel? cart;
   final int? cartIndex;
   final bool fromCart;
-  
 
   const CartBottomSheet(
       {Key? key,
@@ -59,7 +58,8 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    LanguageProvider languageProvider =Provider.of<LanguageProvider>(context,listen: false);
+    LanguageProvider languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
 
     return Consumer<CartProvider>(builder: (context, cartProvider, child) {
       return Stack(
@@ -86,67 +86,70 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
 
                 if (widget.product!.branchProduct != null &&
                     widget.product!.branchProduct!.isAvailable!) {
-                    variationList =languageProvider.selectIndex == 0 ? widget.product!.branchProduct?.variations : widget.product!.branchProduct?.variationsar;
-                  variationarList=widget.product!.branchProduct!.variationsar;
-                  // log("loggg"+variationarList.toString());
+                  variationList = languageProvider.selectIndex == 0
+                      ? widget.product!.branchProduct?.variations
+                      : widget.product!.branchProduct?.variationsar;
+                  variationarList = widget.product!.branchProduct!.variationsar;
                   price = widget.product!.branchProduct!.price;
-                  log('if');
-                                // log(languageProvider.selectIndex.toString());
-                                // log( "widget"+  widget.product!.variationsar![0].name.toString());
-                                
-                } 
-                else {
-                  variationList =languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
-                  log("sfa");
-                  // variationarList=languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
-
-                  variationarList=widget.product!.variationsar;
+                  log('Using branch product variations');
+                } else {
+                  variationList = languageProvider.selectIndex == 0
+                      ? widget.product!.variations
+                      : widget.product!.variationsar;
+                  variationarList = widget.product!.variationsar;
                   price = widget.product!.price;
                 }
+
                 double variationPrice = 0;
 
-if (variationList != null && variationList.isNotEmpty) {
-  for (int index = 0; index < variationList.length; index++) {
-    if (variationList[index].variationValues != null && variationList[index].variationValues!.isNotEmpty) {
-      if (productProvider.selectedVariations.length <= index) {
-        productProvider.selectedVariations.add(
-          List<bool>.filled(variationList[index].variationValues!.length, false)
-        );
-      }
-      
-      // for (int i = 0; i < variationList[index].variationValues!.length; i++) {         
-      //   if (productProvider.selectedVariations[index].length <= i) {
-      //       productProvider.selectedVariations[index].add(false);
-      //      }
-        
-      //   if (productProvider.selectedVariations[index][i]!) {
-      //     variationPrice += variationList[index].variationValues![i].optionPrice!;
-      //   }
-      // }
-        for (int index = 0; index < variationList!.length; index++) {
-                  for (int i = 0;
-                      i < variationList[index].variationValues!.length;
-                      i++) {
-                    if (productProvider.selectedVariations[index][i]!) {
-                      variationPrice +=
-                          variationList[index].variationValues![i].optionPrice!;
+                if (variationList != null && variationList.isNotEmpty) {
+                  for (int index = 0; index < variationList.length; index++) {
+                    if (variationList[index].variationValues != null &&
+                        variationList[index].variationValues!.isNotEmpty) {
+                      if (productProvider.selectedVariations.length <= index) {
+                        productProvider.selectedVariations.add(
+                          List<bool>.filled(
+                              variationList[index].variationValues!.length,
+                              false),
+                        );
+                      }
+
+                      // Calculate variation price based on selected variations
+                      // for (int i = 0;
+                      //     i < variationList[index].variationValues!.length;
+                      //     i++) {
+                      //   if (productProvider.selectedVariations[index][i]!) {
+                      //     variationPrice += variationList[index]
+                      //         .variationValues![i]
+                      //         .optionPrice!;
+                      //   }
+                      // }
+                      for (int i = 0;
+                          i < variationList[index].variationValues!.length &&
+                              i <
+                                  productProvider
+                                      .selectedVariations[index].length;
+                          i++) {
+                        if (productProvider.selectedVariations[index][i]!) {
+                          variationPrice += variationList[index]
+                              .variationValues![i]
+                              .optionPrice!;
+                        }
+                      }
+                    } else {
+                      debugPrint(
+                          'Variation values for index $index are empty or null');
                     }
                   }
+                } else {
+                  debugPrint('Variation list is empty or null');
                 }
-    } else {
-      debugPrint('Variation values for index $index are empty or null');
-    }
-  }
-} else {
-  debugPrint('Variation list is empty or null');
-}
 
-                
-                //  double? language = widget.product!.;
                 double? discount = widget.product!.discount;
                 String? discountType = widget.product!.discountType;
                 double priceWithDiscount = PriceConverter.convertWithDiscount(
                     price, discount, discountType)!;
+
                 double addonsCost = 0;
                 double addonsTax = 0;
                 List<AddOn> addOnIdList = [];
@@ -157,32 +160,40 @@ if (variationList != null && variationList.isNotEmpty) {
                   if (productProvider.addOnActiveList[index]) {
                     double itemPrice = widget.product!.addOns![index].price! *
                         productProvider.addOnQtyList[index]!;
-                    addonsCost = addonsCost + itemPrice;
-                    addonsTax = addonsTax +
-                        (itemPrice -
-                            PriceConverter.convertWithDiscount(
-                                (itemPrice),
-                                widget.product!.addOns![index].tax ?? 0,
-                                'percent')!);
+                    addonsCost += itemPrice;
+                    addonsTax += (itemPrice -
+                        PriceConverter.convertWithDiscount(
+                            itemPrice,
+                            widget.product!.addOns![index].tax ?? 0,
+                            'percent')!);
                     addOnIdList.add(AddOn(
                         id: widget.product!.addOns![index].id,
                         quantity: productProvider.addOnQtyList[index]));
                     addOnsList.add(widget.product!.addOns![index]);
                   }
                 }
+
+// Calculate subtotal without discount
+                double priceWithAddonsVariationWithoutDiscount =
+                    (price! + variationPrice) * productProvider.quantity! +
+                        addonsCost;
+
+// Calculate total price with variations and add-ons, applying discount
                 double priceWithAddonsVariation = addonsCost +
                     (PriceConverter.convertWithDiscount(
                             variationPrice + price!, discount, discountType)! *
                         productProvider.quantity!);
-                double priceWithAddonsVariationWithoutDiscount =
-                    ((price + variationPrice) * productProvider.quantity!) +
-                        addonsCost;
+
+// Total price including variations
                 double priceWithVariation = price + variationPrice;
+
+// Availability check
                 bool isAvailable = DateConverter.isAvailable(
                     widget.product!.availableTimeStarts!,
                     widget.product!.availableTimeEnds!,
                     context);
 
+// Creating the CartModel
                 CartModel cartModel = CartModel(
                   priceWithVariation,
                   priceWithDiscount,
@@ -200,7 +211,129 @@ if (variationList != null && variationList.isNotEmpty) {
                   productProvider.selectedVariations,
                 );
 
+// Check if product exists in cart
                 cartProvider.isExistInCart(widget.product?.id, null);
+
+//                 List<Variation>? variationList;
+//                 List<Variation>? variationarList;
+//                 double? price;
+
+//                 if (widget.product!.branchProduct != null &&
+//                     widget.product!.branchProduct!.isAvailable!) {
+//                     variationList =languageProvider.selectIndex == 0 ? widget.product!.branchProduct?.variations : widget.product!.branchProduct?.variationsar;
+//                   variationarList=widget.product!.branchProduct!.variationsar;
+//                   // log("loggg"+variationarList.toString());
+//                   price = widget.product!.branchProduct!.price;
+//                   log('if');
+//                                 // log(languageProvider.selectIndex.toString());
+//                                 // log( "widget"+  widget.product!.variationsar![0].name.toString());
+
+//                 }
+//                 else {
+//                   variationList =languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
+//                   log("sfa");
+//                   // variationarList=languageProvider.selectIndex == 0 ? widget.product!.variations : widget.product!.variationsar;
+
+//                   variationarList=widget.product!.variationsar;
+//                   price = widget.product!.price;
+//                 }
+//                 double variationPrice = 0;
+
+// if (variationList != null && variationList.isNotEmpty) {
+//   for (int index = 0; index < variationList.length; index++) {
+//     if (variationList[index].variationValues != null && variationList[index].variationValues!.isNotEmpty) {
+//       if (productProvider.selectedVariations.length <= index) {
+//         productProvider.selectedVariations.add(
+//           List<bool>.filled(variationList[index].variationValues!.length, false)
+//         );
+//       }
+
+//       // for (int i = 0; i < variationList[index].variationValues!.length; i++) {
+//       //   if (productProvider.selectedVariations[index].length <= i) {
+//       //       productProvider.selectedVariations[index].add(false);
+//       //      }
+
+//       //   if (productProvider.selectedVariations[index][i]!) {
+//       //     variationPrice += variationList[index].variationValues![i].optionPrice!;
+//       //   }
+//       // }
+//         for (int index = 0; index < variationList!.length; index++) {
+//                   for (int i = 0;
+//                       i < variationList[index].variationValues!.length;
+//                       i++) {
+//                     if (productProvider.selectedVariations[index][i]!) {
+//                       variationPrice +=
+//                           variationList[index].variationValues![i].optionPrice!;
+//                     }
+//                   }
+//                 }
+//     } else {
+//       debugPrint('Variation values for index $index are empty or null');
+//     }
+//   }
+// } else {
+//   debugPrint('Variation list is empty or null');
+// }
+
+//                 //  double? language = widget.product!.;
+//                 double? discount = widget.product!.discount;
+//                 String? discountType = widget.product!.discountType;
+//                 double priceWithDiscount = PriceConverter.convertWithDiscount(
+//                     price, discount, discountType)!;
+//                 double addonsCost = 0;
+//                 double addonsTax = 0;
+//                 List<AddOn> addOnIdList = [];
+//                 List<AddOns> addOnsList = [];
+//                 for (int index = 0;
+//                     index < widget.product!.addOns!.length;
+//                     index++) {
+//                   if (productProvider.addOnActiveList[index]) {
+//                     double itemPrice = widget.product!.addOns![index].price! *
+//                         productProvider.addOnQtyList[index]!;
+//                     addonsCost = addonsCost + itemPrice;
+//                     addonsTax = addonsTax +
+//                         (itemPrice -
+//                             PriceConverter.convertWithDiscount(
+//                                 (itemPrice),
+//                                 widget.product!.addOns![index].tax ?? 0,
+//                                 'percent')!);
+//                     addOnIdList.add(AddOn(
+//                         id: widget.product!.addOns![index].id,
+//                         quantity: productProvider.addOnQtyList[index]));
+//                     addOnsList.add(widget.product!.addOns![index]);
+//                   }
+//                 }
+//                 double priceWithAddonsVariation = addonsCost +
+//                     (PriceConverter.convertWithDiscount(
+//                             variationPrice + price!, discount, discountType)! *
+//                         productProvider.quantity!);
+//                 double priceWithAddonsVariationWithoutDiscount =
+//                     ((price + variationPrice) * productProvider.quantity!) +
+//                         addonsCost;
+//                 double priceWithVariation = price + variationPrice;
+//                 bool isAvailable = DateConverter.isAvailable(
+//                     widget.product!.availableTimeStarts!,
+//                     widget.product!.availableTimeEnds!,
+//                     context);
+
+//                 CartModel cartModel = CartModel(
+//                   priceWithVariation,
+//                   priceWithDiscount,
+//                   [],
+//                   (priceWithVariation -
+//                       PriceConverter.convertWithDiscount(
+//                           priceWithVariation, discount, discountType)!),
+//                   productProvider.quantity,
+//                   (priceWithVariation -
+//                       PriceConverter.convertWithDiscount(priceWithVariation,
+//                           widget.product!.tax, widget.product!.taxType)! +
+//                       addonsTax),
+//                   addOnIdList,
+//                   widget.product,
+//                   productProvider.selectedVariations,
+//                 );
+
+//                 cartProvider.isExistInCart(widget.product?.id, null);
 
                 return Column(
                   mainAxisSize: MainAxisSize.min,
@@ -244,7 +377,6 @@ if (variationList != null && variationList.isNotEmpty) {
                                     ? ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: variationList.length,
-                                        
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         padding: EdgeInsets.zero,
@@ -261,8 +393,7 @@ if (variationList != null && variationList.isNotEmpty) {
                                                             .center,
                                                     children: [
                                                       Text(
-                                                        
-                                                     variationList![index]
+                                                          variationList![index]
                                                                   .name ??
                                                               '',
                                                           style: rubikMedium.copyWith(
@@ -272,7 +403,8 @@ if (variationList != null && variationList.isNotEmpty) {
                                                           child: Text(
                                                         ' (${getTranslated(variationList[index].isRequired! ? 'required' : 'optional', context)}) ',
                                                         style: rubikMedium.copyWith(
-                                                            color: ColorResources.kOrangeColor,
+                                                            color: ColorResources
+                                                                .kOrangeColor,
                                                             fontSize: Dimensions
                                                                 .fontSizeSmall),
                                                       )),
@@ -336,7 +468,8 @@ if (variationList != null && variationList.isNotEmpty) {
                                                                               .selectedVariations[
                                                                           index][i],
                                                                       activeColor:
-                                                                          ColorResources.kOrangeColor,
+                                                                          ColorResources
+                                                                              .kOrangeColor,
                                                                       shape: RoundedRectangleBorder(
                                                                           borderRadius:
                                                                               BorderRadius.circular(Dimensions.radiusSmall)),
@@ -380,7 +513,8 @@ if (variationList != null && variationList.isNotEmpty) {
                                                                         );
                                                                       },
                                                                       activeColor:
-                                                                             ColorResources.kOrangeColor,
+                                                                          ColorResources
+                                                                              .kOrangeColor,
                                                                       toggleable:
                                                                           false,
                                                                       visualDensity: const VisualDensity(
@@ -475,7 +609,7 @@ if (variationList != null && variationList.isNotEmpty) {
                                         PriceConverter.convertPrice(
                                             priceWithAddonsVariation),
                                         style: rubikBold.copyWith(
-                                            color: ColorResources.kOrangeColor,
+                                          color: ColorResources.kOrangeColor,
                                           fontSize: Dimensions.fontSizeLarge,
                                         )),
                                   ),
@@ -560,7 +694,7 @@ if (variationList != null && variationList.isNotEmpty) {
                             productProvider.addOnActiveList[index] ? 2 : 20),
                     decoration: BoxDecoration(
                       color: productProvider.addOnActiveList[index]
-                          ?  ColorResources.kOrangeColor
+                          ? ColorResources.kOrangeColor
                           : Theme.of(context)
                               .colorScheme
                               .background
@@ -684,121 +818,129 @@ if (variationList != null && variationList.isNotEmpty) {
     ]);
   }
 
-  Widget _cartButton(
-    bool isAvailable, BuildContext context, CartModel cartModel, List<Variation>? variationList) {
-  return Column(
-    children: [
-      // Show 'Not Available' message if the product is unavailable
-      isAvailable
-          ? const SizedBox()
-          : Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-              margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: ColorResources.kOrangeColor,
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    getTranslated('not_available_now', context)!,
-                    style: rubikMedium.copyWith(
-                            color: ColorResources.kOrangeColor,
-                      fontSize: Dimensions.fontSizeLarge,
+  Widget _cartButton(bool isAvailable, BuildContext context,
+      CartModel cartModel, List<Variation>? variationList) {
+    return Column(
+      children: [
+        // Show 'Not Available' message if the product is unavailable
+        isAvailable
+            ? const SizedBox()
+            : Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                margin:
+                    const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: ColorResources.kOrangeColor,
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      getTranslated('not_available_now', context)!,
+                      style: rubikMedium.copyWith(
+                        color: ColorResources.kOrangeColor,
+                        fontSize: Dimensions.fontSizeLarge,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '${getTranslated('available_will_be', context)} ${DateConverter.convertTimeToTime(widget.product!.availableTimeStarts!, context)} '
-                    '- ${DateConverter.convertTimeToTime(widget.product!.availableTimeEnds!, context)}',
-                    style: rubikRegular,
-                  ),
-                ],
+                    Text(
+                      '${getTranslated('available_will_be', context)} ${DateConverter.convertTimeToTime(widget.product!.availableTimeStarts!, context)} '
+                      '- ${DateConverter.convertTimeToTime(widget.product!.availableTimeEnds!, context)}',
+                      style: rubikRegular,
+                    ),
+                  ],
+                ),
               ),
-            ),
 
-      // Show the 'Add to Cart' or 'Update in Cart' button if the product is available
-      if (isAvailable)
-        Consumer<ProductProvider>(
-          builder: (context, productProvider, _) {
-            final CartProvider cartProvider =
-                Provider.of<CartProvider>(context, listen: false);
-            int quantity =
-                cartProvider.getCartProductQuantityCount(widget.product!);
+        // Show the 'Add to Cart' or 'Update in Cart' button if the product is available
+        if (isAvailable)
+          Consumer<ProductProvider>(
+            builder: (context, productProvider, _) {
+              final CartProvider cartProvider =
+                  Provider.of<CartProvider>(context, listen: false);
+              int quantity =
+                  cartProvider.getCartProductQuantityCount(widget.product!);
 
-            return CustomButton(
-              btnTxt: getTranslated(
-                  widget.cart != null ? 'update_in_cart' : 'add_to_cart',
-                  context),
-              backgroundColor: ColorResources.kOrangeColor,
-              onTap: widget.cart == null &&
-                      !productProvider.checkStock(widget.product!, quantity: quantity)
-                  ? null
-                  : () {
-                      // Check variations if applicable
-                      if (variationList != null) {
-                        for (int index = 0; index < variationList.length; index++) {
-                          if (!variationList[index].isMultiSelect! &&
-                              variationList[index].isRequired! &&
-                              !productProvider.selectedVariations[index].contains(true)) {
-                            showCustomNotification(
-                              context,
-                              '${getTranslated('choose_a_variation_from', context)} ${variationList[index].name}',
-                              type: NotificationType.error,
-                            );
-                            return;
-                          } else if (variationList[index].isMultiSelect! &&
-                              (variationList[index].isRequired! ||
-                                  productProvider.selectedVariations[index]
-                                      .contains(true)) &&
-                              variationList[index].min! >
-                                  productProvider.selectedVariationLength(
-                                      productProvider.selectedVariations, index)) {
-                            showCustomNotification(
-                              context,
-                              '${getTranslated('you_need_to_select_minimum', context)} ${variationList[index].min} '
-                              '${getTranslated('to_maximum', context)} ${variationList[index].max} ${getTranslated('options_from', context)} ${variationList[index].name} ${getTranslated('variation', context)}',
-                              type: NotificationType.error,
-                            );
-                            return;
+              return CustomButton(
+                btnTxt: getTranslated(
+                    widget.cart != null ? 'update_in_cart' : 'add_to_cart',
+                    context),
+                backgroundColor: ColorResources.kOrangeColor,
+                onTap: widget.cart == null &&
+                        !productProvider.checkStock(widget.product!,
+                            quantity: quantity)
+                    ? null
+                    : () {
+                        // Check variations if applicable
+                        if (variationList != null) {
+                          for (int index = 0;
+                              index < variationList.length;
+                              index++) {
+                            if (!variationList[index].isMultiSelect! &&
+                                variationList[index].isRequired! &&
+                                !productProvider.selectedVariations[index]
+                                    .contains(true)) {
+                              showCustomNotification(
+                                context,
+                                '${getTranslated('choose_a_variation_from', context)} ${variationList[index].name}',
+                                type: NotificationType.error,
+                              );
+                              return;
+                            } else if (variationList[index].isMultiSelect! &&
+                                (variationList[index].isRequired! ||
+                                    productProvider.selectedVariations[index]
+                                        .contains(true)) &&
+                                variationList[index].min! >
+                                    productProvider.selectedVariationLength(
+                                        productProvider.selectedVariations,
+                                        index)) {
+                              showCustomNotification(
+                                context,
+                                '${getTranslated('you_need_to_select_minimum', context)} ${variationList[index].min} '
+                                '${getTranslated('to_maximum', context)} ${variationList[index].max} ${getTranslated('options_from', context)} ${variationList[index].name} ${getTranslated('variation', context)}',
+                                type: NotificationType.error,
+                              );
+                              return;
+                            }
                           }
                         }
-                      }
 
-                      context.pop();
+                        context.pop();
 
-                      // Add to cart or update cart logic
-                      if (widget.cart != null) {
-                        // If updating an existing item in the cart
-                        Provider.of<CartProvider>(context, listen: false).addToCart(
-                          cartModel,
-                          widget.cartIndex,
-                        );
+                        // Add to cart or update cart logic
+                        if (widget.cart != null) {
+                          // If updating an existing item in the cart
+                          Provider.of<CartProvider>(context, listen: false)
+                              .addToCart(
+                            cartModel,
+                            widget.cartIndex,
+                          );
 
-                        // Show notification for updating the cart
-                        showCustomNotification(
-                          context,
-                          getTranslated('already_added_in_cart', context),
-                          type: NotificationType.error,
-                        );
-                      } else {
-                        Provider.of<CartProvider>(context, listen: false).addToCart(
-                          cartModel,
-                          productProvider.cartIndex,
-                        );
-                        showCustomNotification(
-                          context,
-                          getTranslated('added_to_cart', context),
-                          type: NotificationType.success,
-                        );
-                      }
-                    },
-            );
-          },
-        ),
-    ],
-  );
-}
+                          // Show notification for updating the cart
+                          showCustomNotification(
+                            context,
+                            getTranslated('already_added_in_cart', context),
+                            type: NotificationType.error,
+                          );
+                        } else {
+                          Provider.of<CartProvider>(context, listen: false)
+                              .addToCart(
+                            cartModel,
+                            productProvider.cartIndex,
+                          );
+                          showCustomNotification(
+                            context,
+                            getTranslated('added_to_cart', context),
+                            type: NotificationType.success,
+                          );
+                        }
+                      },
+              );
+            },
+          ),
+      ],
+    );
+  }
 
   Widget _productView(
     BuildContext context,
@@ -864,128 +1006,129 @@ if (variationList != null && variationList.isNotEmpty) {
             ),
           ),
           const SizedBox(width: 10),
-        Expanded(
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded( // Use Expanded to allow the Text to take available space
-            child: Row(
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded( // Wrap Text with Expanded to enable multi-line
-                  child: Text(
-                    widget.product!.name!,
-                    maxLines: 3, // Set to 2 lines
-                    overflow: TextOverflow.ellipsis,
-                    style: rubikMedium.copyWith(
-                      fontSize: Dimensions.fontSizeLarge,
-                      fontWeight: FontWeight.w700,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      // Use Expanded to allow the Text to take available space
+                      child: Row(
+                        children: [
+                          Expanded(
+                            // Wrap Text with Expanded to enable multi-line
+                            child: Text(
+                              widget.product!.name!,
+                              maxLines: 3, // Set to 2 lines
+                              overflow: TextOverflow.ellipsis,
+                              style: rubikMedium.copyWith(
+                                fontSize: Dimensions.fontSizeLarge,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          if (ResponsiveHelper.isMobile())
+                            WishButton(
+                              product: widget.product,
+                              iconSize: 16,
+                            ),
+                        ],
+                      ),
                     ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.star,
+                      color: ColorResources.kstarYellow,
+                      size: 10,
+                    ),
+                    Text(
+                      widget.product!.rating!.isNotEmpty
+                          ? double.parse(widget.product!.rating![0].average!)
+                              .toStringAsFixed(1)
+                          : '0.0',
+                      style: const TextStyle(
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    widget.product!.productType != null
+                        ? VegTagView(product: widget.product!)
+                        : const SizedBox(),
+                  ],
+                ),
+
+                // const SizedBox(height: 20),
+                Text(
+                  widget.product!.description!,
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                  style: rubikMedium.copyWith(
+                    fontSize: Dimensions.fontExtraSmall,
+                    fontWeight: FontWeight.w400,
+                    color: ColorResources.kIncreasedColor,
                   ),
                 ),
-                if (ResponsiveHelper.isMobile())
-                  WishButton(
-                    product: widget.product,
-                    iconSize: 16,
+
+                Row(mainAxisSize: MainAxisSize.min, children: [
+                  Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FittedBox(
+                          child: CustomDirectionality(
+                            child: Text(
+                              PriceConverter.convertPrice(
+                                price,
+                                discount: widget.product!.discount,
+                                discountType: widget.product!.discountType,
+                              ),
+                              style: rubikMedium.copyWith(
+                                fontSize: Dimensions.fontSizeLarge,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.ellipsis,
+                                color: ColorResources.kOrangeColor,
+                              ),
+                              maxLines: 1,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: Dimensions.paddingSizeSmall,
+                        ),
+                        price > priceWithDiscount
+                            ? FittedBox(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: CustomDirectionality(
+                                    child: Text(
+                                      PriceConverter.convertPrice(price),
+                                      style: rubikMedium.copyWith(
+                                        color: Theme.of(context)
+                                            .hintColor
+                                            .withOpacity(0.7),
+                                        decoration: TextDecoration.lineThrough,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
                   ),
+                ]),
+                if (!ResponsiveHelper.isMobile()) _quantityView(context),
               ],
             ),
           ),
-        ],
-      ),
-      Row(
-        children: [
-          const Icon(
-            Icons.star,
-            color: ColorResources.kstarYellow,
-            size: 10,
-          ),
-          Text(
-            widget.product!.rating!.isNotEmpty
-                ? double.parse(widget.product!.rating![0].average!)
-                    .toStringAsFixed(1)
-                : '0.0',
-            style: const TextStyle(
-              fontSize: 9,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          widget.product!.productType != null
-              ? VegTagView(product: widget.product!)
-              : const SizedBox(),
-        ],
-      ),
-
-      // const SizedBox(height: 20),
-      Text(
-        widget.product!.description!,
-        maxLines: 4,
-        overflow: TextOverflow.ellipsis,
-        style: rubikMedium.copyWith(
-          fontSize: Dimensions.fontExtraSmall,
-          fontWeight: FontWeight.w400,
-          color: ColorResources.kIncreasedColor,
-        ),
-      ),
-
-      Row(mainAxisSize: MainAxisSize.min, children: [
-        Expanded(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              FittedBox(
-                child: CustomDirectionality(
-                  child: Text(
-                    PriceConverter.convertPrice(
-                      price,
-                      discount: widget.product!.discount,
-                      discountType: widget.product!.discountType,
-                    ),
-                    style: rubikMedium.copyWith(
-                      fontSize: Dimensions.fontSizeLarge,
-                      fontWeight: FontWeight.w700,
-                      overflow: TextOverflow.ellipsis,
-                      color: ColorResources.kOrangeColor,
-                    ),
-                    maxLines: 1,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: Dimensions.paddingSizeSmall,
-              ),
-              price > priceWithDiscount
-                  ? FittedBox(
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: CustomDirectionality(
-                          child: Text(
-                            PriceConverter.convertPrice(price),
-                            style: rubikMedium.copyWith(
-                              color: Theme.of(context)
-                                  .hintColor
-                                  .withOpacity(0.7),
-                              decoration: TextDecoration.lineThrough,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            maxLines: 1,
-                          ),
-                        ),
-                      ),
-                    )
-                  : const SizedBox(),
-            ],
-          ),
-        ),
-      ]),
-      if (!ResponsiveHelper.isMobile()) _quantityView(context),
-    ],
-  ),
-),
-
         ]);
   }
 
@@ -1022,7 +1165,9 @@ if (variationList != null && variationList.isNotEmpty) {
             )) {
               productProvider.setQuantity(true);
             } else {
-              showCustomNotification(context,getTranslated('out_of_stock', context),type: NotificationType.error);
+              showCustomNotification(
+                  context, getTranslated('out_of_stock', context),
+                  type: NotificationType.error);
             }
           },
           child: const Padding(

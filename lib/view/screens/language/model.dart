@@ -19,16 +19,19 @@ import 'package:provider/provider.dart';
 class LanguagemodelScreen extends StatelessWidget {
   final bool fromMenu;
 
-  const LanguagemodelScreen({Key? key, this.fromMenu = false}) : super(key: key);
+  const LanguagemodelScreen({Key? key, this.fromMenu = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    Provider.of<LanguageProvider>(context, listen: false).initializeAllLanguages(context);
+    Provider.of<LanguageProvider>(context, listen: false)
+        .initializeAllLanguages(context);
 
     return Scaffold(
-      appBar:CustomAppBar(context: context, title: getTranslated('language', context)),
-      body:  SafeArea(
+      appBar: CustomAppBar(
+          context: context, title: getTranslated('language', context)),
+      body: SafeArea(
         child: Container(
           width: double.infinity,
           color: Colors.white, // Use your desired color for the bottom sheet
@@ -48,7 +51,8 @@ class LanguagemodelScreen extends StatelessWidget {
     );
   }
 
-  Widget buildLanguageRow(BuildContext context, String title, String value, LanguageProvider languageProvider) {
+  Widget buildLanguageRow(BuildContext context, String title, String value,
+      LanguageProvider languageProvider) {
     return InkWell(
       onTap: () {
         languageProvider.setSelectIndex(value == 'en' ? 0 : 1);
@@ -64,7 +68,6 @@ class LanguagemodelScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Row(
           children: [
-           
             Consumer<LanguageProvider>(
               builder: (context, languageProvider, _) => Container(
                 width: 16,
@@ -78,20 +81,21 @@ class LanguagemodelScreen extends StatelessWidget {
                     width: 10,
                     height: 10,
                     decoration: BoxDecoration(
-                       border: Border.all(color: Colors.grey),
-                      color: languageProvider.selectIndex == (value == 'en' ? 0 : 1)
-                      ? ColorResources.kOrangeColor
-                      : Colors.white,
+                      border: Border.all(color: Colors.grey),
+                      color: languageProvider.selectIndex ==
+                              (value == 'en' ? 0 : 1)
+                          ? ColorResources.kOrangeColor
+                          : Colors.white,
                       shape: BoxShape.circle,
                     ),
                   ),
                 ),
               ),
             ),
-           const SizedBox(width: 10,),
-             Text(
+            const SizedBox(width: 10),
+            Text(
               title,
-              style:const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
           ],
         ),
@@ -100,19 +104,44 @@ class LanguagemodelScreen extends StatelessWidget {
   }
 
   void handleLanguageSelection(BuildContext context) {
-    final languageProvider = Provider.of<LanguageProvider>(context, listen: false);
-    final localizationProvider = Provider.of<LocalizationProvider>(context, listen: false);
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
+    final localizationProvider =
+        Provider.of<LocalizationProvider>(context, listen: false);
 
-    if (languageProvider.languages.isNotEmpty && languageProvider.selectIndex != -1) {
-      if (fromMenu) {
-        Provider.of<ProductProvider>(context, listen: false).getLatestProductList(true, '1');
-        Provider.of<CategoryProvider>(context, listen: false).getCategoryList(true);
-      } else {
-        ResponsiveHelper.isMobile()
-            ? Navigator.push(context,MaterialPageRoute(builder:(context)=>const DashboardScreen(pageIndex: 4,)))
-            : Navigator.push(context,MaterialPageRoute(builder:(context)=>const DashboardScreen(pageIndex: 4,)));
-      }
-        } 
+    // Check if the language list is empty or the selected index is invalid
+    if (languageProvider.languages.isEmpty ||
+        languageProvider.selectIndex == -1) {
+      // Default to English if no selection is made or list is empty
+      languageProvider.setSelectIndex(0); // English is at index 0
+      localizationProvider.setLanguage(
+        Locale(
+          AppConstants.languages[0].languageCode!,
+          AppConstants.languages[0].countryCode,
+        ),
+      );
+    }
+
+    // Proceed with the language selection logic
+    if (fromMenu) {
+      Provider.of<ProductProvider>(context, listen: false)
+          .getLatestProductList(true, '1');
+      Provider.of<CategoryProvider>(context, listen: false)
+          .getCategoryList(true);
+    } else {
+      ResponsiveHelper.isMobile()
+          ? Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const DashboardScreen(
+                        pageIndex: 4,
+                      )))
+          : Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const DashboardScreen(
+                        pageIndex: 4,
+                      )));
+    }
   }
 }
-
