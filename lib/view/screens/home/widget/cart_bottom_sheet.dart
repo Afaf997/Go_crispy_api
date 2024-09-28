@@ -433,146 +433,90 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                                                         ? Dimensions
                                                             .paddingSizeExtraSmall
                                                         : 0),
-                                                ListView.builder(
-                                                  shrinkWrap: true,
-                                                  physics:
-                                                      const NeverScrollableScrollPhysics(),
-                                                  padding: EdgeInsets.zero,
-                                                  itemCount:
-                                                      variationList[index]
-                                                          .variationValues!
-                                                          .length,
-                                                  itemBuilder: (context, i) {
-                                                    return InkWell(
-                                                      onTap: () {
-                                                        productProvider
-                                                            .setCartVariationIndex(
-                                                                index,
-                                                                i,
-                                                                widget.product,
-                                                                variationList![
-                                                                        index]
-                                                                    .isMultiSelect!);
-                                                      },
-                                                      child: Row(children: [
-                                                        Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              variationList![
-                                                                          index]
-                                                                      .isMultiSelect!
-                                                                  ? Checkbox(
-                                                                      value: productProvider
-                                                                              .selectedVariations[
-                                                                          index][i],
-                                                                      activeColor:
-                                                                          ColorResources
-                                                                              .kOrangeColor,
-                                                                      shape: RoundedRectangleBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(Dimensions.radiusSmall)),
-                                                                      onChanged:
-                                                                          (bool?
-                                                                              newValue) {
-                                                                        productProvider
-                                                                            .setCartVariationIndex(
-                                                                          index,
-                                                                          i,
-                                                                          widget
-                                                                              .product,
-                                                                          variationList![index]
-                                                                              .isMultiSelect!,
-                                                                        );
-                                                                      },
-                                                                      visualDensity: const VisualDensity(
-                                                                          horizontal:
-                                                                              -3,
-                                                                          vertical:
-                                                                              -3),
-                                                                    )
-                                                                  : Radio(
-                                                                      value: i,
-                                                                      groupValue: productProvider
-                                                                          .selectedVariations[
-                                                                              index]
-                                                                          .indexOf(
-                                                                              true),
-                                                                      onChanged:
-                                                                          (dynamic
-                                                                              value) {
-                                                                        productProvider
-                                                                            .setCartVariationIndex(
-                                                                          index,
-                                                                          i,
-                                                                          widget
-                                                                              .product,
-                                                                          variationList![index]
-                                                                              .isMultiSelect!,
-                                                                        );
-                                                                      },
-                                                                      activeColor:
-                                                                          ColorResources
-                                                                              .kOrangeColor,
-                                                                      toggleable:
-                                                                          false,
-                                                                      visualDensity: const VisualDensity(
-                                                                          horizontal:
-                                                                              -3,
-                                                                          vertical:
-                                                                              -3),
-                                                                    ),
-                                                              Text(
-                                                                variationList[
-                                                                        index]
-                                                                    .variationValues![
-                                                                        i]
-                                                                    .level!
-                                                                    .trim(),
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style: productProvider
-                                                                            .selectedVariations[
-                                                                        index][i]!
-                                                                    ? rubikMedium
-                                                                    : robotoRegular,
-                                                              ),
-                                                            ]),
-                                                        const Spacer(),
-                                                        CustomDirectionality(
-                                                            child: Text(
-                                                          variationList[index]
-                                                                      .variationValues![
-                                                                          i]
-                                                                      .optionPrice! >
-                                                                  0
-                                                              ? '+${PriceConverter.convertPrice(variationList[index].variationValues![i].optionPrice)}'
-                                                              : 'free',
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: productProvider
-                                                                      .selectedVariations[
-                                                                  index][i]!
-                                                              ? rubikMedium.copyWith(
-                                                                  fontSize:
-                                                                      Dimensions
-                                                                          .fontSizeExtraSmall)
-                                                              : robotoRegular.copyWith(
-                                                                  fontSize:
-                                                                      Dimensions
-                                                                          .fontSizeExtraSmall,
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .disabledColor),
-                                                        )),
-                                                      ]),
-                                                    );
-                                                  },
-                                                ),
+                                            ListView.builder(
+  shrinkWrap: true,
+  physics: const NeverScrollableScrollPhysics(),
+  padding: EdgeInsets.zero,
+  itemCount: variationList[index].variationValues!.length,
+  itemBuilder: (context, i) {
+    if (i >= productProvider.selectedVariations.length ||
+        productProvider.selectedVariations[index].length <= i) {
+      return Container(); // Handle invalid index
+    }
+    
+    return InkWell(
+      onTap: () {
+        productProvider.setCartVariationIndex(
+            index, i, widget.product, variationList![index].isMultiSelect!);
+      },
+      child: Row(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              variationList![index].isMultiSelect!
+                  ? Checkbox(
+                      value: productProvider.selectedVariations[index][i],
+                      activeColor: ColorResources.kOrangeColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
+                      onChanged: (bool? newValue) {
+                        productProvider.setCartVariationIndex(
+                          index,
+                          i,
+                          widget.product,
+                          variationList![index].isMultiSelect!,
+                        );
+                      },
+                      visualDensity: const VisualDensity(horizontal: -3, vertical: -3),
+                    )
+                  : Radio(
+                      value: i,
+                      groupValue: productProvider.selectedVariations[index].indexOf(true),
+                      onChanged: (dynamic value) {
+                        productProvider.setCartVariationIndex(
+                          index,
+                          i,
+                          widget.product,
+                          variationList![index].isMultiSelect!,
+                        );
+                      },
+                      activeColor: ColorResources.kOrangeColor,
+                      toggleable: false,
+                      visualDensity: const VisualDensity(horizontal: -3, vertical: -3),
+                    ),
+              Text(
+                variationList[index].variationValues![i].level!.trim(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: productProvider.selectedVariations[index][i]!
+                    ? rubikMedium
+                    : robotoRegular,
+              ),
+            ],
+          ),
+          const Spacer(),
+          CustomDirectionality(
+            child: Text(
+              variationList[index].variationValues![i].optionPrice! > 0
+                  ? '+${PriceConverter.convertPrice(variationList[index].variationValues![i].optionPrice)}'
+                  : 'free',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: productProvider.selectedVariations[index][i]!
+                  ? rubikMedium.copyWith(fontSize: Dimensions.fontSizeExtraSmall)
+                  : robotoRegular.copyWith(
+                      fontSize: Dimensions.fontSizeExtraSmall,
+                      color: Theme.of(context).disabledColor,
+                    ),
+            ),
+          ),
+        ],
+      ),
+    );
+  },
+),
+
                                                 SizedBox(
                                                     height: index !=
                                                             variationList
