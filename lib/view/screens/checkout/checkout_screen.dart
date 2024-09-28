@@ -233,12 +233,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       ],
                                     ),
                                   ),
-                                  // Container(
-                                  //   padding: const EdgeInsets.all(8),
-                                  //   decoration: BoxDecoration(
-                                  //     borderRadius: BorderRadius.circular(10),),
-                                  //   child: const BranchButton(isRow: true),
-                                  // ),
                                   const SizedBox(
                                     height: 10,
                                   ),
@@ -302,157 +296,214 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(height: 60,child: locationProvider.addressList !=null? locationProvider.addressList!.isNotEmpty            ? ListView                .builder(                physics:                    const BouncingScrollPhysics(),                scrollDirection:                    Axis.horizontal,                padding: const EdgeInsets                    .only(                    left: Dimensions                        .paddingSizeSmall),                itemCount:                    locationProvider                        .addressList!
-                                                   .length,itemBuilder:(context,index) {bool isAvailable = currentBranch ==null ||(currentBranch!.latitude ==                              null ||                          currentBranch!.latitude!.isEmpty);                  if (!isAvailable) {                    double                        distance =
-                                                                          Geolocator.distanceBetween(
-                                                                                double.parse(currentBranch!.latitude!),
-                                                                                double.parse(currentBranch!.longitude!),
-                                                                                double.parse(locationProvider.addressList![index].latitude!),
-                                                                                double.parse(locationProvider.addressList![index].longitude!),
-                                                                              ) /
-                                                                              1000;
+                                    SizedBox(
+  height: 60,
+  child: locationProvider.addressList != null
+      ? locationProvider.addressList!.isNotEmpty
+          ? ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
+              itemCount: locationProvider.addressList!.length,
+              itemBuilder: (context, index) {
+                bool isAvailable = true;
 
-                                                                      isAvailable =distance <
-                                                                              currentBranch!.coverage!;
-                                                                    }
-                                                                    return Padding(
-                                                                      padding: const EdgeInsets.only(right: Dimensions.paddingSizeLarge,top: Dimensions.paddingSizeSmall),
-                                                                      child:
-                                                                          InkWell(
-                                                                        onTap:
-                                                                            () async {
-                                                                          if (isAvailable) {
-                                                                            orderProvider.setAddressIndex(index);
+                if (currentBranch != null && currentBranch!.latitude != null && currentBranch!.longitude != null && currentBranch!.latitude!.isNotEmpty) {
+                  // Ensure latitude and longitude of the currentBranch are available before using them
+                  if (locationProvider.addressList![index].latitude != null && locationProvider.addressList![index].longitude != null) {
+                    double distance = Geolocator.distanceBetween(
+                      double.parse(currentBranch!.latitude!),
+                      double.parse(currentBranch!.longitude!),
+                      double.parse(locationProvider.addressList![index].latitude!),
+                      double.parse(locationProvider.addressList![index].longitude!),
+                    ) / 1000;
 
-                                                                            if (kmWiseCharge) {
-                                                                              if (orderProvider.selectedPaymentMethod != null) {
-                                                                                // showCustomSnackBar(getTranslated('your_payment_method_has_been', context), isError: false);
-                                                                              }
-                                                                              orderProvider.savePaymentMethod(index: null, method: null);
-                                                                              orderProvider.changePartialPayment();
+                    isAvailable = distance < currentBranch!.coverage!;
+                  } else {
+                    isAvailable = false; // If the address has no latitude or longitude, mark as unavailable
+                  }
+                }
 
-                                                                              showDialog(
-                                                                                  context: context,
-                                                                                  builder: (context) => Center(
-                                                                                          child: Container(
-                                                                                        height: 100,
-                                                                                        width: 100,
-                                                                                        decoration: BoxDecoration(
-                                                                                          color: Theme.of(context).cardColor,
-                                                                                          borderRadius: BorderRadius.circular(10),
-                                                                                        ),
-                                                                                        alignment: Alignment.center,
-                                                                                        child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
-                                                                                      )),
-                                                                                  barrierDismissible: false);
-                                                                              orderProvider
-                                                                                  .getDistanceInMeter(
-                                                                                LatLng(
-                                                                                  double.parse(currentBranch!.latitude!),
-                                                                                  double.parse(currentBranch!.longitude!),
-                                                                                ),
-                                                                                LatLng(
-                                                                                  double.parse(locationProvider.addressList![index].latitude!),
-                                                                                  double.parse(locationProvider.addressList![index].longitude!),
-                                                                                ),
-                                                                              )
-                                                                                  .then((isSuccess) {
-                                                                                context.pop();
-                                                                                if (isSuccess) {
-                                                                                  showDialog(
-                                                                                      context: context,
-                                                                                      builder: (context) => DeliveryFeeDialog(
-                                                                                            amount: widget.amount,
-                                                                                            distance: orderProvider.distance,
-                                                                                          ));
-                                                                                } else {
-                                                                                  // showCustomSnackBar(getTranslated('failed_to_fetch_distance', context));
-                                                                                }
-                                                                                return isSuccess;
-                                                                              });
-                                                                            }
-                                                                          }
-                                                                        },
-                                                                        child: Stack(
-                                                                            children: [
-                                                                              Container(
-                                                                                height: 60,
-                                                                                width: 200,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: index == orderProvider.addressIndex ? ColorResources.kColorgrey : ColorResources.kColorgrey,
-                                                                                  borderRadius: BorderRadius.circular(15),
-                                                                                  border: Border.all(
-                                                                                    color: index == orderProvider.addressIndex ? Theme.of(context).primaryColor : ColorResources.klgreyColor,
-                                                                                    width: index == orderProvider.addressIndex ? 1 : 1, // Optional: width of the border
-                                                                                  ),
-                                                                                ),
-                                                                                child: Row(children: [
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                                                                                    child: Icon(
-                                                                                      locationProvider.addressList![index].addressType == 'Home'
-                                                                                          ? Icons.home_outlined
-                                                                                          : locationProvider.addressList![index].addressType == 'Workplace'
-                                                                                              ? Icons.work_outline
-                                                                                              : Icons.list_alt_outlined,
-                                                                                      color: index == orderProvider.addressIndex ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyLarge!.color,
-                                                                                      size: 30,
-                                                                                    ),
-                                                                                  ),
-                                                                                  Expanded(
-                                                                                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                                                                                      Text(locationProvider.addressList![index].addressType!,
-                                                                                          style: rubikRegular.copyWith(
-                                                                                            fontSize: Dimensions.fontSizeSmall,
-                                                                                            color: ColorResources.getGreyBunkerColor(context),
-                                                                                          )),
-                                                                                      Text(locationProvider.addressList![index].address!, style: rubikRegular, maxLines: 1, overflow: TextOverflow.ellipsis),
-                                                                                    ]),
-                                                                                  ),
-                                                                                  index == orderProvider.addressIndex
-                                                                                      ? Align(
-                                                                                          alignment: Alignment.topRight,
-                                                                                          child: Icon(Icons.check_circle, color: Theme.of(context).primaryColor),
-                                                                                        )
-                                                                                      : const SizedBox(),
-                                                                                ]),
-                                                                              ),
-                                                                              !isAvailable
-                                                                                  ? Positioned(
-                                                                                      top: 0,
-                                                                                      left: 0,
-                                                                                      bottom: 0,
-                                                                                      right: 0,
-                                                                                      child: Container(
-                                                                                        alignment: Alignment.center,
-                                                                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black.withOpacity(0.6)),
-                                                                                        child: Text(
-                                                                                          getTranslated('out_of_coverage_for_this_branch', context)!,
-                                                                                          textAlign: TextAlign.center,
-                                                                                          maxLines: 2,
-                                                                                          overflow: TextOverflow.ellipsis,
-                                                                                          style: rubikRegular.copyWith(color: Colors.white, fontSize: 10),
-                                                                                        ),
-                                                                                      ),
-                                                                                    )
-                                                                                  : const SizedBox(),
-                                                                            ]),
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                )
-                                                              : Center(
-                                                                  child: Text(getTranslated(
-                                                                      'no_address_available',
-                                                                      context)!))
-                                                          : Center(
-                                                              child: CircularProgressIndicator(
-                                                                  valueColor: AlwaysStoppedAnimation<
-                                                                      Color>(Theme.of(
-                                                                          context)
-                                                                      .primaryColor))),
-                                                    ),
-                                                    const SizedBox(height: 20),
+                return Padding(
+                  padding: const EdgeInsets.only(
+                      right: Dimensions.paddingSizeLarge, top: Dimensions.paddingSizeSmall),
+                  child: InkWell(
+                    onTap: () async {
+                      if (isAvailable) {
+                        orderProvider.setAddressIndex(index);
+
+                        if (kmWiseCharge) {
+                          if (orderProvider.selectedPaymentMethod != null) {
+                            // Optional: Handle payment method logic here
+                          }
+
+                          orderProvider.savePaymentMethod(index: null, method: null);
+                          orderProvider.changePartialPayment();
+
+                          // Show loading dialog
+                          showDialog(
+                            context: context,
+                            builder: (context) => Center(
+                              child: Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                alignment: Alignment.center,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Theme.of(context).primaryColor),
+                                ),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          );
+
+                          // Get distance in meters
+                          orderProvider
+                              .getDistanceInMeter(
+                                LatLng(
+                                  double.parse(currentBranch!.latitude!),
+                                  double.parse(currentBranch!.longitude!),
+                                ),
+                                LatLng(
+                                  double.parse(locationProvider.addressList![index].latitude!),
+                                  double.parse(locationProvider.addressList![index].longitude!),
+                                ),
+                              )
+                              .then((isSuccess) {
+                            Navigator.pop(context); // Close the loading dialog
+
+                            if (isSuccess) {
+                              showDialog(
+                                context: context,
+                                builder: (context) => DeliveryFeeDialog(
+                                  amount: widget.amount,
+                                  distance: orderProvider.distance,
+                                ),
+                              );
+                            } else {
+                              // Handle failure to fetch distance
+                              // e.g., showCustomSnackBar('Failed to fetch distance', context);
+                            }
+
+                            return isSuccess;
+                          });
+                        }
+                      }
+                    },
+                    child: Stack(
+                      children: [
+                        // Address container
+                        Container(
+                          height: 60,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            color: index == orderProvider.addressIndex
+                                ? ColorResources.kColorgrey
+                                : ColorResources.kColorgrey,
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: index == orderProvider.addressIndex
+                                  ? Theme.of(context).primaryColor
+                                  : ColorResources.klgreyColor,
+                              width: 1, // Border width
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: Dimensions.paddingSizeExtraSmall),
+                                child: Icon(
+                                  locationProvider.addressList![index].addressType == 'Home'
+                                      ? Icons.home_outlined
+                                      : locationProvider.addressList![index].addressType ==
+                                              'Workplace'
+                                          ? Icons.work_outline
+                                          : Icons.list_alt_outlined,
+                                  color: index == orderProvider.addressIndex
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context).textTheme.bodyLarge!.color,
+                                  size: 30,
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      locationProvider.addressList![index].addressType!,
+                                      style: rubikRegular.copyWith(
+                                        fontSize: Dimensions.fontSizeSmall,
+                                        color:
+                                            ColorResources.getGreyBunkerColor(context),
+                                      ),
+                                    ),
+                                    Text(
+                                      locationProvider.addressList![index].address!,
+                                      style: rubikRegular,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              if (index == orderProvider.addressIndex)
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Icon(Icons.check_circle,
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                            ],
+                          ),
+                        ),
+                        // Overlay for unavailable addresses
+                        if (!isAvailable)
+                          Positioned(
+                            top: 0,
+                            left: 0,
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.black.withOpacity(0.6),
+                              ),
+                              child: Text(
+                                getTranslated('out_of_coverage_for_this_branch', context)!,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: rubikRegular.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            )
+          : Center(
+              child: Text(getTranslated('no_address_available', context)!),
+            )
+      : Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+                Theme.of(context).primaryColor),
+          ),
+        ),
+)
+
+                                                    // const SizedBox(height: 20),
                                                   ])
                                                 : const SizedBox(),
                                             const SizedBox(
