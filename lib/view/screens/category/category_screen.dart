@@ -177,7 +177,7 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
         final title = product.name ?? 'Unknown';
         final description = product.description ?? 'No description available';
         final price = product.price?.toString() ?? 'N/A';
-        final discount = product.discount?.toString() ?? 'N/A';
+        final discount = (product.discount == null || product.discount == 0) ? '' : product.discount.toString();
         final rating = product.rating != null && product.rating!.isNotEmpty
             ? double.parse(product.rating![0].average ?? '0')
             : 0.0;
