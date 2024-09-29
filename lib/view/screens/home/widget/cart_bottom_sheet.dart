@@ -86,14 +86,14 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
 
                 if (widget.product!.branchProduct != null &&
                     widget.product!.branchProduct!.isAvailable!) {
-                  variationList = languageProvider.selectIndex == 0
+                  variationList = languageProvider.selectIndex == -1
                       ? widget.product!.branchProduct?.variations
                       : widget.product!.branchProduct?.variationsar;
                   variationarList = widget.product!.branchProduct!.variationsar;
                   price = widget.product!.branchProduct!.price;
                   log('Using branch product variations');
                 } else {
-                  variationList = languageProvider.selectIndex == 0
+                  variationList = languageProvider.selectIndex == -1
                       ? widget.product!.variations
                       : widget.product!.variationsar;
                   variationarList = widget.product!.variationsar;
@@ -113,17 +113,6 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                               false),
                         );
                       }
-
-                      // Calculate variation price based on selected variations
-                      // for (int i = 0;
-                      //     i < variationList[index].variationValues!.length;
-                      //     i++) {
-                      //   if (productProvider.selectedVariations[index][i]!) {
-                      //     variationPrice += variationList[index]
-                      //         .variationValues![i]
-                      //         .optionPrice!;
-                      //   }
-                      // }
                       for (int i = 0;
                           i < variationList[index].variationValues!.length &&
                               i <
