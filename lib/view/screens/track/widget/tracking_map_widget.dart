@@ -54,44 +54,9 @@ class _TrackingMapWidgetState extends State<TrackingMapWidget> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return Container(
-      height: 200, width: ResponsiveHelper.isMobilePhone() ? width - 130 : 1170.0 - 100.0,
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: widget.deliveryManModel!.latitude != null ? Stack(
-        children: [
-          GoogleMap(
-            mapType: MapType.normal,
-            initialCameraPosition: CameraPosition(target: _addressLatLng, zoom: 18),
-            zoomControlsEnabled: true,
-            markers: _markers,
-            onMapCreated: (GoogleMapController controller) {
-              _controller = controller;
-              _isLoading = false;
-              setMarker();
-            },
-            minMaxZoomPreference: const MinMaxZoomPreference(0, 16),
-            onTap: (latLng) async {
-              await Provider.of<OrderProvider>(context, listen: false).getDeliveryManData(widget.orderID);
-              String url ='https://www.google.com/maps/dir/?api=1&origin=${widget.deliveryManModel!.latitude},${widget.deliveryManModel!.longitude}'
-                  '&destination=${_addressLatLng.latitude},${_addressLatLng.longitude}&mode=d';
-              if (await canLaunchUrl(Uri.parse(url))) {
-                await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-              } else {
-                throw 'Could not launch $url';
-              }
-            },
-          ),
-
-          _isLoading ? Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor))) : const SizedBox(),
-        ],
-      ) : FittedBox(child: Text(getTranslated('no_delivery_man_data_found', context)!)),
-    );
+    return SizedBox(
+      );
+     
   }
 
   void setMarker() async {
