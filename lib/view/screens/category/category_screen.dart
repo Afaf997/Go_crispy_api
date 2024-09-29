@@ -222,16 +222,14 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
       children: [
         Row(
           children: [
-            Flexible(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
               ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
             const Spacer(),
             WishButton(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
 import 'package:flutter_restaurant/provider/language_provider.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_restaurant/provider/localization_provider.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
-import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/dashboard/dashboard_screen.dart';
 import 'package:provider/provider.dart';
