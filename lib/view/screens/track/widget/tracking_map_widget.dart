@@ -54,7 +54,8 @@ class _TrackingMapWidgetState extends State<TrackingMapWidget> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return SizedBox(
+    return Padding(
+      padding: EdgeInsets.all(2),
       );
      
   }
