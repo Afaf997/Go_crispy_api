@@ -86,14 +86,14 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
 
                 if (widget.product!.branchProduct != null &&
                     widget.product!.branchProduct!.isAvailable!) {
-                  variationList = languageProvider.selectIndex == -1
+                  variationList = languageProvider.selectIndex == 0
                       ? widget.product!.branchProduct?.variations
                       : widget.product!.branchProduct?.variationsar;
-                  variationarList = widget.product!.branchProduct!.variationsar;
+                  // variationarList = widget.product!.branchProduct!.variationsar;
                   price = widget.product!.branchProduct!.price;
                   log('Using branch product variations');
                 } else {
-                  variationList = languageProvider.selectIndex == -1
+                  variationList = languageProvider.selectIndex == 0
                       ? widget.product!.variations
                       : widget.product!.variationsar;
                   variationarList = widget.product!.variationsar;
