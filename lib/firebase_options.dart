@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,15 +25,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -59,10 +50,40 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCL4F-s8pe-jJzUzQG1aADEXk5dFHRSq98',
-    appId: '1:134067255517:ios:4ccfdee1a3d49a5b3ec334',
+    appId: '1:134067255517:ios:0cd1808974ec2b653ec334',
     messagingSenderId: '134067255517',
     projectId: 'gocrispy-b5cfd',
     storageBucket: 'gocrispy-b5cfd.appspot.com',
-    iosBundleId: 'com.example.test123',
+    iosBundleId: 'com.artisans.go-crispy',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDolvZqtrgGAuRikWEhL3kHoG8FmamWKIA',
+    appId: '1:134067255517:web:63a603371f28714d3ec334',
+    messagingSenderId: '134067255517',
+    projectId: 'gocrispy-b5cfd',
+    authDomain: 'gocrispy-b5cfd.firebaseapp.com',
+    storageBucket: 'gocrispy-b5cfd.appspot.com',
+    measurementId: 'G-017ZV8D8QR',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyCL4F-s8pe-jJzUzQG1aADEXk5dFHRSq98',
+    appId: '1:134067255517:ios:568381c33c0a2c513ec334',
+    messagingSenderId: '134067255517',
+    projectId: 'gocrispy-b5cfd',
+    storageBucket: 'gocrispy-b5cfd.appspot.com',
+    iosBundleId: 'com.sixamtech.userAppAndWeb',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyDolvZqtrgGAuRikWEhL3kHoG8FmamWKIA',
+    appId: '1:134067255517:web:a1ad62116cba0e933ec334',
+    messagingSenderId: '134067255517',
+    projectId: 'gocrispy-b5cfd',
+    authDomain: 'gocrispy-b5cfd.firebaseapp.com',
+    storageBucket: 'gocrispy-b5cfd.appspot.com',
+    measurementId: 'G-TVXMQKG6CD',
+  );
+
 }

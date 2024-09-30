@@ -190,7 +190,7 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Container(
               width: 348,
-              height: 110,
+              height: 143,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: ColorResources.kallcontainer,
@@ -200,7 +200,7 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                 children: [
                   Container(
                     width: 129,
-                    height: 110,
+                    height: 143,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       image: productImage != null
@@ -214,22 +214,25 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                             ),
                     ),
                   ),
-               Expanded(
+Expanded(
   child: Padding(
     padding: const EdgeInsets.all(6.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min, // This ensures the container grows dynamically
       children: [
         Row(
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines:3, // Limit title to 2 lines
+                overflow: TextOverflow.visible, // Don't truncate the text
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
             const Spacer(),
             WishButton(
@@ -255,8 +258,8 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
             fontSize: 10,
             color: ColorResources.kIncreasedColor,
           ),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
+          maxLines: 3, // Limit description to 2 lines
+          overflow: TextOverflow.ellipsis, // Ellipsis if text is too long
         ),
         Row(
           children: [
@@ -267,13 +270,13 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                 fontWeight: FontWeight.w600,
               ),
             ),
-           const SizedBox(width: 20,),
+            const SizedBox(width: 20),
             Text(
               discount,
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: ColorResources.kredcolor
+                color: ColorResources.kredcolor,
               ),
             ),
           ],
@@ -281,7 +284,8 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
       ],
     ),
   ),
-),
+)
+
 
                 ],
               ),
