@@ -20,7 +20,7 @@ class CartRepo{
 
       cartList.add(CartModel.fromJson(jsonDecode(cart)));
     }
-    log(cartList.toString());
+    // log(cartList.toString());
     return cartList;
   }
 

@@ -65,7 +65,7 @@ Future<void> main() async {
      WidgetsFlutterBinding.ensureInitialized();
      FlutterError.onError = (FlutterErrorDetails details) {
     // Log or handle error details
-    log("issue"  +details.exceptionAsString());
+    // log("issue"  +details.exceptionAsString());
   };
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform, // Ensure it's FirebaseOptions type
@@ -107,7 +107,7 @@ Future<void> main() async {
   final fcmToken = await FirebaseMessaging.instance.getToken();
   FirebaseMessaging.instance.requestPermission();
 
-  log(fcmToken.toString());
+  log("fcm token "+fcmToken.toString());
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   // FirebaseMessaging.onMessageOpenedApp.listen((event) {
@@ -272,7 +272,7 @@ class _MyAppState extends State<MyApp> {
                 routerConfig: RouterHelper.goRoutes,
                 title: splashProvider.configModel != null
                     ? splashProvider.configModel!.restaurantName ?? ''
-                    : AppConstants.appName,
+                :AppConstants.appName,
                 debugShowCheckedModeBanner: false,
                 theme: ThemeData(
                   fontFamily: "Aeonik",
