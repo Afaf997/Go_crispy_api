@@ -62,16 +62,22 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> main() async {
+     WidgetsFlutterBinding.ensureInitialized();
+     FlutterError.onError = (FlutterErrorDetails details) {
+    // Log or handle error details
+    log("issue"  +details.exceptionAsString());
+  };
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, // Ensure it's FirebaseOptions type
+  );
   if (ResponsiveHelper.isMobilePhone()) {
     HttpOverrides.global = MyHttpOverrides();
   }
   setPathUrlStrategy();
-  WidgetsFlutterBinding.ensureInitialized();
-
   // if (!kIsWeb) {
   //   await Firebase.initializeApp();
   //   if (defaultTargetPlatform == TargetPlatform.android) {
-  //     await FirebaseMessaging.instance.requestPermission();
+  //     await FirebaseMessaging.instance.requestPermission();`
   //   }
   // } else {
   //   await Firebase.initializeApp(
@@ -95,9 +101,9 @@ Future<void> main() async {
 
 // ...
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   final fcmToken = await FirebaseMessaging.instance.getToken();
   FirebaseMessaging.instance.requestPermission();
 

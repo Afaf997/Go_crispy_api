@@ -77,7 +77,7 @@ class ProductView extends StatelessWidget {
                             childAspectRatio: 1.8,
                             crossAxisCount: ResponsiveHelper.isTab(context) ? 2 : 1,
                           ),
-                    itemCount: productList.length,
+                    itemCount:3,
                     padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
