@@ -101,7 +101,6 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                 }
 
                 double variationPrice = 0;
-
                 if (variationList != null && variationList.isNotEmpty) {
                   for (int index = 0; index < variationList.length; index++) {
                     if (variationList[index].variationValues != null &&
@@ -117,8 +116,7 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
                           i < variationList[index].variationValues!.length &&
                               i <
                                   productProvider
-                                      .selectedVariations[index].length;
-                          i++) {
+                                      .selectedVariations[index].length;i++){
                         if (productProvider.selectedVariations[index][i]!) {
                           variationPrice += variationList[index]
                               .variationValues![i]
