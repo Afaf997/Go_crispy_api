@@ -82,13 +82,13 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
                               Text(
                                 getTranslated(
                                   widget.status == 0
-                                      ? 'Thank you!'
+                                      ? getTranslated('thank_you', context)
                                       : widget.status == 1
-                                          ? 'payment_failed'
+                                          ? getTranslated('payment_failed', context)
                                           : widget.status == 2
-                                              ? 'order_failed'
-                                              : 'payment_cancelled',
-                                  context,
+                                              ? getTranslated('order_failed', context)
+                                              : getTranslated('payment_cancelled', context),context
+                                  
                                 )!,
                                 style: const TextStyle(
                                   color: ColorResources.kWhite,
@@ -100,13 +100,12 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
                             widget.status != 2 ? Text(
                                 getTranslated(
                                   widget.status == 0
-                                      ? 'Your order is confirmed'
+                                      ? getTranslated('your_confirm_order', context)
                                       : widget.status == 1
-                                          ? 'payment_failed'
+                                          ? getTranslated('payment_failed', context)
                                           : widget.status == 2
-                                              ? 'order_failed'
-                                              : 'payment_cancelled',
-                                  context,
+                                              ? getTranslated('order_failed', context)
+                                              : getTranslated('payment_cancelled', context),context,
                                 ),
                                 style: const TextStyle(
                                   color: ColorResources.kWhite,

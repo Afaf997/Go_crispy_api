@@ -21,7 +21,7 @@
   "search_items_here": "What are you looking for?",
   "all_categories": "All Categories",
   "see_all": "See All",
-  "best_selling": "Best Selling",
+  "best_selling": "Exclusive Discounted Deals",
   "banner": "Banner",
   "set_menu": "Set Menu",
   "delivery_man": "Delivery Man",
@@ -149,7 +149,7 @@
   "filter": "Filter",
   "reset": "Reset",
   "rating": "Rating",
-  "category": "Category",
+  "category": "Explore Our Menu",
   "review": "Review",
   "tax": "Vat/Tax",
   "discount": "Discount",
@@ -550,5 +550,7 @@
   "enter_details":"Enter Your Details",
   "continue_terms_condition":"By clicking 'continue' you agree with",
   "terms_condition_text":"our terms and condition",
-  "ready_for_delivery":"Ready for delivery"
+  "ready_for_delivery":"Ready for delivery",
+  "thank_you":"! Thank you",
+  "your_confirm_order":"Your order is confirmed"
 }
