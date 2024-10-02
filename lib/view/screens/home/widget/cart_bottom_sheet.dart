@@ -9,6 +9,7 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/language_provider.dart';
+import 'package:flutter_restaurant/provider/localization_provider.dart';
 import 'package:flutter_restaurant/provider/product_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/provider/theme_provider.dart';
@@ -60,6 +61,8 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
   Widget build(BuildContext context) {
     LanguageProvider languageProvider =
         Provider.of<LanguageProvider>(context, listen: false);
+    LocalizationProvider localizationProvider =
+        Provider.of<LocalizationProvider>(context, listen: false);
 
     return Consumer<CartProvider>(builder: (context, cartProvider, child) {
       return Stack(
@@ -86,16 +89,20 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
 
                 if (widget.product!.branchProduct != null &&
                     widget.product!.branchProduct!.isAvailable!) {
-                  variationList = languageProvider.selectIndex == 0
-                      ? widget.product!.branchProduct?.variations
-                      : widget.product!.branchProduct?.variationsar;
-                  // variationarList = widget.product!.branchProduct!.variationsar;
+                  //  variationList = languageProvider.selectIndex == 0
+                  variationList =
+                      localizationProvider.locale.languageCode == "en"
+                          ? widget.product!.branchProduct?.variations
+                          : widget.product!.branchProduct?.variationsar;
+                  variationarList = widget.product!.branchProduct!.variationsar;
                   price = widget.product!.branchProduct!.price;
                   log('Using branch product variations');
                 } else {
-                  variationList = languageProvider.selectIndex == 0
-                      ? widget.product!.variations
-                      : widget.product!.variationsar;
+                  // variationList = languageProvider.selectIndex == 0
+                  variationList =
+                      localizationProvider.locale.languageCode == "en"
+                          ? widget.product!.variations
+                          : widget.product!.variationsar;
                   variationarList = widget.product!.variationsar;
                   price = widget.product!.price;
                 }

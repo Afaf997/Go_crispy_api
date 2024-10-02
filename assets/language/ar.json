@@ -551,5 +551,7 @@
   "enter_details":"أدخل التفاصيل الخاصة بك",
   "continue_terms_condition":"عند الضغط علي اكمل انت",
   "terms_condition_text":"انت توافق علي الشروط والأحكام",
-  "ready_for_delivery":"جاهزة للتسليم"
+  "ready_for_delivery":"جاهزة للتسليم",
+  "thank_you":"!شكرًا لك",
+  "your_confirm_order":"تم تأكيد طلبك"
 }

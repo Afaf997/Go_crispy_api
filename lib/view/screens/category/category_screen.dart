@@ -223,14 +223,15 @@ Expanded(
       children: [
         Row(
           children: [
-            Expanded(
+            SizedBox(
+              width: MediaQuery.sizeOf(context).width*0.4,
               child: Text(
                 title,
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
-                maxLines:3, // Limit title to 2 lines
+                maxLines:2, // Limit title to 2 lines
                 overflow: TextOverflow.visible, // Don't truncate the text
               ),
             ),

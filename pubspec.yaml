@@ -68,7 +68,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_svg: ^2.0.9
   persistent_bottom_nav_bar: ^6.2.1
-  flutter_native_splash: ^2.4.1
+
   
   
 
@@ -85,12 +85,11 @@ dev_dependencies:
 dependency_overrides:
   win32: 5.5.4
 
-flutter_launcher_icons:
-  android: "launcher_icon"
+flutter_icons:
+  android: true
   ios: true
-  # image_path: "assets/image/logo1.png"    
   image_path_android: "assets/image/logo1.png"
-  image_path_ios: "assets/image/logo-2.png"  
+  image_path_ios: "assets/image/logo-2.png"
   remove_alpha_ios: true
 
 flutter:

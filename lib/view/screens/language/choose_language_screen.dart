@@ -104,10 +104,10 @@ class ChooseLanguageScreen extends StatelessWidget {
                   height: 10,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
-                    color: languageProvider.selectIndex ==
-                            (value == 'en' ? 0 : 1)
-                        ? ColorResources.kOrangeColor
-                        : Colors.white,
+                    color:
+                        languageProvider.selectIndex == (value == 'en' ? 0 : 1)
+                            ? ColorResources.kOrangeColor
+                            : Colors.white,
                     shape: BoxShape.circle,
                   ),
                 ),
