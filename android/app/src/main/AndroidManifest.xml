@@ -26,7 +26,7 @@
         android:label="Go_Crispy"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
-        android:icon="@mipmap/launcher_icon"
+        android:icon="@mipmap/ic_launcher"
         android:allowBackup="false"
         android:fullBackupOnly="false">
         
