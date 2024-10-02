@@ -65,10 +65,10 @@ Future<void> main() async {
      WidgetsFlutterBinding.ensureInitialized();
      FlutterError.onError = (FlutterErrorDetails details) {
     // Log or handle error details
-    // log("issue"  +details.exceptionAsString());
+    log("issue"  +details.exceptionAsString());
   };
   await Firebase.initializeApp(
-    // options: DefaultFirebaseOptions.currentPlatform, // Ensure it's FirebaseOptions type
+    options: DefaultFirebaseOptions.currentPlatform, // Ensure it's FirebaseOptions type
   );
   if (ResponsiveHelper.isMobilePhone()) {
     HttpOverrides.global = MyHttpOverrides();
@@ -104,24 +104,24 @@ Future<void> main() async {
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );
-  // final fcmToken = await FirebaseMessaging.instance.getToken();
-  // FirebaseMessaging.instance.requestPermission();
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  FirebaseMessaging.instance.requestPermission();
 
-  // log("fcm token "+fcmToken.toString());
+  log("fcm token "+fcmToken.toString());
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  // FirebaseMessaging.onMessageOpenedApp.listen((event) {
-  //   print("navigating");
-  // });
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    print("navigating");
+  });
 
-  // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  //   print('Got a message whilst in the foreground!');
-  //   print('Message data: ${message.data}');
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
 
-  //   if (message.notification != null) {
-  //     print('Message also contained a notification: ${message.notification}');
-  //   }
-  // });
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+  });
 
   await di.init();
   String? path;
