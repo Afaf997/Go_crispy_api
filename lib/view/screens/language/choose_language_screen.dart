@@ -20,11 +20,16 @@ class ChooseLanguageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
 
-    // Ensure the language list is initialized and set English as default
-    Provider.of<LanguageProvider>(context, listen: false)
-        .initializeAllLanguages(context);
-    Provider.of<LanguageProvider>(context, listen: false)
-        .setSelectIndex(0); // Set English as default (index 0)
+    // Initialize the languages and set default language using a delayed callback
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final languageProvider =
+          Provider.of<LanguageProvider>(context, listen: false);
+
+      if (languageProvider.languages.isEmpty) {
+        languageProvider.initializeAllLanguages(context);
+        languageProvider.setSelectIndex(0); // Set English as default
+      }
+    });
 
     return Scaffold(
       backgroundColor: ColorResources.kOrangeColor,
@@ -47,7 +52,7 @@ class ChooseLanguageScreen extends StatelessWidget {
         child: Container(
           height: 250,
           width: double.infinity,
-          color: Colors.white, // Use your desired color for the bottom sheet
+          color: Colors.white,
           padding: const EdgeInsets.all(16.0),
           child: Consumer<LanguageProvider>(
             builder: (context, languageProvider, _) => Column(
@@ -86,26 +91,24 @@ class ChooseLanguageScreen extends StatelessWidget {
               title,
               style: const TextStyle(fontSize: 16),
             ),
-            Consumer<LanguageProvider>(
-              builder: (context, languageProvider, _) => Container(
-                width: 16,
-                height: 16,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.grey),
-                ),
-                child: Center(
-                  child: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      color: languageProvider.selectIndex ==
-                              (value == 'en' ? 0 : 1)
-                          ? ColorResources.kOrangeColor
-                          : Colors.white,
-                      shape: BoxShape.circle,
-                    ),
+            Container(
+              width: 16,
+              height: 16,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.grey),
+              ),
+              child: Center(
+                child: Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    color:
+                        languageProvider.selectIndex == (value == 'en' ? 0 : 1)
+                            ? ColorResources.kOrangeColor
+                            : Colors.white,
+                    shape: BoxShape.circle,
                   ),
                 ),
               ),
