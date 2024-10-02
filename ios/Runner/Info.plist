@@ -22,6 +22,14 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>4.2</string>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<true/>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<true/>
+	<key>FacebookClientToken</key>
+	<string>YOUR_CLIENT_TOKEN</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -42,18 +50,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-    <key>FirebaseAppDelegateProxyEnabled</key>
-    <false/>
-    <key>FacebookAutoLogAppEventsEnabled</key>
-    <true/>
-    <key>FacebookAdvertiserIDCollectionEnabled</key>
-    <true/>
-    <key>FacebookClientToken</key>
-    <string>YOUR_CLIENT_TOKEN</string>
-    <key>aps-environment</key>
-    <string>development</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
@@ -73,5 +72,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>aps-environment</key>
+	<string>development</string>
 </dict>
 </plist>

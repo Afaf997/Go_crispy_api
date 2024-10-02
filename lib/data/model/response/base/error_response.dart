@@ -35,7 +35,6 @@ class ErrorResponse {
 class Errors {
   String? _code;
   String? _message;
-
   String? get code => _code;
   String? get message => _message;
 

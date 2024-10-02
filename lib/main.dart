@@ -68,7 +68,7 @@ Future<void> main() async {
     // log("issue"  +details.exceptionAsString());
   };
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, // Ensure it's FirebaseOptions type
+    // options: DefaultFirebaseOptions.currentPlatform, // Ensure it's FirebaseOptions type
   );
   if (ResponsiveHelper.isMobilePhone()) {
     HttpOverrides.global = MyHttpOverrides();
@@ -104,10 +104,10 @@ Future<void> main() async {
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  FirebaseMessaging.instance.requestPermission();
+  // final fcmToken = await FirebaseMessaging.instance.getToken();
+  // FirebaseMessaging.instance.requestPermission();
 
-  log("fcm token "+fcmToken.toString());
+  // log("fcm token "+fcmToken.toString());
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   // FirebaseMessaging.onMessageOpenedApp.listen((event) {
