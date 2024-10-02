@@ -230,7 +230,7 @@ Expanded(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
-                maxLines:3, // Limit title to 2 lines
+                maxLines:2, // Limit title to 2 lines
                 overflow: TextOverflow.visible, // Don't truncate the text
               ),
             ),
