@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/confirm_button_view.dart';
@@ -23,11 +24,11 @@ void showDeliveryFeeDialog(
             children: [
               Image.asset(Images.deliveryman),
               const SizedBox(height: 16),
-              const Text(
-                'Delivery Fee from your selected address to the branch',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14),
-              ),
+               Text(getTranslated('select_Address', context),   textAlign: TextAlign.center,
+                style:const TextStyle(fontSize: 14),)
+               ,
+             
+              // ),
               const SizedBox(height: 16),
               Text(
                 '${deliveryCharge.toStringAsFixed(0)}QR',
@@ -41,7 +42,7 @@ void showDeliveryFeeDialog(
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Subtotal'),
+                    Text(getTranslated('subtotal', context)),
                   Text('${subtotal.toStringAsFixed(0)} QR'),
                 ],
               ),
@@ -49,7 +50,7 @@ void showDeliveryFeeDialog(
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Delivery fee'),
+                  Text(getTranslated('delivery_fee', context)),
                   Text(
                       '${deliveryCharge.toStringAsFixed(2)} QR'), // Show delivery fee here
                 ],
@@ -58,10 +59,11 @@ void showDeliveryFeeDialog(
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Total',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
+                  Text(getTranslated('total', context)),
+                  // const Text(
+                  //   'Total',
+                  //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  // ),
                   Text(
                     '${total.toStringAsFixed(2)} QR',
                     style: const TextStyle(

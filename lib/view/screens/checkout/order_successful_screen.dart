@@ -224,7 +224,7 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
                                       CustomButton(
                                         borderColor: ColorResources.kWhite,
                                         btnTxt: getTranslated(
-                                            'Back to main menu', context),
+                                            'back_menu', context),
                                         textColor: ColorResources.kWhite,
                                         onTap: () {
                                           RouterHelper.getMainRoute(

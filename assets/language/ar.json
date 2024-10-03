@@ -553,5 +553,7 @@
   "terms_condition_text":"انت توافق علي الشروط والأحكام",
   "ready_for_delivery":"جاهزة للتسليم",
   "thank_you":"!شكرًا لك",
-  "your_confirm_order":"تم تأكيد طلبك"
+  "your_confirm_order":"تم تأكيد طلبك",
+  "back_menu":"العودة إلى القائمة الرئيسية",
+  "select_Address":"رسوم التوصيل من العنوان الذي اخترته إلى الفرع"
 }

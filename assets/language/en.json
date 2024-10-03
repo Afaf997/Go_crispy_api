@@ -552,5 +552,7 @@
   "terms_condition_text":"our terms and condition",
   "ready_for_delivery":"Ready for delivery",
   "thank_you":"! Thank you",
-  "your_confirm_order":"Your order is confirmed"
+  "your_confirm_order":"Your order is confirmed",
+  "back_menu":"Back to main menu",
+  "select_Address":"Delivery Fee from your selected address to the branch"
 }
