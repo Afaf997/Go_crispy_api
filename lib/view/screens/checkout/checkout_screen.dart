@@ -448,7 +448,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       style: rubikRegular,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                    ),
+                                    ), 
                                   ],
                                 ),
                               ),
@@ -707,7 +707,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       type: NotificationType.warning);
                                 } else {
                                   print(deliveryCharge);
-                                      print("afafee");
                                   showDeliveryFeeDialog(
                                     context,
                                     widget.deliveryCharge!,
@@ -726,8 +725,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 }
                               }
                             },
-                            child: const Text(
-                              "Confirm Order",
+                            child:  Text(
+                              getTranslated('confirm_order', context)!,
                               style: TextStyle(
                                 color: ColorResources.kWhite,
                                 fontSize: 16,

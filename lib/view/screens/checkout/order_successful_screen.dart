@@ -201,7 +201,7 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
                                                           ?.orderType !=
                                                       'take_away')
                                               ? 'track_order'
-                                              : 'back_home',
+                                              : 'track_order',
                                           context,
                                         ),
                                         textColor: ColorResources.kOrangeColor,
@@ -214,9 +214,9 @@ class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
                                                 int.tryParse(
                                                     '${widget.orderID}'));
                                           } else {
-                                            RouterHelper.getMainRoute(
-                                                action: RouteAction
-                                                    .pushNamedAndRemoveUntil);
+                                            RouterHelper.getOrderTrackingRoute(
+                                                int.tryParse(
+                                                    '${widget.orderID}'));
                                           }
                                         },
                                       ),
