@@ -62,52 +62,30 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> main() async {
-     WidgetsFlutterBinding.ensureInitialized();
-     FlutterError.onError = (FlutterErrorDetails details) {
-    // Log or handle error details
-    log("issue"  +details.exceptionAsString());
-  };
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, // Ensure it's FirebaseOptions type
-  );
   if (ResponsiveHelper.isMobilePhone()) {
     HttpOverrides.global = MyHttpOverrides();
   }
   setPathUrlStrategy();
-  // if (!kIsWeb) {
-  //   await Firebase.initializeApp();
-  //   if (defaultTargetPlatform == TargetPlatform.android) {
-  //     await FirebaseMessaging.instance.requestPermission();`
-  //   }
-  // } else {
-  //   await Firebase.initializeApp(
-  //       options: const FirebaseOptions(
-  //     apiKey: "AIzaSyAMLk1-dj8g0qCqU3DkxLKHbrT0VhK5EeQ",
-  //     authDomain: "e-food-9e6e3.firebaseapp.com",
-  //     projectId: "e-food-9e6e3",
-  //     storageBucket: "e-food-9e6e3.appspot.com",
-  //     messagingSenderId: "410522356318",
-  //     appId: "1:410522356318:web:1f962a90aabeb82a3dc2cf",
-  //     measurementId: "G-X1LHXV0DK1",
-  //   ));
+  WidgetsFlutterBinding.ensureInitialized();
 
-  //   await FacebookAuth.instance.webAndDesktopInitialize(
-  //     appId: "482889663914976",
-  //     cookie: true,
-  //     xfbml: true,
-  //     version: "v13.0",
-  //   );
-  // }
+  await Firebase.initializeApp(
+    // options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // final fcmToken = await FirebaseMessaging.instance.getToken();
+  // FirebaseMessaging.instance.requestPermission();
 
-// ...
+  // log(fcmToken.toString());
 
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  FirebaseMessaging.instance.requestPermission();
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
-  log("fcm token "+fcmToken.toString());
+// firebaseMessaging.getAPNSToken().then((String? token) {
+//   if (token != null) {
+//     print("APNS Token: $token");
+//   } else {
+//     print("APNS token not yet available");
+//   }
+// });
+
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
@@ -272,7 +250,7 @@ class _MyAppState extends State<MyApp> {
                 routerConfig: RouterHelper.goRoutes,
                 title: splashProvider.configModel != null
                     ? splashProvider.configModel!.restaurantName ?? ''
-                :AppConstants.appName,
+                    : AppConstants.appName,
                 debugShowCheckedModeBanner: false,
                 theme: ThemeData(
                   fontFamily: "Aeonik",

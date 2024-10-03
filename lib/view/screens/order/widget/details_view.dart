@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/address_model.dart';
+import 'package:flutter_restaurant/data/model/response/config_model.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
 import 'package:flutter_restaurant/helper/date_converter.dart';
 import 'package:flutter_restaurant/helper/price_converter.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
+import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
@@ -22,8 +24,8 @@ class DetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<OrderProvider>(
-        builder: (context, order, _) {
+    return Consumer2<OrderProvider,BranchProvider>(
+        builder: (context, order,branchProvider, _) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -116,8 +118,7 @@ class DetailsView extends StatelessWidget {
 
               Row(children: [
                 Expanded(flex: 2, child: Text(getTranslated('status', context)!, style: rubikRegular)),
-
-                Expanded(flex: 12, child: Text(
+                Expanded(flex: 14, child: Text(
                   getTranslated(order.trackModel!.paymentStatus, context)!,
                   style:const TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: ColorResources.koffGreen)
                 )),
@@ -157,8 +158,47 @@ class DetailsView extends StatelessWidget {
                   //   child: Text(getTranslated('change', context)!, style: rubikRegular.copyWith(fontSize: 10, color: Colors.black)),
                   // ),
                   // ) : const SizedBox(),
+                  
                 ]),
+                
               ]),
+                   const SizedBox(height: 5),
+               Row(
+  children: [
+   Expanded(flex:2,child: Text(getTranslated('branch_comnt', context)!, style: rubikRegular)),
+    Expanded(
+      flex: 12,
+      child: Consumer<BranchProvider>(
+        builder: (context, branchProvider, _) {
+          if (branchProvider.getBranchId() == -1) {
+            return const SizedBox(); // Return an empty widget if branch ID is invalid
+          }
+      
+          // Find the branch that matches the branchId from the provider
+          Branches? currentBranch = branchProvider.branches.firstWhere(
+            (branch) => branch!.id == branchProvider.getBranchId(),
+            orElse: () => null,
+          );
+      
+          // Return the widget displaying the branch name if it exists
+          return currentBranch != null
+              ? Text(
+                  currentBranch.name!, // Display the branch name
+                  style: rubikMedium.copyWith(
+                    fontSize: Dimensions.fontSizeSmall,
+                    color: ColorResources.kOrangeColor,
+                  ),
+                )
+              : const SizedBox(); // Handle the case when no matching branch is found
+        },
+      ),
+    ),
+  ],
+)
+
+,
+
+             
               const Divider(height: 20,color: ColorResources.borderColor,),
 
               ListView.builder(
