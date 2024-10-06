@@ -99,7 +99,7 @@ class PartialPayDialog extends StatelessWidget {
                 if(isPartialPay){
                   orderProvider.changePartialPayment(amount: totalPrice - profileProvider.userInfoModel!.walletBalance!);
                 }else{
-                  orderProvider.setPaymentIndex(1);
+                  orderProvider.setPaymentIndex(2);
                   orderProvider.clearOfflinePayment();
                   orderProvider.savePaymentMethod(index: orderProvider.paymentMethodIndex, method: orderProvider.paymentMethod);
                 }

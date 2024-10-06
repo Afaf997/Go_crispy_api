@@ -212,7 +212,7 @@ class OrderProvider extends ChangeNotifier {
         getWay: 'skip_cash',
         type: 'skip_cash',
       );
-    }else if(index != null && index == 1){
+    }else if(index != null && index == 2){
       _selectedPaymentMethod = PaymentMethod(
         getWayTitle: getTranslated('wallet_payment', Get.context!),
         getWay: 'wallet_payment',
