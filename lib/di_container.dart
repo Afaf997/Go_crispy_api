@@ -23,6 +23,7 @@ import 'package:flutter_restaurant/provider/banner_provider.dart';
 import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
+import 'package:flutter_restaurant/provider/chat_provider.dart';
 import 'package:flutter_restaurant/provider/coupon_provider.dart';
 import 'package:flutter_restaurant/provider/localization_provider.dart';
 import 'package:flutter_restaurant/provider/news_letter_controller.dart';
@@ -89,7 +90,7 @@ Future<void> init() async {
   sl.registerFactory(() => ProductProvider(productRepo: sl()));
   sl.registerFactory(() => CartProvider(cartRepo: sl()));
   sl.registerFactory(() => OrderProvider(orderRepo: sl(), sharedPreferences: sl()));
-  // sl.registerFactory(() => ChatProvider(chatRepo: sl(), notificationRepo: sl()));
+  sl.registerFactory(() => ChatProvider(chatRepo: sl(), notificationRepo: sl()));
   sl.registerFactory(() => AuthProvider(authRepo: sl()));
   sl.registerFactory(() => LocationProvider(sharedPreferences: sl(), locationRepo: sl()));
   sl.registerFactory(() => ProfileProvider(profileRepo: sl()));

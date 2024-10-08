@@ -115,16 +115,16 @@ class ButtonView extends StatelessWidget {
             ),
           ) : const SizedBox(),
 
-          // if( order.trackModel?.deliveryMan != null && (order.trackModel?.orderStatus != 'delivered') && ( phoneNumber == null ))
-            // Center(
-            //   child: Container(
-            //     width: width > 700 ? 700 : width,
-            //     padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-            //     child: CustomButton(btnTxt: getTranslated('chat_with_delivery_man', context), onTap: (){
-            //        RouterHelper.getChatRoute(orderModel: order.trackModel);
-            //     }),
-            //   ),
-            // ),
+          if( order.trackModel?.deliveryMan != null && (order.trackModel?.orderStatus != 'delivered') && ( phoneNumber == null ))
+            Center(
+              child: Container(
+                width: width > 700 ? 700 : width,
+                padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                child: CustomButton(btnTxt: getTranslated('chat_with_delivery_man', context), onTap: (){
+                   RouterHelper.getChatRoute(orderModel: order.trackModel);
+                }),
+              ),
+            ),
         ],);
       }
     );

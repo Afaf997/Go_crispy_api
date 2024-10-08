@@ -515,20 +515,20 @@ class RouterHelper {
                   address: isUpdate ? addressModel : null),
             );
           }),
-      // GoRoute(path: chatScreen, builder: (context, state) {
-      //   OrderModel? orderModel;
-      //   try{
-      //     orderModel = OrderModel.fromJson(jsonDecode(utf8.decode(base64Url.decode('${state.uri.queryParameters['order']?.replaceAll(' ', '+')}'))));
+      GoRoute(path: chatScreen, builder: (context, state) {
+        OrderModel? orderModel;
+        try{
+          orderModel = OrderModel.fromJson(jsonDecode(utf8.decode(base64Url.decode('${state.uri.queryParameters['order']?.replaceAll(' ', '+')}'))));
 
-      //   }catch(error){
-      //     debugPrint('route- order_model - $error');
-      //   }
-      //   return _routeHandler(context,  ChatScreen(
-      //     orderModel : orderModel,
-      //   )
-      //   );
-      // }
-      // ),
+        }catch(error){
+          debugPrint('route- order_model - $error');
+        }
+        return _routeHandler(context,  ChatScreen(
+          orderModel : orderModel,
+        )
+        );
+      }
+      ),
 
       GoRoute(
           path: couponScreen,

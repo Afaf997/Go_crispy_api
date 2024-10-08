@@ -19,6 +19,7 @@ import 'package:flutter_restaurant/provider/banner_provider.dart';
 import 'package:flutter_restaurant/provider/branch_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/category_provider.dart';
+import 'package:flutter_restaurant/provider/chat_provider.dart';
 import 'package:flutter_restaurant/provider/coupon_provider.dart';
 import 'package:flutter_restaurant/provider/language_provider.dart';
 import 'package:flutter_restaurant/provider/localization_provider.dart';
@@ -121,6 +122,7 @@ Future<void> main() async {
   //       ? int.parse(remoteMessage.notification!.titleLocKey!)
   //       : null;
   // }
+  
   await NotificationHelper.initialize(flutterLocalNotificationsPlugin);
   //   FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
   // await flutterLocalNotificationsPlugin
@@ -151,7 +153,7 @@ Future<void> main() async {
           create: (context) => di.sl<LocalizationProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<CartProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<OrderProvider>()),
-      // ChangeNotifierProvider(create: (context) => di.sl<ChatProvider>()),
+      ChangeNotifierProvider(create: (context) => di.sl<ChatProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<SetMenuProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<ProfileProvider>()),
       ChangeNotifierProvider(

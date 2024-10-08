@@ -4,6 +4,7 @@ import 'package:flutter_restaurant/helper/date_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/provider/profile_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -142,8 +143,8 @@ class MessageBubble extends StatelessWidget {
                       children: [
                         if(messages!.message != null) Flexible(
                           child: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor.withOpacity(0.1),
+                            decoration:const BoxDecoration(
+                              color:ColorResources.kOrangeColor,
                               borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(10),
                                 bottomRight: Radius.circular(10),
@@ -348,8 +349,8 @@ class MessageBubble extends StatelessWidget {
                             children: [
                               (messages!.message != null && messages!.message!.isNotEmpty) ? Flexible(
                                 child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor.withOpacity(0.1),
+                                  decoration:const BoxDecoration(
+                                    color: ColorResources.kOrangeColor,
                                     borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomRight: Radius.circular(10),

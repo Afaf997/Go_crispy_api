@@ -112,11 +112,13 @@ class OptionsView extends StatelessWidget {
                             size: 14),
                       ),
 
-                      // ListTile(
-                      //   onTap: () => RouterHelper.getChatRoute(orderModel: null),
-                      //   leading: Image.asset(Images.message, width: 20, height: 20, color: Theme.of(context).textTheme.bodyLarge!.color),
-                      //   title: Text(getTranslated('message', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                      // ),
+                      ListTile(
+                        onTap: () => RouterHelper.getChatRoute(orderModel: null),
+                        leading: Image.asset(Images.message, width: 20, height: 20, color: Theme.of(context).textTheme.bodyLarge!.color),
+                        title: Text(getTranslated('message', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
+                             trailing: const Icon(Icons.arrow_forward_ios_rounded,
+                            size: 14),
+                      ),
                       ListTile(
                         onTap: (){
                           couponProvider.getCouponList();
