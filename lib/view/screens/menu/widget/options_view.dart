@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/helper/router_helper.dart';
@@ -30,7 +29,7 @@ class OptionsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final couponProvider = Provider.of<CouponProvider>(context);
+    final couponProvider = Provider.of<CouponProvider>(context);
     final policyModel =
         Provider.of<SplashProvider>(context, listen: false).policyModel;
     final configModel =
@@ -50,7 +49,6 @@ class OptionsView extends StatelessWidget {
                     children: [
                       SizedBox(
                           height: ResponsiveHelper.isTab(context) ? 50 : 0),
-
                       ResponsiveHelper.isTab(context)
                           ? ListTile(
                               onTap: () =>
@@ -67,7 +65,6 @@ class OptionsView extends StatelessWidget {
                                       fontSize: Dimensions.fontSizeLarge)),
                             )
                           : const SizedBox(),
-
                       ListTile(
                         onTap: () => ResponsiveHelper.isMobilePhone()
                             ? onTap!(2)
@@ -83,7 +80,6 @@ class OptionsView extends StatelessWidget {
                         trailing: const Icon(Icons.arrow_forward_ios_rounded,
                             size: 14),
                       ),
-
                       ListTile(
                         onTap: () => RouterHelper.getNotificationRoute(),
                         leading: Image.asset(
@@ -97,7 +93,6 @@ class OptionsView extends StatelessWidget {
                         trailing: const Icon(Icons.arrow_forward_ios_rounded,
                             size: 14),
                       ),
-
                       ListTile(
                         onTap: () => RouterHelper.getProfileRoute(),
                         leading: Image.asset(
@@ -111,16 +106,23 @@ class OptionsView extends StatelessWidget {
                         trailing: const Icon(Icons.arrow_forward_ios_rounded,
                             size: 14),
                       ),
-
                       ListTile(
-                        onTap: () => RouterHelper.getChatRoute(orderModel: null),
-                        leading: Image.asset(Images.message, width: 20, height: 20, color: Theme.of(context).textTheme.bodyLarge!.color),
-                        title: Text(getTranslated('message', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                             trailing: const Icon(Icons.arrow_forward_ios_rounded,
+                        onTap: () =>
+                            RouterHelper.getChatRoute(orderModel: null),
+                        leading: Image.asset(Images.message,
+                            width: 20,
+                            height: 20,
+                            color:
+                                Theme.of(context).textTheme.bodyLarge!.color),
+                        // title: Text(getTranslated('message', context)!, style: rubikMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
+                        title: Text("Customer Support",
+                            style: rubikMedium.copyWith(
+                                fontSize: Dimensions.fontSizeLarge)),
+                        trailing: const Icon(Icons.arrow_forward_ios_rounded,
                             size: 14),
                       ),
                       ListTile(
-                        onTap: (){
+                        onTap: () {
                           couponProvider.getCouponList();
                           RouterHelper.getCouponRoute();
                         },
@@ -227,7 +229,6 @@ class OptionsView extends StatelessWidget {
                         trailing: const Icon(Icons.arrow_forward_ios_rounded,
                             size: 14),
                       ),
-
                       if (policyModel != null &&
                           policyModel.returnPage != null &&
                           policyModel.returnPage!.status!)
@@ -244,7 +245,6 @@ class OptionsView extends StatelessWidget {
                           trailing: const Icon(Icons.arrow_forward_ios_rounded,
                               size: 14),
                         ),
-
                       if (policyModel != null &&
                           policyModel.refundPage != null &&
                           policyModel.refundPage!.status!)
@@ -277,8 +277,6 @@ class OptionsView extends StatelessWidget {
                               style: rubikMedium.copyWith(
                                   fontSize: Dimensions.fontSizeLarge)),
                         ),
-
-
                       ListTile(
                         onTap: () async {
                           if (authProvider.isLoggedIn()) {
