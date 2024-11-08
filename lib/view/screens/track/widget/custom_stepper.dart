@@ -61,7 +61,10 @@ class CustomStepper extends StatelessWidget {
             child: Image.asset(
               statusImage!,
               width: 30,
-              color: isComplete ? ColorResources.kOrangeColor :  ColorResources.korgGrey, // Icon color is dynamic now
+
+              color: isComplete
+                  ? ColorResources.kOrangeColor
+                  : ColorResources.korgGrey, // Icon color is dynamic now
             ),
           ),
         ),
@@ -69,13 +72,16 @@ class CustomStepper extends StatelessWidget {
           title!,
           style: rubikRegular.copyWith(
             fontSize: 14,
-            color: isComplete ? ColorResources.kOrangeColor : ColorResources.korgGrey,
+            color: isComplete
+                ? ColorResources.kOrangeColor
+                : ColorResources.korgGrey,
           ),
         ),
         subtitle: subTitle != null
-            ? Text(subTitle!, style:const TextStyle(fontSize: 12, color: ColorResources.korgGrey))
+            ? Text(subTitle!,
+                style: const TextStyle(
+                    fontSize: 12, color: ColorResources.korgGrey))
             : const SizedBox(),
-            
       ),
     ]);
   }
