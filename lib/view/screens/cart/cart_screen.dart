@@ -547,40 +547,44 @@ Consumer<CouponProvider>(
                                               Row(
                                                 children: [
                                                   // Delivery
-                                                  Provider.of<SplashProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .configModel!
-                                                          .homeDelivery!
-                                                      ? DeliveryOptionButton(
+                                                  // Provider.of<SplashProvider>(
+                                                  //             context,
+                                                  //             listen: false)
+                                                  //         .configModel!
+                                                  //         .homeDelivery!
+                                                  //     ? 
+                                                      DeliveryOptionButton(
                                                           value: 'delivery',
                                                           title: getTranslated(
                                                               'delivery',
                                                               context),
                                                           imagePath: Images
                                                               .deliverySvg,
-                                                        )
-                                                      : Container(),
+                                                        ),
+                                                      // : Container(),
 
                                                   // Take Away
-                                                  Provider.of<SplashProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .configModel!
-                                                          .selfPickup!
-                                                      ? DeliveryOptionButton(
+                                                  // Provider.of<SplashProvider>(
+                                                  //             context,
+                                                  //             listen: false)
+                                                  //         .configModel!
+                                                  //         .selfPickup!
+                                                  //     ? 
+                                                      DeliveryOptionButton(
                                                           value: 'take_away',
                                                           title: getTranslated(
                                                               'take_away',
                                                               context),
                                                           imagePath: Images
                                                               .takeAwaySvg,
-                                                        )
-                                                      : Container(),
+                                                        ),
+                                                      // : Container(),
 
                                                   // Car Hop
-                                                  Provider.of<SplashProvider>( context,      listen: false).configModel!  .selfPickup!
-                                                      ? DeliveryOptionButton(
+                                                  // Provider.of<SplashProvider>( context,
+                                                  // listen: false).configModel!.selfPickup!
+                                                  //     ? 
+                                                      DeliveryOptionButton(
                                                           value: 'car_hop',
                                                           title: getTranslated(
                                                               'car_hop',
@@ -588,7 +592,7 @@ Consumer<CouponProvider>(
                                                           imagePath:
                                                               Images.carHopSvg,
                                                         )
-                                                      : Container(),
+                                                      // : Container(),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -720,9 +724,11 @@ class CheckOutButtonView extends StatelessWidget {
   Widget build(BuildContext context) {
     ConfigModel configModel =
         Provider.of<SplashProvider>(context, listen: false).configModel!;
-    return ((configModel.selfPickup ?? false) ||
-            (configModel.homeDelivery ?? false))
-        ? Container(
+    return 
+    // ((configModel.selfPickup ?? false) ||
+    //         (configModel.homeDelivery ?? false))
+    //     ?
+         Container(
             width: 1170,
             padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
             child: CustomButton(
@@ -742,11 +748,10 @@ class CheckOutButtonView extends StatelessWidget {
                         Provider.of<OrderProvider>(context, listen: false)
                             .orderType,
                         Provider.of<CouponProvider>(context, listen: false)
-                            .code);
-                  }
+                            .code);}
                 }),
-          )
-        : const SizedBox();
+          );
+        // : const SizedBox();
   }
 }
 class CartListWidget extends StatelessWidget {
